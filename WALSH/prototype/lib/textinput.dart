@@ -1,5 +1,3 @@
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 
 class TextInput extends StatelessWidget {
@@ -7,22 +5,17 @@ class TextInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: const [
-          SizedBox(
-            height: 10,
-          ),
-          TextField(
+    return const Scaffold(
+      body: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: TextField(
             decoration: InputDecoration(
               labelText: "Search",
-              hintText: "Search",
+              hintText: "Artist, Album, Song",
               border: OutlineInputBorder(),
               suffixIcon: Icon(Icons.search),
             ),
-          )
-        ],
-      ),
+          )),
     );
   }
 }
