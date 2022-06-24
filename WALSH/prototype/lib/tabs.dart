@@ -12,8 +12,11 @@ class Tabs extends StatelessWidget {
     return const DefaultTabController(
       length: 4,
       child: Scaffold(
-        backgroundColor: Colors.blue,
+        // backgroundColor: Colors.blue,
         bottomNavigationBar: TabBar(
+          indicatorColor: Colors.blue,
+          labelColor: Colors.blue,
+          unselectedLabelColor: Colors.black,
           tabs: <Widget>[
             Tab(
               icon: Icon(Icons.circle),
