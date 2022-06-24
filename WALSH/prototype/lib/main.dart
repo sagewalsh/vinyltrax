@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import './tabs.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(const VinylTrax());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class VinylTrax extends StatelessWidget {
+  const VinylTrax({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return const Text("Hello");
+    return MaterialApp(home: Tabs());
   }
 }
