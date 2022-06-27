@@ -8,7 +8,7 @@ class iconOrList extends StatefulWidget {
   State<iconOrList> createState() => _iconOrListState();
 }
 
-enum _Tab {one, two}
+enum _Tab { one, two }
 
 class _iconOrListState extends State<iconOrList> {
   _Tab _selectedTab = _Tab.one;
@@ -17,8 +17,8 @@ class _iconOrListState extends State<iconOrList> {
   Widget build(BuildContext context) {
     return CupertinoSegmentedControl(
       padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-      selectedColor: Colors.black,
-      borderColor: Colors.black,
+      selectedColor: const Color.fromARGB(255, 120, 120, 120),
+      borderColor: const Color.fromARGB(255, 120, 120, 120),
       pressedColor: Colors.grey,
       children: {
         _Tab.one: Container(
