@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:vinyltrax/fliterButtons.dart';
 import '../textinput.dart';
+import '../iconOrList.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -9,7 +11,7 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
-enum _Tab { one, two }
+enum _Tab {one, two}
 
 class _SearchPageState extends State<SearchPage> {
   _Tab _selectedTab = _Tab.one;
@@ -27,38 +29,24 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: Column(
         children: [
-          TextInput("Search"),
-          Row(
-            children: [
-              CupertinoSegmentedControl(
-                padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-                selectedColor: Colors.black,
-                borderColor: Colors.black,
-                pressedColor: Colors.grey,
-                children: {
-                  _Tab.one: Container(
-                    height: 30,
-                    width: 70,
-                    child: Center(
-                      child: Text("Icon"),
-                    ),
-                  ),
-                  _Tab.two: Container(
-                    height: 20,
-                    width: 70,
-                    child: Center(
-                      child: Text("List"),
-                    ),
-                  ),
-                },
-                onValueChanged: (value) {
-                  setState(() {
-                    _selectedTab = value as _Tab;
-                  });
-                },
-                groupValue: _selectedTab,
-              ),
-            ],
+          Container(child: TextInput("Search"), color: Color.fromARGB(255, 244, 244, 244)),
+          Container(
+            color: Color.fromARGB(255, 244, 244, 244),
+            child: Row(
+              children: [
+                iconOrList(),
+                SizedBox(width: 5),
+                filterButtons(),
+              ],
+            ),
+          ),
+          Container(color: Color.fromARGB(255, 244, 244, 244), height: 5),
+          Divider(
+            color: Colors.grey[400],
+            height: 5,
+            thickness: .5,
+            indent: 8,
+            endIndent: 8,
           ),
         ],
       ),
