@@ -43,21 +43,21 @@ class _StaxPageState extends State<StaxPage> {
               pressedColor: Colors.grey,
               children: {
                 _Order.artist: Container(
-                  height: 20,
+                  height: 30,
                   width: 140,
                   child: const Center(
                     child: Text("Artist"),
                   ),
                 ),
                 _Order.albums: Container(
-                  height: 20,
+                  height: 30,
                   width: 140,
                   child: const Center(
                     child: Text("Albums"),
                   ),
                 ),
                 _Order.genre: Container(
-                  height: 20,
+                  height: 30,
                   width: 140,
                   child: const Center(
                     child: Text("Genre"),
@@ -88,14 +88,14 @@ class _StaxPageState extends State<StaxPage> {
                   ),
                 ),
                 _Type.cd: Container(
-                  height: 20,
+                  height: 30,
                   width: 140,
                   child: const Center(
                     child: Text("CD"),
                   ),
                 ),
                 _Type.all: Container(
-                  height: 20,
+                  height: 30,
                   width: 140,
                   child: const Center(
                     child: Text("All"),

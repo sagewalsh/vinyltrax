@@ -44,14 +44,14 @@ class _WishPageState extends State<WishPage> {
                   ),
                 ),
                 _Order.albums: Container(
-                  height: 20,
+                  height: 30,
                   width: 140,
                   child: const Center(
                     child: Text("Albums"),
                   ),
                 ),
                 _Order.genre: Container(
-                  height: 20,
+                  height: 30,
                   width: 140,
                   child: const Center(
                     child: Text("Genre"),
