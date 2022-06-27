@@ -17,7 +17,7 @@ class _filterButtonsState extends State<filterButtons> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 200,
-      height: 40,
+      height: 30,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: CupertinoSegmentedControl(
@@ -27,28 +27,28 @@ class _filterButtonsState extends State<filterButtons> {
             pressedColor: Colors.grey,
             children: {
               _Tab.one: Container(
-                height: 40,
+                height: 30,
                 width: 80,
                 child: Center(
                   child: Text("Top"),
                 ),
               ),
               _Tab.two: Container(
-                height: 40,
+                height: 30,
                 width: 80,
                 child: Center(
                   child: Text("Artist"),
                 ),
               ),
               _Tab.three: Container(
-                height: 40,
+                height: 30,
                 width: 80,
                 child: Center(
                   child: Text("Album"),
                 ),
               ),
               _Tab.four: Container(
-                height: 40,
+                height: 30,
                 width: 80,
                 child: Center(
                   child: Text("Song"),

@@ -43,7 +43,7 @@ class _StaxPageState extends State<StaxPage> {
               pressedColor: Colors.grey,
               children: {
                 _Order.artist: Container(
-                  height: 30,
+                  height: 20,
                   width: 140,
                   child: const Center(
                     child: Text("Artist"),

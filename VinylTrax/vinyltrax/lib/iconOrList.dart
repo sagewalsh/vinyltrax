@@ -22,14 +22,14 @@ class _iconOrListState extends State<iconOrList> {
       pressedColor: Colors.grey,
       children: {
         _Tab.one: Container(
-          height: 40,
+          height: 30,
           width: 80,
           child: Center(
             child: Text("Icon"),
           ),
         ),
         _Tab.two: Container(
-          height: 40,
+          height: 30,
           width: 80,
           child: Center(
             child: Text("List"),
