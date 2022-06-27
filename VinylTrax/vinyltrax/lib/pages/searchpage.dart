@@ -9,7 +9,7 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
-enum _Tab {one, two}
+enum _Tab { one, two }
 
 class _SearchPageState extends State<SearchPage> {
   _Tab _selectedTab = _Tab.one;
@@ -27,7 +27,7 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: Column(
         children: [
-          TextInput(),
+          TextInput("Search"),
           Row(
             children: [
               CupertinoSegmentedControl(
