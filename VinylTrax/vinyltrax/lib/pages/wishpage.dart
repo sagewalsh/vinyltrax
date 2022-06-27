@@ -22,14 +22,14 @@ class _WishPageState extends State<WishPage> {
         title: Container(
           width: double.infinity,
           alignment: Alignment.center,
-          child: const Text("Stax of Trax"),
+          child: const Text("Wishlist"),
         ),
       ),
       body: Column(
         children: [
           Container(
             color: const Color.fromARGB(255, 244, 244, 244),
-            padding: const EdgeInsets.fromLTRB(0, 18.0, 0, 8.0),
+            padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 0.0),
             child: CupertinoSegmentedControl(
               padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 6.0),
               selectedColor: const Color.fromARGB(255, 120, 120, 120),
