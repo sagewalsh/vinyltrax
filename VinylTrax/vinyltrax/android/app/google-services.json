@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "807912738397",
+    "project_id": "vinyltrax-98e57",
+    "storage_bucket": "vinyltrax-98e57.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807912738397:android:5fa623fbac77e076ed87b4",
+        "android_client_info": {
+          "package_name": "com.example.vinyltrax"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "807912738397-joo18u1rd2hhostb4hfkhde8bbfdaobq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxte5kYq-ni99XGb2pMe35VinnTVApMiA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "807912738397-joo18u1rd2hhostb4hfkhde8bbfdaobq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
