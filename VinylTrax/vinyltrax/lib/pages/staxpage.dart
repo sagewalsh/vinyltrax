@@ -110,6 +110,16 @@ class _StaxPageState extends State<StaxPage> {
               groupValue: _selectedType,
             ),
           ),
+          Container(
+            // color: const Color.fromARGB(255, 244, 244, 244),
+            child: Divider(
+              color: Colors.grey[400],
+              height: 5,
+              thickness: .5,
+              indent: 8,
+              endIndent: 8,
+            ),
+          ),
         ],
       ),
     );
