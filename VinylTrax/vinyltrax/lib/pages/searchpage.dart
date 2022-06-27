@@ -11,10 +11,7 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
-enum _Tab {one, two}
-
 class _SearchPageState extends State<SearchPage> {
-  _Tab _selectedTab = _Tab.one;
 
   @override
   Widget build(BuildContext context) {
