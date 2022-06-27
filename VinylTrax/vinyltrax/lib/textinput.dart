@@ -5,8 +5,7 @@ class TextInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
+    return Padding(
           padding: EdgeInsets.all(8.0),
           child: TextField(
             decoration: InputDecoration(
@@ -16,7 +15,7 @@ class TextInput extends StatelessWidget {
                   OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
               suffixIcon: Icon(Icons.search),
             ),
-          )),
+          )
     );
   }
 }

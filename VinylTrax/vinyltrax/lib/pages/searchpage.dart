@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'textinput.dart';
+import '../textinput.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -39,9 +39,6 @@ class _SearchPageState extends State<SearchPage> {
                   _Tab.one: Container(
                     height: 30,
                     width: 70,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20))
-                    ),
                     child: Center(
                       child: Text("Icon"),
                     ),
@@ -49,9 +46,6 @@ class _SearchPageState extends State<SearchPage> {
                   _Tab.two: Container(
                     height: 20,
                     width: 70,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20))
-                    ),
                     child: Center(
                       child: Text("List"),
                     ),

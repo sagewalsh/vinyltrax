@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import './searchpage.dart';
-import './staxpage.dart';
-import './settingspage.dart';
-import './wishpage.dart';
+import 'pages/searchpage.dart';
+import 'pages/staxpage.dart';
+import 'pages/settingspage.dart';
+import 'pages/wishpage.dart';
 
 class Tabs extends StatelessWidget {
   const Tabs({Key? key}) : super(key: key);
