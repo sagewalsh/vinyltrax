@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vinyltrax/fliterButtons.dart';
+import 'package:firebase_database/firebase_database.dart';
 import '../textinput.dart';
 import '../iconOrList.dart';
 
@@ -12,7 +13,6 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +26,9 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: Column(
         children: [
-          Container(child: TextInput("Search"), color: Color.fromARGB(255, 244, 244, 244)),
+          Container(
+              child: TextInput("Search"),
+              color: Color.fromARGB(255, 244, 244, 244)),
           Container(
             color: Color.fromARGB(255, 244, 244, 244),
             child: Row(

@@ -3,6 +3,7 @@ import 'pages/searchpage.dart';
 import 'pages/staxpage.dart';
 import 'pages/settingspage.dart';
 import 'pages/wishpage.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class Tabs extends StatelessWidget {
   const Tabs({Key? key}) : super(key: key);
