@@ -383,7 +383,7 @@ class Database {
               "Views",
             ]
           },
-        }
+        },
       },
     );
   }
