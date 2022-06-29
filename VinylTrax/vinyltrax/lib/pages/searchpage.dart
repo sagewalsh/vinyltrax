@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:vinyltrax/fliterButtons.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../textinput.dart';
 import '../iconOrList.dart';
+import '/show_data/albumIcon.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -24,30 +24,33 @@ class _SearchPageState extends State<SearchPage> {
           child: const Text("Search Page"),
         ),
       ),
-      body: Column(
-        children: [
-          Container(
-              child: TextInput("Search"),
-              color: Color.fromARGB(255, 244, 244, 244)),
-          Container(
-            color: Color.fromARGB(255, 244, 244, 244),
-            child: Row(
-              children: [
-                iconOrList(),
-                SizedBox(width: 5),
-                filterButtons(),
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                child: TextInput("Search"),
+                color: Color.fromARGB(255, 244, 244, 244)),
+            Container(
+              color: Color.fromARGB(255, 244, 244, 244),
+              child: Row(
+                children: [
+                  iconOrList(),
+                  SizedBox(width: 5),
+                  filterButtons(),
+                ],
+              ),
             ),
-          ),
-          Container(color: Color.fromARGB(255, 244, 244, 244), height: 5),
-          Divider(
-            color: Colors.grey[400],
-            height: 5,
-            thickness: .5,
-            indent: 8,
-            endIndent: 8,
-          ),
-        ],
+            Container(color: Color.fromARGB(255, 244, 244, 244), height: 5),
+            Divider(
+              color: Colors.grey[400],
+              height: 5,
+              thickness: .5,
+              indent: 8,
+              endIndent: 8,
+            ),
+          ],
+        ),
       ),
     );
   }
