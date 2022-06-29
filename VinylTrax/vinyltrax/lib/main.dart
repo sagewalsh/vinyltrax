@@ -56,6 +56,11 @@ class VinylTrax extends StatelessWidget {
     // startingData();
     Database.startingData();
 
+    Database.printData();
+    // Database.printAlbumBy(1112);
+    // Database.printArtistName(1112);
+    // Database.printAlbumDetails(1217);
+
     FutureBuilder(
         future: _fbApp,
         builder: (contrext, snapshot) {

@@ -1,11 +1,13 @@
+import 'dart:convert';
+
 import 'package:firebase_database/firebase_database.dart';
+// import 'package:flutter/material.dart';
 
 class Database {
   static final fb = FirebaseDatabase.instance;
+  static final ref = fb.ref();
 
   static void startingData() async {
-    final ref = fb.ref();
-
     await ref.set(
       {
         "Albums": {
@@ -15,8 +17,10 @@ class Database {
             "Artist": "Kanye West",
             "Year": 2016,
             "Genre": "Hip-Hop",
-            "Tracklist":
-                "Ultralight Beam (explicit)\n...\nSaint Pablo (explicit)"
+            "Tracklist": [
+              "Ultralight Beam (explicit)",
+              "Saint Pablo (explicit)"
+            ]
           },
           1217: {
             "UniqueID": 1217,
@@ -24,8 +28,10 @@ class Database {
             "Artist": "Kanye West",
             "Year": 2010,
             "Genre": "Hip-Hop",
-            "Tracklist":
-                "Dark Fantasy (explicit)\n...\nWho Will Survive in America (explicit)"
+            "Tracklist": [
+              "Dark Fantasy (explicit)",
+              "Who Will Survive in America (explicit)"
+            ]
           },
           1218: {
             "UniqueID": 1218,
@@ -33,7 +39,7 @@ class Database {
             "Artist": "Kanye West",
             "Year": 2008,
             "Genre": "Hip-Hop",
-            "Tracklist": "Say You Will\n...\nColdest Winter"
+            "Tracklist": ["Say You Will", "Coldest Winter"]
           },
           1219: {
             "UniqueID": 1219,
@@ -41,7 +47,7 @@ class Database {
             "Artist": "Halsey",
             "Year": 2021,
             "Genre": "Alternative",
-            "Tracklist": "The Tradition\n...\nPeople Disappear Here"
+            "Tracklist": ["The Tradition", "People Disappear Here"]
           },
           1220: {
             "UniqueID": 1220,
@@ -49,7 +55,7 @@ class Database {
             "Artist": "Halsey",
             "Year": 2020,
             "Genre": "Alternative",
-            "Tracklist": "Ashley\n...\n929"
+            "Tracklist": ["Ashley", "929"]
           },
           1221: {
             "UniqueID": 1221,
@@ -57,7 +63,7 @@ class Database {
             "Artist": "Halsey",
             "Year": 2015,
             "Genre": "Alternative",
-            "Tracklist": "Castle\n...\nI Walk the Line"
+            "Tracklist": ["Castle", "I Walk the Line"]
           },
           1222: {
             "UniqueID": 1222,
@@ -65,8 +71,10 @@ class Database {
             "Artist": "Kendrick Lamar",
             "Year": 2012,
             "Genre": "Hip-Hop",
-            "Tracklist":
-                "Sherane a.k.a Master Splinter's Daughter\n...\nBitch, Don't Kill My Vibe"
+            "Tracklist": [
+              "Sherane a.k.a Master Splinter's Daughter",
+              "Bitch, Don't Kill My Vibe"
+            ]
           },
           1223: {
             "UniqueID": 1223,
@@ -74,7 +82,7 @@ class Database {
             "Artist": "Kendrick Lamar",
             "Year": 2017,
             "Genre": "Hip-Hop",
-            "Tracklist": "BLOOD. (explicit)\n...\nDUCKWORTH (explicit)"
+            "Tracklist": ["BLOOD. (explicit)", "DUCKWORTH (explicit)"]
           },
           1224: {
             "UniqueID": 1224,
@@ -82,8 +90,10 @@ class Database {
             "Artist": "Rihanna",
             "Year": 2016,
             "Genre": "Pop",
-            "Tracklist":
-                "Consideration (feat. SZA) (explicit)\n...\nSex With Me (explicit)"
+            "Tracklist": [
+              "Consideration (feat. SZA) (explicit)",
+              "Sex With Me (explicit)"
+            ]
           },
           1225: {
             "UniqueID": 1225,
@@ -91,7 +101,7 @@ class Database {
             "Artist": "Rihanna",
             "Year": 2010,
             "Genre": "Pop",
-            "Tracklist": "S&M\n...\nSkin"
+            "Tracklist": ["S&M", "Skin"]
           },
           1226: {
             "UniqueID": 1226,
@@ -99,7 +109,7 @@ class Database {
             "Artist": "Rihanna",
             "Year": 2008,
             "Genre": "Pop",
-            "Tracklist": "Umbrella (feat. JAY Z)\n...\nTake a Bow"
+            "Tracklist": ["Umbrella (feat. JAY Z)", "Take a Bow"]
           },
           1227: {
             "UniqueID": 1227,
@@ -107,7 +117,7 @@ class Database {
             "Artist": "Muse",
             "Year": 2006,
             "Genre": "Alternative",
-            "Tracklist": "Take a Bow\n...\nKnights of Cydonia"
+            "Tracklist": ["Take a Bow", "Knights of Cydonia"]
           },
           1228: {
             "UniqueID": 1228,
@@ -115,7 +125,7 @@ class Database {
             "Artist": "Muse",
             "Year": 2022,
             "Genre": "Alternative",
-            "Tracklist": "Will of the People\n...\nWe are F*****g F****d"
+            "Tracklist": ["Will of the People", "We are F*****g F****d"]
           },
           1229: {
             "UniqueID": 1229,
@@ -123,7 +133,7 @@ class Database {
             "Artist": "Ke\$ha",
             "Year": 2010,
             "Genre": "Pop",
-            "Tracklist": "Your Love is My Drug\n...\nc U Next Tuesday"
+            "Tracklist": ["Your Love is My Drug", "c U Next Tuesday"]
           },
           1230: {
             "UniqueID": 1230,
@@ -131,7 +141,7 @@ class Database {
             "Artist": "Ke\$ha",
             "Year": 2017,
             "Genre": "Pop",
-            "Tracklist": "Bastards\n...\nSpaceship"
+            "Tracklist": ["Bastards", "Spaceship"]
           },
           1231: {
             "UniqueID": 1231,
@@ -139,7 +149,7 @@ class Database {
             "Artist": "Ke\$ha",
             "Year": 2020,
             "Genre": "Pop",
-            "Tracklist": "Tonight\n...\nSummer"
+            "Tracklist": ["Tonight", "Summer"]
           },
           1232: {
             "UniqueID": 1232,
@@ -147,7 +157,7 @@ class Database {
             "Artist": "Lizzo",
             "Year": 2019,
             "Genre": "Pop",
-            "Tracklist": "Cuz I Love You\n...\n"
+            "Tracklist": ["Cuz I Love You", "Lingerie"]
           },
           1233: {
             "UniqueID": 1233,
@@ -155,7 +165,7 @@ class Database {
             "Artist": "Lizzo",
             "Year": 2022,
             "Genre": "Pop",
-            "Tracklist": "About Damn Time\n...\nGrrrls"
+            "Tracklist": ["About Damn Time", "Grrrls"]
           },
           1234: {
             "UniqueID": 1234,
@@ -163,7 +173,7 @@ class Database {
             "Artist": "Eminem",
             "Year": 2002,
             "Genre": "Hip-Hop",
-            "Tracklist": "Curtains Up\n...\nCurtains Close"
+            "Tracklist": ["Curtains Up", "Curtains Close"]
           },
           1235: {
             "UniqueID": 1235,
@@ -171,7 +181,7 @@ class Database {
             "Artist": "Eminem",
             "Year": 2000,
             "Genre": "Hip-Hop",
-            "Tracklist": "Public Service Announcement 2000\n...\nCriminal"
+            "Tracklist": ["Public Service Announcement 2000", "Criminal"]
           },
           1236: {
             "UniqueID": 1236,
@@ -179,7 +189,7 @@ class Database {
             "Artist": "Eminem",
             "Year": 2010,
             "Genre": "Hip-Hop",
-            "Tracklist": "Cold Wind Blows\n...\nSession One"
+            "Tracklist": ["Cold Wind Blows", "Session One"]
           },
           1237: {
             "UniqueID": 1237,
@@ -187,7 +197,7 @@ class Database {
             "Artist": "Billie Eilish",
             "Year": 2017,
             "Genre": "Alternative",
-            "Tracklist": "COPYCAT\n...\n&burn"
+            "Tracklist": ["COPYCAT", "&burn"]
           },
           1238: {
             "UniqueID": 1238,
@@ -195,7 +205,7 @@ class Database {
             "Artist": "Billie Eilish",
             "Year": 2019,
             "Genre": "Alternative",
-            "Tracklist": "!!!!!!!!\n...\ngoodbye"
+            "Tracklist": ["!!!!!!!!", "goodbye"]
           },
           1239: {
             "UniqueID": 1239,
@@ -203,7 +213,7 @@ class Database {
             "Artist": "Billie Eilish",
             "Year": 2021,
             "Genre": "Alternative",
-            "Tracklist": "Getting Older\n...\nMale Fantasy"
+            "Tracklist": ["Getting Older", "Male Fantasy"]
           },
           1240: {
             "UniqueID": 1240,
@@ -211,7 +221,7 @@ class Database {
             "Artist": "Cardi B",
             "Year": 2018,
             "Genre": "Hip-Hop",
-            "Tracklist": "Get Up 10\n...\nI Do"
+            "Tracklist": ["Get Up 10", "I Do"]
           },
           1241: {
             "UniqueID": 1241,
@@ -219,7 +229,7 @@ class Database {
             "Artist": "Anderson .Paak",
             "Year": 2018,
             "Genre": "Hip-Hop",
-            "Tracklist": "The Chase\n...\nLeft to Right"
+            "Tracklist": ["The Chase", "Left to Right"]
           },
           1242: {
             "UniqueID": 1242,
@@ -227,7 +237,7 @@ class Database {
             "Artist": "Anderson .Paak",
             "Year": 2016,
             "Genre": "R&B",
-            "Tracklist": "The Bird\n...\nThe Dreamer"
+            "Tracklist": ["The Bird", "The Dreamer"]
           },
           1243: {
             "UniqueID": 1243,
@@ -235,7 +245,7 @@ class Database {
             "Artist": "Anderson .Paak",
             "Year": 2019,
             "Genre": "R&B",
-            "Tracklist": "Come Home\n...\nWhat Can We Do?"
+            "Tracklist": ["Come Home", "What Can We Do?"]
           },
           // 1244:{
           //   "UniqueID": 1244,
@@ -243,7 +253,7 @@ class Database {
           //   "Artist": {"Bruno Mars", "Anderson .Paak", "Silk Sonic"},
           //   "Year": 2021,
           //   "Genre": "R&B",
-          //   "Tracklist": "Silk Sonic Intro\n...\nBlast Off"
+          //   "Tracklist": ["Silk Sonic Intro","Blast Off"]
           // },
           1245: {
             "UniqueID": 1245,
@@ -251,7 +261,7 @@ class Database {
             "Artist": "Drake",
             "Year": 2011,
             "Genre": "Hip-Hop",
-            "Tracklist": "Over My Dead Body\n...\nThe Ride"
+            "Tracklist": ["Over My Dead Body", "The Ride"]
           },
           1246: {
             "UniqueID": 1246,
@@ -259,7 +269,7 @@ class Database {
             "Artist": "Drake",
             "Year": 2013,
             "Genre": "Hip-Hop",
-            "Tracklist": "Tuscan Leather\n...\nAll Me"
+            "Tracklist": ["Tuscan Leather", "All Me"]
           },
           1247: {
             "UniqueID": 1247,
@@ -267,7 +277,7 @@ class Database {
             "Artist": "Drake",
             "Year": 2015,
             "Genre": "Hip-Hop",
-            "Tracklist": "Legend\n...\n6PM in New York"
+            "Tracklist": ["Legend", "6PM in New York"]
           },
           1248: {
             "UniqueID": 1248,
@@ -275,7 +285,7 @@ class Database {
             "Artist": "Drake",
             "Year": 2016,
             "Genre": "Hip-Hop",
-            "Tracklist": "Keep the Family Close\n...\nHotline Bling"
+            "Tracklist": ["Keep the Family Close", "Hotline Bling"]
           }
         },
         "Artists": {
@@ -386,5 +396,103 @@ class Database {
         },
       },
     );
+  }
+
+  /*
+  Prints all data under the Albums JSON
+  */
+  static void printData() async {
+    final snapshot = await ref.child("Albums").get();
+    if (snapshot.exists) {
+      print(snapshot.value.runtimeType);
+      Map<Object?, Object?> map = snapshot.value as Map<Object?, Object?>;
+      print(map[1220] is Null);
+    } else {
+      print("No data available");
+    }
+  }
+
+  /*
+  Given an Artist ID prints the albums listed in the 
+  album array under JSON Artist:
+      Database --> Artist --> Albums: [<Object?>]
+  */
+  static void printAlbumBy(int artistid) async {
+    var path = "Artists/" + artistid.toString() + "/Albums";
+    final snapshot = await ref.child(path).get();
+    if (snapshot.exists) {
+      List<Object?> albums = snapshot.value as List<Object?>;
+      for (int i = 0; i < albums.length; i++) {
+        print(albums[i]);
+      }
+    } else {
+      print("Something went wrong at path: " + path);
+    }
+  }
+
+  /*
+  Given an Artist ID prints the name of the artist
+  listed in JSON Artist:
+      Database --> Artist --> Name: String
+  */
+  static void printArtistName(int artistid) async {
+    var path = "Artists/" + artistid.toString() + "/Name";
+    final snapshot = await ref.child(path).get();
+    if (snapshot.exists) {
+      print(snapshot.value);
+    } else {
+      print("Something went wrong at path: " + path);
+    }
+  }
+
+  /*
+  Given an Album ID prints the data listed in 
+  JSON Album:
+      Database --> Album --> artist, genre, name, tracklist, uniqueid, year
+  */
+  static void printAlbumDetails(int albumid) async {
+    var path = "Albums/" + albumid.toString();
+    DataSnapshot snapshot = await ref.child(path).get();
+
+    if (snapshot.exists) {
+      //------------------------------------------------------------------------
+      // snapshot = await ref.child(path + "/Name").get();
+      // if (snapshot.exists) {
+      //   print("Album Name: " + snapshot.value.toString());
+      // }
+
+      // snapshot = await ref.child(path + "/Artist").get();
+      // if (snapshot.exists) {
+      //   print("Artist: " + snapshot.value.toString());
+      // }
+
+      // snapshot = await ref.child(path + "/Genre").get();
+      // if (snapshot.exists) {
+      //   print("Genre: " + snapshot.value.toString());
+      // }
+
+      // snapshot = await ref.child(path + "/Year").get();
+      // if (snapshot.exists) {
+      //   print("Year: " + snapshot.value.toString());
+      // }
+
+      // snapshot = await ref.child(path + "/Tracklist").get();
+      // if (snapshot.exists) {
+      //   print("Tracklist: " + snapshot.value.toString());
+      // }
+
+      //------------------------------------------------------------------------
+      print("Album Name: " + snapshot.child("Name").value.toString());
+
+      print("Artist: " + snapshot.child("Artist").value.toString());
+
+      print("Genre: " + snapshot.child("Genre").value.toString());
+
+      print("Year: " + snapshot.child("Year").value.toString());
+
+      print("Tracklist: " + snapshot.child("Tracklist").value.toString());
+    } else {
+      print("Something went wrong at path: " + path);
+    }
   }
 }
