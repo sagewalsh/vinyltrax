@@ -277,6 +277,112 @@ class Database {
             "Genre": "Hip-Hop",
             "Tracklist": "Keep the Family Close\n...\nHotline Bling"
           }
+        },
+        "Artists": {
+          1111: {
+            "UniqueID": 1111,
+            "Name": "Kanye West",
+            "Albums": [
+              "The Life of Pablo",
+              "My Beautiful Dark Twisted Fantasy",
+              "808s & Heartbreak",
+            ],
+          },
+          1112: {
+            "UniqueID": 1112,
+            "Name": "Halsey",
+            "Albums": [
+              "If I Can't Have Love I Want Power",
+              "Manic",
+              "Badlands",
+            ]
+          },
+          1113: {
+            "UniqueID": 1113,
+            "Name": "Kendrick Lamar",
+            "Albums": [
+              "good kid, m.A.A.d city",
+              "DAMN.",
+            ]
+          },
+          1114: {
+            "UniqueID": 1114,
+            "Name": "Rihanna",
+            "Albums": [
+              "ANTI",
+              "Loud",
+              "Good Girls Gone Bad: Reloaded",
+            ]
+          },
+          1115: {
+            "UniqueID": 1115,
+            "Name": "Muse",
+            "Albums": [
+              "Black Holes and Revelations",
+              "Will of the People",
+            ]
+          },
+          1116: {
+            "UniqueID": 1116,
+            "Name": "Ke\$ha",
+            "Albums": [
+              "Animal",
+              "Rainbow",
+              "High Road",
+            ]
+          },
+          1117: {
+            "UniqueID": 1117,
+            "Name": "Lizzo",
+            "Albums": [
+              "Cuz I Love You",
+              "Special",
+            ]
+          },
+          1118: {
+            "UniqueID": 1118,
+            "Name": "Eminem",
+            "Albums": [
+              "The Eminem Show",
+              "The Marshall Mathers LP",
+              "Recovery",
+            ]
+          },
+          1119: {
+            "UniqueID": 1119,
+            "Name": "Billie Eilish",
+            "Albums": [
+              "dont smile at me",
+              "WHEN WE ALL FALL ASLEEP, WHERE DO WE GO?",
+              "Happier Than Ever",
+            ]
+          },
+          1120: {
+            "UniqueID": 1120,
+            "Name": "Cardi B",
+            "Albums": [
+              "Invasion of Privacy",
+            ]
+          },
+          1121: {
+            "UniqueID": 1121,
+            "Name": "Anderson .Paak",
+            "Albums": [
+              "Oxnard",
+              "Malibu",
+              "Ventura",
+            ]
+          },
+          1122: {
+            "UniqueID": 1122,
+            "Name": "Drake",
+            "Albums": [
+              "Take Care",
+              "Nothing Was the Same",
+              "If You're Reading This It's Too Late",
+              "Views",
+            ]
+          },
         }
       },
     );
