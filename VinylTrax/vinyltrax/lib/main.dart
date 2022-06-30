@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import './tabs.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
-import './database.dart';
+import 'test.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,13 +17,8 @@ class VinylTrax extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Database.startingData();
-
-    // Database.orderByAlbum();
-    // Database.orderByArtist();
-    // Database.printAlbumBy(1112);
-    // Database.printArtistName(1112);
-    Database.printAlbumDetails(1217);
+    Test.fillDatabase();
+    Test.database();
 
     FutureBuilder(
         future: _fbApp,
