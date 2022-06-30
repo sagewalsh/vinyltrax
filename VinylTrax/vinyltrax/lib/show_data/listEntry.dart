@@ -35,6 +35,9 @@ class ListEntry extends StatelessWidget {
       tileColor: color,
       leading: avatar,
       title: Text(name),
+      onTap: () {
+        print(name);
+      },
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vinyltrax/icons/settings.dart';
 import 'package:vinyltrax/icons/wishlist.dart';
 import 'icons/vinyl.dart';
 import 'pages/searchpage.dart';
@@ -31,7 +32,7 @@ class Tabs extends StatelessWidget {
               icon: Icon(Icons.search),
             ),
             Tab(
-              icon: Icon(Icons.settings),
+              icon: Icon(SettingIcon.cog, size: 21,),
             )
           ],
         ),
