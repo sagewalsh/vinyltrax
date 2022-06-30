@@ -41,6 +41,8 @@ class _StaxPageState extends State<StaxPage> {
             Container(
               color: const Color.fromARGB(255, 244, 244, 244),
               child: TextInput("Search Inventory"),
+              width: double.infinity,
+              height: 75,
             ),
             Container(
               color: const Color.fromARGB(255, 244, 244, 244),
