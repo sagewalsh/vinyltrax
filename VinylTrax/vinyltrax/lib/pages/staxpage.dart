@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import '../show_data/albumIcon.dart';
+import 'package:vinyltrax/show_data/iconList.dart';
 import '../textinput.dart';
 
 enum _Order { artist, albums, genre }
@@ -123,26 +123,7 @@ class _StaxPageState extends State<StaxPage> {
                 endIndent: 8,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Wrap(
-                  direction: Axis.horizontal,
-                  spacing: 30,
-                  runSpacing: 20,
-                  children: [
-                    AlbumIcon("art1", "alb1", ""),
-                    AlbumIcon("art2", "alb2", ""),
-                    AlbumIcon("art3", "alb3", ""),
-                    AlbumIcon("art4", "alb4", ""),
-                    AlbumIcon("art5", "alb5", ""),
-                    AlbumIcon("art6", "alb6", ""),
-                    AlbumIcon("art7", "alb7", ""),
-                  ],
-                ),
-              ),
-            ),
+            IconList(),
           ],
         ),
       ),

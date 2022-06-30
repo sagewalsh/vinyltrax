@@ -3,7 +3,6 @@ import 'package:vinyltrax/fliterButtons.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../textinput.dart';
 import '../iconOrList.dart';
-import '/show_data/albumIcon.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
