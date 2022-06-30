@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'listEntry.dart';
 
-class ListList extends StatefulWidget {
-  //const ListList({Key? key}) : super(key: key);
+class ListEntryList extends StatefulWidget {
+  const ListEntryList({Key? key}) : super(key: key);
 
   @override
-  State<ListList> createState() => _ListListState();
+  State<ListEntryList> createState() => _ListListState();
 }
 
-class _ListListState extends State<ListList> {
+class _ListListState extends State<ListEntryList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -16,7 +16,15 @@ class _ListListState extends State<ListList> {
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           Color color = index.isOdd ? Colors.black12 : Colors.white;
-          return ShowListEntry("Cat", "", color);
+          List<ListEntry> itemList = [
+            ListEntry("Cat1", "", true),
+            ListEntry("Cat2", "", false),
+            ListEntry("Cat3", "", true),
+            ListEntry("Cat4", "", false),
+            ListEntry("Cat5", "", false),
+          ];
+          itemList[index].color = color;
+          return itemList[index];
         }
     );
   }
