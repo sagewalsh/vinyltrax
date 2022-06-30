@@ -8,6 +8,7 @@ import './searchresultspage.dart';
 import 'package:flutter/cupertino.dart';
 import '../returnedData/byArtist.dart';
 import '../returnedData/byAlbum.dart';
+import '../returnedData/byGenre.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
-enum _resultType { byArtist, byAlbum }
+enum _resultType { byArtist, byAlbum, byGenre }
 
 class _SearchPageState extends State<SearchPage> {
   final textBox = TextInput("Search");
@@ -71,17 +72,22 @@ class _SearchPageState extends State<SearchPage> {
                 children: {
                   _resultType.byArtist: Container(
                     height: 30,
-                    width: 200,
+                    width: 140,
                     child: const Center(
                       child: Text("By Artist"),
                     ),
                   ),
                   _resultType.byAlbum: Container(
                     height: 30,
-                    width: 200,
+                    width: 140,
                     child: const Center(
                       child: Text("By Album"),
                     ),
+                  ),
+                  _resultType.byGenre: Container(
+                    height: 30,
+                    width: 140,
+                    child: const Center(child: Text("By Genre")),
                   ),
                 },
                 onValueChanged: (value) {
@@ -96,6 +102,13 @@ class _SearchPageState extends State<SearchPage> {
               AlbumOrderArtist()
             else if (_selected == _resultType.byAlbum)
               AlbumOrderAlbum()
+            else if (_selected == _resultType.byGenre)
+              AlbumsOfGenre(),
+            Container(
+              color: Colors.white,
+              width: double.infinity,
+              height: 50,
+            )
           ],
         ),
       ),

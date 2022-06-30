@@ -78,6 +78,27 @@ class Database {
   }
 
   /*
+  Outputs all the albums of a given genre
+  */
+  static Future<Text> albumsOrderGenre(String genre) async {
+    final snapshot = await ref.child("Albums").get();
+
+    if (snapshot.exists) {
+      List<MapEntry<Object?, Object?>> list = [];
+      var values = snapshot.value as Map<Object?, Object?>;
+      values.forEach((key, value) {
+        var album = value as Map<Object?, Object?>;
+        if (album["Genre"] == genre) {
+          list += {key: value}.entries.toList();
+        }
+      });
+      return _alertAlbumData(list);
+    } else {
+      return Text("No data available");
+    }
+  }
+
+  /*
   Outputs album data to the console ordered by Artist name
   alphabetically
   */
