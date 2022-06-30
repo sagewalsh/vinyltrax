@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import '../database.dart';
 
 class AlbumsOfGenre extends StatelessWidget {
-  AlbumsOfGenre({Key? key}) : super(key: key);
-
-  final Future<Text> _results = Database.albumsOrderGenre("Pop");
+  final String genre;
+  // AlbumsOfGenre({Key? key}) : super(key: key);
+  AlbumsOfGenre(this.genre);
 
   @override
   Widget build(BuildContext context) {
+    Future<Text> _results = Database.albumsOrderGenre(genre);
     return SizedBox(
       width: double.infinity,
       child: FutureBuilder<Text>(

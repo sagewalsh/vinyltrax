@@ -103,7 +103,7 @@ class _SearchPageState extends State<SearchPage> {
             else if (_selected == _resultType.byAlbum)
               AlbumOrderAlbum()
             else if (_selected == _resultType.byGenre)
-              AlbumsOfGenre(),
+              AlbumsOfGenre("Hip-Hop"),
             Container(
               color: Colors.white,
               width: double.infinity,
