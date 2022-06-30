@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:vinyltrax/show_data/genre.dart';
 import 'package:vinyltrax/show_data/icon.dart';
 import 'package:vinyltrax/show_data/iconList.dart';
 import '../textinput.dart';
@@ -20,6 +21,7 @@ class StaxPage extends StatefulWidget {
 class _StaxPageState extends State<StaxPage> {
   _Order _selectedOrder = _Order.artist;
   _Type _selectedType = _Type.vinyl;
+  bool isGenreButton = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +35,12 @@ class _StaxPageState extends State<StaxPage> {
         ),
       ),
       body: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
             Container(
               color: const Color.fromARGB(255, 244, 244, 244),
               child: TextInput("Search Inventory"),
-              width: double.infinity,
-              height: 75,
             ),
             Container(
               color: const Color.fromARGB(255, 244, 244, 244),
@@ -127,8 +128,12 @@ class _StaxPageState extends State<StaxPage> {
                 endIndent: 8,
               ),
             ),
-            IconList(),
-            // ListEntryList(),
+            if (_selectedOrder == _Order.genre)
+              GenreList()
+            else if (_selectedOrder == _Order.artist)
+              ListEntryList()
+            else
+              IconList()
           ],
         ),
       ),
