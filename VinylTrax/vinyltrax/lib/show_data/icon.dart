@@ -10,23 +10,30 @@ class ShowIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BoxShape shapeChoice = BoxShape.rectangle;
-
-    if (!isAlbum)
-      shapeChoice = BoxShape.circle;
+    Widget avatar = SizedBox();
+    if (isAlbum) {
+      avatar = CircleAvatar(
+        radius: 75,
+          foregroundImage: NetworkImage(
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg"
+          )
+      );
+    }
+    else {
+      avatar = Container(
+        height: 150,
+        width: 150,
+        child: Image(
+          image: NetworkImage(
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg"
+          ),
+        ),
+      );
+    }
 
     return Column(
       children: [
-        Container(
-          height: 150,
-          width: 150,
-          decoration: BoxDecoration(
-            shape: shapeChoice,
-            image: DecorationImage(
-              image: NetworkImage("https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg")
-            ),
-          ),
-        ),
+        avatar,
         Text(artistName),
         Text(albumName),
       ],

@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:vinyltrax/show_data/icon.dart';
 import 'package:vinyltrax/show_data/iconList.dart';
 import '../textinput.dart';
+import 'package:vinyltrax/show_data/listEntryList.dart';
 
 enum _Order { artist, albums, genre }
 
@@ -123,7 +125,8 @@ class _StaxPageState extends State<StaxPage> {
                 endIndent: 8,
               ),
             ),
-            IconList(),
+            //IconList(),
+            //ListEntryList(),
           ],
         ),
       ),
