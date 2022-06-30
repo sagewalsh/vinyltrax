@@ -11,6 +11,10 @@ class TextInput extends StatefulWidget {
     return Text(textController.text);
   }
 
+  String getString() {
+    return textController.text;
+  }
+
   @override
   _TextInputState createState() => _TextInputState(label, textController);
 }

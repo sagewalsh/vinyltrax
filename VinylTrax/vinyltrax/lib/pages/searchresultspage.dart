@@ -3,18 +3,13 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import '../database.dart';
 
-class SearchResultsPage extends StatefulWidget {
-  const SearchResultsPage({Key? key}) : super(key: key);
-
-  @override
-  State<SearchResultsPage> createState() => _SearchResultsState();
-}
-
-class _SearchResultsState extends State<SearchResultsPage> {
-  final Future<Text> _results = Database.albumsOrderArtist();
+class SearchResultsPage extends StatelessWidget {
+  final int input;
+  SearchResultsPage(this.input);
 
   @override
   Widget build(BuildContext context) {
+    Future<Text> _results = Database.albumsFrom(input);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

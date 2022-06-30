@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/fliterButtons.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -114,10 +116,13 @@ class _SearchPageState extends State<SearchPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const SearchResultsPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            var id = 0;
+            try {
+              id = int.parse(textBox.getString());
+            } catch (exception) {}
+            return SearchResultsPage(id);
+          }));
         },
         child: const Icon(Icons.search),
       ),

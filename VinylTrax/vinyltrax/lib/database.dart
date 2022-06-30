@@ -177,16 +177,21 @@ class Database {
   album array under JSON Artist:
       Database --> Artist --> Albums: [<Object?>]
   */
-  static void albumsFrom(int artistid) async {
+  static Future<Text> albumsFrom(int artistid) async {
+    String results = "\nAlbums by ";
+    var snapshot =
+        await ref.child("Artists/" + artistid.toString() + "/Name").get();
+    results += snapshot.value.toString() + "\n";
     var path = "Artists/" + artistid.toString() + "/Albums";
-    final snapshot = await ref.child(path).get();
+    snapshot = await ref.child(path).get();
     if (snapshot.exists) {
       List<Object?> albums = snapshot.value as List<Object?>;
       for (int i = 0; i < albums.length; i++) {
-        print(albums[i]);
+        results += "\n" + albums[i].toString();
       }
+      return Text(results);
     } else {
-      print("Something went wrong at path: " + path);
+      return Text("Something went wrong at path: " + path);
     }
   }
 
@@ -195,7 +200,7 @@ class Database {
   listed in JSON Artist:
       Database --> Artist --> Name: String
   */
-  static void artist(int artistid) async {
+  static void artistGivenID(int artistid) async {
     var path = "Artists/" + artistid.toString() + "/Name";
     final snapshot = await ref.child(path).get();
     if (snapshot.exists) {
