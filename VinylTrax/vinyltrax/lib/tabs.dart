@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vinyltrax/icons/wishlist.dart';
+import 'icons/vinyl.dart';
 import 'pages/searchpage.dart';
 import 'pages/staxpage.dart';
 import 'pages/settingspage.dart';
@@ -20,10 +22,10 @@ class Tabs extends StatelessWidget {
           unselectedLabelColor: Colors.black,
           tabs: <Widget>[
             Tab(
-              icon: Icon(Icons.circle),
+              icon: Icon(VinylIcon.cd),
             ),
             Tab(
-              icon: Icon(Icons.star),
+              icon: Icon(WishlistIcon.wishlist),
             ),
             Tab(
               icon: Icon(Icons.search),

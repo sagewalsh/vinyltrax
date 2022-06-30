@@ -31,12 +31,17 @@ class ShowIcon extends StatelessWidget {
       );
     }
 
-    return Column(
-      children: [
-        avatar,
-        Text(artistName),
-        Text(albumName),
-      ],
+    return GestureDetector(
+      onTap: () {
+        print(albumName);
+      },
+      child: Column(
+        children: [
+          avatar,
+          Text(artistName),
+          Text(albumName),
+        ],
+      ),
     );
   }
 }

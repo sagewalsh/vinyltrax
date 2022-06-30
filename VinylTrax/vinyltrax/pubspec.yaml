@@ -62,11 +62,19 @@ flutter_icons:
 
 # The following section is specific to Flutter packages.
 flutter:
+  uses-material-design: true
 
+  fonts:
+    - family:  VinylIcon
+      fonts:
+       - asset: fonts/VinylIcon.ttf
+    - family: WishlistIcon
+      fonts:
+        - asset: fonts/WishlistIcon.ttf
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
-  uses-material-design: true
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -86,10 +94,6 @@ flutter:
   # example:
   # fonts:
   #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
