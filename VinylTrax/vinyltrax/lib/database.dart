@@ -55,7 +55,7 @@ class Database {
   Outputs album data to the console ordered by Album
   title alphabetically
   */
-  static void albumsOrderName() async {
+  static Future<Text> albumsOrderName() async {
     final snapshot = await ref.child("Albums").get();
     if (snapshot.exists) {
       var values = snapshot.value as Map<Object?, Object?>;
@@ -69,11 +69,12 @@ class Database {
             .toLowerCase()
             .compareTo(albumB["Name"].toString().toLowerCase());
       }));
-
-      _printAlbumData(list);
+      // _printAlbumData(list);
+      return _alertAlbumData(list);
     } else {
       print("No data available");
     }
+    return Text("");
   }
 
   /*
