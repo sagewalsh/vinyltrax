@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 // import 'package:flutter/material.dart';
 
 class Database {
@@ -32,7 +33,7 @@ class Database {
   JSON Album:
       Database --> Album --> artist, genre, name, tracklist, uniqueid, year
   */
-  static void albumGivenName(String name) async {
+  static Future<Text> albumGivenName(String name) async {
     var snapshot = await ref.child("Albums").get();
 
     if (snapshot.exists) {
@@ -44,8 +45,10 @@ class Database {
           list += {key: value}.entries.toList();
         }
       });
-      _printAlbumData(list);
+      // _printAlbumData(list);
+      return _alertAlbumData(list);
     }
+    return Text("");
   }
 
   /*
@@ -119,6 +122,30 @@ class Database {
         print("      " + (i + 1).toString() + ". " + tracks[i].toString());
       }
     });
+  }
+
+  /*
+  Helper Function
+  Given a list of Map Entries for album data,
+  builds a widget that holds to formatted data
+  */
+  static Text _alertAlbumData(List<MapEntry<Object?, Object?>> list) {
+    String data = "";
+
+    list.forEach((element) {
+      var albumdata = element.value as Map<Object?, Object?>;
+      data += "\n\nName: " + albumdata["Name"].toString();
+      data += "\nArtist: " + albumdata["Artist"].toString();
+      data += "\nGenre: " + albumdata["Genre"].toString();
+      data += "\nYear: " + albumdata["Year"].toString();
+      data += "\nTracklist: ";
+      var tracks = albumdata["Tracklist"] as List<Object?>;
+      tracks.forEach((element) {
+        data += "\n   " + element.toString();
+      });
+    });
+
+    return Text(data);
   }
 
   /*

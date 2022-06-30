@@ -3,6 +3,7 @@ import 'package:vinyltrax/fliterButtons.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../textinput.dart';
 import '../iconOrList.dart';
+import '../database.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -12,6 +13,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  final textBox = TextInput("Search");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,8 +31,11 @@ class _SearchPageState extends State<SearchPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                child: TextInput("Search"),
-                color: Color.fromARGB(255, 244, 244, 244)),
+              child: textBox,
+              color: Color.fromARGB(255, 244, 244, 244),
+              width: double.infinity,
+              height: 75,
+            ),
             Container(
               color: Color.fromARGB(255, 244, 244, 244),
               child: Row(
@@ -50,6 +56,20 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          build() {}
+
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  content: textBox.getText(),
+                );
+              });
+        },
+        child: const Icon(Icons.search),
       ),
     );
   }

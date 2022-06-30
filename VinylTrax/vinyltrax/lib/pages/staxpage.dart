@@ -37,7 +37,9 @@ class _StaxPageState extends State<StaxPage> {
           children: [
             Container(
               color: const Color.fromARGB(255, 244, 244, 244),
-              child: const TextInput("Search Inventory"),
+              child: TextInput("Search Inventory"),
+              width: double.infinity,
+              height: 75,
             ),
             Container(
               color: const Color.fromARGB(255, 244, 244, 244),
@@ -125,8 +127,8 @@ class _StaxPageState extends State<StaxPage> {
                 endIndent: 8,
               ),
             ),
-            //IconList(),
-            //ListEntryList(),
+            IconList(),
+            // ListEntryList(),
           ],
         ),
       ),
