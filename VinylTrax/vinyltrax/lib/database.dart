@@ -80,7 +80,7 @@ class Database {
   Outputs album data to the console ordered by Artist name
   alphabetically
   */
-  static void albumsOrderArtist() async {
+  static Future<Text> albumsOrderArtist() async {
     final snapshot = await ref.child("Albums").get();
     if (snapshot.exists) {
       var values = snapshot.value as Map<Object?, Object?>;
@@ -97,10 +97,12 @@ class Database {
         },
       );
 
-      _printAlbumData(list);
+      // _printAlbumData(list);
+      return _alertAlbumData(list);
     } else {
       print("No data available");
     }
+    return Text("");
   }
 
   /*

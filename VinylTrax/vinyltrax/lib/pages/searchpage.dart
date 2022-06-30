@@ -4,6 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import '../textinput.dart';
 import '../iconOrList.dart';
 import '../database.dart';
+import './searchresultspage.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -59,15 +60,10 @@ class _SearchPageState extends State<SearchPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          build() {}
-
-          showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  content: textBox.getText(),
-                );
-              });
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const SearchResultsPage()));
         },
         child: const Icon(Icons.search),
       ),
