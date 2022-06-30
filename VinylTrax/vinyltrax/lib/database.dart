@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:firebase_database/firebase_database.dart';
 // import 'package:flutter/material.dart';
 
@@ -7,6 +5,9 @@ class Database {
   static final fb = FirebaseDatabase.instance;
   static final ref = fb.ref();
 
+  /*
+  Fills the firebase realtime database with dummy data
+  */
   static void startingData() async {
     await ref.set(
       {
@@ -399,17 +400,80 @@ class Database {
   }
 
   /*
-  Prints all data under the Albums JSON
+  Outputs album data to the console ordered by Album
+  title alphabetically
   */
-  static void printData() async {
+  static void orderByAlbum() async {
     final snapshot = await ref.child("Albums").get();
     if (snapshot.exists) {
-      print(snapshot.value.runtimeType);
-      Map<Object?, Object?> map = snapshot.value as Map<Object?, Object?>;
-      print(map[1220] is Null);
+      var values = snapshot.value as Map<Object?, Object?>;
+      var list = values.entries.toList();
+
+      list.sort(((a, b) {
+        var albumA = a.value as Map<Object?, Object?>;
+        var albumB = b.value as Map<Object?, Object?>;
+        return albumA["Name"]
+            .toString()
+            .toLowerCase()
+            .compareTo(albumB["Name"].toString().toLowerCase());
+      }));
+
+      _printAlbums(list);
     } else {
       print("No data available");
     }
+  }
+
+  /*
+  Outputs album data to the console ordered by Artist name
+  alphabetically
+  */
+  static void orderByArtist() async {
+    final snapshot = await ref.child("Albums").get();
+    if (snapshot.exists) {
+      var values = snapshot.value as Map<Object?, Object?>;
+      var list = values.entries.toList();
+
+      list.sort(
+        (a, b) {
+          var albumA = a.value as Map<Object?, Object?>;
+          var albumB = b.value as Map<Object?, Object?>;
+          print(albumA["Artist"]
+              .toString()
+              .toLowerCase()
+              .compareTo(albumB["Artist"].toString().toLowerCase()));
+          return albumA["Artist"]
+              .toString()
+              .toLowerCase()
+              .compareTo(albumB["Artist"].toString().toLowerCase());
+        },
+      );
+
+      _printAlbums(list);
+    } else {
+      print("No data available");
+    }
+  }
+
+  /*
+  Helper Function
+  Given a list of Map Entries for album data,
+  prints the album data to the console
+  */
+  static void _printAlbums(List list) {
+    list.forEach((element) {
+      print("\n");
+      var albumdata = element.value as Map<Object?, Object?>;
+      print("   Name: " + albumdata["Name"].toString());
+      print("   Artist: " + albumdata["Artist"].toString());
+      print("   Genre: " + albumdata["Genre"].toString());
+      print("   Year: " + albumdata["Year"].toString());
+      print("   Tracklist: ");
+      var tracks = albumdata["Tracklist"] as List<Object?>;
+      for (int i = 0; i < tracks.length; i++) {
+        print("      " + (i + 1).toString() + ". " + tracks[i].toString());
+      }
+    });
   }
 
   /*
@@ -455,42 +519,23 @@ class Database {
     DataSnapshot snapshot = await ref.child(path).get();
 
     if (snapshot.exists) {
-      //------------------------------------------------------------------------
-      // snapshot = await ref.child(path + "/Name").get();
-      // if (snapshot.exists) {
-      //   print("Album Name: " + snapshot.value.toString());
-      // }
+      // print("Album Name: " + snapshot.child("Name").value.toString());
 
-      // snapshot = await ref.child(path + "/Artist").get();
-      // if (snapshot.exists) {
-      //   print("Artist: " + snapshot.value.toString());
-      // }
+      // print("Artist: " + snapshot.child("Artist").value.toString());
 
-      // snapshot = await ref.child(path + "/Genre").get();
-      // if (snapshot.exists) {
-      //   print("Genre: " + snapshot.value.toString());
-      // }
+      // print("Genre: " + snapshot.child("Genre").value.toString());
 
-      // snapshot = await ref.child(path + "/Year").get();
-      // if (snapshot.exists) {
-      //   print("Year: " + snapshot.value.toString());
-      // }
+      // print("Year: " + snapshot.child("Year").value.toString());
 
-      // snapshot = await ref.child(path + "/Tracklist").get();
-      // if (snapshot.exists) {
-      //   print("Tracklist: " + snapshot.value.toString());
-      // }
+      // print("Tracklist: " + snapshot.child("Tracklist").value.toString());
 
-      //------------------------------------------------------------------------
-      print("Album Name: " + snapshot.child("Name").value.toString());
+      var values = snapshot.value as Map<Object?, Object?>;
+      var list = values.entries.toList();
+      // _printAlbums(list);
 
-      print("Artist: " + snapshot.child("Artist").value.toString());
-
-      print("Genre: " + snapshot.child("Genre").value.toString());
-
-      print("Year: " + snapshot.child("Year").value.toString());
-
-      print("Tracklist: " + snapshot.child("Tracklist").value.toString());
+      list.forEach((element) {
+        print(element);
+      });
     } else {
       print("Something went wrong at path: " + path);
     }
