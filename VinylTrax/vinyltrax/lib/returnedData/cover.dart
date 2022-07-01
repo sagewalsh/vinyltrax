@@ -4,7 +4,7 @@ import '../database.dart';
 class Cover extends StatelessWidget {
   Cover({Key? key}) : super(key: key);
 
-  final Future<List<Text>> _results = Database.cover(1216);
+  final Future<List<Text>> _results = Database.cover();
 
   @override
   Widget build(BuildContext context) {
