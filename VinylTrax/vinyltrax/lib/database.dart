@@ -222,37 +222,6 @@ list of text widgets.
     }
   }
 
-/*
-TESTING
-*/
-  static Future<List<Text>> cover() async {
-    var snapshot = await ref.child("Albums").get();
-
-    if (snapshot.exists) {
-      var values = snapshot.value as Map<Object?, Object?>;
-      var list = values.entries.toList();
-
-      list.sort(((a, b) {
-        var albumA = a.value as Map<Object?, Object?>;
-        var albumB = b.value as Map<Object?, Object?>;
-        return albumA["Artist"]
-            .toString()
-            .toLowerCase()
-            .compareTo(albumB["Artist"].toString().toLowerCase());
-      }));
-
-      List<Text> results = [];
-      list.forEach((element) {
-        var albumdata = element.value as Map<Object?, Object?>;
-        results.add(Text("Name: " + albumdata["Name"].toString()));
-        results.add(Text("Artist: " + albumdata["Artist"].toString()));
-        results.add(Text(albumdata["Cover"].toString()));
-      });
-      return results;
-    }
-    return [];
-  }
-
   // /*
   // Given an Album ID prints the data listed in
   // JSON Album:

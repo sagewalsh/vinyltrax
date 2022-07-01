@@ -31,6 +31,7 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(30, 0, 105, 1),
         title: Container(
           width: double.infinity,
           alignment: Alignment.center,
@@ -43,7 +44,6 @@ class _SearchPageState extends State<SearchPage> {
           children: [
             Container(
               child: textBox,
-              color: Color.fromARGB(255, 244, 244, 244),
               width: double.infinity,
               height: 75,
             ),
@@ -65,6 +65,11 @@ class _SearchPageState extends State<SearchPage> {
               indent: 8,
               endIndent: 8,
             ),
+/*
+###############################################################################
+To Be Removed Later
+###############################################################################
+*/
             Container(
               color: const Color.fromARGB(255, 244, 244, 244),
               child: CupertinoSegmentedControl(
@@ -112,9 +117,17 @@ class _SearchPageState extends State<SearchPage> {
               width: double.infinity,
               height: 50,
             )
+/*
+###############################################################################
+*/
           ],
         ),
       ),
+/*
+###############################################################################
+To Be Removed Later
+###############################################################################
+*/
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -127,6 +140,9 @@ class _SearchPageState extends State<SearchPage> {
         },
         child: const Icon(Icons.search),
       ),
+/*
+###############################################################################
+*/
     );
   }
 }

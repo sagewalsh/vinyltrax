@@ -36,7 +36,7 @@ class VinylTrax extends StatelessWidget {
         });
     return MaterialApp(
       home: Tabs(),
-      theme: ThemeData(fontFamily: 'OpenSans')
+      theme: ThemeData(fontFamily: 'OpenSans'),
     );
   }
 }
