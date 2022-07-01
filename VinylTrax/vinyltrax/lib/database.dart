@@ -127,6 +127,32 @@ class Database {
     return Text("");
   }
 
+  static Future<List<Text>> displayByArtist() async {
+    final snapshot = await ref.child("Albums").get();
+    if (snapshot.exists) {
+      var values = snapshot.value as Map<Object?, Object?>;
+      var list = values.entries.toList();
+
+      list.sort(
+        (a, b) {
+          var albumA = a.value as Map<Object?, Object?>;
+          var albumB = b.value as Map<Object?, Object?>;
+          return albumA["Artist"]
+              .toString()
+              .toLowerCase()
+              .compareTo(albumB["Artist"].toString().toLowerCase());
+        },
+      );
+
+      // _printAlbumData(list);
+      // return _alertAlbumData(list);
+      return displayAlbums(list);
+    } else {
+      print("No data available");
+    }
+    return [Text("")];
+  }
+
   /*
   Helper Function
   Given a list of Map Entries for album data,
@@ -170,6 +196,48 @@ class Database {
     });
 
     return Text(data);
+  }
+
+  /*
+  Returns a list of text widgets of album data used when 
+  displaying albums
+  */
+  static List<Text> displayAlbums(List<MapEntry<Object?, Object?>> list) {
+    List<Text> results = [];
+    list.forEach((element) {
+      var albumdata = element.value as Map<Object?, Object?>;
+      print(albumdata["Name"]);
+      print(albumdata["Artist"]);
+      results.add(Text("\nName: " + albumdata["Name"].toString()));
+      results.add(Text("\nArtist: " + albumdata["Artist"].toString()));
+      // print(results.length);
+      // results.add(Text(albumdata["Cover"].toString()));
+    });
+    return results;
+  }
+
+  /*
+  Returns a list of text widgets of album data used when 
+  displaying albums
+  */
+  static Future<List<Text>> displayAlbum(int albumid) async {
+    var snapshot = await ref.child("Albums").get();
+
+    if (snapshot.exists) {
+      var values = snapshot.value as Map<Object?, Object?>;
+      List<Text> results = [];
+      if (values.containsKey(albumid.toString())) {
+        // print(values[albumid.toString()]);
+        var albumdata = values[albumid.toString()] as Map<Object?, Object?>;
+        // print(albumdata["Name"]);
+        // print(albumdata["Artist"]);
+        // print(albumdata["Genre"]);
+        results.add(Text(albumdata["Name"].toString()));
+        results.add(Text(albumdata["Artist"].toString()));
+        // results.add(Text(albumdata["Cover"].toString()));
+      }
+    }
+    return [Text("")];
   }
 
   /*

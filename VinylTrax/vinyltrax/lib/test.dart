@@ -75,5 +75,9 @@ class Test {
     //     "--------------------------------------------" +
     //     "--------------------------------------------");
     // Database.albumsFrom(1000);
+
+    // Database.displayAlbum(1216);
+
+    // Database.displayByArtist();
   }
 }

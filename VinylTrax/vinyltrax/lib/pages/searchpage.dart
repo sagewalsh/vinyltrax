@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import '../returnedData/byArtist.dart';
 import '../returnedData/byAlbum.dart';
 import '../returnedData/byGenre.dart';
+import '../returnedData/display.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -101,7 +102,7 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ),
             if (_selected == _resultType.byArtist)
-              AlbumOrderArtist()
+              Display()
             else if (_selected == _resultType.byAlbum)
               AlbumOrderAlbum()
             else if (_selected == _resultType.byGenre)
