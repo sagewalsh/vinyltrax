@@ -134,8 +134,67 @@ class Database {
     List<Text> results = [];
     list.forEach((element) {
       var albumdata = element.value as Map<Object?, Object?>;
-      results.add(Text("Name: " + albumdata["Name"].toString()));
-      results.add(Text("Artist: " + albumdata["Artist"].toString()));
+      results.add(Text(albumdata["Name"].toString()));
+      results.add(Text(albumdata["Artist"].toString()));
+      results.add(Text(albumdata["Cover"].toString()));
+    });
+    return results;
+  }
+
+/*
+#############################################################################
+Below: Code that is viable to be changed or removed at a later date
+#############################################################################
+*/
+  static Future<List<Text>> fullData(int albumid) async {
+    // Get a snapshot from the database
+    final snapshot = await ref.child("Albums").get();
+
+    if (snapshot.exists) {
+      // Map{ AlbumID: {Album data} }
+      var values = snapshot.value as Map<Object?, Object?>;
+      if (values.containsKey(albumid.toString())) {
+        var list =
+            {albumid.toString(): values[albumid.toString()]}.entries.toList();
+        // Convert list of maps into list of widgets
+        return _albumData(list);
+      }
+    }
+    // Something went wrong when getting a snapshot from the database
+    print("No data available");
+    return [];
+  }
+
+/*
+Helper Function.
+Given a list of map entries containing album data:
+Returns a list of text widgets of full album used when
+displaying a specific album's data.
+
+Converts a list of map entries filled with album data into a 
+list of text widgets.
+
+[0]: Album Name
+[1]: Artist Name
+[2]: Cover Art
+[3]: Genre
+[4]: Year
+*/
+  static List<Text> _albumData(List<MapEntry<Object?, Object?>> list) {
+    List<Text> results = [];
+    list.forEach((element) {
+      var albumdata = element.value as Map<Object?, Object?>;
+      String tracklist = "Tracklist:";
+      results.add(Text(albumdata["Name"].toString()));
+      results.add(Text(albumdata["Artist"].toString()));
+      results.add(Text(albumdata["Cover"].toString()));
+      results.add(Text(albumdata["Genre"].toString()));
+      results.add(Text(albumdata["Year"].toString()));
+      var tracks = albumdata["Tracklist"] as List<Object?>;
+      for (int i = 0; i < tracks.length; i++) {
+        tracklist += "\n   " + (i + 1).toString() + ". " + tracks[i].toString();
+      }
+      results.add(Text(tracklist));
     });
     return results;
   }
