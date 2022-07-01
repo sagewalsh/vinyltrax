@@ -9,11 +9,11 @@ class ListEntryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    for (int i = 0; i < children.length; i++) {
-      if (children is ListEntry) {
-        (children[i] as ListEntry).color = i.isOdd ? Colors.black12 : Colors.white;
-      }
-    }
+    // for (int i = 0; i < children.length; i++) {
+    //   if (children is ListEntry) {
+    //     children[i].color = i.isOdd ? Colors.black12 : Colors.white;
+    //   }
+    // }
 
     return Column(
       children: children,

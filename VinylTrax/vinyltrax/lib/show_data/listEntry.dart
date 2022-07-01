@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
 
 class ListEntry extends StatelessWidget {
-  final String name;
-  final String image;
-  final bool isAlbum;
+  String name = "";
+  String image = "";
+  bool isAlbum = false;
   Color? color = null;
+  String artistID = "";
   //const ShowListEntry({Key? key}) : super(key: key);
 
-  ListEntry(this.name, this.image, this.isAlbum);
+  ListEntry(String name, String image, bool isAlbum)
+  {
+    this.name = name;
+    this.image = image;
+    this.isAlbum = isAlbum;
+  }
+
+  ListEntryArtist(String name, String image, String artistID){
+    this.name = name;
+    this.image = image;
+    this.artistID = artistID;
+  }
 
   @override
   Widget build(BuildContext context) {

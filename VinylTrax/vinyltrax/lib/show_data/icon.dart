@@ -10,12 +10,14 @@ class ShowIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String outputAlb = albumName;
+    String outputArt = artistName;
 
     if (albumName.length > 20)
-      this.albumName = albumName.substring(0, 18) + "...";
+      outputAlb = albumName.substring(0, 18) + "...";
 
     if (artistName.length > 20)
-      this.albumName = albumName.substring(0, 18) + "...";
+      outputArt = artistName.substring(0, 18) + "...";
 
     Widget avatar = SizedBox();
     if (isAlbum) {
@@ -45,8 +47,8 @@ class ShowIcon extends StatelessWidget {
       child: Column(
         children: [
           avatar,
-          Text(artistName),
-          Text(albumName),
+          Text(outputArt),
+          Text(outputAlb),
         ],
       ),
     );

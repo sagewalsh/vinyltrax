@@ -6,7 +6,7 @@ import '../show_data/listEntryList.dart';
 class AlbumOrderArtist extends StatelessWidget {
   AlbumOrderArtist({Key? key}) : super(key: key);
 
-  final Future<List<Text>> _results = Database.displayByArtist();
+  final Future<List<Text>> _results = Database.artists();
   List<Widget> children = <Widget>[];
 
 
@@ -19,27 +19,16 @@ class AlbumOrderArtist extends StatelessWidget {
           builder: (BuildContext context, AsyncSnapshot<List<Text>> snapshot) {
             if (snapshot.hasData)
             {
-              bool cont = true;
-              List<String> uniqueList = [];
-              for (int i = 0; i < snapshot.data!.length; i += 3)
-              {
-                for (int j = 0; j < uniqueList.length; j++)
+              for (int i = 0; i < snapshot.data!.length; i+=2)
                 {
-                  if (uniqueList[j] == snapshot.data?[i + 1].data as String)
-                    cont = false;
+                  ListEntry temp = ListEntry( snapshot.data?[i].data as String, "", false);
+                  temp.artistID = snapshot.data?[i + 1].data as String;
+                  if (children.length % 2 != 0)
+                    temp.color = Colors.black12;
+                  children.add(temp);
                 }
-                if (cont)
-                {
-                  children.add(ListEntry(
-                      snapshot.data?[i + 1].data as String,
-                      snapshot.data?[i + 2].data as String,
-                      false
-                  ));
-                  uniqueList.add(snapshot.data?[i + 1].data as String);
-                }
-                cont = true;
-              }
-            } else if (snapshot.hasError) {
+            }
+            else if (snapshot.hasError) {
               children = <Widget>[
                 Icon(Icons.error),
               ];
