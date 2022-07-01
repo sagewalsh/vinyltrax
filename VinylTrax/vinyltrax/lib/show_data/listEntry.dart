@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vinyltrax/pages/searchresultspage.dart';
 
 class ListEntry extends StatelessWidget {
   String name = "";
@@ -48,8 +49,29 @@ class ListEntry extends StatelessWidget {
       leading: avatar,
       title: Text(name),
       onTap: () {
-        print(name);
+        var route = new MaterialPageRoute(
+            builder: (BuildContext context) => new NextPageArtist(name, artistID));
+        Navigator.of(context).push(route);
       },
     );
   }
 }
+
+class NextPageArtist extends StatefulWidget {
+  //const NextPageArtist({Key? key}) : super(key: key);
+  String artistName;
+  String artistID;
+
+  NextPageArtist(this.artistName, this.artistID);
+
+  @override
+  State<NextPageArtist> createState() => _NextPageArtistState();
+}
+
+class _NextPageArtistState extends State<NextPageArtist> {
+  @override
+  Widget build(BuildContext context) {
+    return SearchResultsPage("${widget.artistID}");
+  }
+}
+

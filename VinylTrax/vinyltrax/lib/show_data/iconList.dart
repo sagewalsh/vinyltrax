@@ -13,7 +13,7 @@ class IconList extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Wrap(

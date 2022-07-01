@@ -14,10 +14,10 @@ class ShowIcon extends StatelessWidget {
     String outputArt = artistName;
 
     if (albumName.length > 20)
-      outputAlb = albumName.substring(0, 18) + "...";
+      outputAlb = albumName.substring(0, 17) + "...";
 
     if (artistName.length > 20)
-      outputArt = artistName.substring(0, 18) + "...";
+      outputArt = artistName.substring(0, 17) + "...";
 
     Widget avatar = SizedBox();
     if (isAlbum) {
