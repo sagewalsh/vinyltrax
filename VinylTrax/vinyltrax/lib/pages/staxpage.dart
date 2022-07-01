@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:vinyltrax/returnedData/display.dart';
 import 'package:vinyltrax/show_data/genre.dart';
-import 'package:vinyltrax/show_data/icon.dart';
-import 'package:vinyltrax/show_data/iconList.dart';
+import 'package:vinyltrax/returnedData/byAlbum.dart';
+import '../returnedData/byArtist.dart';
 import '../textinput.dart';
 import 'package:vinyltrax/show_data/listEntryList.dart';
 
@@ -133,9 +134,9 @@ class _StaxPageState extends State<StaxPage> {
             if (_selectedOrder == _Order.genre)
               GenreList()
             else if (_selectedOrder == _Order.artist)
-              ListEntryList()
+              AlbumOrderArtist()
             else
-              IconList()
+              AlbumOrderAlbum(),
           ],
         ),
       ),

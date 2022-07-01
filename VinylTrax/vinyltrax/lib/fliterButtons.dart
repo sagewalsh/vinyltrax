@@ -21,6 +21,7 @@ class _filterButtonsState extends State<filterButtons> {
       height: 30,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
+        physics: AlwaysScrollableScrollPhysics(),
         child: CupertinoSegmentedControl(
           padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
           selectedColor: const Color.fromARGB(255, 120, 120, 120),

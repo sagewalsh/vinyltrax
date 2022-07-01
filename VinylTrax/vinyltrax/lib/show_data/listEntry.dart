@@ -12,7 +12,7 @@ class ListEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget avatar = SizedBox();
-    if (isAlbum) {
+    if (!isAlbum) {
       avatar = CircleAvatar(
         foregroundImage: NetworkImage(
             "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg"
