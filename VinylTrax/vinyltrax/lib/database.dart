@@ -1,66 +1,70 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/material.dart';
 
 class Database {
   static final fb = FirebaseDatabase.instance;
   static final ref = fb.ref();
 
   /*
-  Given an Album ID prints the data listed in 
-  JSON Album:
-      Database --> Album --> artist, genre, name, tracklist, uniqueid, year
+  Returns only the display information from Album JSON
+  in order of Artist Name.
+
+  Data returned as a list of text widgets.
+  [0]: Album Name
+  [1]: Artist Name
+  [2]: Cover art
   */
-  static void albumGivenID(int albumid) async {
-    var snapshot = await ref.child("Albums").get();
-
-    if (snapshot.exists) {
-      var values = snapshot.value as Map<Object?, Object?>;
-      if (values.containsKey(albumid.toString())) {
-        var list =
-            {albumid.toString(): values[albumid.toString()]}.entries.toList();
-        _printAlbumData(list);
-      } else {
-        print("Album ID: " + albumid.toString() + " does not exist.");
-      }
-    } else {
-      print("Something went wrong at path: " + "Albums");
-    }
-  }
-
-  /*
-  Given an Album name prints the data listed in 
-  JSON Album:
-      Database --> Album --> artist, genre, name, tracklist, uniqueid, year
-  */
-  static Future<Text> albumGivenName(String name) async {
-    var snapshot = await ref.child("Albums").get();
-
-    if (snapshot.exists) {
-      List<MapEntry<Object?, Object?>> list = [];
-      var values = snapshot.value as Map<Object?, Object?>;
-      values.forEach((key, value) {
-        var album = value as Map<Object?, Object?>;
-        if (album["Name"] == name) {
-          list += {key: value}.entries.toList();
-        }
-      });
-      // _printAlbumData(list);
-      return _alertAlbumData(list);
-    }
-    return Text("");
-  }
-
-  /*
-  Outputs album data to the console ordered by Album
-  title alphabetically
-  */
-  static Future<Text> albumsOrderName() async {
+  static Future<List<Text>> displayByArtist() async {
+    // Get a snapshot from the database
     final snapshot = await ref.child("Albums").get();
+
     if (snapshot.exists) {
+      // Map{ AlbumID: {Album data} }
       var values = snapshot.value as Map<Object?, Object?>;
+      // List[ Map{ "Artist" : name, "Name": album name, ... }, Map {...}, ]
       var list = values.entries.toList();
 
+      // Sort the list of album data based on the artist name
+      list.sort(
+        (a, b) {
+          var albumA = a.value as Map<Object?, Object?>;
+          var albumB = b.value as Map<Object?, Object?>;
+          return albumA["Artist"]
+              .toString()
+              .toLowerCase()
+              .compareTo(albumB["Artist"].toString().toLowerCase());
+        },
+      );
+
+      // Convert list of maps into list of widgets
+      return _displayAlbums(list);
+    } else {
+      // Something went wrong when getting a snapshot from the database
+      print("No data available");
+      return [];
+    }
+  }
+
+  /*
+  Returns only the display information from Album JSON
+  in order of the Album's name.
+
+  Data is returned as a list of text widgets
+  [0]: Album Name
+  [1]: Artist Name
+  [2]: Cover Art
+  */
+  static Future<List<Text>> displayByName() async {
+    // Get a snapshot from the database
+    final snapshot = await ref.child("Albums").get();
+
+    if (snapshot.exists) {
+      // Map{ AlbumID: {Album data} }
+      var values = snapshot.value as Map<Object?, Object?>;
+      // List[ Map{ "Artist": name, "Name": album name, ... }, Map {...}, ]
+      var list = values.entries.toList();
+
+      // Sort the list of album data based on the album name
       list.sort(((a, b) {
         var albumA = a.value as Map<Object?, Object?>;
         var albumB = b.value as Map<Object?, Object?>;
@@ -69,175 +73,71 @@ class Database {
             .toLowerCase()
             .compareTo(albumB["Name"].toString().toLowerCase());
       }));
-      // _printAlbumData(list);
-      return _alertAlbumData(list);
+
+      //Convert list of maps into list of widgets
+      return _displayAlbums(list);
     } else {
+      // Something went wrong when getting a snapshot from the database
       print("No data available");
+      return [];
     }
-    return Text("");
   }
 
   /*
-  Outputs all the albums of a given genre
+  Returns only the display information from Album JSON of
+  a given genre.
+
+  Data returned as a list of text widgets
+  [0]: Album Name
+  [1]: Artist Name
+  [2]: Cover Art
   */
-  static Future<Text> albumsOrderGenre(String genre) async {
+  static Future<List<Text>> displayByGenre(String genre) async {
+    // Get a snapshot from the database
     final snapshot = await ref.child("Albums").get();
 
     if (snapshot.exists) {
+      // List of album data that are of the given genre
       List<MapEntry<Object?, Object?>> list = [];
+      // Map{ AlbumID: {Album data} }
       var values = snapshot.value as Map<Object?, Object?>;
+
+      // For every album in the database: check if it is the correct genre
       values.forEach((key, value) {
         var album = value as Map<Object?, Object?>;
         if (album["Genre"] == genre) {
+          // Add the album to the list
           list += {key: value}.entries.toList();
         }
       });
-      return _alertAlbumData(list);
+      // Convert list of maps into list of widgets
+      return _displayAlbums(list);
     } else {
-      return Text("No data available");
+      return [];
     }
   }
 
   /*
-  Outputs album data to the console ordered by Artist name
-  alphabetically
-  */
-  static Future<Text> albumsOrderArtist() async {
-    final snapshot = await ref.child("Albums").get();
-    if (snapshot.exists) {
-      var values = snapshot.value as Map<Object?, Object?>;
-      var list = values.entries.toList();
-
-      list.sort(
-        (a, b) {
-          var albumA = a.value as Map<Object?, Object?>;
-          var albumB = b.value as Map<Object?, Object?>;
-          return albumA["Artist"]
-              .toString()
-              .toLowerCase()
-              .compareTo(albumB["Artist"].toString().toLowerCase());
-        },
-      );
-
-      // _printAlbumData(list);
-      return _alertAlbumData(list);
-    } else {
-      print("No data available");
-    }
-    return Text("");
-  }
-
-  static Future<List<Text>> displayByArtist() async {
-    final snapshot = await ref.child("Albums").get();
-    if (snapshot.exists) {
-      var values = snapshot.value as Map<Object?, Object?>;
-      var list = values.entries.toList();
-
-      list.sort(
-        (a, b) {
-          var albumA = a.value as Map<Object?, Object?>;
-          var albumB = b.value as Map<Object?, Object?>;
-          return albumA["Artist"]
-              .toString()
-              .toLowerCase()
-              .compareTo(albumB["Artist"].toString().toLowerCase());
-        },
-      );
-
-      // _printAlbumData(list);
-      // return _alertAlbumData(list);
-      return displayAlbums(list);
-    } else {
-      print("No data available");
-    }
-    return [Text("")];
-  }
-
-  /*
-  Helper Function
-  Given a list of Map Entries for album data,
-  prints the album data to the console
-  */
-  static void _printAlbumData(List<MapEntry<Object?, Object?>> list) {
-    list.forEach((element) {
-      print("\n");
-      var albumdata = element.value as Map<Object?, Object?>;
-      print("   Name: " + albumdata["Name"].toString());
-      print("   Artist: " + albumdata["Artist"].toString());
-      print("   Genre: " + albumdata["Genre"].toString());
-      print("   Year: " + albumdata["Year"].toString());
-      print("   Tracklist: ");
-      var tracks = albumdata["Tracklist"] as List<Object?>;
-      for (int i = 0; i < tracks.length; i++) {
-        print("      " + (i + 1).toString() + ". " + tracks[i].toString());
-      }
-    });
-  }
-
-  /*
-  Helper Function
-  Given a list of Map Entries for album data,
-  builds a widget that holds to formatted data
-  */
-  static Text _alertAlbumData(List<MapEntry<Object?, Object?>> list) {
-    String data = "";
-
-    list.forEach((element) {
-      var albumdata = element.value as Map<Object?, Object?>;
-      data += "\n\nName: " + albumdata["Name"].toString();
-      data += "\nArtist: " + albumdata["Artist"].toString();
-      data += "\nGenre: " + albumdata["Genre"].toString();
-      data += "\nYear: " + albumdata["Year"].toString();
-      data += "\nTracklist: ";
-      var tracks = albumdata["Tracklist"] as List<Object?>;
-      tracks.forEach((element) {
-        data += "\n   " + element.toString();
-      });
-    });
-
-    return Text(data);
-  }
-
-  /*
+  Helper Function.
+  Given a list of map entries containing album data:
   Returns a list of text widgets of album data used when 
-  displaying albums
+  displaying albums.
+
+  Converts a list of map entries filled with album data into 
+  a list of text widgets
+
+  [0]: Album Name
+  [1]: Artist Name
+  [2]: Cover Art
   */
-  static List<Text> displayAlbums(List<MapEntry<Object?, Object?>> list) {
+  static List<Text> _displayAlbums(List<MapEntry<Object?, Object?>> list) {
     List<Text> results = [];
     list.forEach((element) {
       var albumdata = element.value as Map<Object?, Object?>;
-      // print(albumdata["Name"]);
-      // print(albumdata["Artist"]);
       results.add(Text("Name: " + albumdata["Name"].toString()));
       results.add(Text("Artist: " + albumdata["Artist"].toString()));
-      // print(results.length);
-      // results.add(Text(albumdata["Cover"].toString()));
     });
     return results;
-  }
-
-  /*
-  Returns a list of text widgets of album data used when 
-  displaying albums
-  */
-  static Future<List<Text>> displayAlbum(int albumid) async {
-    var snapshot = await ref.child("Albums").get();
-
-    if (snapshot.exists) {
-      var values = snapshot.value as Map<Object?, Object?>;
-      List<Text> results = [];
-      if (values.containsKey(albumid.toString())) {
-        // print(values[albumid.toString()]);
-        var albumdata = values[albumid.toString()] as Map<Object?, Object?>;
-        // print(albumdata["Name"]);
-        // print(albumdata["Artist"]);
-        // print(albumdata["Genre"]);
-        results.add(Text(albumdata["Name"].toString()));
-        results.add(Text(albumdata["Artist"].toString()));
-        // results.add(Text(albumdata["Cover"].toString()));
-      }
-    }
-    return [Text("")];
   }
 
   /*
@@ -263,20 +163,210 @@ class Database {
     }
   }
 
-  /*
-  Given an Artist ID prints the name of the artist
-  listed in JSON Artist:
-      Database --> Artist --> Name: String
-  */
-  static void artistGivenID(int artistid) async {
-    var path = "Artists/" + artistid.toString() + "/Name";
-    final snapshot = await ref.child(path).get();
-    if (snapshot.exists) {
-      print(snapshot.value);
-    } else {
-      print("Something went wrong at path: " + path);
-    }
-  }
+  // /*
+  // Given an Album ID prints the data listed in
+  // JSON Album:
+  //     Database --> Album --> artist, genre, name, tracklist, uniqueid, year
+  // */
+  // static void albumGivenID(int albumid) async {
+  //   var snapshot = await ref.child("Albums").get();
+
+  //   if (snapshot.exists) {
+  //     var values = snapshot.value as Map<Object?, Object?>;
+  //     if (values.containsKey(albumid.toString())) {
+  //       var list =
+  //           {albumid.toString(): values[albumid.toString()]}.entries.toList();
+  //       _printAlbumData(list);
+  //     } else {
+  //       print("Album ID: " + albumid.toString() + " does not exist.");
+  //     }
+  //   } else {
+  //     print("Something went wrong at path: " + "Albums");
+  //   }
+  // }
+
+  // /*
+  // Given an Album name prints the data listed in
+  // JSON Album:
+  //     Database --> Album --> artist, genre, name, tracklist, uniqueid, year
+  // */
+  // static Future<Text> albumGivenName(String name) async {
+  //   var snapshot = await ref.child("Albums").get();
+
+  //   if (snapshot.exists) {
+  //     List<MapEntry<Object?, Object?>> list = [];
+  //     var values = snapshot.value as Map<Object?, Object?>;
+  //     values.forEach((key, value) {
+  //       var album = value as Map<Object?, Object?>;
+  //       if (album["Name"] == name) {
+  //         list += {key: value}.entries.toList();
+  //       }
+  //     });
+  //     // _printAlbumData(list);
+  //     return _alertAlbumData(list);
+  //   }
+  //   return Text("");
+  // }
+
+  // /*
+  // Outputs album data to the console ordered by Album
+  // title alphabetically
+  // */
+  // static Future<Text> albumsOrderName() async {
+  //   final snapshot = await ref.child("Albums").get();
+  //   if (snapshot.exists) {
+  //     var values = snapshot.value as Map<Object?, Object?>;
+  //     var list = values.entries.toList();
+
+  //     list.sort(((a, b) {
+  //       var albumA = a.value as Map<Object?, Object?>;
+  //       var albumB = b.value as Map<Object?, Object?>;
+  //       return albumA["Name"]
+  //           .toString()
+  //           .toLowerCase()
+  //           .compareTo(albumB["Name"].toString().toLowerCase());
+  //     }));
+  //     // _printAlbumData(list);
+  //     return _alertAlbumData(list);
+  //   } else {
+  //     print("No data available");
+  //   }
+  //   return Text("");
+  // }
+
+  // /*
+  // Outputs all the albums of a given genre
+  // */
+  // static Future<Text> albumsOrderGenre(String genre) async {
+  //   final snapshot = await ref.child("Albums").get();
+
+  //   if (snapshot.exists) {
+  //     List<MapEntry<Object?, Object?>> list = [];
+  //     var values = snapshot.value as Map<Object?, Object?>;
+  //     values.forEach((key, value) {
+  //       var album = value as Map<Object?, Object?>;
+  //       if (album["Genre"] == genre) {
+  //         list += {key: value}.entries.toList();
+  //       }
+  //     });
+  //     return _alertAlbumData(list);
+  //   } else {
+  //     return Text("No data available");
+  //   }
+  // }
+
+  // /*
+  // Outputs album data to the console ordered by Artist name
+  // alphabetically
+  // */
+  // static Future<Text> albumsOrderArtist() async {
+  //   final snapshot = await ref.child("Albums").get();
+  //   if (snapshot.exists) {
+  //     var values = snapshot.value as Map<Object?, Object?>;
+  //     var list = values.entries.toList();
+
+  //     list.sort(
+  //       (a, b) {
+  //         var albumA = a.value as Map<Object?, Object?>;
+  //         var albumB = b.value as Map<Object?, Object?>;
+  //         return albumA["Artist"]
+  //             .toString()
+  //             .toLowerCase()
+  //             .compareTo(albumB["Artist"].toString().toLowerCase());
+  //       },
+  //     );
+
+  //     // _printAlbumData(list);
+  //     return _alertAlbumData(list);
+  //   } else {
+  //     print("No data available");
+  //   }
+  //   return Text("");
+  // }
+
+  // /*
+  // Helper Function
+  // Given a list of Map Entries for album data,
+  // prints the album data to the console
+  // */
+  // static void _printAlbumData(List<MapEntry<Object?, Object?>> list) {
+  //   list.forEach((element) {
+  //     print("\n");
+  //     var albumdata = element.value as Map<Object?, Object?>;
+  //     print("   Name: " + albumdata["Name"].toString());
+  //     print("   Artist: " + albumdata["Artist"].toString());
+  //     print("   Genre: " + albumdata["Genre"].toString());
+  //     print("   Year: " + albumdata["Year"].toString());
+  //     print("   Tracklist: ");
+  //     var tracks = albumdata["Tracklist"] as List<Object?>;
+  //     for (int i = 0; i < tracks.length; i++) {
+  //       print("      " + (i + 1).toString() + ". " + tracks[i].toString());
+  //     }
+  //   });
+  // }
+
+  // /*
+  // Helper Function
+  // Given a list of Map Entries for album data,
+  // builds a widget that holds to formatted data
+  // */
+  // static Text _alertAlbumData(List<MapEntry<Object?, Object?>> list) {
+  //   String data = "";
+
+  //   list.forEach((element) {
+  //     var albumdata = element.value as Map<Object?, Object?>;
+  //     data += "\n\nName: " + albumdata["Name"].toString();
+  //     data += "\nArtist: " + albumdata["Artist"].toString();
+  //     data += "\nGenre: " + albumdata["Genre"].toString();
+  //     data += "\nYear: " + albumdata["Year"].toString();
+  //     data += "\nTracklist: ";
+  //     var tracks = albumdata["Tracklist"] as List<Object?>;
+  //     tracks.forEach((element) {
+  //       data += "\n   " + element.toString();
+  //     });
+  //   });
+
+  //   return Text(data);
+  // }
+
+  // /*
+  // Returns a list of text widgets of album data used when
+  // displaying albums
+  // */
+  // static Future<List<Text>> displayAlbum(int albumid) async {
+  //   var snapshot = await ref.child("Albums").get();
+
+  //   if (snapshot.exists) {
+  //     var values = snapshot.value as Map<Object?, Object?>;
+  //     List<Text> results = [];
+  //     if (values.containsKey(albumid.toString())) {
+  //       // print(values[albumid.toString()]);
+  //       var albumdata = values[albumid.toString()] as Map<Object?, Object?>;
+  //       // print(albumdata["Name"]);
+  //       // print(albumdata["Artist"]);
+  //       // print(albumdata["Genre"]);
+  //       results.add(Text(albumdata["Name"].toString()));
+  //       results.add(Text(albumdata["Artist"].toString()));
+  //       // results.add(Text(albumdata["Cover"].toString()));
+  //     }
+  //   }
+  //   return [Text("")];
+  // }
+
+  // /*
+  // Given an Artist ID prints the name of the artist
+  // listed in JSON Artist:
+  //     Database --> Artist --> Name: String
+  // */
+  // static void artistGivenID(int artistid) async {
+  //   var path = "Artists/" + artistid.toString() + "/Name";
+  //   final snapshot = await ref.child(path).get();
+  //   if (snapshot.exists) {
+  //     print(snapshot.value);
+  //   } else {
+  //     print("Something went wrong at path: " + path);
+  //   }
+  // }
 
   /*
   Fills the firebase realtime database with dummy data

@@ -102,7 +102,7 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ),
             if (_selected == _resultType.byArtist)
-              Display()
+              AlbumOrderArtist()
             else if (_selected == _resultType.byAlbum)
               AlbumOrderAlbum()
             else if (_selected == _resultType.byGenre)
