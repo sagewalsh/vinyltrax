@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import '../database.dart';
 
 class AlbumData extends StatelessWidget {
-  AlbumData({Key? key}) : super(key: key);
-
-  final Future<List<Text>> _results = Database.fullDataByArtist();
+  final int albumid;
+  // AlbumData({Key? key}) : super(key: key);
+  AlbumData(this.albumid);
 
   @override
   Widget build(BuildContext context) {
+    final Future<List<Text>> _results = Database.fullData(albumid);
     return SizedBox(
       width: double.infinity,
       child: FutureBuilder<List<Text>>(

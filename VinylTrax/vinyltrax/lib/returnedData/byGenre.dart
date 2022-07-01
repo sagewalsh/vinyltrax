@@ -8,7 +8,7 @@ class AlbumsOfGenre extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<List<Text>> _results = Database.displayByGenre(genre);
+    final Future<List<Text>> _results = Database.displayByGenre(genre);
     return SizedBox(
       width: double.infinity,
       child: FutureBuilder<List<Text>>(
@@ -17,9 +17,19 @@ class AlbumsOfGenre extends StatelessWidget {
             List<Widget> children;
             if (snapshot.hasData) {
               children = <Widget>[];
-              for (int i = 0; i < snapshot.data!.length; i += 2) {
+              for (int i = 0; i < snapshot.data!.length; i += 3) {
                 children.add(SizedBox(
-                    width: double.infinity, height: 20, child: const Text("")));
+                  width: double.infinity,
+                  height: 20,
+                  child: const Text(""),
+                ));
+                children.add(Container(
+                  height: 150,
+                  width: 150,
+                  child: Image(
+                      image:
+                          NetworkImage(snapshot.data?[i + 2].data as String)),
+                ));
                 children.add(Center(
                   child: snapshot.data?[i],
                 ));

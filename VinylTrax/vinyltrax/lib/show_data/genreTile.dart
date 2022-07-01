@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../returnedData/byGenre.dart';
 
 class GenreTile extends StatelessWidget {
   final String genreName;
@@ -10,8 +11,7 @@ class GenreTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color? color = Colors.white;
-    if (isEven)
-      color = Colors.black12;
+    if (isEven) color = Colors.black12;
 
     return ListTile(
       title: Text(genreName),
@@ -19,8 +19,7 @@ class GenreTile extends StatelessWidget {
       visualDensity: VisualDensity(vertical: -3),
       onTap: () {
         var route = new MaterialPageRoute(
-            builder: (BuildContext context) => new NextPage(genreName)
-        );
+            builder: (BuildContext context) => new NextPage(genreName));
         Navigator.of(context).push(route);
       },
     );
@@ -42,10 +41,27 @@ class _NextPageState extends State<NextPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: Text("${widget.genreName}"),
-      ),
-    );
+        appBar: new AppBar(
+          title: Text("${widget.genreName}"),
+        ),
+        body: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: double.infinity,
+                height: 30,
+                child: Text(""),
+              ),
+              AlbumsOfGenre("${widget.genreName}"),
+              SizedBox(
+                width: double.infinity,
+                height: 30,
+                child: Text(""),
+              ),
+            ],
+          ),
+        ));
   }
 }
-
