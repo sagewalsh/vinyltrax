@@ -1,17 +1,8 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/fliterButtons.dart';
-import 'package:firebase_database/firebase_database.dart';
 import '../textinput.dart';
 import '../iconOrList.dart';
-import '../database.dart';
 import './searchresultspage.dart';
-import 'package:flutter/cupertino.dart';
-import '../returnedData/byArtist.dart';
-import '../returnedData/byAlbum.dart';
-import '../returnedData/byGenre.dart';
-import '../returnedData/display.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -20,11 +11,8 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
-enum _resultType { byArtist, byAlbum, byGenre }
-
 class _SearchPageState extends State<SearchPage> {
   final textBox = TextInput("Search");
-  _resultType _selected = _resultType.byArtist;
 
   @override
   Widget build(BuildContext context) {
@@ -65,61 +53,6 @@ class _SearchPageState extends State<SearchPage> {
               indent: 8,
               endIndent: 8,
             ),
-/*
-###############################################################################
-To Be Removed Later
-###############################################################################
-*/
-            Container(
-              color: const Color.fromARGB(255, 244, 244, 244),
-              child: CupertinoSegmentedControl(
-                padding: const EdgeInsets.fromLTRB(8, 0, 8, 6),
-                selectedColor: const Color.fromARGB(255, 120, 120, 120),
-                borderColor: const Color.fromARGB(255, 120, 120, 120),
-                pressedColor: Colors.grey,
-                children: {
-                  _resultType.byArtist: Container(
-                    height: 30,
-                    width: 140,
-                    child: const Center(
-                      child: Text("By Artist"),
-                    ),
-                  ),
-                  _resultType.byAlbum: Container(
-                    height: 30,
-                    width: 140,
-                    child: const Center(
-                      child: Text("By Album"),
-                    ),
-                  ),
-                  _resultType.byGenre: Container(
-                    height: 30,
-                    width: 140,
-                    child: const Center(child: Text("By Genre")),
-                  ),
-                },
-                onValueChanged: (value) {
-                  setState(() {
-                    _selected = value as _resultType;
-                  });
-                },
-                groupValue: _selected,
-              ),
-            ),
-            if (_selected == _resultType.byArtist)
-              AlbumOrderArtist()
-            else if (_selected == _resultType.byAlbum)
-              AlbumOrderAlbum()
-            else if (_selected == _resultType.byGenre)
-              AlbumsOfGenre("Hip-Hop"),
-            Container(
-              color: Colors.white,
-              width: double.infinity,
-              height: 50,
-            )
-/*
-###############################################################################
-*/
           ],
         ),
       ),
@@ -135,7 +68,7 @@ To Be Removed Later
             try {
               id = int.parse(textBox.getString());
             } catch (exception) {}
-            return SearchResultsPage(id);
+            return SearchResultsPage(id.toString());
           }));
         },
         child: const Icon(Icons.search),

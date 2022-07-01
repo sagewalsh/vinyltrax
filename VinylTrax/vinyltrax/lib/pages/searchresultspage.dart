@@ -5,7 +5,7 @@ import '../database.dart';
 import '../returnedData/albumData.dart';
 
 class SearchResultsPage extends StatelessWidget {
-  final int input;
+  final String input;
   SearchResultsPage(this.input);
 
   @override

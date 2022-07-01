@@ -192,7 +192,7 @@ Data is returned as a list of text widgets:
 [1]: Artist Name
 [2]: Cover Art
 */
-  static Future<List<Text>> albumsBy(int artistid) async {
+  static Future<List<Text>> albumsBy(String artistid) async {
     // Get a snapshot from the ARTIST database
     final snapArtist = await ref.child("Artists").get();
     // Get a snapshot from the ALBUM database
@@ -208,9 +208,9 @@ Data is returned as a list of text widgets:
       var values = snapArtist.value as Map<Object?, Object?>;
 
       // If the artist is in the database
-      if (values.containsKey(artistid.toString())) {
+      if (values.containsKey(artistid)) {
         // Map{ "Name": name, "Albums": [], ... }
-        var artist = values[artistid.toString()] as Map<Object?, Object?>;
+        var artist = values[artistid] as Map<Object?, Object?>;
         // AlbumIDs of the albums the given artist has created
         var albumids = artist["Albums"] as List<Object?>;
 
