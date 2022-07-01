@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import '../database.dart';
+import '../show_data/icon.dart';
+import '../show_data/iconList.dart';
 
 class AlbumOrderAlbum extends StatelessWidget {
   AlbumOrderAlbum({Key? key}) : super(key: key);
 
   final Future<List<Text>> _results = Database.displayByName();
+  List<Widget> children = <Widget>[];
 
   @override
   Widget build(BuildContext context) {
@@ -15,26 +18,14 @@ class AlbumOrderAlbum extends StatelessWidget {
           builder: (BuildContext context, AsyncSnapshot<List<Text>> snapshot) {
             List<Widget> children;
             if (snapshot.hasData) {
-              children = <Widget>[];
+              children = <Widget>[
+                // Center(child: snapshot.data?[0]),
+                // Center(child: snapshot.data?[1]),
+              ];
               for (int i = 0; i < snapshot.data!.length; i += 3) {
-                children.add(SizedBox(
-                  width: double.infinity,
-                  height: 20,
-                  child: const Text(""),
-                ));
-                children.add(Container(
-                  height: 150,
-                  width: 150,
-                  child: Image(
-                      image:
-                          NetworkImage(snapshot.data?[i + 2].data as String)),
-                ));
-                children.add(Center(
-                  child: snapshot.data?[i],
-                ));
-                children.add(Center(
-                  child: snapshot.data?[i + 1],
-                ));
+                children.add(ShowIcon(snapshot.data?[i + 1].data as String,
+                    snapshot.data?[i].data as String,
+                    snapshot.data?[i + 2].data as String, false));
               }
             } else if (snapshot.hasError) {
               children = <Widget>[
@@ -42,18 +33,16 @@ class AlbumOrderAlbum extends StatelessWidget {
               ];
             } else {
               children = <Widget>[
-                SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: CircularProgressIndicator(),
+                Center(
+                  child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: CircularProgressIndicator(),
+                  ),
                 )
               ];
             }
-            return Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: children),
-            );
+            return IconList(children);
           }),
     );
   }

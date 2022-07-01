@@ -8,7 +8,7 @@ class AlbumOrderArtist extends StatelessWidget {
 
   final Future<List<Text>> _results = Database.displayByArtist();
   List<Widget> children = <Widget>[];
-  List<String> uniqueList = [];
+
 
   @override
   Widget build(BuildContext context) {

@@ -2,14 +2,21 @@ import 'package:flutter/material.dart';
 
 class ShowIcon extends StatelessWidget {
   final String coverArt;
-  final String artistName;
-  final String albumName;
+  String artistName;
+  String albumName;
   final bool isAlbum;
   //const AlbumIcon({Key? key}) : super(key: key);
   ShowIcon(this.artistName, this.albumName, this.coverArt, this.isAlbum);
 
   @override
   Widget build(BuildContext context) {
+
+    if (albumName.length > 20)
+      this.albumName = albumName.substring(0, 18) + "...";
+
+    if (artistName.length > 20)
+      this.albumName = albumName.substring(0, 18) + "...";
+
     Widget avatar = SizedBox();
     if (isAlbum) {
       avatar = CircleAvatar(
