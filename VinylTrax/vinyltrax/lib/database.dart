@@ -869,104 +869,104 @@ list of text widgets.
             "UniqueID": 1111,
             "Name": "Kanye West",
             "Albums": [
-              "The Life of Pablo",
-              "My Beautiful Dark Twisted Fantasy",
-              "808s & Heartbreak",
+              1216,
+              1217,
+              1218,
             ],
           },
           1112: {
             "UniqueID": 1112,
             "Name": "Halsey",
             "Albums": [
-              "If I Can't Have Love I Want Power",
-              "Manic",
-              "Badlands",
+              1219,
+              1220,
+              1221,
             ]
           },
           1113: {
             "UniqueID": 1113,
             "Name": "Kendrick Lamar",
             "Albums": [
-              "good kid, m.A.A.d city",
-              "DAMN.",
+              1222,
+              1223,
             ]
           },
           1114: {
             "UniqueID": 1114,
             "Name": "Rihanna",
             "Albums": [
-              "ANTI",
-              "Loud",
-              "Good Girls Gone Bad: Reloaded",
+              1224,
+              1225,
+              1226,
             ]
           },
           1115: {
             "UniqueID": 1115,
             "Name": "Muse",
             "Albums": [
-              "Black Holes and Revelations",
-              "Will of the People",
+              1227,
+              1228,
             ]
           },
           1116: {
             "UniqueID": 1116,
             "Name": "Ke\$ha",
             "Albums": [
-              "Animal",
-              "Rainbow",
-              "High Road",
+              1229,
+              1230,
+              1231,
             ]
           },
           1117: {
             "UniqueID": 1117,
             "Name": "Lizzo",
             "Albums": [
-              "Cuz I Love You",
-              "Special",
+              1232,
+              1233,
             ]
           },
           1118: {
             "UniqueID": 1118,
             "Name": "Eminem",
             "Albums": [
-              "The Eminem Show",
-              "The Marshall Mathers LP",
-              "Recovery",
+              1234,
+              1235,
+              1236,
             ]
           },
           1119: {
             "UniqueID": 1119,
             "Name": "Billie Eilish",
             "Albums": [
-              "dont smile at me",
-              "WHEN WE ALL FALL ASLEEP, WHERE DO WE GO?",
-              "Happier Than Ever",
+              1237,
+              1238,
+              1239,
             ]
           },
           1120: {
             "UniqueID": 1120,
             "Name": "Cardi B",
             "Albums": [
-              "Invasion of Privacy",
+              1240,
             ]
           },
           1121: {
             "UniqueID": 1121,
             "Name": "Anderson .Paak",
             "Albums": [
-              "Oxnard",
-              "Malibu",
-              "Ventura",
+              1241,
+              1242,
+              1243,
             ]
           },
           1122: {
             "UniqueID": 1122,
             "Name": "Drake",
             "Albums": [
-              "Take Care",
-              "Nothing Was the Same",
-              "If You're Reading This It's Too Late",
-              "Views",
+              1245,
+              1246,
+              1247,
+              1248,
             ]
           },
         },
