@@ -15,7 +15,7 @@ class Database {
   [2]: Cover art
   */
   static Future<List<Text>> displayByArtist() async {
-    // Get a snapshot from the database
+    // Get a snapshot from the album database
     final snapshot = await ref.child("Albums").get();
 
     if (snapshot.exists) {
@@ -55,7 +55,7 @@ class Database {
   [2]: Cover Art
   */
   static Future<List<Text>> displayByName() async {
-    // Get a snapshot from the database
+    // Get a snapshot from the album database
     final snapshot = await ref.child("Albums").get();
 
     if (snapshot.exists) {
@@ -93,7 +93,7 @@ class Database {
   [2]: Cover Art
   */
   static Future<List<Text>> displayByGenre(String genre) async {
-    // Get a snapshot from the database
+    // Get a snapshot from the album database
     final snapshot = await ref.child("Albums").get();
 
     if (snapshot.exists) {
@@ -142,9 +142,103 @@ class Database {
   }
 
 /*
-#############################################################################
-Below: Code that is viable to be changed or removed at a later date
-#############################################################################
+Returns all of the artists in the database in order of
+the Artist's name. 
+
+Data is returned as a list of text widgets
+[0]: Artist Name
+[1]: Artist ID
+*/
+  static Future<List<Text>> artists() async {
+    // Get a snapshot from the artist database
+    final snapshot = await ref.child("Artists").get();
+    // List of artists to return
+    List<Text> results = [];
+
+    if (snapshot.exists) {
+      // Map{ ArtistID: {Artist Data} }
+      var values = snapshot.value as Map<Object?, Object?>;
+      // List[ Map{ "Name": Artist name, "Albums": [], ... }, Map{...} ]
+      var list = values.entries.toList();
+
+      // Sort the list of artists based on their name
+      list.sort(((a, b) {
+        var albumA = a.value as Map<Object?, Object?>;
+        var albumB = b.value as Map<Object?, Object?>;
+        return albumA["Name"]
+            .toString()
+            .toLowerCase()
+            .compareTo(albumB["Name"].toString().toLowerCase());
+      }));
+
+      // Add each artist and their id to the returning list
+      list.forEach((element) {
+        var artistdata = element.value as Map<Object?, Object?>;
+        results.add(Text(artistdata["Name"].toString()));
+        results.add(Text(artistdata["UniqueID"].toString()));
+      });
+    }
+    // Return artists and their ids
+    return results;
+  }
+
+/*
+Given an Artist ID:
+Returns a list of text widgets of album data for each album
+that artist has in the database.
+
+Data is returned as a list of text widgets:
+[0]: Album Name
+[1]: Artist Name
+[2]: Cover Art
+*/
+  static Future<List<Text>> albumsBy(int artistid) async {
+    // Get a snapshot from the ARTIST database
+    final snapArtist = await ref.child("Artists").get();
+    // Get a snapshot from the ALBUM database
+    final snapAlbum = await ref.child("Albums").get();
+
+    // Map{ AlbumID: {Album data} }
+    var albumValues = snapAlbum.value as Map<Object?, Object?>;
+    // List of mapped album data
+    List<MapEntry<Object?, Object?>> albums = [];
+
+    if (snapArtist.exists) {
+      // Map{ ArtistID: {Artist data} }
+      var values = snapArtist.value as Map<Object?, Object?>;
+
+      // If the artist is in the database
+      if (values.containsKey(artistid.toString())) {
+        // Map{ "Name": name, "Albums": [], ... }
+        var artist = values[artistid.toString()] as Map<Object?, Object?>;
+        // AlbumIDs of the albums the given artist has created
+        var albumids = artist["Albums"] as List<Object?>;
+
+        albumids.forEach((element) {
+          if (albumValues.containsKey(element.toString())) {
+            // Add album data to returned list
+            albums += {element.toString(): albumValues[element.toString()]}
+                .entries
+                .toList();
+          }
+        });
+        // Return the album data of the given Artist's albums
+        return _displayAlbums(albums);
+      }
+    }
+    return [];
+  }
+
+/*
+Given an AlbumID:
+Returns a list of the albums full data in the JSON.
+
+Data is returned as a list of text widgets
+[0]: Album Name
+[1]: Artist Name
+[2]: Cover Art
+[3]: Genre
+[4]: Year
 */
   static Future<List<Text>> fullData(int albumid) async {
     // Get a snapshot from the database
@@ -198,60 +292,11 @@ list of text widgets.
     });
     return results;
   }
-
-  static Future<List<Text>> albumsBy(int artistid) async {
-    final snapshot = await ref.child("Artists").get();
-    final snaptwo = await ref.child("Albums").get();
-    var albumValues = snaptwo.value as Map<Object?, Object?>;
-    List<MapEntry<Object?, Object?>> albums = [];
-
-    if (snapshot.exists) {
-      var values = snapshot.value as Map<Object?, Object?>;
-      if (values.containsKey(artistid.toString())) {
-        var artist = values[artistid.toString()] as Map<Object?, Object?>;
-        var albumids = artist["Albums"] as List<Object?>;
-        albumids.forEach((element) {
-          // albums.add({})
-          // print(element.toString());
-          // print(albumValues[element.toString()]);
-          if (albumValues.containsKey(element.toString())) {
-            albums += {element.toString(): albumValues[element.toString()]}
-                .entries
-                .toList();
-          }
-        });
-        return _displayAlbums(albums);
-      }
-    }
-    // return Text("");
-    return [];
-  }
-
-  static Future<List<Text>> artists() async {
-    final snapshot = await ref.child("Artists").get();
-    List<Text> results = [];
-    if (snapshot.exists) {
-      var values = snapshot.value as Map<Object?, Object?>;
-      var list = values.entries.toList();
-
-      list.sort(((a, b) {
-        var albumA = a.value as Map<Object?, Object?>;
-        var albumB = b.value as Map<Object?, Object?>;
-        return albumA["Name"]
-            .toString()
-            .toLowerCase()
-            .compareTo(albumB["Name"].toString().toLowerCase());
-      }));
-
-      list.forEach((element) {
-        var artistdata = element.value as Map<Object?, Object?>;
-        results.add(Text(artistdata["Name"].toString()));
-        results.add(Text(artistdata["UniqueID"].toString()));
-      });
-    }
-    return results;
-  }
-
+/*
+#############################################################################
+Below: Code that is viable to be changed or removed at a later date
+#############################################################################
+*/
   // /*
   // Given an Artist ID prints the albums listed in the
   // album array under JSON Artist:
