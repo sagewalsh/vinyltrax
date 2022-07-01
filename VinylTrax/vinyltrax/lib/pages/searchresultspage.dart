@@ -10,7 +10,7 @@ class SearchResultsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<Text> _results = Database.albumsFrom(input);
+    Future<List<Text>> _results = Database.albumsBy(input);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -24,14 +24,38 @@ class SearchResultsPage extends StatelessWidget {
         physics: AlwaysScrollableScrollPhysics(),
         child: SizedBox(
             width: double.infinity,
-            child: FutureBuilder<Text>(
+            child: FutureBuilder<List<Text>>(
               future: _results,
-              builder: (BuildContext context, AsyncSnapshot<Text> snapshot) {
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<Text>> snapshot) {
                 List<Widget> children;
                 if (snapshot.hasData) {
-                  children = <Widget>[
-                    Center(child: snapshot.data),
-                  ];
+                  children = <Widget>[];
+                  for (int i = 0; i < snapshot.data!.length; i += 3) {
+                    children.add(SizedBox(
+                      width: double.infinity,
+                      height: 20,
+                      child: const Text(""),
+                    ));
+                    children.add(Container(
+                      height: 150,
+                      width: 150,
+                      child: Image(
+                          image: NetworkImage(
+                              snapshot.data?[i + 2].data as String)),
+                    ));
+                    children.add(Center(
+                      child: snapshot.data?[i],
+                    ));
+                    children.add(Center(
+                      child: snapshot.data?[i + 1],
+                    ));
+                  }
+                  children.add(SizedBox(
+                    width: double.infinity,
+                    height: 30,
+                    child: const Text(""),
+                  ));
                 } else if (snapshot.hasError) {
                   children = <Widget>[
                     Icon(Icons.error),

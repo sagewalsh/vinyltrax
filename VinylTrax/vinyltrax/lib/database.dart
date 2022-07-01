@@ -199,28 +199,81 @@ list of text widgets.
     return results;
   }
 
-  /*
-  Given an Artist ID prints the albums listed in the 
-  album array under JSON Artist:
-      Database --> Artist --> Albums: [<Object?>]
-  */
-  static Future<Text> albumsFrom(int artistid) async {
-    String results = "\nAlbums by ";
-    var snapshot =
-        await ref.child("Artists/" + artistid.toString() + "/Name").get();
-    results += snapshot.value.toString() + "\n";
-    var path = "Artists/" + artistid.toString() + "/Albums";
-    snapshot = await ref.child(path).get();
+  static Future<List<Text>> albumsBy(int artistid) async {
+    final snapshot = await ref.child("Artists").get();
+    final snaptwo = await ref.child("Albums").get();
+    var albumValues = snaptwo.value as Map<Object?, Object?>;
+    List<MapEntry<Object?, Object?>> albums = [];
+
     if (snapshot.exists) {
-      List<Object?> albums = snapshot.value as List<Object?>;
-      for (int i = 0; i < albums.length; i++) {
-        results += "\n" + albums[i].toString();
+      var values = snapshot.value as Map<Object?, Object?>;
+      if (values.containsKey(artistid.toString())) {
+        var artist = values[artistid.toString()] as Map<Object?, Object?>;
+        var albumids = artist["Albums"] as List<Object?>;
+        albumids.forEach((element) {
+          // albums.add({})
+          // print(element.toString());
+          // print(albumValues[element.toString()]);
+          if (albumValues.containsKey(element.toString())) {
+            albums += {element.toString(): albumValues[element.toString()]}
+                .entries
+                .toList();
+          }
+        });
+        return _displayAlbums(albums);
       }
-      return Text(results);
-    } else {
-      return Text("Something went wrong at path: " + path);
     }
+    // return Text("");
+    return [];
   }
+
+  static Future<List<Text>> artists() async {
+    final snapshot = await ref.child("Artists").get();
+    List<Text> results = [];
+    if (snapshot.exists) {
+      var values = snapshot.value as Map<Object?, Object?>;
+      var list = values.entries.toList();
+
+      list.sort(((a, b) {
+        var albumA = a.value as Map<Object?, Object?>;
+        var albumB = b.value as Map<Object?, Object?>;
+        return albumA["Name"]
+            .toString()
+            .toLowerCase()
+            .compareTo(albumB["Name"].toString().toLowerCase());
+      }));
+
+      list.forEach((element) {
+        var artistdata = element.value as Map<Object?, Object?>;
+        results.add(Text(artistdata["Name"].toString()));
+        results.add(Text(artistdata["UniqueID"].toString()));
+      });
+    }
+    return results;
+  }
+
+  // /*
+  // Given an Artist ID prints the albums listed in the
+  // album array under JSON Artist:
+  //     Database --> Artist --> Albums: [<Object?>]
+  // */
+  // static Future<Text> albumsFrom(int artistid) async {
+  //   String results = "\nAlbums by ";
+  //   var snapshot =
+  //       await ref.child("Artists/" + artistid.toString() + "/Name").get();
+  //   results += snapshot.value.toString() + "\n";
+  //   var path = "Artists/" + artistid.toString() + "/Albums";
+  //   snapshot = await ref.child(path).get();
+  //   if (snapshot.exists) {
+  //     List<Object?> albums = snapshot.value as List<Object?>;
+  //     for (int i = 0; i < albums.length; i++) {
+  //       results += "\n" + albums[i].toString();
+  //     }
+  //     return Text(results);
+  //   } else {
+  //     return Text("Something went wrong at path: " + path);
+  //   }
+  // }
 
   // /*
   // Given an Album ID prints the data listed in
