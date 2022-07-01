@@ -206,10 +206,10 @@ class Database {
     List<Text> results = [];
     list.forEach((element) {
       var albumdata = element.value as Map<Object?, Object?>;
-      print(albumdata["Name"]);
-      print(albumdata["Artist"]);
-      results.add(Text("\nName: " + albumdata["Name"].toString()));
-      results.add(Text("\nArtist: " + albumdata["Artist"].toString()));
+      // print(albumdata["Name"]);
+      // print(albumdata["Artist"]);
+      results.add(Text("Name: " + albumdata["Name"].toString()));
+      results.add(Text("Artist: " + albumdata["Artist"].toString()));
       // print(results.length);
       // results.add(Text(albumdata["Cover"].toString()));
     });

@@ -20,6 +20,11 @@ class Display extends StatelessWidget {
                 // Center(child: snapshot.data?[1]),
               ];
               for (int i = 0; i < snapshot.data!.length; i += 2) {
+                children.add(SizedBox(
+                  width: double.infinity,
+                  height: 20,
+                  child: const Text(""),
+                ));
                 children.add(Center(
                   child: snapshot.data?[i],
                 ));
