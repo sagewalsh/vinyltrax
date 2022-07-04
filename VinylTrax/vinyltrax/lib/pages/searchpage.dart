@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:vinyltrax/fliterButtons.dart';
+import 'package:vinyltrax/button_icons/barcode.dart';
+import 'package:vinyltrax/buttons/fliterButtons.dart';
 import '../textinput.dart';
-import '../iconOrList.dart';
+import '../buttons/iconOrList.dart';
 import './searchresultspage.dart';
 
 class SearchPage extends StatefulWidget {
@@ -31,11 +32,38 @@ class _SearchPageState extends State<SearchPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              child: textBox,
-              width: double.infinity,
-              height: 75,
+              color: Color.fromARGB(255, 244, 244, 244),
+              //Search bar, Camera button, and barcode scanning button
+              child: Row(
+                children: [
+                  Container(
+                    child: textBox,
+                    width: 295,
+                    height: 75,
+                  ),
+                  IconButton(
+                    padding: EdgeInsets.all(5),
+                    constraints: BoxConstraints(),
+                      onPressed: () {
+                        print("camera");
+                      },
+                      icon: Icon(Icons.camera_alt_sharp),
+                      iconSize: 37,
+                  ),
+                  IconButton(
+                    padding: EdgeInsets.all(5),
+                      constraints: BoxConstraints(),
+                      onPressed: () {
+                        print("barcode");
+                      },
+                      icon: Icon(BarcodeIcon.barcode),
+                    iconSize: 35,
+                  ),
+                ],
+              ),
             ),
             Container(
+              //Icon/List buttons and Top/Artist/Album/Song buttons
               color: Color.fromARGB(255, 244, 244, 244),
               child: Row(
                 children: [
@@ -45,6 +73,7 @@ class _SearchPageState extends State<SearchPage> {
                 ],
               ),
             ),
+            //Divider between UI and output
             Container(color: Color.fromARGB(255, 244, 244, 244), height: 5),
             Divider(
               color: Colors.grey[400],

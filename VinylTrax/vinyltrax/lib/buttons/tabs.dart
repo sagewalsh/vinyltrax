@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:vinyltrax/icons/settings.dart';
-import 'package:vinyltrax/icons/wishlist.dart';
-import 'icons/vinyl.dart';
-import 'pages/searchpage.dart';
-import 'pages/staxpage.dart';
-import 'pages/settingspage.dart';
-import 'pages/wishpage.dart';
+import '../button_icons/settings.dart';
+import '../button_icons/wishlist.dart';
+import '../button_icons/vinyl.dart';
+import '../pages/searchpage.dart';
+import '../pages/staxpage.dart';
+import '../pages/settingspage.dart';
+import '../pages/wishpage.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class Tabs extends StatelessWidget {
@@ -37,6 +37,7 @@ class Tabs extends StatelessWidget {
           ],
         ),
         body: TabBarView(
+          physics: NeverScrollableScrollPhysics(),
           children: [
             StaxPage(),
             WishPage(),

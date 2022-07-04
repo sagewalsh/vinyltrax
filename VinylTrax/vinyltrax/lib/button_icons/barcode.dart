@@ -7,23 +7,23 @@
 ///
 /// flutter:
 ///   fonts:
-///    - family: vinylicon
+///    - family:  MyFlutterApp
 ///      fonts:
-///       - asset: fonts/vinylicon.ttf
+///       - asset: fonts/MyFlutterApp.ttf
 ///
 /// 
-/// * Modern Pictograms, Copyright (c) 2012 by John Caserta. All rights reserved.
-///         Author:    John Caserta
+/// * Elusive, Copyright (C) 2013 by Aristeides Stathopoulos
+///         Author:    Aristeides Stathopoulos
 ///         License:   SIL (http://scripts.sil.org/OFL)
-///         Homepage:  http://thedesignoffice.org/project/modern-pictograms/
+///         Homepage:  http://aristeides.com/
 ///
 import 'package:flutter/widgets.dart';
 
-class VinylIcon {
-  VinylIcon._();
+class BarcodeIcon {
+  BarcodeIcon._();
 
-  static const _kFontFam = 'VinylIcon';
+  static const _kFontFam = 'BarcodeIcon';
   static const String? _kFontPkg = null;
 
-  static const IconData cd = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData barcode = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
