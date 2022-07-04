@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../pages/albumDetailsPage.dart';
+import '../pages/searchresultspage.dart';
 
 class ShowIcon extends StatelessWidget {
   final String coverArt;
@@ -22,17 +23,14 @@ class ShowIcon extends StatelessWidget {
 
     Widget avatar = SizedBox();
     if (this.isArtist) {
-      avatar = CircleAvatar(
-          radius: 75,
-          foregroundImage: NetworkImage(
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg"));
+      avatar =
+          CircleAvatar(radius: 75, foregroundImage: NetworkImage(coverArt));
     } else {
       avatar = Container(
         height: 150,
         width: 150,
         child: Image(
-          image: NetworkImage(
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg"),
+          image: NetworkImage(coverArt),
         ),
       );
     }
@@ -42,9 +40,9 @@ class ShowIcon extends StatelessWidget {
         print(albumName);
         var route = new MaterialPageRoute(builder: (BuildContext context) {
           if (isArtist)
-            return new NextPageAlbum(id, albumName);
+            return new NextPageArtist(id, artistName);
           else
-            return new NextPageAlbum(id, artistName);
+            return new NextPageAlbum(id, albumName);
         });
         Navigator.of(context).push(route);
       },
@@ -72,5 +70,24 @@ class _NextPageAlbumState extends State<NextPageAlbum> {
   @override
   Widget build(BuildContext context) {
     return AlbumDetailsPage(["${widget.id}", "${widget.name}"]);
+  }
+}
+
+class NextPageArtist extends StatefulWidget {
+  String id, name;
+
+  NextPageArtist(this.id, this.name);
+  @override
+  State<NextPageArtist> createState() => _NextPageArtistState();
+}
+
+class _NextPageArtistState extends State<NextPageArtist> {
+  @override
+  Widget build(BuildContext context) {
+    // print(widget.id);
+    return SearchResultsPage(["${widget.id}", "${widget.name}"]);
+    // return Center(
+    //   child: Text(widget.id),
+    // );
   }
 }

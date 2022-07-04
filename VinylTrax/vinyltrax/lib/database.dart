@@ -296,6 +296,66 @@ list of text widgets.
     });
     return results;
   }
+
+  static Future<List<List<Text>>> search(String input) async {
+    List<List<Text>> results = [];
+    // Get a snapshot of the Artists database
+    final snapArtist = await ref.child("Artists").get();
+    // Get a snapshot of the Albums database
+    final snapAlbums = await ref.child("Albums").get();
+
+    if (snapArtist.exists && snapAlbums.exists) {
+      // Map{ ArtistID: {Artist data} }
+      var artvalues = snapArtist.value as Map<Object?, Object?>;
+      // Map{ AlbumID: {Album data} }
+      var albumValues = snapAlbums.value as Map<Object?, Object?>;
+      // List of albums
+      List<MapEntry<Object?, Object?>> list = [];
+
+      // Traverse the artists looking for the inputted name
+      artvalues.forEach((key, value) {
+        list = [];
+        var artist = value as Map<Object?, Object?>;
+
+        // If the input relates to an artist name
+        if (artist["Name"].toString().contains(input) ||
+            input.contains(artist["Name"].toString())) {
+          // Add the artist to the results
+          results.add([
+            Text(artist["Name"].toString()),
+            Text(artist["UniqueID"].toString()),
+            Text(artist["Image"].toString()),
+          ]);
+          // AlbumIDs of the albums the given artist has created
+          var albumids = artist["Albums"] as List<Object?>;
+
+          albumids.forEach((element) {
+            if (albumValues.containsKey(element.toString())) {
+              // Add album data to returned list
+              list = {element.toString(): albumValues[element.toString()]}
+                  .entries
+                  .toList();
+
+              // Return the album data of the given Artist's albums
+              results.add(_displayAlbums(list));
+            }
+          });
+        }
+      });
+
+      list = [];
+      albumValues.forEach((key, value) {
+        var album = value as Map<Object?, Object?>;
+
+        if (album["Name"].toString().contains(input) ||
+            input.contains(album["Name"].toString())) {
+          list += {key: value}.entries.toList();
+        }
+      });
+      if (list.isNotEmpty) results.add(_displayAlbums(list));
+    }
+    return results;
+  }
 /*
 #############################################################################
 Below: Code that is viable to be changed or removed at a later date
@@ -970,6 +1030,8 @@ Below: Code that is viable to be changed or removed at a later date
           1111: {
             "UniqueID": 1111,
             "Name": "Kanye West",
+            "Image":
+                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
             "Albums": [
               1216,
               1217,
@@ -979,6 +1041,8 @@ Below: Code that is viable to be changed or removed at a later date
           1112: {
             "UniqueID": 1112,
             "Name": "Halsey",
+            "Image":
+                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
             "Albums": [
               1219,
               1220,
@@ -988,6 +1052,8 @@ Below: Code that is viable to be changed or removed at a later date
           1113: {
             "UniqueID": 1113,
             "Name": "Kendrick Lamar",
+            "Image":
+                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
             "Albums": [
               1222,
               1223,
@@ -996,6 +1062,8 @@ Below: Code that is viable to be changed or removed at a later date
           1114: {
             "UniqueID": 1114,
             "Name": "Rihanna",
+            "Image":
+                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
             "Albums": [
               1224,
               1225,
@@ -1005,6 +1073,8 @@ Below: Code that is viable to be changed or removed at a later date
           1115: {
             "UniqueID": 1115,
             "Name": "Muse",
+            "Image":
+                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
             "Albums": [
               1227,
               1228,
@@ -1013,6 +1083,8 @@ Below: Code that is viable to be changed or removed at a later date
           1116: {
             "UniqueID": 1116,
             "Name": "Ke\$ha",
+            "Image":
+                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
             "Albums": [
               1229,
               1230,
@@ -1022,6 +1094,8 @@ Below: Code that is viable to be changed or removed at a later date
           1117: {
             "UniqueID": 1117,
             "Name": "Lizzo",
+            "Image":
+                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
             "Albums": [
               1232,
               1233,
@@ -1030,6 +1104,8 @@ Below: Code that is viable to be changed or removed at a later date
           1118: {
             "UniqueID": 1118,
             "Name": "Eminem",
+            "Image":
+                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
             "Albums": [
               1234,
               1235,
@@ -1039,6 +1115,8 @@ Below: Code that is viable to be changed or removed at a later date
           1119: {
             "UniqueID": 1119,
             "Name": "Billie Eilish",
+            "Image":
+                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
             "Albums": [
               1237,
               1238,
@@ -1048,6 +1126,8 @@ Below: Code that is viable to be changed or removed at a later date
           1120: {
             "UniqueID": 1120,
             "Name": "Cardi B",
+            "Image":
+                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
             "Albums": [
               1240,
             ]
@@ -1055,6 +1135,8 @@ Below: Code that is viable to be changed or removed at a later date
           1121: {
             "UniqueID": 1121,
             "Name": "Anderson .Paak",
+            "Image":
+                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
             "Albums": [
               1241,
               1242,
@@ -1064,6 +1146,8 @@ Below: Code that is viable to be changed or removed at a later date
           1122: {
             "UniqueID": 1122,
             "Name": "Drake",
+            "Image":
+                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
             "Albums": [
               1245,
               1246,

@@ -4,6 +4,7 @@ import 'package:vinyltrax/buttons/fliterButtons.dart';
 import '../textinput.dart';
 import '../buttons/iconOrList.dart';
 import './searchresultspage.dart';
+import './results.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -93,11 +94,12 @@ To Be Removed Later
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            var id = 0;
-            try {
-              id = int.parse(textBox.getString());
-            } catch (exception) {}
-            return SearchResultsPage([id.toString(), "Search"]);
+            // var id = 0;
+            // try {
+            //   id = int.parse(textBox.getString());
+            // } catch (exception) {}
+            // return SearchResultsPage([id.toString(), "Search"]);
+            return Results(textBox.getString());
           }));
         },
         child: const Icon(Icons.search),
