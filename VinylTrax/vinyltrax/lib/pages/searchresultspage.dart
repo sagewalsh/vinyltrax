@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:vinyltrax/show_data/iconList.dart';
 import '../database.dart';
 import '../returnedData/albumData.dart';
+import '../show_data/icon.dart';
 
 class SearchResultsPage extends StatelessWidget {
   final List<String> input;
@@ -17,11 +19,7 @@ class SearchResultsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Container(
-          width: double.infinity,
-          alignment: Alignment.center,
-          child: Text(name),
-        ),
+        title: Text(name),
       ),
       body: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),
@@ -34,26 +32,14 @@ class SearchResultsPage extends StatelessWidget {
                 List<Widget> children;
                 if (snapshot.hasData) {
                   children = <Widget>[];
+                  //
                   for (int i = 0; i < snapshot.data!.length; i += 4) {
-                    children.add(SizedBox(
-                      width: double.infinity,
-                      height: 20,
-                      child: const Text(""),
-                    ));
-                    children.add(Container(
-                      height: 150,
-                      width: 150,
-                      child: Image(
-                        image:
-                            NetworkImage(snapshot.data?[i + 2].data as String),
-                      ),
-                    ));
-                    children.add(Center(
-                      child: snapshot.data?[i],
-                    ));
-                    children.add(Center(
-                      child: snapshot.data?[i + 1],
-                    ));
+                    children.add(
+                      ShowIcon(snapshot.data?[i + 1].data as String,
+                          snapshot.data?[i].data as String,
+                          snapshot.data?[i + 2].data as String,
+                      false)
+                    );
                   }
                   children.add(SizedBox(
                     width: double.infinity,
@@ -73,11 +59,11 @@ class SearchResultsPage extends StatelessWidget {
                     )
                   ];
                 }
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: children,
-                  ),
+                return Column(
+                  children: [
+                    SizedBox(height: 20),
+                    IconList(children),
+                  ],
                 );
               },
             )),

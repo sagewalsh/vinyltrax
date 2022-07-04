@@ -4,9 +4,9 @@ class ShowIcon extends StatelessWidget {
   final String coverArt;
   String artistName;
   String albumName;
-  final bool isAlbum;
+  final bool isArtist;
   //const AlbumIcon({Key? key}) : super(key: key);
-  ShowIcon(this.artistName, this.albumName, this.coverArt, this.isAlbum);
+  ShowIcon(this.artistName, this.albumName, this.coverArt, this.isArtist);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class ShowIcon extends StatelessWidget {
       outputArt = artistName.substring(0, 17) + "...";
 
     Widget avatar = SizedBox();
-    if (isAlbum) {
+    if (this.isArtist) {
       avatar = CircleAvatar(
         radius: 75,
           foregroundImage: NetworkImage(
