@@ -34,12 +34,12 @@ class SearchResultsPage extends StatelessWidget {
                   children = <Widget>[];
                   //
                   for (int i = 0; i < snapshot.data!.length; i += 4) {
-                    children.add(
-                      ShowIcon(snapshot.data?[i + 1].data as String,
-                          snapshot.data?[i].data as String,
-                          snapshot.data?[i + 2].data as String,
-                      false)
-                    );
+                    children.add(ShowIcon(
+                        snapshot.data?[i + 1].data as String,
+                        snapshot.data?[i].data as String,
+                        snapshot.data?[i + 2].data as String,
+                        false,
+                        snapshot.data?[i + 3].data as String));
                   }
                   children.add(SizedBox(
                     width: double.infinity,
