@@ -318,8 +318,13 @@ list of text widgets.
         var artist = value as Map<Object?, Object?>;
 
         // If the input relates to an artist name
-        if (artist["Name"].toString().contains(input) ||
-            input.contains(artist["Name"].toString())) {
+        if (artist["Name"]
+                .toString()
+                .toLowerCase()
+                .contains(input.toLowerCase()) ||
+            input
+                .toLowerCase()
+                .contains(artist["Name"].toString().toLowerCase())) {
           // Add the artist to the results
           results.add([
             Text(artist["Name"].toString()),
@@ -347,8 +352,13 @@ list of text widgets.
       albumValues.forEach((key, value) {
         var album = value as Map<Object?, Object?>;
 
-        if (album["Name"].toString().contains(input) ||
-            input.contains(album["Name"].toString())) {
+        if (album["Name"]
+                .toString()
+                .toLowerCase()
+                .contains(input.toLowerCase()) ||
+            input
+                .toLowerCase()
+                .contains(album["Name"].toString().toLowerCase())) {
           list += {key: value}.entries.toList();
         }
       });
@@ -1031,7 +1041,7 @@ Below: Code that is viable to be changed or removed at a later date
             "UniqueID": 1111,
             "Name": "Kanye West",
             "Image":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+                "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
             "Albums": [
               1216,
               1217,
@@ -1042,7 +1052,7 @@ Below: Code that is viable to be changed or removed at a later date
             "UniqueID": 1112,
             "Name": "Halsey",
             "Image":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+                "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
             "Albums": [
               1219,
               1220,
@@ -1053,7 +1063,7 @@ Below: Code that is viable to be changed or removed at a later date
             "UniqueID": 1113,
             "Name": "Kendrick Lamar",
             "Image":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+                "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
             "Albums": [
               1222,
               1223,
@@ -1063,7 +1073,7 @@ Below: Code that is viable to be changed or removed at a later date
             "UniqueID": 1114,
             "Name": "Rihanna",
             "Image":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+                "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
             "Albums": [
               1224,
               1225,
@@ -1074,7 +1084,7 @@ Below: Code that is viable to be changed or removed at a later date
             "UniqueID": 1115,
             "Name": "Muse",
             "Image":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+                "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
             "Albums": [
               1227,
               1228,
@@ -1084,7 +1094,7 @@ Below: Code that is viable to be changed or removed at a later date
             "UniqueID": 1116,
             "Name": "Ke\$ha",
             "Image":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+                "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
             "Albums": [
               1229,
               1230,
@@ -1095,7 +1105,7 @@ Below: Code that is viable to be changed or removed at a later date
             "UniqueID": 1117,
             "Name": "Lizzo",
             "Image":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+                "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
             "Albums": [
               1232,
               1233,
@@ -1105,7 +1115,7 @@ Below: Code that is viable to be changed or removed at a later date
             "UniqueID": 1118,
             "Name": "Eminem",
             "Image":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+                "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
             "Albums": [
               1234,
               1235,
@@ -1116,7 +1126,7 @@ Below: Code that is viable to be changed or removed at a later date
             "UniqueID": 1119,
             "Name": "Billie Eilish",
             "Image":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+                "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
             "Albums": [
               1237,
               1238,
@@ -1127,7 +1137,7 @@ Below: Code that is viable to be changed or removed at a later date
             "UniqueID": 1120,
             "Name": "Cardi B",
             "Image":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+                "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
             "Albums": [
               1240,
             ]
@@ -1136,7 +1146,7 @@ Below: Code that is viable to be changed or removed at a later date
             "UniqueID": 1121,
             "Name": "Anderson .Paak",
             "Image":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+                "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
             "Albums": [
               1241,
               1242,
@@ -1147,7 +1157,7 @@ Below: Code that is viable to be changed or removed at a later date
             "UniqueID": 1122,
             "Name": "Drake",
             "Image":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+                "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
             "Albums": [
               1245,
               1246,
