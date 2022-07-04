@@ -129,6 +129,7 @@ class Database {
   [0]: Album Name
   [1]: Artist Name
   [2]: Cover Art
+  [3]: Album ID
   */
   static List<Text> _displayAlbums(List<MapEntry<Object?, Object?>> list) {
     List<Text> results = [];
@@ -137,6 +138,7 @@ class Database {
       results.add(Text(albumdata["Name"].toString()));
       results.add(Text(albumdata["Artist"].toString()));
       results.add(Text(albumdata["Cover"].toString()));
+      results.add(Text(albumdata["UniqueID"].toString()));
     });
     return results;
   }
@@ -297,6 +299,21 @@ list of text widgets.
 Below: Code that is viable to be changed or removed at a later date
 #############################################################################
 */
+  // /*
+  // Given an Artist ID prints the name of the artist
+  // listed in JSON Artist:
+  //     Database --> Artist --> Name: String
+  // */
+  // static void artistGivenID(int artistid) async {
+  //   var path = "Artists/" + artistid.toString() + "/Name";
+  //   final snapshot = await ref.child(path).get();
+  //   if (snapshot.exists) {
+  //     print(snapshot.value);
+  //   } else {
+  //     print("Something went wrong at path: " + path);
+  //   }
+  // }
+
   // /*
   // Given an Artist ID prints the albums listed in the
   // album array under JSON Artist:
@@ -508,21 +525,6 @@ Below: Code that is viable to be changed or removed at a later date
   //     }
   //   }
   //   return [Text("")];
-  // }
-
-  // /*
-  // Given an Artist ID prints the name of the artist
-  // listed in JSON Artist:
-  //     Database --> Artist --> Name: String
-  // */
-  // static void artistGivenID(int artistid) async {
-  //   var path = "Artists/" + artistid.toString() + "/Name";
-  //   final snapshot = await ref.child(path).get();
-  //   if (snapshot.exists) {
-  //     print(snapshot.value);
-  //   } else {
-  //     print("Something went wrong at path: " + path);
-  //   }
   // }
 
   /*

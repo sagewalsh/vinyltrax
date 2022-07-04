@@ -5,19 +5,22 @@ import '../database.dart';
 import '../returnedData/albumData.dart';
 
 class SearchResultsPage extends StatelessWidget {
-  final String input;
+  final List<String> input;
   SearchResultsPage(this.input);
 
   @override
   Widget build(BuildContext context) {
-    Future<List<Text>> _results = Database.albumsBy(input);
+    Future<List<Text>> _results = Database.albumsBy(input[0]);
+    // late String name = "Artist not found";
+    String name = input[1];
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Container(
           width: double.infinity,
           alignment: Alignment.center,
-          child: const Text("Albums"),
+          child: Text(name),
         ),
       ),
       body: SingleChildScrollView(
@@ -31,7 +34,7 @@ class SearchResultsPage extends StatelessWidget {
                 List<Widget> children;
                 if (snapshot.hasData) {
                   children = <Widget>[];
-                  for (int i = 0; i < snapshot.data!.length; i += 3) {
+                  for (int i = 0; i < snapshot.data!.length; i += 4) {
                     children.add(SizedBox(
                       width: double.infinity,
                       height: 20,
@@ -41,8 +44,9 @@ class SearchResultsPage extends StatelessWidget {
                       height: 150,
                       width: 150,
                       child: Image(
-                          image: NetworkImage(
-                              snapshot.data?[i + 2].data as String)),
+                        image:
+                            NetworkImage(snapshot.data?[i + 2].data as String),
+                      ),
                     ));
                     children.add(Center(
                       child: snapshot.data?[i],

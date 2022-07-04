@@ -22,10 +22,12 @@ class AlbumOrderAlbum extends StatelessWidget {
                 // Center(child: snapshot.data?[0]),
                 // Center(child: snapshot.data?[1]),
               ];
-              for (int i = 0; i < snapshot.data!.length; i += 3) {
-                children.add(ShowIcon(snapshot.data?[i + 1].data as String,
+              for (int i = 0; i < snapshot.data!.length; i += 4) {
+                children.add(ShowIcon(
+                    snapshot.data?[i + 1].data as String,
                     snapshot.data?[i].data as String,
-                    snapshot.data?[i + 2].data as String, false));
+                    snapshot.data?[i + 2].data as String,
+                    false));
               }
             } else if (snapshot.hasError) {
               children = <Widget>[

@@ -68,7 +68,7 @@ To Be Removed Later
             try {
               id = int.parse(textBox.getString());
             } catch (exception) {}
-            return SearchResultsPage(id.toString());
+            return SearchResultsPage([id.toString(), "Search"]);
           }));
         },
         child: const Icon(Icons.search),

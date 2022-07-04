@@ -17,7 +17,7 @@ class AlbumsOfGenre extends StatelessWidget {
             List<Widget> children;
             if (snapshot.hasData) {
               children = <Widget>[];
-              for (int i = 0; i < snapshot.data!.length; i += 3) {
+              for (int i = 0; i < snapshot.data!.length; i += 4) {
                 children.add(SizedBox(
                   width: double.infinity,
                   height: 20,
