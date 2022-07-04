@@ -18,10 +18,7 @@ class AlbumOrderAlbum extends StatelessWidget {
           builder: (BuildContext context, AsyncSnapshot<List<Text>> snapshot) {
             List<Widget> children;
             if (snapshot.hasData) {
-              children = <Widget>[
-                // Center(child: snapshot.data?[0]),
-                // Center(child: snapshot.data?[1]),
-              ];
+              children = <Widget>[];
               for (int i = 0; i < snapshot.data!.length; i += 4) {
                 children.add(ShowIcon(
                     snapshot.data?[i + 1].data as String,
