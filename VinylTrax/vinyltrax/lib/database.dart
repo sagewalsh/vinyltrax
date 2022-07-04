@@ -13,6 +13,7 @@ class Database {
   [0]: Album Name
   [1]: Artist Name
   [2]: Cover art
+  [3]: Album ID
   */
   static Future<List<Text>> displayByArtist() async {
     // Get a snapshot from the album database
@@ -53,6 +54,7 @@ class Database {
   [0]: Album Name
   [1]: Artist Name
   [2]: Cover Art
+  [3]: Album ID
   */
   static Future<List<Text>> displayByName() async {
     // Get a snapshot from the album database
@@ -91,6 +93,7 @@ class Database {
   [0]: Album Name
   [1]: Artist Name
   [2]: Cover Art
+  [3]: Album ID
   */
   static Future<List<Text>> displayByGenre(String genre) async {
     // Get a snapshot from the album database
@@ -242,16 +245,15 @@ Data is returned as a list of text widgets
 [3]: Genre
 [4]: Year
 */
-  static Future<List<Text>> fullData(int albumid) async {
+  static Future<List<Text>> fullData(String albumid) async {
     // Get a snapshot from the database
     final snapshot = await ref.child("Albums").get();
 
     if (snapshot.exists) {
       // Map{ AlbumID: {Album data} }
       var values = snapshot.value as Map<Object?, Object?>;
-      if (values.containsKey(albumid.toString())) {
-        var list =
-            {albumid.toString(): values[albumid.toString()]}.entries.toList();
+      if (values.containsKey(albumid)) {
+        var list = {albumid: values[albumid.toString()]}.entries.toList();
         // Convert list of maps into list of widgets
         return _albumData(list);
       }

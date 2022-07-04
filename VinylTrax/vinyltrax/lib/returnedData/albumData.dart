@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../database.dart';
 
 class AlbumData extends StatelessWidget {
-  final int albumid;
+  final String albumid;
   // AlbumData({Key? key}) : super(key: key);
   AlbumData(this.albumid);
 
