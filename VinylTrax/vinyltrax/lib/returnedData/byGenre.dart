@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../database.dart';
+import '../show_data/icon.dart';
+import '../show_data/iconList.dart';
 
 class AlbumsOfGenre extends StatelessWidget {
   final String genre;
@@ -18,24 +20,12 @@ class AlbumsOfGenre extends StatelessWidget {
             if (snapshot.hasData) {
               children = <Widget>[];
               for (int i = 0; i < snapshot.data!.length; i += 4) {
-                children.add(SizedBox(
-                  width: double.infinity,
-                  height: 20,
-                  child: const Text(""),
-                ));
-                children.add(Container(
-                  height: 150,
-                  width: 150,
-                  child: Image(
-                      image:
-                          NetworkImage(snapshot.data?[i + 2].data as String)),
-                ));
-                children.add(Center(
-                  child: snapshot.data?[i],
-                ));
-                children.add(Center(
-                  child: snapshot.data?[i + 1],
-                ));
+                children.add(ShowIcon(
+                    snapshot.data?[i + 1].data as String,
+                    snapshot.data?[i].data as String,
+                    snapshot.data?[i + 2].data as String,
+                    false,
+                    snapshot.data?[i + 3].data as String));
               }
             } else if (snapshot.hasError) {
               children = <Widget>[
@@ -43,18 +33,16 @@ class AlbumsOfGenre extends StatelessWidget {
               ];
             } else {
               children = <Widget>[
-                SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: CircularProgressIndicator(),
+                Center(
+                  child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: CircularProgressIndicator(),
+                  ),
                 )
               ];
             }
-            return Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: children),
-            );
+            return IconList(children);
           }),
     );
   }

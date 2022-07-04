@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:vinyltrax/returnedData/display.dart';
-import 'package:vinyltrax/show_data/genre.dart';
+import 'package:vinyltrax/show_data/genreList.dart';
 import 'package:vinyltrax/returnedData/byAlbum.dart';
 import '../returnedData/byArtist.dart';
 import '../textinput.dart';
