@@ -84,10 +84,6 @@ class NextPageArtist extends StatefulWidget {
 class _NextPageArtistState extends State<NextPageArtist> {
   @override
   Widget build(BuildContext context) {
-    // print(widget.id);
     return SearchResultsPage(["${widget.id}", "${widget.name}"]);
-    // return Center(
-    //   child: Text(widget.id),
-    // );
   }
 }
