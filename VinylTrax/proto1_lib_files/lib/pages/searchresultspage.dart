@@ -17,7 +17,7 @@ class SearchResultsPage extends StatelessWidget {
         title: Container(
           width: double.infinity,
           alignment: Alignment.center,
-          child: const Text("Albums"),
+          child: const Text("Hello"),
         ),
       ),
       body: SingleChildScrollView(

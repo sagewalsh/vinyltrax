@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import './searchpage.dart';
-import './staxpage.dart';
-import './settingspage.dart';
-import './wishpage.dart';
+import 'package:vinyltrax/icons/settings.dart';
+import 'package:vinyltrax/icons/wishlist.dart';
+import 'icons/vinyl.dart';
+import 'pages/searchpage.dart';
+import 'pages/staxpage.dart';
+import 'pages/settingspage.dart';
+import 'pages/wishpage.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class Tabs extends StatelessWidget {
   const Tabs({Key? key}) : super(key: key);
@@ -19,16 +23,16 @@ class Tabs extends StatelessWidget {
           unselectedLabelColor: Colors.black,
           tabs: <Widget>[
             Tab(
-              icon: Icon(Icons.circle),
+              icon: Icon(VinylIcon.cd),
             ),
             Tab(
-              icon: Icon(Icons.star),
+              icon: Icon(WishlistIcon.wishlist),
             ),
             Tab(
               icon: Icon(Icons.search),
             ),
             Tab(
-              icon: Icon(Icons.settings),
+              icon: Icon(SettingIcon.cog, size: 21,),
             )
           ],
         ),
