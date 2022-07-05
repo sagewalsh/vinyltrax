@@ -67,19 +67,19 @@ flutter:
   fonts:
     - family:  VinylIcon
       fonts:
-       - asset: fonts/VinylIcon.ttf
+       - asset: assets/fonts/VinylIcon.ttf
     - family: WishlistIcon
       fonts:
-        - asset: fonts/WishlistIcon.ttf
+        - asset: assets/fonts/WishlistIcon.ttf
     - family: SettingIcon
       fonts:
-        - asset: fonts/SettingIcon.ttf
+        - asset: assets/fonts/SettingIcon.ttf
     - family: BarcodeIcon
       fonts:
-        - asset: fonts/BarcodeIcon.ttf
+        - asset: assets/fonts/BarcodeIcon.ttf
     - family: OpenSans
       fonts:
-        - asset: fonts/OpenSans-Medium.ttf
+        - asset: assets/fonts/OpenSans-Medium.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the button_icons in

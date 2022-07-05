@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import '../database.dart';
-import '../returnedData/albumData.dart';
 
 class AlbumDetailsPage extends StatefulWidget {
   final List<String> input;
@@ -18,6 +16,7 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
   Widget build(BuildContext context) {
     Future<List<Text>> _results = Database.fullData(widget.input[0]);
     String album = widget.input[1];
+    var _controller = TextEditingController();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -35,7 +34,6 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                 List<Widget> children;
                 if (snapshot.hasData) {
                   children = <Widget>[];
-                  // for (int i = 0; i < snapshot.data!.length; i += 5) {
                   int i = 0;
                   children.add(SizedBox(
                     width: double.infinity,
@@ -109,13 +107,18 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                     child: const Text(""),
                   ));
                   if (widget.inInventory) {
-                    var _controller = TextEditingController();
                     children.add(Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: TextField(
                         controller: _controller,
+                        keyboardType: TextInputType.text,
                         maxLines: null,
                         maxLength: 500,
+                        onSubmitted: (value) {
+                          //value here is the text after enter is pressed
+                          //within here you can add it to the database
+                          print(value);
+                        },
                         decoration: InputDecoration(
                             labelText: 'Notes',
                             border: const OutlineInputBorder(),
@@ -133,10 +136,12 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                   ];
                 } else {
                   children = <Widget>[
-                    SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: CircularProgressIndicator(),
+                    Center(
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(),
+                      ),
                     )
                   ];
                 }

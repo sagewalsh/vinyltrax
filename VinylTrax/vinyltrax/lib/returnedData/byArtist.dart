@@ -17,6 +17,7 @@ class AlbumOrderArtist extends StatelessWidget {
       child: FutureBuilder<List<Text>>(
           future: _results,
           builder: (BuildContext context, AsyncSnapshot<List<Text>> snapshot) {
+            List<Widget> children = <Widget>[];
             if (snapshot.hasData)
             {
               for (int i = 0; i < snapshot.data!.length; i+=2)
@@ -33,17 +34,17 @@ class AlbumOrderArtist extends StatelessWidget {
                 Icon(Icons.error),
               ];
             }
-            // else {
-            //   children = <Widget>[
-            //     Center(
-            //       child: SizedBox(
-            //         width: 50,
-            //         height: 50,
-            //         child: CircularProgressIndicator(),
-            //       ),
-            //     )
-            //   ];
-            // }
+            else {
+              children = <Widget>[
+                Center(
+                  child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              ];
+            }
             return ListEntryList(children);
           }),
     );
