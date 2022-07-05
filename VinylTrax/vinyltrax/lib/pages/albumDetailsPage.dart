@@ -4,14 +4,20 @@ import 'package:flutter/src/widgets/framework.dart';
 import '../database.dart';
 import '../returnedData/albumData.dart';
 
-class AlbumDetailsPage extends StatelessWidget {
+class AlbumDetailsPage extends StatefulWidget {
   final List<String> input;
-  AlbumDetailsPage(this.input);
+  final bool inInventory;
+  AlbumDetailsPage(this.input, this.inInventory);
 
   @override
+  State<AlbumDetailsPage> createState() => _AlbumDetailsPageState();
+}
+
+class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
+  @override
   Widget build(BuildContext context) {
-    Future<List<Text>> _results = Database.fullData(input[0]);
-    String album = input[1];
+    Future<List<Text>> _results = Database.fullData(widget.input[0]);
+    String album = widget.input[1];
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -102,6 +108,25 @@ class AlbumDetailsPage extends StatelessWidget {
                     height: 30,
                     child: const Text(""),
                   ));
+                  if (widget.inInventory) {
+                    var _controller = TextEditingController();
+                    children.add(Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        controller: _controller,
+                        maxLines: null,
+                        maxLength: 500,
+                        decoration: InputDecoration(
+                            labelText: 'Notes',
+                            border: const OutlineInputBorder(),
+                            suffixIcon: IconButton(
+                              onPressed: _controller.clear,
+                              icon: Icon(Icons.clear),
+                            ),
+                        ),
+                      ),
+                    ));
+                  }
                 } else if (snapshot.hasError) {
                   children = <Widget>[
                     Icon(Icons.error),
