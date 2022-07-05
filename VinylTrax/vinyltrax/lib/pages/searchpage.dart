@@ -14,10 +14,13 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final textBox = TextInput("Search");
+  final textBox = TextInput("Search", false);
+  var input = "";
 
   @override
   Widget build(BuildContext context) {
+    input = textBox.getString();
+    if (input.isNotEmpty) return Results(input);
     return Scaffold(
       // backgroundColor: Colors.white,
       appBar: AppBar(
@@ -77,7 +80,10 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ),
             //Divider between UI and output
-            Container(color: Color.fromRGBO(30, 0, 105, 1), height: 5),
+            Container(
+              color: Color.fromRGBO(30, 0, 105, 1),
+              height: 5,
+            ),
             Divider(
               color: Color.fromRGBO(225, 80, 129, 30),
               height: 5,
@@ -88,28 +94,6 @@ class _SearchPageState extends State<SearchPage> {
           ],
         ),
       ),
-/*
-###############################################################################
-To Be Removed Later
-###############################################################################
-*/
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            // var id = 0;
-            // try {
-            //   id = int.parse(textBox.getString());
-            // } catch (exception) {}
-            // return SearchResultsPage([id.toString(), "Search"]);
-            return Results(textBox.getString());
-          }));
-        },
-        child: const Icon(Icons.search),
-        backgroundColor: Color.fromRGBO(225, 80, 129, 30),
-      ),
-/*
-###############################################################################
-*/
     );
   }
 }

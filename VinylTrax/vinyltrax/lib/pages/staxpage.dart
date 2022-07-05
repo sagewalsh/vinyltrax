@@ -43,17 +43,17 @@ class _StaxPageState extends State<StaxPage> {
           children: [
             Container(
               color: const Color.fromARGB(255, 244, 244, 244),
-              child: TextInput("Search Inventory"),
+              child: TextInput("Search Inventory", true),
               width: double.infinity,
               height: 75,
             ),
             Container(
-              color: const Color.fromARGB(255, 244, 244, 244),
+              color: Color.fromRGBO(30, 0, 105, 1),
               child: CupertinoSegmentedControl(
                 padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 6.0),
-                selectedColor: const Color.fromARGB(255, 120, 120, 120),
-                borderColor: const Color.fromARGB(255, 120, 120, 120),
-                pressedColor: Colors.grey,
+                selectedColor: Color.fromRGBO(225, 80, 129, 30),
+                borderColor: Color.fromRGBO(225, 80, 129, 30),
+                pressedColor: Color.fromRGBO(225, 80, 129, 30),
                 children: {
                   _Order.artist: Container(
                     height: 30,
@@ -86,12 +86,12 @@ class _StaxPageState extends State<StaxPage> {
               ),
             ),
             Container(
-              color: const Color.fromARGB(255, 244, 244, 244),
+              color: Color.fromRGBO(30, 0, 105, 1),
               child: CupertinoSegmentedControl(
                 padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-                selectedColor: const Color.fromARGB(255, 120, 120, 120),
-                borderColor: const Color.fromARGB(255, 120, 120, 120),
-                pressedColor: Colors.grey,
+                selectedColor: Color.fromRGBO(225, 80, 129, 30),
+                borderColor: Color.fromRGBO(225, 80, 129, 30),
+                pressedColor: Color.fromRGBO(225, 80, 129, 30),
                 children: {
                   _Type.vinyl: Container(
                     height: 30,

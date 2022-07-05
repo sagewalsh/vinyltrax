@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import './pages/results.dart';
+import './pages/discogsResults.dart';
 
 class TextInput extends StatefulWidget {
   final textController = TextEditingController();
   final String label;
+  final bool isInventory;
   // const TextInput({Key? key}) : super(key: key);
-  TextInput(this.label);
+  TextInput(this.label, this.isInventory);
 
   Text getText() {
     return Text(textController.text);
@@ -16,15 +19,17 @@ class TextInput extends StatefulWidget {
   }
 
   @override
-  _TextInputState createState() => _TextInputState(label, textController);
+  _TextInputState createState() =>
+      _TextInputState(label, textController, isInventory);
 }
 
 class _TextInputState extends State<TextInput> {
   final String label;
   final TextEditingController textController;
+  final bool isInventory;
   FocusNode focus = FocusNode();
 
-  _TextInputState(this.label, this.textController);
+  _TextInputState(this.label, this.textController, this.isInventory);
 
   @override
   void dispose() {
@@ -72,6 +77,17 @@ class _TextInputState extends State<TextInput> {
                       : Colors.black,
                 ),
               ),
+              onSubmitted: (text) {
+                isInventory
+                    ? Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                        return Results(text);
+                      }))
+                    : Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                        return DiscogsResults();
+                      }));
+              },
             ),
           )),
     );
