@@ -16,11 +16,7 @@ class AlbumDetailsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Container(
-          width: double.infinity,
-          alignment: Alignment.center,
-          child: Text(album),
-        ),
+        title: Text(album)
       ),
       body: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),
@@ -40,35 +36,67 @@ class AlbumDetailsPage extends StatelessWidget {
                     height: 20,
                     child: const Text(""),
                   ));
-                  children.add(Container(
-                    // COVER ART
-                    height: 150,
-                    width: 150,
-                    child: Image(
-                      image: NetworkImage(snapshot.data?[i + 2].data as String),
+                  children.add(Center(
+                    child: Container(
+                      // COVER ART
+                      height: 150,
+                      width: 150,
+                      child: Image(
+                        image: NetworkImage(snapshot.data?[i + 2].data as String),
+                      ),
                     ),
                   ));
                   children.add(Center(
                     // ALBUM NAME
-                    child: snapshot.data?[i],
+                    child: Text(
+                      snapshot.data?[i + 1].data as String,
+                      style: TextStyle(
+                          color: Colors.grey[700]
+                      ),
+                    ),
                   ));
                   children.add(Center(
                     // ARTIST NAME
-                    child: snapshot.data?[i + 1],
+                    child: snapshot.data?[i],
                   ));
                   children.add(Center(
-                    // GENRE
-                    child: snapshot.data?[i + 3],
+                    // GENRE and Year
+                    child: Text(
+                        (snapshot.data?[i + 3].data as String) + "  •  " + (snapshot.data?[i + 4].data as String)
+                    ),
                   ));
-                  children.add(Center(
-                    // YEAR
-                    child: snapshot.data?[i + 4],
+                  //All below for tracklist
+                  //Starting with the divider
+                  children.add(Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Divider(
+                      color: Colors.black,
+                      thickness: 1,
+                      height: 0,
+                    ),
                   ));
-                  children.add(Center(
-                    // TRACKLIST
-                    child: snapshot.data?[i + 5],
+
+                  List<ListTile> tracklist = <ListTile>[];
+                  List<String> songs = (snapshot.data?[i + 5].data as String).split('\n');
+                  for (int i = 0; i < songs.length; i++) {
+                    tracklist.add(ListTile(
+                      visualDensity: VisualDensity(vertical: -4),
+                      title: Text(songs[i],
+                      style: TextStyle(
+                        fontSize: 12
+                      )),
+                      tileColor: i.isOdd ? Colors.black12 : Colors.white,
+                    ));
+                  }
+                  children.add(ListView(
+                    shrinkWrap: true,
+                    children: tracklist,
                   ));
-                  // }
+                  children.add(Divider(
+                      color: Colors.black,
+                      thickness: 1,
+                      height: 0,
+                  ));
                   children.add(SizedBox(
                     width: double.infinity,
                     height: 30,
@@ -87,11 +115,10 @@ class AlbumDetailsPage extends StatelessWidget {
                     )
                   ];
                 }
-                return Center(
-                  child: Column(
+                return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: children,
-                  ),
                 );
               },
             )),
