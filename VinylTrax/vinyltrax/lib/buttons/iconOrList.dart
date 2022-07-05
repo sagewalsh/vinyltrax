@@ -26,14 +26,14 @@ class _iconOrListState extends State<iconOrList> {
           height: 30,
           width: 80,
           child: Center(
-            child: Text("Icon"),
+            child: Text("Icon", style: TextStyle(fontSize: 14)),
           ),
         ),
         _Tab.two: Container(
           height: 30,
           width: 80,
           child: Center(
-            child: Text("List"),
+            child: Text("List", style: TextStyle(fontSize: 14)),
           ),
         ),
       },

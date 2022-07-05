@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:vinyltrax/returnedData/display.dart';
 import 'package:vinyltrax/show_data/genreList.dart';
 import 'package:vinyltrax/returnedData/byAlbum.dart';
 import '../returnedData/byArtist.dart';
 import '../textinput.dart';
-import 'package:vinyltrax/show_data/listEntryList.dart';
 
 enum _Order { artist, albums, genre }
 
@@ -29,18 +27,16 @@ class _StaxPageState extends State<StaxPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Container(
-          width: double.infinity,
-          alignment: Alignment.center,
-          child: const Text("Stax of Trax"),
-          color: Color.fromRGBO(30, 0, 105, 1),
-        ),
-        backgroundColor: Color.fromRGBO(30, 0, 105, 1),
-      ),
-      body: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        child: Column(
+        titleSpacing: 0,
+        toolbarHeight: 180,
+        title: Column(
           children: [
+            Container(
+              width: double.infinity,
+              alignment: Alignment.center,
+              child: const Text("Stax of Trax"),
+              color: Color.fromRGBO(30, 0, 105, 1),
+            ),
             Container(
               color: const Color.fromARGB(255, 244, 244, 244),
               child: TextInput("Search Inventory", true),
@@ -59,21 +55,21 @@ class _StaxPageState extends State<StaxPage> {
                     height: 30,
                     width: 140,
                     child: const Center(
-                      child: Text("Artist"),
+                      child: Text("Artist", style: TextStyle(fontSize: 14)),
                     ),
                   ),
                   _Order.albums: Container(
                     height: 30,
                     width: 140,
                     child: const Center(
-                      child: Text("Albums"),
+                      child: Text("Albums", style: TextStyle(fontSize: 14)),
                     ),
                   ),
                   _Order.genre: Container(
                     height: 30,
                     width: 140,
                     child: const Center(
-                      child: Text("Genre"),
+                      child: Text("Genre", style: TextStyle(fontSize: 14)),
                     ),
                   ),
                 },
@@ -97,21 +93,21 @@ class _StaxPageState extends State<StaxPage> {
                     height: 30,
                     width: 140,
                     child: const Center(
-                      child: Text("Vinyl"),
+                      child: Text("Vinyl", style: TextStyle(fontSize: 14)),
                     ),
                   ),
                   _Type.cd: Container(
                     height: 30,
                     width: 140,
                     child: const Center(
-                      child: Text("CD"),
+                      child: Text("CD", style: TextStyle(fontSize: 14)),
                     ),
                   ),
                   _Type.all: Container(
                     height: 30,
                     width: 140,
                     child: const Center(
-                      child: Text("All"),
+                      child: Text("All", style: TextStyle(fontSize: 14)),
                     ),
                   ),
                 },
@@ -123,16 +119,14 @@ class _StaxPageState extends State<StaxPage> {
                 groupValue: _selectedType,
               ),
             ),
-            Container(
-              // color: const Color.fromARGB(255, 244, 244, 244),
-              child: Divider(
-                color: Colors.grey[400],
-                height: 5,
-                thickness: .5,
-                indent: 8,
-                endIndent: 8,
-              ),
-            ),
+          ],
+        ),
+        backgroundColor: Color.fromRGBO(30, 0, 105, 1),
+      ),
+      body: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Column(
+          children: [
             if (_selectedOrder == _Order.genre)
               GenreList()
             else if (_selectedOrder == _Order.artist)

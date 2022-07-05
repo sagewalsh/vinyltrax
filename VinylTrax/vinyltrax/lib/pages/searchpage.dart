@@ -24,17 +24,16 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       // backgroundColor: Colors.white,
       appBar: AppBar(
+        titleSpacing: 0,
+        toolbarHeight: 150,
         backgroundColor: Color.fromRGBO(30, 0, 105, 1),
-        title: Container(
-          width: double.infinity,
-          alignment: Alignment.center,
-          child: const Text("Search Page"),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        title: Column(
           children: [
+            Container(
+              width: double.infinity,
+              alignment: Alignment.center,
+              child: const Text("Search Page"),
+            ),
             Container(
               color: Color.fromRGBO(30, 0, 105, 1),
               //Search bar, Camera button, and barcode scanning button
@@ -79,6 +78,13 @@ class _SearchPageState extends State<SearchPage> {
                 ],
               ),
             ),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             //Divider between UI and output
             Container(
               color: Color.fromRGBO(30, 0, 105, 1),

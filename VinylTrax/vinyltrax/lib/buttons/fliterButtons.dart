@@ -32,28 +32,28 @@ class _filterButtonsState extends State<filterButtons> {
               height: 30,
               width: 80,
               child: Center(
-                child: Text("Top"),
+                child: Text("Top", style: TextStyle(fontSize: 14)),
               ),
             ),
             _Tab.two: Container(
               height: 30,
               width: 80,
               child: Center(
-                child: Text("Artist"),
+                child: Text("Artist", style: TextStyle(fontSize: 14)),
               ),
             ),
             _Tab.three: Container(
               height: 30,
               width: 80,
               child: Center(
-                child: Text("Album"),
+                child: Text("Album", style: TextStyle(fontSize: 14)),
               ),
             ),
             _Tab.four: Container(
               height: 30,
               width: 80,
               child: Center(
-                child: Text("Song"),
+                child: Text("Song", style: TextStyle(fontSize: 14)),
               ),
             ),
           },
