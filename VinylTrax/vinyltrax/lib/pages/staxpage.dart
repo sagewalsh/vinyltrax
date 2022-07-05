@@ -33,7 +33,9 @@ class _StaxPageState extends State<StaxPage> {
           width: double.infinity,
           alignment: Alignment.center,
           child: const Text("Stax of Trax"),
+          color: Color.fromRGBO(30, 0, 105, 1),
         ),
+        backgroundColor: Color.fromRGBO(30, 0, 105, 1),
       ),
       body: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),

@@ -18,9 +18,9 @@ class _iconOrListState extends State<iconOrList> {
   Widget build(BuildContext context) {
     return CupertinoSegmentedControl(
       padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-      selectedColor: const Color.fromARGB(255, 120, 120, 120),
-      borderColor: const Color.fromARGB(255, 120, 120, 120),
-      pressedColor: Colors.grey,
+      selectedColor: Color.fromRGBO(225, 80, 129, 30),
+      borderColor: Color.fromRGBO(225, 80, 129, 30),
+      pressedColor: Color.fromRGBO(225, 80, 129, 30),
       children: {
         _Tab.one: Container(
           height: 30,
