@@ -15,12 +15,12 @@ class WishPage extends StatefulWidget {
 class _WishPageState extends State<WishPage> {
   _Order _selectedOrder = _Order.artist;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(30, 0, 105, 1),
         title: Container(
           width: double.infinity,
           alignment: Alignment.center,
@@ -30,13 +30,13 @@ class _WishPageState extends State<WishPage> {
       body: Column(
         children: [
           Container(
-            color: const Color.fromARGB(255, 244, 244, 244),
+            color: Color.fromRGBO(30, 0, 105, 1),
             padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 0.0),
             child: CupertinoSegmentedControl(
               padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 6.0),
-              selectedColor: const Color.fromARGB(255, 120, 120, 120),
-              borderColor: const Color.fromARGB(255, 120, 120, 120),
-              pressedColor: Colors.grey,
+              selectedColor: Color.fromRGBO(225, 80, 129, 30),
+              borderColor: Color.fromRGBO(225, 80, 129, 30),
+              pressedColor: Color.fromRGBO(225, 80, 129, 30),
               children: {
                 _Order.artist: Container(
                   height: 30,
@@ -71,7 +71,7 @@ class _WishPageState extends State<WishPage> {
           Container(
             // color: const Color.fromARGB(255, 244, 244, 244),
             child: Divider(
-              color: Colors.grey[400],
+              color: Color.fromRGBO(225, 80, 129, 30),
               height: 5,
               thickness: .5,
               indent: 8,

@@ -37,6 +37,10 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style button_icons.
   cupertino_icons: ^1.0.2
   firebase_database: ^9.0.16
+  flutter_cache_manager: ^3.3.0
+  logging: ^1.0.2
+  diacritic: ^0.1.1
+  provider: ^6.0.2
 
 dev_dependencies:
   flutter_test:

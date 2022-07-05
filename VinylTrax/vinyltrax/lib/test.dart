@@ -1,8 +1,13 @@
 import 'database.dart';
+import 'discogs.dart';
 
 class Test {
   static void fillDatabase() {
     Database.startingData();
+  }
+
+  static void discogs() {
+    Collection.printAlbumDetails("kanye");
   }
 
   static void database() {

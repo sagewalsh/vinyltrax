@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -37,6 +36,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(30, 0, 105, 1),
         title: Container(
           width: double.infinity,
           alignment: Alignment.center,
@@ -48,32 +48,28 @@ class _SettingsPageState extends State<SettingsPage> {
         child: ListView(
           children: [
             SizedBox(height: 40),
-            Row(
-            children: [
+            Row(children: [
               Icon(
                 Icons.person,
                 color: Colors.blue,
-                ),
+              ),
               SizedBox(width: 10),
               Text("Account", style: TextStyle(fontSize: 22))
-              ]
-            ),
+            ]),
             Divider(height: 10, thickness: 1),
             SizedBox(height: 10),
             accountOptions(context, "Account Details"),
             accountOptions(context, "Delete Account"),
             accountOptions(context, "Log Out"),
             SizedBox(height: 40),
-            Row(
-                children: [
-                  Icon(
-                    Icons.settings_suggest,
-                    color: Colors.blue,
-                  ),
-                  SizedBox(width: 10),
-                  Text("Others", style: TextStyle(fontSize: 22))
-                ]
-            ),
+            Row(children: [
+              Icon(
+                Icons.settings_suggest,
+                color: Colors.blue,
+              ),
+              SizedBox(width: 10),
+              Text("Others", style: TextStyle(fontSize: 22))
+            ]),
             Divider(height: 10, thickness: 1),
             SizedBox(height: 10),
             otherOptions("Dark Theme", valNotify1, changeFunct1),
@@ -95,11 +91,11 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(title, style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey[600]
-            )),
+            Text(title,
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey[600])),
             Icon(Icons.arrow_forward_ios, color: Colors.grey)
           ],
         ),
@@ -113,11 +109,12 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-            color: Colors.grey[600],
-          )),
+          Text(title,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[600],
+              )),
           Transform.scale(
             scale: .7,
             child: CupertinoSwitch(
