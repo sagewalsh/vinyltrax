@@ -7,7 +7,10 @@ class Test {
   }
 
   static void discogs() {
-    Collection.printAlbumDetails("kanye");
+    // Collection.search("jasjie");
+    // Collection.search("Jason Molina");
+    // Collection.search("Kanye");
+    // Collection.search("Life of Pablo");
   }
 
   static void database() {
