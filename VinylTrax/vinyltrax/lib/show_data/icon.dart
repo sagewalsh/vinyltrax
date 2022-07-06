@@ -69,7 +69,7 @@ class NextPageAlbum extends StatefulWidget {
 class _NextPageAlbumState extends State<NextPageAlbum> {
   @override
   Widget build(BuildContext context) {
-    return AlbumDetailsPage(["${widget.id}", "${widget.name}"], true);
+    return AlbumDetailsPage(["${widget.id}", "${widget.name}"], false);
   }
 }
 

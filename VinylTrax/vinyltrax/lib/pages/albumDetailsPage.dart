@@ -14,14 +14,40 @@ class AlbumDetailsPage extends StatefulWidget {
 class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
   @override
   Widget build(BuildContext context) {
-    Future<List<Text>> _results = Database.fullData(widget.input[0]);
+    Future<List<Text>> _results;
+    if (widget.inInventory)
+      _results = Database.fullData(widget.input[0]);
+    else
+      _results = Database.fullData(widget.input[0]); //replace this with discogs info
     String album = widget.input[1];
     var _controller = TextEditingController();
+    Widget temp = SizedBox();
+
+    if (!widget.inInventory) {
+      temp = TextButton(
+          onPressed: () {},
+          child: Text(
+            "Add",
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 18
+            ),
+          )
+      );
+    }
+
+    // [0] artist name
+    // [1] album name
+    // [2] album cover
+    // [3] genre
+    // [4] year
+    // [5] tracklist (on a single string, it is parsed here)
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(album)
+        title: Text(album),
+        actions: [temp],
       ),
       body: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),
