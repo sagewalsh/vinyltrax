@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import '../database.dart';
@@ -5,6 +7,7 @@ import '../database.dart';
 class AlbumDetailsPage extends StatefulWidget {
   final List<String> input;
   final bool inInventory;
+
   AlbumDetailsPage(this.input, this.inInventory);
 
   @override
@@ -12,20 +15,80 @@ class AlbumDetailsPage extends StatefulWidget {
 }
 
 class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
+
   @override
   Widget build(BuildContext context) {
     Future<List<Text>> _results;
     if (widget.inInventory)
       _results = Database.fullData(widget.input[0]);
     else
-      _results = Database.fullData(widget.input[0]); //replace this with discogs info
+      _results =
+          Database.fullData(widget.input[0]); //replace this with discogs info
     String album = widget.input[1];
     var _controller = TextEditingController();
     Widget temp = SizedBox();
 
     if (!widget.inInventory) {
+      String locationValue = 'Inventory';
+      String format = 'Vinyl';
+      Widget cdVinylButton = SizedBox();
+
+
+      Widget addToButton(BuildContext context) {
+        return AlertDialog(
+          title: Text("Add $album by ${widget.input[0]}"),
+          content: SizedBox(
+            height: 100,
+            child: Column(
+              children: [
+              DropdownButtonFormField(
+              value: locationValue,
+              icon: Icon(Icons.arrow_drop_down),
+              onChanged: (String? newVal) {
+                locationValue = newVal!;
+              },
+              onSaved: (String? value) {
+                setState(() {
+                  locationValue = value!;
+                });
+              },
+              items: <String>['Inventory', 'Wishlist']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem(
+                    value: value,
+                    child: Text(value));
+              }).toList(),
+            ),
+            DropdownButtonFormField(
+                items: <String>['Vinyl', 'CD']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem(
+                      value: value,
+                      child: Text(value));
+                }).toList(),
+                onChanged: (String? newVal) {
+                  format = newVal!;
+                },
+                onSaved: (String? value) {
+                  setState(() {
+                    format = value!;
+                  });
+                }
+            )
+            ],
+          ),
+        ),
+        );
+      }
+
       temp = TextButton(
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) => addToButton(context)
+            );
+            addToButton(context);
+          },
           child: Text(
             "Add",
             style: TextStyle(
@@ -72,7 +135,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                       height: 150,
                       width: 150,
                       child: Image(
-                        image: NetworkImage(snapshot.data?[i + 2].data as String),
+                        image: NetworkImage(snapshot.data?[i + 2]
+                            .data as String),
                       ),
                     ),
                   ));
@@ -92,7 +156,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                   children.add(Center(
                     // GENRE and Year
                     child: Text(
-                        (snapshot.data?[i + 3].data as String) + "  •  " + (snapshot.data?[i + 4].data as String)
+                        (snapshot.data?[i + 3].data as String) + "  •  " +
+                            (snapshot.data?[i + 4].data as String)
                     ),
                   ));
                   //All below for tracklist
@@ -107,14 +172,15 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                   ));
 
                   List<ListTile> tracklist = <ListTile>[];
-                  List<String> songs = (snapshot.data?[i + 5].data as String).split('\n');
+                  List<String> songs = (snapshot.data?[i + 5].data as String)
+                      .split('\n');
                   for (int i = 0; i < songs.length; i++) {
                     tracklist.add(ListTile(
                       visualDensity: VisualDensity(vertical: -4),
                       title: Text(songs[i],
-                      style: TextStyle(
-                        fontSize: 12
-                      )),
+                          style: TextStyle(
+                              fontSize: 12
+                          )),
                       tileColor: i.isOdd ? Colors.black12 : Colors.white,
                     ));
                   }
@@ -123,9 +189,9 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                     children: tracklist,
                   ));
                   children.add(Divider(
-                      color: Colors.black,
-                      thickness: 1,
-                      height: 0,
+                    color: Colors.black,
+                    thickness: 1,
+                    height: 0,
                   ));
                   children.add(SizedBox(
                     width: double.infinity,
@@ -146,12 +212,12 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                           print(value);
                         },
                         decoration: InputDecoration(
-                            labelText: 'Notes',
-                            border: const OutlineInputBorder(),
-                            suffixIcon: IconButton(
-                              onPressed: _controller.clear,
-                              icon: Icon(Icons.clear),
-                            ),
+                          labelText: 'Notes',
+                          border: const OutlineInputBorder(),
+                          suffixIcon: IconButton(
+                            onPressed: _controller.clear,
+                            icon: Icon(Icons.clear),
+                          ),
                         ),
                       ),
                     ));
@@ -172,9 +238,9 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                   ];
                 }
                 return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: children,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: children,
                 );
               },
             )),
