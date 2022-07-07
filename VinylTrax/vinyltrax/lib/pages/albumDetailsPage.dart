@@ -1,8 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import '../database.dart';
+import '../buttons/addAlbumPopUp.dart';
 
 class AlbumDetailsPage extends StatefulWidget {
   final List<String> input;
@@ -15,6 +14,8 @@ class AlbumDetailsPage extends StatefulWidget {
 }
 
 class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
+  late String locationValue;
+  late String format;
 
   @override
   Widget build(BuildContext context) {
@@ -22,72 +23,21 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
     if (widget.inInventory)
       _results = Database.fullData(widget.input[0]);
     else
-      _results =
-          Database.fullData(widget.input[0]); //replace this with discogs info
+      _results = Database.fullData(widget.input[0]); //replace this with discogs info
     String album = widget.input[1];
     var _controller = TextEditingController();
     Widget temp = SizedBox();
 
     if (!widget.inInventory) {
-      String locationValue = 'Inventory';
-      String format = 'Vinyl';
-      Widget cdVinylButton = SizedBox();
-
-
-      Widget addToButton(BuildContext context) {
-        return AlertDialog(
-          title: Text("Add $album by ${widget.input[0]}"),
-          content: SizedBox(
-            height: 100,
-            child: Column(
-              children: [
-              DropdownButtonFormField(
-              value: locationValue,
-              icon: Icon(Icons.arrow_drop_down),
-              onChanged: (String? newVal) {
-                locationValue = newVal!;
-              },
-              onSaved: (String? value) {
-                setState(() {
-                  locationValue = value!;
-                });
-              },
-              items: <String>['Inventory', 'Wishlist']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem(
-                    value: value,
-                    child: Text(value));
-              }).toList(),
-            ),
-            DropdownButtonFormField(
-                items: <String>['Vinyl', 'CD']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem(
-                      value: value,
-                      child: Text(value));
-                }).toList(),
-                onChanged: (String? newVal) {
-                  format = newVal!;
-                },
-                onSaved: (String? value) {
-                  setState(() {
-                    format = value!;
-                  });
-                }
-            )
-            ],
-          ),
-        ),
-        );
-      }
-
       temp = TextButton(
           onPressed: () {
             showDialog(
-                context: context,
-                builder: (context) => addToButton(context)
+              context: context,
+              builder: (BuildContext context) {
+                return AddAlbumPopUp(_results);
+              },
             );
-            addToButton(context);
+           // addToButton(context);
           },
           child: Text(
             "Add",
@@ -171,6 +121,7 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                     ),
                   ));
 
+                  // Assuming the tracklist is one string, below will parse through it
                   List<ListTile> tracklist = <ListTile>[];
                   List<String> songs = (snapshot.data?[i + 5].data as String)
                       .split('\n');
@@ -198,6 +149,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                     height: 30,
                     child: const Text(""),
                   ));
+
+                  //Notes section
                   if (widget.inInventory) {
                     children.add(Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
