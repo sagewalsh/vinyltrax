@@ -70,13 +70,7 @@ class _SearchPageState extends State<SearchPage> {
             Container(
               //Icon/List buttons and Top/Artist/Album/Song buttons
               color: Color.fromRGBO(30, 0, 105, 1),
-              child: Row(
-                children: [
-                  iconOrList(),
-                  SizedBox(width: 5),
-                  filterButtons(),
-                ],
-              ),
+              child: filterButtons(),
             ),
           ],
         ),
