@@ -13,7 +13,7 @@ class Test {
 
     // Collection.search("jasjie");
     // Collection.search("Jason Molina");
-    Collection.getArtists("Kanye");
+    // Collection.getArtists("Kanye");
     // Collection.search("Life of Pablo");
 
     // Collection.search("For my Parents");

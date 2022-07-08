@@ -239,7 +239,7 @@ i: 0-19
       // print(results);
 
       for (int j = 0; j < results.length; j++) {
-        if (artists.length >= 20) {
+        if (artists.length >= 30) {
           // print(artists.toString());
           return artists;
         }
@@ -334,7 +334,7 @@ i: 0-39
 
       var results = json.decode(content)["results"] as List<dynamic>;
       for (int j = 0; j < results.length; j++) {
-        if (albums.length >= 30) {
+        if (albums.length >= 40) {
           return albums;
         }
 
