@@ -172,9 +172,10 @@ Returns a list of album details:
     details.add(
         "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg");
 
-    details.forEach((element) {
-      print(element);
-    });
+    print(results);
+    // details.forEach((element) {
+    //   print(element);
+    // });
     return details;
   }
 
@@ -343,7 +344,7 @@ i: 0-39
 
       var results = json.decode(content)["results"] as List<dynamic>;
       for (int j = 0; j < results.length; j++) {
-        if (albums.length >= 60) {
+        if (albums.length >= 30) {
           return albums;
         }
 
