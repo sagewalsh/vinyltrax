@@ -22,13 +22,17 @@ class DiscogsArtists extends StatelessWidget {
             List<Widget> children;
             if (snapshot.hasData) {
               children = <Widget>[];
-              for (int i = 0; i < snapshot.data!.length; i += 2) {
-                var data = [snapshot.data![i], snapshot.data![i + 1]];
+              for (int i = 0; i < snapshot.data!.length; i += 3) {
+                var data = [
+                  snapshot.data![i],
+                  snapshot.data![i + 1],
+                  snapshot.data![i + 2],
+                ];
 
                 children.add(ShowIcon(
                   data[0],
                   "",
-                  "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
+                  data[2],
                   true,
                   false,
                   data[1],

@@ -13,7 +13,7 @@ class Test {
 
     // Collection.search("jasjie");
     // Collection.search("Jason Molina");
-    // Collection.getArtists("Kanye");
+    Collection.getArtists("Kanye");
     // Collection.search("Life of Pablo");
 
     // Collection.search("For my Parents");
@@ -30,8 +30,13 @@ class Test {
     // For My Parents: 3855676
     // Collection.album("3855676");
 
+    // Halsey: 4298621
+
     // The life of pablo
     // Collection.album("8115775");
+
+    // https://api.discogs.com/releases/8115775
+    // https://api.discogs.com//artists/4298621/releases?sort=year
   }
 
   static void database() {

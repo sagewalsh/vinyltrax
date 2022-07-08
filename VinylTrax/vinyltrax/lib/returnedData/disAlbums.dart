@@ -22,17 +22,18 @@ class DiscogsAlbums extends StatelessWidget {
             List<Widget> children;
             if (snapshot.hasData) {
               children = <Widget>[];
-              for (int i = 0; i < snapshot.data!.length; i += 3) {
+              for (int i = 0; i < snapshot.data!.length; i += 4) {
                 var data = [
                   snapshot.data![i],
                   snapshot.data![i + 1],
                   snapshot.data![i + 2],
+                  snapshot.data![i + 3],
                 ];
                 var artist_album = data[0].split(" - ");
                 children.add(ShowIcon(
                   artist_album[0],
                   artist_album[1],
-                  "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+                  data[3],
                   false,
                   false,
                   data[1],

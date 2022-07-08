@@ -10,19 +10,6 @@ import 'package:flutter/material.dart';
 
 class Collection extends ChangeNotifier {
   static final Logger _log = Logger('Collection');
-/*
-##########################################################################
-Search
-##########################################################################
-*/
-  // static List<Future<List<String>>> search(String query) {
-  //   List<Future<List<String>>> results = [];
-  //   // results.add(getArtists("/database/search?q={$query}"));
-  //   // results.add(getAlbums("/database/search?q={$query}"));
-  //   getArtists("/database/search?q={$query}");
-  //   // getAlbums("/database/search?q={$query}");
-  //   return results;
-  // }
 
 /*
 ##########################################################################
@@ -48,7 +35,7 @@ Returns a Map with the album title as the key and a list as the value:
 */
   static Future<Map<String, List<String>>> albumsBy(String artistID) async {
     Map<String, List<String>> albums = {};
-    var query = "/artists/$artistID/releases?sort=year";
+    var query = "/artists/$artistID/releases?{sort=year,sort_order=desc}";
     final url = 'https://api.discogs.com$query';
     late String content;
 
@@ -169,10 +156,9 @@ Returns a list of album details:
     });
     details.add(list);
     list = [];
-    details.add(
-        "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg");
+    details.add(results["thumb"]);
 
-    print(results);
+    // print(results);
     // details.forEach((element) {
     //   print(element);
     // });
@@ -185,6 +171,7 @@ getArtists
 i: 0-19
 [i]: "ArtistName"
 [i+1]: "ArtistID"
+[i+2]: "CoverArt"
 ##########################################################################
 */
   static Future<List<String>> getArtists(String input) async {
@@ -265,11 +252,13 @@ i: 0-19
           //     results[j]["title"].toString());
           artists.add(results[j]["title"]);
           artists.add(results[j]["id"].toString());
+          artists.add(results[j]["thumb"]);
           // print(artists.length);
+          print(results);
         }
       }
     }
-    print(artists.toString());
+    // print(artists.toString());
     return artists;
   }
 
@@ -280,6 +269,7 @@ i: 0-39
 [i]: "ArtistName - AlbumName"
 [i+1]: "id"
 [i+2]: "barcode"
+[i+3]: CoverArt
 ##########################################################################
 */
   static Future<List<String>> getAlbums(String input) async {
@@ -367,13 +357,14 @@ i: 0-39
               albums.add(results[j]["title"]);
               albums.add(results[j]["id"].toString());
               albums.add(barcodes[k].toString());
+              albums.add(results[j]["thumb"]);
               break;
             }
           }
         }
       }
     }
-    print(albums.toString());
+    // print(albums.toString());
     return albums;
   }
 
@@ -507,4 +498,18 @@ i: 0-39
 //     // print(results["results"][0]["uri"]);
 //     return json.decode(content);
 //   }
+
+/*
+##########################################################################
+Search
+##########################################################################
+*/
+  // static List<Future<List<String>>> search(String query) {
+  //   List<Future<List<String>>> results = [];
+  //   // results.add(getArtists("/database/search?q={$query}"));
+  //   // results.add(getAlbums("/database/search?q={$query}"));
+  //   getArtists("/database/search?q={$query}");
+  //   // getAlbums("/database/search?q={$query}");
+  //   return results;
+  // }
 }
