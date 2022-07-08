@@ -153,6 +153,7 @@ the Artist's name.
 Data is returned as a list of text widgets
 [0]: Artist Name
 [1]: Artist ID
+[2]: Cover
 */
   static Future<List<Text>> artists() async {
     // Get a snapshot from the artist database
@@ -181,6 +182,7 @@ Data is returned as a list of text widgets
         var artistdata = element.value as Map<Object?, Object?>;
         results.add(Text(artistdata["Name"].toString()));
         results.add(Text(artistdata["UniqueID"].toString()));
+        results.add(Text(artistdata["Cover"].toString()));
       });
     }
     // Return artists and their ids
