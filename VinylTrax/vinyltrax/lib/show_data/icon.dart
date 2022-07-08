@@ -28,7 +28,7 @@ class ShowIcon extends StatelessWidget {
     Widget outputAlb = SizedBox();
     Widget outputArt = SizedBox();
 
-    if (albumName.length > 17)
+    if (albumName.length > 18)
       outputAlb = buildAnimatedText(albumName);
     else
       outputAlb = SizedBox(
@@ -40,7 +40,7 @@ class ShowIcon extends StatelessWidget {
           )
       );
 
-    if (artistName.length > 17)
+    if (artistName.length > 18)
       outputArt = buildAnimatedText(artistName);
     else
       outputArt = SizedBox(
