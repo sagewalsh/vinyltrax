@@ -47,11 +47,13 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                 if (snapshot.hasData) {
                   children = <Widget>[];
                   int i = 0;
+
                   children.add(SizedBox(
                     width: double.infinity,
                     height: 20,
                     child: const Text(""),
                   ));
+
                   children.add(Center(
                     child: Container(
                       // COVER ART
@@ -63,6 +65,7 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                       ),
                     ),
                   ));
+
                   children.add(Center(
                     // ALBUM NAME
                     child: Text(
