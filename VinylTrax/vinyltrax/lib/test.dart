@@ -35,6 +35,34 @@ class Test {
     // The life of pablo
     // Collection.album("8115775");
 
+    // Kehlani: 3415529
+    // Collection.getArtists("Kehlani");
+    // Collection.albumsBy("3415529");
+    // It Was Good Until It Wasn't
+    // Collection.album("1773382"); // ID
+    // Collection.album("15301268"); // main_release
+
+    // Collection.album("1060029");
+    // Collection.album("6045932");
+
+    // Collection.album("1259172");
+    // Collection.album("11067559");
+
+    // Collection.album("1259174");
+    // Collection.album("11067567");
+
+    // Collection.album("1060033");
+    // Collection.album("7345871");
+
+    // Collection.album("1531444");
+    // Collection.album("13302837");
+
+    // Collection.album("16275882");
+
+    // Collection.album("12680654");
+
+    // Collection.album("14680833");
+
     // https://api.discogs.com/releases/8115775
     // https://api.discogs.com//artists/4298621/releases?sort=year
   }

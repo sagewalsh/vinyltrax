@@ -24,6 +24,7 @@ Authentication Data
 
 /*
 ##########################################################################
+albumsBy
 Albums by a certain Artist given ArtistID
 
 Returns a Map with the album title as the key and a list as the value:
@@ -69,25 +70,28 @@ Returns a Map with the album title as the key and a list as the value:
     for (int j = 0; j < results.length; j++) {
       List<String> data = [];
       if (!albums.containsKey(results[j]["title"])) {
-        // print("id: " +
+        // print(j.toString() +
+        //     ".   id: " +
         //     results[j]["id"].toString() +
+        //     "   main_release: " +
+        //     results[j]["main_release"].toString() +
         //     "   title: " +
         //     results[j]["title"].toString());
-        data = [
-          results[j]["title"],
-          results[j]["id"].toString(),
-          results[j]["artist"],
-        ];
+
+        data.add(results[j]["title"]);
+
+        results[j]["main_release"] != null
+            ? data.add(results[j]["main_release"].toString())
+            : data.add(results[j]["id"].toString());
+
+        data.add(results[j]["artist"]);
         results[j]["thumb"] == ""
             ? data.add(
                 "https://images.pexels.com/photos/12509854/pexels-photo-12509854.jpeg?cs=srgb&dl=pexels-mati-mango-12509854.jpg&fm=jpg")
             : data.add(results[j]["thumb"]);
         albums[results[j]["title"]] = data;
-
-        // print(results[j]);
       }
     }
-    // print(results);
     // print(albums.length);
     return albums;
   }
@@ -163,10 +167,10 @@ Returns a list of album details:
             "https://images.pexels.com/photos/12509854/pexels-photo-12509854.jpeg?cs=srgb&dl=pexels-mati-mango-12509854.jpg&fm=jpg")
         : details.add(results["thumb"]);
 
-    // print(results);
-    // details.forEach((element) {
-    //   print(element);
-    // });
+    print(albumID);
+    details.forEach((element) {
+      print(element);
+    });
     return details;
   }
 
