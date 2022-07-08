@@ -382,20 +382,23 @@ Given Album Data from Discogs in the form:
 [5]: year
 [6]: [ [ trackName, duration ], ... ]
 [7]: [ [ contributorName, role, id ], ... ]
+[8]: CoverArt
 #############################################################################
 */
   static void addAlbumToInv(List<dynamic> albumdata) async {
-    await ref.set({
-      albumdata[0]: {
+    // albumdata.forEach((element) {
+    //   print(element);
+    // });
+    await ref.update({
+      "Albums/${albumdata[0]}": {
         "UniqueID": albumdata[0],
-        "Name": albumdata[2],
-        "Artist": albumdata[1],
-        "Year": albumdata[4],
-        "Genre": albumdata[3],
-        "Cover":
-            "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-        "Tracklist": albumdata[5],
-        "Contributors": albumdata[6],
+        "Name": albumdata[3],
+        "Artist": albumdata[2],
+        "Year": albumdata[5],
+        "Genre": albumdata[4],
+        "Cover": albumdata[8],
+        "Tracklist": albumdata[6],
+        "Contributors": albumdata[7],
       }
     });
   }
@@ -649,7 +652,7 @@ Below: Code that is viable to be changed or removed at a later date
   Fills the firebase realtime database with dummy data
   */
   static void startingData() async {
-    await ref.set(
+    await ref.update(
       {
         "Albums": {
           1216: {
