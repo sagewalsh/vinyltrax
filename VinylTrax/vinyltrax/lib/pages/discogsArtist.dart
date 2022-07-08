@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:vinyltrax/show_data/iconList.dart';
-import '../database.dart';
-import '../returnedData/albumData.dart';
 import '../show_data/icon.dart';
+import '../discogs.dart';
 
-class SearchResultsPage extends StatelessWidget {
+class DiscogsArtist extends StatelessWidget {
   final List<String> input;
-  SearchResultsPage(this.input);
+  DiscogsArtist(this.input);
 
   @override
   Widget build(BuildContext context) {
-    Future<List<Text>> _results = Database.albumsBy(input[0]);
+    Future<Map<String, List<String>>> _results = Collection.albumsBy(input[0]);
     // late String name = "Artist not found";
     String name = input[1];
 
@@ -25,23 +22,24 @@ class SearchResultsPage extends StatelessWidget {
         physics: AlwaysScrollableScrollPhysics(),
         child: SizedBox(
             width: double.infinity,
-            child: FutureBuilder<List<Text>>(
+            child: FutureBuilder<Map<String, List<String>>>(
               future: _results,
-              builder:
-                  (BuildContext context, AsyncSnapshot<List<Text>> snapshot) {
+              builder: (BuildContext context,
+                  AsyncSnapshot<Map<String, List<String>>> snapshot) {
                 List<Widget> children;
                 if (snapshot.hasData) {
                   children = <Widget>[];
-                  //
-                  for (int i = 0; i < snapshot.data!.length; i += 4) {
+                  snapshot.data!.forEach((key, value) {
                     children.add(ShowIcon(
-                        snapshot.data?[i + 1].data as String,
-                        snapshot.data?[i].data as String,
-                        snapshot.data?[i + 2].data as String,
-                        false,
-                        true,
-                        snapshot.data?[i + 3].data as String));
-                  }
+                      value[2],
+                      value[0],
+                      value[3],
+                      false,
+                      false,
+                      value[1],
+                    ));
+                  });
+
                   children.add(SizedBox(
                     width: double.infinity,
                     height: 30,

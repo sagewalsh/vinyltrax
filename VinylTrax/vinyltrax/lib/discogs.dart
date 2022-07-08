@@ -38,12 +38,10 @@ Authentication Data
 /*
 ##########################################################################
 Albums by a certain Artist given ArtistID
-
-
 ##########################################################################
 */
-  static Future<List<String>> albumsBy(String artistID) async {
-    List<String> albums = [];
+  static Future<Map<String, List<String>>> albumsBy(String artistID) async {
+    Map<String, List<String>> albums = {};
     var query = "/artists/$artistID/releases?sort=year";
     final url = 'https://api.discogs.com$query';
     late String content;
@@ -73,27 +71,29 @@ Albums by a certain Artist given ArtistID
     }
 
     var results = json.decode(content)["releases"] as List<dynamic>;
-    print(results[0]);
+    // print(results[0]);
 
     for (int j = 0; j < results.length; j++) {
-      // if (albums.length == 20) {
-      //   // print(artists.toString());
-      //   return albums;
-      // }
-
-      // print(results.length);
-      if (!albums.contains(results[j]["title"])) {
+      List<String> data = [];
+      if (!albums.containsKey(results[j]["title"])) {
         print("id: " +
             results[j]["id"].toString() +
             "   title: " +
             results[j]["title"].toString());
-        albums.add(results[j]["title"]);
-        albums.add(results[j]["id"].toString());
-        // print(artists.length);
+        data = [
+          results[j]["title"],
+          results[j]["id"].toString(),
+          results[j]["artist"],
+          results[j]["thumb"],
+        ];
+
+        albums[results[j]["title"]] = data;
+
+        // print(results[j]);
       }
     }
     // print(results);
-    print(albums.length);
+    // print(albums.length);
     return albums;
   }
 

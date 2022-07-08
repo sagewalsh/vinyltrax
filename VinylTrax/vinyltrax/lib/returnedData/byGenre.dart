@@ -25,6 +25,7 @@ class AlbumsOfGenre extends StatelessWidget {
                     snapshot.data?[i].data as String,
                     snapshot.data?[i + 2].data as String,
                     false,
+                    true,
                     snapshot.data?[i + 3].data as String));
               }
             } else if (snapshot.hasError) {

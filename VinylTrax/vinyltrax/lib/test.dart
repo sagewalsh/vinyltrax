@@ -7,19 +7,22 @@ class Test {
   }
 
   static void discogs() {
-    // Collection.albumsBy("364910");
     // Collection.getArtists("Halsey");
     // Collection.getAlbums("Halsey");
     // Collection.search("Halsey");
 
     // Collection.search("jasjie");
     // Collection.search("Jason Molina");
-    // Collection.search("Kanye");
+    // Collection.getArtists("Kanye");
     // Collection.search("Life of Pablo");
 
     // Collection.search("For my Parents");
 
+    // Kanye West: 137880
+    // Collection.albumsBy("137880");
+
     // Jason Molina: 364910
+    // Collection.albumsBy("364910");
 
     // Molina & Roberts: 1194500
     // Collection.album("1194500");

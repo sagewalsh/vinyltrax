@@ -42,6 +42,7 @@ class Results extends StatelessWidget {
                           "",
                           data[2].data.toString(),
                           true,
+                          true,
                           data[1].data.toString()));
                     }
                     // Album Data
@@ -51,6 +52,7 @@ class Results extends StatelessWidget {
                           data[0].data.toString(),
                           data[2].data.toString(),
                           false,
+                          true,
                           data[3].data.toString()));
                     }
                   }

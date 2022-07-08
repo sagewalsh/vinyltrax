@@ -30,6 +30,7 @@ class DiscogsArtists extends StatelessWidget {
                   "",
                   "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
                   true,
+                  false,
                   data[1],
                 ));
               }
