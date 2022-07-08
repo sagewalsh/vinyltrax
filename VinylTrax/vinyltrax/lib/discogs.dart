@@ -69,17 +69,19 @@ Returns a Map with the album title as the key and a list as the value:
     for (int j = 0; j < results.length; j++) {
       List<String> data = [];
       if (!albums.containsKey(results[j]["title"])) {
-        print("id: " +
-            results[j]["id"].toString() +
-            "   title: " +
-            results[j]["title"].toString());
+        // print("id: " +
+        //     results[j]["id"].toString() +
+        //     "   title: " +
+        //     results[j]["title"].toString());
         data = [
           results[j]["title"],
           results[j]["id"].toString(),
           results[j]["artist"],
-          results[j]["thumb"],
         ];
-
+        results[j]["thumb"] == ""
+            ? data.add(
+                "https://images.pexels.com/photos/12509854/pexels-photo-12509854.jpeg?cs=srgb&dl=pexels-mati-mango-12509854.jpg&fm=jpg")
+            : data.add(results[j]["thumb"]);
         albums[results[j]["title"]] = data;
 
         // print(results[j]);
@@ -156,7 +158,10 @@ Returns a list of album details:
     });
     details.add(list);
     list = [];
-    details.add(results["thumb"]);
+    results["thumb"] == ""
+        ? details.add(
+            "https://images.pexels.com/photos/12509854/pexels-photo-12509854.jpeg?cs=srgb&dl=pexels-mati-mango-12509854.jpg&fm=jpg")
+        : details.add(results["thumb"]);
 
     // print(results);
     // details.forEach((element) {
@@ -252,9 +257,12 @@ i: 0-19
           //     results[j]["title"].toString());
           artists.add(results[j]["title"]);
           artists.add(results[j]["id"].toString());
-          artists.add(results[j]["thumb"]);
+          results[j]["thumb"] == ""
+              ? artists.add(
+                  "https://images.pexels.com/photos/12509854/pexels-photo-12509854.jpeg?cs=srgb&dl=pexels-mati-mango-12509854.jpg&fm=jpg")
+              : artists.add(results[j]["thumb"]);
           // print(artists.length);
-          print(results);
+          // print(results);
         }
       }
     }
@@ -357,7 +365,10 @@ i: 0-39
               albums.add(results[j]["title"]);
               albums.add(results[j]["id"].toString());
               albums.add(barcodes[k].toString());
-              albums.add(results[j]["thumb"]);
+              results[j]["thumb"] == ""
+                  ? albums.add(
+                      "https://images.pexels.com/photos/12509854/pexels-photo-12509854.jpeg?cs=srgb&dl=pexels-mati-mango-12509854.jpg&fm=jpg")
+                  : albums.add(results[j]["thumb"]);
               break;
             }
           }
