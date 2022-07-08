@@ -654,436 +654,434 @@ Below: Code that is viable to be changed or removed at a later date
   static void startingData() async {
     await ref.update(
       {
-        "Albums": {
-          1216: {
-            "UniqueID": 1216,
-            "Name": "The Life of Pablo",
-            "Artist": "Kanye West",
-            "Year": 2016,
-            "Genre": "Hip-Hop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Ultralight Beam (explicit)",
-              "Saint Pablo (explicit)",
-            ]
-          },
-          1217: {
-            "UniqueID": 1217,
-            "Name": "My Beautiful Dark Twisted Fantasy",
-            "Artist": "Kanye West",
-            "Year": 2010,
-            "Genre": "Hip-Hop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Dark Fantasy (explicit)",
-              "Who Will Survive in America (explicit)",
-            ]
-          },
-          1218: {
-            "UniqueID": 1218,
-            "Name": "808s & Heartbreak",
-            "Artist": "Kanye West",
-            "Year": 2008,
-            "Genre": "Hip-Hop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Say You Will",
-              "Coldest Winter",
-            ]
-          },
-          1219: {
-            "UniqueID": 1219,
-            "Name": "If I Can't Have Love I Want Power",
-            "Artist": "Halsey",
-            "Year": 2021,
-            "Genre": "Alternative",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "The Tradition",
-              "People Disappear Here",
-            ]
-          },
-          1220: {
-            "UniqueID": 1220,
-            "Name": "Manic",
-            "Artist": "Halsey",
-            "Year": 2020,
-            "Genre": "Alternative",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Ashley",
-              "929",
-            ]
-          },
-          1221: {
-            "UniqueID": 1221,
-            "Name": "Badlands",
-            "Artist": "Halsey",
-            "Year": 2015,
-            "Genre": "Alternative",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Castle",
-              "I Walk the Line",
-            ]
-          },
-          1222: {
-            "UniqueID": 1222,
-            "Name": "good kid, m.A.A.d city",
-            "Artist": "Kendrick Lamar",
-            "Year": 2012,
-            "Genre": "Hip-Hop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Sherane a.k.a Master Splinter's Daughter",
-              "Bitch, Don't Kill My Vibe"
-            ]
-          },
-          1223: {
-            "UniqueID": 1223,
-            "Name": "DAMN.",
-            "Artist": "Kendrick Lamar",
-            "Year": 2017,
-            "Genre": "Hip-Hop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "BLOOD. (explicit)",
-              "DUCKWORTH (explicit)",
-            ]
-          },
-          1224: {
-            "UniqueID": 1224,
-            "Name": "ANTI",
-            "Artist": "Rihanna",
-            "Year": 2016,
-            "Genre": "Pop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Consideration (feat. SZA) (explicit)",
-              "Sex With Me (explicit)",
-            ]
-          },
-          1225: {
-            "UniqueID": 1225,
-            "Name": "Loud",
-            "Artist": "Rihanna",
-            "Year": 2010,
-            "Genre": "Pop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "S&M",
-              "Skin",
-            ]
-          },
-          1226: {
-            "UniqueID": 1226,
-            "Name": "Good Girl Gone Bad: Reloaded",
-            "Artist": "Rihanna",
-            "Year": 2008,
-            "Genre": "Pop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Umbrella (feat. JAY Z)",
-              "Take a Bow",
-            ]
-          },
-          1227: {
-            "UniqueID": 1227,
-            "Name": "Black Holes and Revelations",
-            "Artist": "Muse",
-            "Year": 2006,
-            "Genre": "Alternative",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Take a Bow",
-              "Knights of Cydonia",
-            ]
-          },
-          1228: {
-            "UniqueID": 1228,
-            "Name": "Will of the People",
-            "Artist": "Muse",
-            "Year": 2022,
-            "Genre": "Alternative",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Will of the People",
-              "We are F*****g F****d",
-            ]
-          },
-          1229: {
-            "UniqueID": 1229,
-            "Name": "Animal",
-            "Artist": "Ke\$ha",
-            "Year": 2010,
-            "Genre": "Pop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Your Love is My Drug",
-              "c U Next Tuesday",
-            ]
-          },
-          1230: {
-            "UniqueID": 1230,
-            "Name": "Rainbow",
-            "Artist": "Ke\$ha",
-            "Year": 2017,
-            "Genre": "Pop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Bastards",
-              "Spaceship",
-            ]
-          },
-          1231: {
-            "UniqueID": 1231,
-            "Name": "High Road",
-            "Artist": "Ke\$ha",
-            "Year": 2020,
-            "Genre": "Pop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Tonight",
-              "Summer",
-            ]
-          },
-          1232: {
-            "UniqueID": 1232,
-            "Name": "Cuz I Love You",
-            "Artist": "Lizzo",
-            "Year": 2019,
-            "Genre": "Pop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Cuz I Love You",
-              "Lingerie",
-            ]
-          },
-          1233: {
-            "UniqueID": 1233,
-            "Name": "Special",
-            "Artist": "Lizzo",
-            "Year": 2022,
-            "Genre": "Pop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "About Damn Time",
-              "Grrrls",
-            ]
-          },
-          1234: {
-            "UniqueID": 1234,
-            "Name": "The Eminem Show",
-            "Artist": "Eminem",
-            "Year": 2002,
-            "Genre": "Hip-Hop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Curtains Up",
-              "Curtains Close",
-            ]
-          },
-          1235: {
-            "UniqueID": 1235,
-            "Name": "The Marshall Mathers LP",
-            "Artist": "Eminem",
-            "Year": 2000,
-            "Genre": "Hip-Hop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Public Service Announcement 2000",
-              "Criminal",
-            ]
-          },
-          1236: {
-            "UniqueID": 1236,
-            "Name": "Recovery",
-            "Artist": "Eminem",
-            "Year": 2010,
-            "Genre": "Hip-Hop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Cold Wind Blows",
-              "Session One",
-            ]
-          },
-          1237: {
-            "UniqueID": 1237,
-            "Name": "dont smile at me",
-            "Artist": "Billie Eilish",
-            "Year": 2017,
-            "Genre": "Alternative",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "COPYCAT",
-              "&burn",
-            ]
-          },
-          1238: {
-            "UniqueID": 1238,
-            "Name": "WHEN WE ALL FALL ASLEEP, WHERE DO WE GO?",
-            "Artist": "Billie Eilish",
-            "Year": 2019,
-            "Genre": "Alternative",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "!!!!!!!!",
-              "goodbye",
-            ]
-          },
-          1239: {
-            "UniqueID": 1239,
-            "Name": "Happier Than Ever",
-            "Artist": "Billie Eilish",
-            "Year": 2021,
-            "Genre": "Alternative",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Getting Older",
-              "Male Fantasy",
-            ]
-          },
-          1240: {
-            "UniqueID": 1240,
-            "Name": "Invasion of Privacy",
-            "Artist": "Cardi B",
-            "Year": 2018,
-            "Genre": "Hip-Hop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Get Up 10",
-              "I Do",
-            ]
-          },
-          1241: {
-            "UniqueID": 1241,
-            "Name": "Oxnard",
-            "Artist": "Anderson .Paak",
-            "Year": 2018,
-            "Genre": "Hip-Hop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "The Chase",
-              "Left to Right",
-            ]
-          },
-          1242: {
-            "UniqueID": 1242,
-            "Name": "Malibu",
-            "Artist": "Anderson .Paak",
-            "Year": 2016,
-            "Genre": "R&B",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "The Bird",
-              "The Dreamer",
-            ]
-          },
-          1243: {
-            "UniqueID": 1243,
-            "Name": "Ventura",
-            "Artist": "Anderson .Paak",
-            "Year": 2019,
-            "Genre": "R&B",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Come Home",
-              "What Can We Do?",
-            ]
-          },
-          // 1244: {
-          //   "UniqueID": 1244,
-          //   "Name": "An Evening with Silk Sonic",
-          //   "Artist": {"Bruno Mars", "Anderson .Paak", "Silk Sonic"},
-          //   "Year": 2021,
-          //   "Genre": "R&B",
-          //   "Cover":
-          //       "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          //   "Tracklist": [
-          //     "Silk Sonic Intro",
-          //     "Blast Off",
-          //   ]
-          // },
-          1245: {
-            "UniqueID": 1245,
-            "Name": "Take Care",
-            "Artist": "Drake",
-            "Year": 2011,
-            "Genre": "Hip-Hop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Over My Dead Body",
-              "The Ride",
-            ]
-          },
-          1246: {
-            "UniqueID": 1246,
-            "Name": "Nothing Was the Same",
-            "Artist": "Drake",
-            "Year": 2013,
-            "Genre": "Hip-Hop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Tuscan Leather",
-              "All Me",
-            ]
-          },
-          1247: {
-            "UniqueID": 1247,
-            "Name": "If You're Reading This It's Too Late",
-            "Artist": "Drake",
-            "Year": 2015,
-            "Genre": "Hip-Hop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Legend",
-              "6PM in New York",
-            ]
-          },
-          1248: {
-            "UniqueID": 1248,
-            "Name": "Views",
-            "Artist": "Drake",
-            "Year": 2016,
-            "Genre": "Hip-Hop",
-            "Cover":
-                "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-            "Tracklist": [
-              "Keep the Family Close",
-              "Hotline Bling",
-            ]
-          }
+        "Albums/1216": {
+          "UniqueID": 1216,
+          "Name": "The Life of Pablo",
+          "Artist": "Kanye West",
+          "Year": 2016,
+          "Genre": "Hip-Hop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Ultralight Beam (explicit)",
+            "Saint Pablo (explicit)",
+          ]
+        },
+        "Albums/1217": {
+          "UniqueID": 1217,
+          "Name": "My Beautiful Dark Twisted Fantasy",
+          "Artist": "Kanye West",
+          "Year": 2010,
+          "Genre": "Hip-Hop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Dark Fantasy (explicit)",
+            "Who Will Survive in America (explicit)",
+          ]
+        },
+        "Albums/1218": {
+          "UniqueID": 1218,
+          "Name": "808s & Heartbreak",
+          "Artist": "Kanye West",
+          "Year": 2008,
+          "Genre": "Hip-Hop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Say You Will",
+            "Coldest Winter",
+          ]
+        },
+        "Albums/1219": {
+          "UniqueID": 1219,
+          "Name": "If I Can't Have Love I Want Power",
+          "Artist": "Halsey",
+          "Year": 2021,
+          "Genre": "Alternative",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "The Tradition",
+            "People Disappear Here",
+          ]
+        },
+        "Albums/1220": {
+          "UniqueID": 1220,
+          "Name": "Manic",
+          "Artist": "Halsey",
+          "Year": 2020,
+          "Genre": "Alternative",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Ashley",
+            "929",
+          ]
+        },
+        "Albums/1221": {
+          "UniqueID": 1221,
+          "Name": "Badlands",
+          "Artist": "Halsey",
+          "Year": 2015,
+          "Genre": "Alternative",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Castle",
+            "I Walk the Line",
+          ]
+        },
+        "Albums/1222": {
+          "UniqueID": 1222,
+          "Name": "good kid, m.A.A.d city",
+          "Artist": "Kendrick Lamar",
+          "Year": 2012,
+          "Genre": "Hip-Hop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Sherane a.k.a Master Splinter's Daughter",
+            "Bitch, Don't Kill My Vibe"
+          ]
+        },
+        "Albums/1223": {
+          "UniqueID": 1223,
+          "Name": "DAMN.",
+          "Artist": "Kendrick Lamar",
+          "Year": 2017,
+          "Genre": "Hip-Hop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "BLOOD. (explicit)",
+            "DUCKWORTH (explicit)",
+          ]
+        },
+        "Albums/1224": {
+          "UniqueID": 1224,
+          "Name": "ANTI",
+          "Artist": "Rihanna",
+          "Year": 2016,
+          "Genre": "Pop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Consideration (feat. SZA) (explicit)",
+            "Sex With Me (explicit)",
+          ]
+        },
+        "Albums/1225": {
+          "UniqueID": 1225,
+          "Name": "Loud",
+          "Artist": "Rihanna",
+          "Year": 2010,
+          "Genre": "Pop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "S&M",
+            "Skin",
+          ]
+        },
+        "Albums/1226": {
+          "UniqueID": 1226,
+          "Name": "Good Girl Gone Bad: Reloaded",
+          "Artist": "Rihanna",
+          "Year": 2008,
+          "Genre": "Pop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Umbrella (feat. JAY Z)",
+            "Take a Bow",
+          ]
+        },
+        "Albums/1227": {
+          "UniqueID": 1227,
+          "Name": "Black Holes and Revelations",
+          "Artist": "Muse",
+          "Year": 2006,
+          "Genre": "Alternative",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Take a Bow",
+            "Knights of Cydonia",
+          ]
+        },
+        "Albums/1228": {
+          "UniqueID": 1228,
+          "Name": "Will of the People",
+          "Artist": "Muse",
+          "Year": 2022,
+          "Genre": "Alternative",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Will of the People",
+            "We are F*****g F****d",
+          ]
+        },
+        "Albums/1229": {
+          "UniqueID": 1229,
+          "Name": "Animal",
+          "Artist": "Ke\$ha",
+          "Year": 2010,
+          "Genre": "Pop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Your Love is My Drug",
+            "c U Next Tuesday",
+          ]
+        },
+        "Albums/1230": {
+          "UniqueID": 1230,
+          "Name": "Rainbow",
+          "Artist": "Ke\$ha",
+          "Year": 2017,
+          "Genre": "Pop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Bastards",
+            "Spaceship",
+          ]
+        },
+        "Albums/1231": {
+          "UniqueID": 1231,
+          "Name": "High Road",
+          "Artist": "Ke\$ha",
+          "Year": 2020,
+          "Genre": "Pop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Tonight",
+            "Summer",
+          ]
+        },
+        "Albums/1232": {
+          "UniqueID": 1232,
+          "Name": "Cuz I Love You",
+          "Artist": "Lizzo",
+          "Year": 2019,
+          "Genre": "Pop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Cuz I Love You",
+            "Lingerie",
+          ]
+        },
+        "Albums/1233": {
+          "UniqueID": 1233,
+          "Name": "Special",
+          "Artist": "Lizzo",
+          "Year": 2022,
+          "Genre": "Pop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "About Damn Time",
+            "Grrrls",
+          ]
+        },
+        "Albums/1234": {
+          "UniqueID": 1234,
+          "Name": "The Eminem Show",
+          "Artist": "Eminem",
+          "Year": 2002,
+          "Genre": "Hip-Hop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Curtains Up",
+            "Curtains Close",
+          ]
+        },
+        "Albums/1235": {
+          "UniqueID": 1235,
+          "Name": "The Marshall Mathers LP",
+          "Artist": "Eminem",
+          "Year": 2000,
+          "Genre": "Hip-Hop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Public Service Announcement 2000",
+            "Criminal",
+          ]
+        },
+        "Albums/1236": {
+          "UniqueID": 1236,
+          "Name": "Recovery",
+          "Artist": "Eminem",
+          "Year": 2010,
+          "Genre": "Hip-Hop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Cold Wind Blows",
+            "Session One",
+          ]
+        },
+        "Albums/1237": {
+          "UniqueID": 1237,
+          "Name": "dont smile at me",
+          "Artist": "Billie Eilish",
+          "Year": 2017,
+          "Genre": "Alternative",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "COPYCAT",
+            "&burn",
+          ]
+        },
+        "Albums/1238": {
+          "UniqueID": 1238,
+          "Name": "WHEN WE ALL FALL ASLEEP, WHERE DO WE GO?",
+          "Artist": "Billie Eilish",
+          "Year": 2019,
+          "Genre": "Alternative",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "!!!!!!!!",
+            "goodbye",
+          ]
+        },
+        "Albums/1239": {
+          "UniqueID": 1239,
+          "Name": "Happier Than Ever",
+          "Artist": "Billie Eilish",
+          "Year": 2021,
+          "Genre": "Alternative",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Getting Older",
+            "Male Fantasy",
+          ]
+        },
+        "Albums/1240": {
+          "UniqueID": 1240,
+          "Name": "Invasion of Privacy",
+          "Artist": "Cardi B",
+          "Year": 2018,
+          "Genre": "Hip-Hop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Get Up 10",
+            "I Do",
+          ]
+        },
+        "Albums/1241": {
+          "UniqueID": 1241,
+          "Name": "Oxnard",
+          "Artist": "Anderson .Paak",
+          "Year": 2018,
+          "Genre": "Hip-Hop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "The Chase",
+            "Left to Right",
+          ]
+        },
+        "Albums/1242": {
+          "UniqueID": 1242,
+          "Name": "Malibu",
+          "Artist": "Anderson .Paak",
+          "Year": 2016,
+          "Genre": "R&B",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "The Bird",
+            "The Dreamer",
+          ]
+        },
+        "Albums/1243": {
+          "UniqueID": 1243,
+          "Name": "Ventura",
+          "Artist": "Anderson .Paak",
+          "Year": 2019,
+          "Genre": "R&B",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Come Home",
+            "What Can We Do?",
+          ]
+        },
+        // 1244": {
+        //   "UniqueID": 1244,
+        //   "Name": "An Evening with Silk Sonic",
+        //   "Artist": {"Bruno Mars", "Anderson .Paak", "Silk Sonic"},
+        //   "Year": 2021,
+        //   "Genre": "R&B",
+        //   "Cover":
+        //       "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+        //   "Tracklist": [
+        //     "Silk Sonic Intro",
+        //     "Blast Off",
+        //   ]
+        // },
+        "Albums/1245": {
+          "UniqueID": 1245,
+          "Name": "Take Care",
+          "Artist": "Drake",
+          "Year": 2011,
+          "Genre": "Hip-Hop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Over My Dead Body",
+            "The Ride",
+          ]
+        },
+        "Albums/1246": {
+          "UniqueID": 1246,
+          "Name": "Nothing Was the Same",
+          "Artist": "Drake",
+          "Year": 2013,
+          "Genre": "Hip-Hop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Tuscan Leather",
+            "All Me",
+          ]
+        },
+        "Albums/1247": {
+          "UniqueID": 1247,
+          "Name": "If You're Reading This It's Too Late",
+          "Artist": "Drake",
+          "Year": 2015,
+          "Genre": "Hip-Hop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Legend",
+            "6PM in New York",
+          ]
+        },
+        "Albums/1248": {
+          "UniqueID": 1248,
+          "Name": "Views",
+          "Artist": "Drake",
+          "Year": 2016,
+          "Genre": "Hip-Hop",
+          "Cover":
+              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+          "Tracklist": [
+            "Keep the Family Close",
+            "Hotline Bling",
+          ]
         },
         "Artists": {
           1111: {
