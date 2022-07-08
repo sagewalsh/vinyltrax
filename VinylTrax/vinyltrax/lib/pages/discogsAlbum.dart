@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/show_data/iconList.dart';
+import '../buttons/addAlbumPopUp.dart';
 import '../show_data/icon.dart';
 import '../discogs.dart';
 
@@ -17,6 +18,24 @@ class DiscogsAlbum extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(name),
+        actions: [
+          TextButton(
+          onPressed: () {
+            showDialog(context: context, builder: (BuildContext context) {
+                return AddAlbumPopUp(_results);
+              },
+            );
+          // addToButton(context);
+            },
+            child: Text(
+              "Add",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18
+                ),
+            )
+          )
+        ],
       ),
       body: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),

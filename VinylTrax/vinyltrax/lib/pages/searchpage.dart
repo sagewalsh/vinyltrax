@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:vinyltrax/button_icons/barcode.dart';
 import 'package:vinyltrax/buttons/fliterButtons.dart';
-import '../textinput.dart';
+import '../textinput.dart' as search;
 import '../buttons/iconOrList.dart';
 import './searchresultspage.dart';
 import './results.dart';
@@ -14,8 +16,9 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final textBox = TextInput("Search", false);
+  final textBox = search.TextInput("Search", false);
   var input = "";
+  String? scanResult; //use this to get the barcode number of an album
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +61,7 @@ class _SearchPageState extends State<SearchPage> {
                     color: Colors.white,
                     padding: EdgeInsets.all(5),
                     constraints: BoxConstraints(),
-                    onPressed: () {
-                      print("barcode");
-                    },
+                    onPressed: scanBarcode,
                     icon: Icon(BarcodeIcon.barcode),
                     iconSize: 35,
                   ),
@@ -84,16 +85,25 @@ class _SearchPageState extends State<SearchPage> {
               color: Color.fromRGBO(30, 0, 105, 1),
               height: 5,
             ),
-            // Divider(
-            //   color: Color.fromRGBO(225, 80, 129, 30),
-            //   height: 5,
-            //   thickness: .5,
-            //   indent: 8,
-            //   endIndent: 8,
-            // ),
           ],
         ),
       ),
     );
+  }
+
+  Future scanBarcode() async {
+    String scanResult;
+    try {
+      scanResult = await FlutterBarcodeScanner.scanBarcode(
+          "#E52638",
+          "Cancel",
+          true,
+          ScanMode.BARCODE
+      );
+    } on PlatformException {
+      scanResult = 'Failed to get platform version';
+    }
+    if (!mounted) return;
+    setState(() => this.scanResult = scanResult);
   }
 }

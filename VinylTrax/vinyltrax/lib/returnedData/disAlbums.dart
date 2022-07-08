@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vinyltrax/returnedData/scrollResults.dart';
 import 'package:vinyltrax/show_data/iconList.dart';
 import '../show_data/icon.dart';
 import '../discogs.dart';
@@ -11,7 +12,6 @@ class DiscogsAlbums extends StatelessWidget {
   Widget build(BuildContext context) {
     Future<List<String>> _results = Collection.getAlbums(input);
     // late String name = "Artist not found";
-    String name = input;
 
     return SizedBox(
         width: double.infinity,
@@ -58,12 +58,7 @@ class DiscogsAlbums extends StatelessWidget {
                 )
               ];
             }
-            return Column(
-              children: [
-                SizedBox(height: 20),
-                IconList(children),
-              ],
-            );
+            return ScrollResults(children, "Albums");
           },
         ));
   }

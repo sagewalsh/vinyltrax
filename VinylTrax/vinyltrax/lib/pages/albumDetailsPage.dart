@@ -5,9 +5,8 @@ import '../buttons/addAlbumPopUp.dart';
 
 class AlbumDetailsPage extends StatefulWidget {
   final List<String> input;
-  final bool inInventory;
 
-  AlbumDetailsPage(this.input, this.inInventory);
+  AlbumDetailsPage(this.input);
 
   @override
   State<AlbumDetailsPage> createState() => _AlbumDetailsPageState();
@@ -19,35 +18,10 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    Future<List<Text>> _results;
-    if (widget.inInventory)
-      _results = Database.fullData(widget.input[0]);
-    else
-      _results = Database.fullData(widget.input[0]); //replace this with discogs info
+    Future<List<Text>> _results = Database.fullData(widget.input[0]); //replace this with discogs info
     String album = widget.input[1];
     var _controller = TextEditingController();
-    Widget temp = SizedBox();
 
-    if (!widget.inInventory) {
-      temp = TextButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AddAlbumPopUp(_results);
-              },
-            );
-           // addToButton(context);
-          },
-          child: Text(
-            "Add",
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 18
-            ),
-          )
-      );
-    }
 
     // [0] artist name
     // [1] album name
@@ -60,7 +34,6 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(album),
-        actions: [temp],
       ),
       body: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),
@@ -151,8 +124,7 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                   ));
 
                   //Notes section
-                  if (widget.inInventory) {
-                    children.add(Padding(
+                  children.add(Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: TextField(
                         controller: _controller,
@@ -174,7 +146,6 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                         ),
                       ),
                     ));
-                  }
                 } else if (snapshot.hasError) {
                   children = <Widget>[
                     Icon(Icons.error),

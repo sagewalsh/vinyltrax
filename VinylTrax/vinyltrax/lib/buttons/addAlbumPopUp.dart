@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AddAlbumPopUp extends StatefulWidget {
-  Future<List<Text>> results;
+  Future<List<dynamic>> input;
   //const AddAlbumPopUp({Key? key}) : super(key: key);
 
-  AddAlbumPopUp(this.results);
+  AddAlbumPopUp(this.input);
 
   @override
   State<AddAlbumPopUp> createState() => _AddAlbumPopUpState();
@@ -20,11 +20,12 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
   Widget build(BuildContext context) {
     return StatefulBuilder(
         builder: (context, setState) {
-          return FutureBuilder<List<Text>>(
-            future: widget.results,
-            builder: (BuildContext context, AsyncSnapshot<List<Text>> snapshot) {
+          return FutureBuilder<List<dynamic>>(
+            future: widget.input,
+            builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+              var data = snapshot.data!;
               return AlertDialog(
-                title: Text("Add ${snapshot.data?[0].data as String} by ${snapshot.data?[1].data as String}"),
+                title: Text("Add ${data[1].toString()} by ${data[0][0][0].toString()}"),
                 content: SizedBox(
                   height: height,
                   child: Column(

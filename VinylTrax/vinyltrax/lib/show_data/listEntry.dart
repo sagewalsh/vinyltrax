@@ -26,15 +26,13 @@ class ListEntry extends StatelessWidget {
     Widget avatar = SizedBox();
     if (!isAlbum) {
       avatar = CircleAvatar(
-          foregroundImage: NetworkImage(
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg"));
+          foregroundImage: NetworkImage(image));
     } else {
       avatar = Container(
         height: 40,
         width: 40,
         child: Image(
-          image: NetworkImage(
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg"),
+          image: NetworkImage(image),
         ),
       );
     }

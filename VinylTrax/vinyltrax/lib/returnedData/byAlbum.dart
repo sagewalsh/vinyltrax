@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vinyltrax/buttons/addAlbumPopUp.dart';
+import 'package:vinyltrax/returnedData/scrollResults.dart';
 import '../database.dart';
 import '../show_data/icon.dart';
 import '../show_data/iconList.dart';

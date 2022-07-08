@@ -11,14 +11,9 @@ class ScrollResults extends StatefulWidget {
 }
 
 class _ScrollResultsState extends State<ScrollResults> {
-  List<Widget> output = [];
 
   @override
   Widget build(BuildContext context) {
-    for (int i = 0; i < widget.children.length; i++) {
-      output.add(widget.children[i]);
-      output.add(SizedBox(width: 10));
-    }
 
     return Padding(
       padding: EdgeInsets.fromLTRB(8, 15, 8, 0),
@@ -30,7 +25,7 @@ class _ScrollResultsState extends State<ScrollResults> {
           Container(
             height: 190,
             child: ListView.separated(
-                itemCount: widget.children.length,
+                itemCount: widget.children.length - 1,
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {

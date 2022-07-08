@@ -137,7 +137,7 @@ class _StaxPageState extends State<StaxPage> {
             else if (_selectedOrder == _Order.artist)
               AlbumOrderArtist()
             else
-              AlbumOrderAlbum(),
+              AlbumOrderAlbum()
           ],
         ),
       ),

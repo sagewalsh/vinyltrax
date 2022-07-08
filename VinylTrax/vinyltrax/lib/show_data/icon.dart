@@ -7,11 +7,11 @@ import 'package:marquee/marquee.dart';
 
 class ShowIcon extends StatelessWidget {
   final String coverArt;
-  String artistName;
-  String albumName;
+  final String artistName;
+  final String albumName;
   final bool isArtist;
   final bool isInv;
-  String id;
+  final String id;
   //const AlbumIcon({Key? key}) : super(key: key);
   ShowIcon(this.artistName, this.albumName, this.coverArt, this.isArtist,
       this.isInv, this.id);
@@ -94,7 +94,7 @@ class ShowIcon extends StatelessWidget {
 
 /*
 ##########################################################################
-Clicked an Album in Invetory
+Clicked an Album in Inventory
 ##########################################################################
 */
 class NextPageAlbum extends StatefulWidget {
@@ -108,7 +108,7 @@ class NextPageAlbum extends StatefulWidget {
 class _NextPageAlbumState extends State<NextPageAlbum> {
   @override
   Widget build(BuildContext context) {
-    return AlbumDetailsPage(["${widget.id}", "${widget.name}"], false);
+    return AlbumDetailsPage(["${widget.id}", "${widget.name}"]);
   }
 }
 
