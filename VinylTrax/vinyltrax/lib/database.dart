@@ -366,6 +366,50 @@ list of text widgets.
     }
     return results;
   }
+
+/*
+#############################################################################
+Add an album to your inventory
+
+Given Album Data from Discogs in the form:
+[0]: albumID
+[1]: type
+[2]: [ [ artistName, artistID ], ... ]
+[3]: albumName
+[4]: [ genre, ... ]
+[5]: year
+[6]: [ [ trackName, duration ], ... ]
+[7]: [ [ contributorName, role, id ], ... ]
+#############################################################################
+*/
+  static void addAlbumToInv(List<dynamic> albumdata) async {
+    await ref.set({
+      albumdata[0]: {
+        "UniqueID": albumdata[0],
+        "Name": albumdata[2],
+        "Artist": albumdata[1],
+        "Year": albumdata[4],
+        "Genre": albumdata[3],
+        "Cover":
+            "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
+        "Tracklist": albumdata[5],
+        "Contributors": albumdata[6],
+      }
+    });
+  }
+
+/*
+#############################################################################
+Add an album to your wishlist
+#############################################################################
+*/
+
+/*
+#############################################################################
+Add pressing data to an album
+#############################################################################
+*/
+
 /*
 #############################################################################
 Below: Code that is viable to be changed or removed at a later date

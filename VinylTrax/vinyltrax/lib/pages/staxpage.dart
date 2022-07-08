@@ -32,18 +32,21 @@ class _StaxPageState extends State<StaxPage> {
         title: Column(
           children: [
             Container(
+              // Name of Page
               width: double.infinity,
               alignment: Alignment.center,
               child: const Text("Stax of Trax"),
               color: Color.fromRGBO(30, 0, 105, 1),
             ),
             Container(
+              // Search Bar
               color: const Color.fromARGB(255, 244, 244, 244),
               child: TextInput("Search Inventory", true),
               width: double.infinity,
               height: 75,
             ),
             Container(
+              // Artist / Albums / Genre Buttons
               color: Color.fromRGBO(30, 0, 105, 1),
               child: CupertinoSegmentedControl(
                 padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 6.0),
@@ -82,6 +85,7 @@ class _StaxPageState extends State<StaxPage> {
               ),
             ),
             Container(
+              // Vinyl / CD / All Buttons
               color: Color.fromRGBO(30, 0, 105, 1),
               child: CupertinoSegmentedControl(
                 padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
@@ -124,6 +128,7 @@ class _StaxPageState extends State<StaxPage> {
         backgroundColor: Color.fromRGBO(30, 0, 105, 1),
       ),
       body: SingleChildScrollView(
+        // Inventory View Outputs
         physics: AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [

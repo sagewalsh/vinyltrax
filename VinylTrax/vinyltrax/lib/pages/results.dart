@@ -34,12 +34,6 @@ class Results extends StatelessWidget {
                   children = <Widget>[];
                   //
                   for (int i = 0; i < snapshot.data!.length; i++) {
-                    // children.add(ShowIcon(
-                    // snapshot.data?[i + 1].data as String,
-                    // snapshot.data?[i].data as String,
-                    // snapshot.data?[i + 2].data as String,
-                    // false,
-                    // snapshot.data?[i + 3].data as String));
                     var data = snapshot.data![i];
                     // Artist Data
                     if (data.length == 3) {

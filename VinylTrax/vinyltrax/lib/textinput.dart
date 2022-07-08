@@ -85,7 +85,7 @@ class _TextInputState extends State<TextInput> {
                       }))
                     : Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                        return DiscogsResults();
+                        return DiscogsResults(text);
                       }));
               },
             ),

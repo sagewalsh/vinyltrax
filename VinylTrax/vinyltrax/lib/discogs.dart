@@ -8,63 +8,21 @@ import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:flutter/material.dart';
 
-/*
-##########################################################################
-Collection Album Data
-##########################################################################
-*/
-class CollectionAlbum {
-  var id, artist, title, year;
-
-  CollectionAlbum({
-    required this.id,
-    required this.artist,
-    required this.title,
-    required this.year,
-  });
-
-  factory CollectionAlbum.fromJson(Map<String, dynamic> json) {
-    final info = json['basic_information'] as Map<String, dynamic>;
-    return CollectionAlbum(
-      id: json['instance_id'] as int,
-      artist: _oneNameForArtists(info['artists'] as List<dynamic>?),
-      title: info['title'] as String,
-      year: info['year'] as int,
-    );
-  }
-
-  @override
-  String toString() {
-    var string = "\nTitle: " + title.toString();
-    string += "\nArtist: " + artist.toString();
-    string += "\nYear: " + year.toString();
-    return string;
-  }
-}
-
-String _oneNameForArtists(List<dynamic>? artists) {
-  if (artists?.isEmpty ?? true) {
-    return '(unknown)';
-  }
-  return (artists![0]['name'] as String).replaceAllMapped(
-    RegExp(r'^(.+) \([0-9]+\)$'),
-    (m) => m[1]!,
-  );
-}
-
-/*
-##########################################################################
-Collection 
-##########################################################################
-*/
 class Collection extends ChangeNotifier {
   static final Logger _log = Logger('Collection');
-
-  static String search(String query) {
-    _getArtists("/database/search?q={$query}");
-    _getAlbums("/database/search?q={$query}");
-    return "";
-  }
+/*
+##########################################################################
+Search
+##########################################################################
+*/
+  // static List<Future<List<String>>> search(String query) {
+  //   List<Future<List<String>>> results = [];
+  //   // results.add(getArtists("/database/search?q={$query}"));
+  //   // results.add(getAlbums("/database/search?q={$query}"));
+  //   getArtists("/database/search?q={$query}");
+  //   // getAlbums("/database/search?q={$query}");
+  //   return results;
+  // }
 
 /*
 ##########################################################################
@@ -76,16 +34,152 @@ Authentication Data
             'Discogs key=pHCSKEvAYcdziOzwcJoV, secret=XXFgxrfktsLtrovCnjzUqcSaxgZeJryP',
         'User-Agent': "Sage",
       };
+
 /*
 ##########################################################################
-_getArtists
+Albums by a certain Artist given ArtistID
+
+
+##########################################################################
+*/
+  static Future<List<String>> albumsBy(String artistID) async {
+    List<String> albums = [];
+    var query = "/artists/$artistID/releases?sort=year";
+    final url = 'https://api.discogs.com$query';
+    late String content;
+
+    try {
+      content =
+          (await DefaultCacheManager().getSingleFile(url, headers: _headers))
+              .readAsStringSync();
+    } on SocketException catch (e) {
+      throw Exception(
+          'Could not connect to Discogs. Please check your internet connection and try again later.');
+    } on HttpExceptionWithStatus catch (e) {
+      // If that response was not OK, throw an error.
+      if (e.statusCode == 404) {
+        throw Exception(
+            'Oops! Couldn\'t find what you\'re looking for on Discogs (404 error).');
+      } else if (e.statusCode >= 400) {
+        throw Exception(
+            'The Discogs service is currently unavailable (${e.statusCode}). Please try again later.');
+      }
+    } on HttpException catch (e) {
+      // If that response was not OK, throw an error.
+      throw Exception(
+          'The Discogs service is currently unavailable. Please try again later.');
+    } on FileSystemException catch (e) {
+      _log.severe('Failed to read the chached file', e);
+    }
+
+    var results = json.decode(content)["releases"] as List<dynamic>;
+    print(results[0]);
+
+    for (int j = 0; j < results.length; j++) {
+      // if (albums.length == 20) {
+      //   // print(artists.toString());
+      //   return albums;
+      // }
+
+      // print(results.length);
+      if (!albums.contains(results[j]["title"])) {
+        print("id: " +
+            results[j]["id"].toString() +
+            "   title: " +
+            results[j]["title"].toString());
+        albums.add(results[j]["title"]);
+        albums.add(results[j]["id"].toString());
+        // print(artists.length);
+      }
+    }
+    // print(results);
+    print(albums.length);
+    return albums;
+  }
+
+/*
+##########################################################################
+Album data given albumid
+
+Returns a list of album details:
+[0]: [ [ artistName, artistID ], ... ]
+[1]: albumName
+[2]: [ genre, ... ]
+[3]: year
+[4]: [ [ trackName, duration ], ... ]
+[5]: [ [ contributorName, role, id ], ... ]
+##########################################################################
+*/
+  static Future<List<dynamic>> album(String albumID) async {
+    // add checks to albumID
+    List<dynamic> details = [];
+    var query = "/releases/$albumID";
+    final url = "https://api.discogs.com$query";
+    late String content;
+
+    try {
+      content =
+          (await DefaultCacheManager().getSingleFile(url, headers: _headers))
+              .readAsStringSync();
+    } on SocketException catch (e) {
+      throw Exception(
+          'Could not connect to Discogs. Please check your internet connection and try again later.');
+    } on HttpExceptionWithStatus catch (e) {
+      // If that response was not OK, throw an error.
+      if (e.statusCode == 404) {
+        throw Exception(
+            'Oops! Couldn\'t find what you\'re looking for on Discogs (404 error).');
+      } else if (e.statusCode >= 400) {
+        throw Exception(
+            'The Discogs service is currently unavailable (${e.statusCode}). Please try again later.');
+      }
+    } on HttpException catch (e) {
+      // If that response was not OK, throw an error.
+      throw Exception(
+          'The Discogs service is currently unavailable. Please try again later.');
+    } on FileSystemException catch (e) {
+      _log.severe('Failed to read the chached file', e);
+    }
+
+    var results = json.decode(content);
+
+    List<dynamic> list = [];
+    (results["artists"] as List<dynamic>).forEach((element) {
+      list.add([element["name"], element["id"]]);
+    });
+    details.add(list);
+    list = [];
+    details.add(results["title"]);
+    details.add(results["genres"]);
+    details.add(results["year"]);
+    (results["tracklist"] as List<dynamic>).forEach((element) {
+      list.add([element["title"], element["duration"]]);
+    });
+    details.add(list);
+    list = [];
+    (results["extraartists"] as List<dynamic>).forEach((element) {
+      list.add([element["name"], element["role"], element["id"]]);
+    });
+    details.add(list);
+    list = [];
+
+    details.forEach((element) {
+      print(element);
+    });
+    return details;
+  }
+
+/*
+##########################################################################
+getArtists
 i: 0-19
 [i]: "ArtistName"
 [i+1]: "ArtistID"
 ##########################################################################
 */
-  static Future<List<String>> _getArtists(String query) async {
+  static Future<List<String>> getArtists(String input) async {
     List<String> artists = [];
+    String query = "/database/search?q={$input}";
     final url = 'https://api.discogs.com$query';
     late String quantity;
 
@@ -145,13 +239,14 @@ i: 0-19
       }
 
       var results = json.decode(content)["results"] as List<dynamic>;
+      // print(results);
+
       for (int j = 0; j < results.length; j++) {
-        if (artists.length == 20) {
-          print(artists.toString());
+        if (artists.length >= 20) {
+          // print(artists.toString());
           return artists;
         }
 
-        // print(results.length);
         if (results[j]["type"] == "artist" &&
             !artists.contains(results[j]["title"])) {
           // print("id: " +
@@ -170,14 +265,16 @@ i: 0-19
 
 /*
 ##########################################################################
-_getAlbums
+getAlbums
 i: 0-39
 [i]: "ArtistName - AlbumName"
-[i+1]: "barcode"
+[i+1]: "id"
+[i+2]: "barcode"
 ##########################################################################
 */
-  static Future<List<String>> _getAlbums(String query) async {
+  static Future<List<String>> getAlbums(String input) async {
     List<String> albums = [];
+    String query = "/database/search?q={$input}";
     final url = 'https://api.discogs.com$query';
     late String quantity;
 
@@ -237,13 +334,12 @@ i: 0-39
 
       var results = json.decode(content)["results"] as List<dynamic>;
       for (int j = 0; j < results.length; j++) {
-        if (albums.length == 40) {
-          print(albums.toString());
+        if (albums.length >= 60) {
           return albums;
         }
 
-        if ((results[j]["type"] == "release" ||
-                results[j]["type"] == "master") &&
+        // If the result is a released album
+        if (results[j]["type"] == "release" &&
             !albums.contains(results[j]["title"])) {
           var barcodes = results[j]["barcode"] as List<dynamic>;
           for (int k = 0; k < barcodes.length; k++) {
@@ -251,12 +347,17 @@ i: 0-39
             if (RegExp(r'^[0-9 ]+$').hasMatch(barcodes[k].toString()) &&
                 barcodes[k].toString().length >= 6 &&
                 !albums.contains(barcodes[k])) {
-              // print("barcode: " +
-              //     barcodes[k].toString() +
+              // print(albums.length.toString() +
+              //     ".   "
+              //         "id: " +
+              //     results[j]["id"].toString() +
               //     "   title: " +
               //     results[j]["title"].toString());
+
               albums.add(results[j]["title"]);
+              albums.add(results[j]["id"].toString());
               albums.add(barcodes[k].toString());
+              break;
             }
           }
         }
@@ -265,6 +366,50 @@ i: 0-39
     print(albums.toString());
     return albums;
   }
+
+// /*
+// ##########################################################################
+// Collection Album Data
+// ##########################################################################
+// */
+// class CollectionAlbum {
+//   var id, artist, title, year;
+
+//   CollectionAlbum({
+//     required this.id,
+//     required this.artist,
+//     required this.title,
+//     required this.year,
+//   });
+
+//   factory CollectionAlbum.fromJson(Map<String, dynamic> json) {
+//     final info = json['basic_information'] as Map<String, dynamic>;
+//     return CollectionAlbum(
+//       id: json['instance_id'] as int,
+//       artist: _oneNameForArtists(info['artists'] as List<dynamic>?),
+//       title: info['title'] as String,
+//       year: info['year'] as int,
+//     );
+//   }
+
+//   @override
+//   String toString() {
+//     var string = "\nTitle: " + title.toString();
+//     string += "\nArtist: " + artist.toString();
+//     string += "\nYear: " + year.toString();
+//     return string;
+//   }
+// }
+
+// String _oneNameForArtists(List<dynamic>? artists) {
+//   if (artists?.isEmpty ?? true) {
+//     return '(unknown)';
+//   }
+//   return (artists![0]['name'] as String).replaceAllMapped(
+//     RegExp(r'^(.+) \([0-9]+\)$'),
+//     (m) => m[1]!,
+//   );
+// }
 
 // /*
 // ##########################################################################

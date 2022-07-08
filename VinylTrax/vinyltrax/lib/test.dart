@@ -7,10 +7,28 @@ class Test {
   }
 
   static void discogs() {
+    // Collection.albumsBy("364910");
+    // Collection.getArtists("Halsey");
+    // Collection.getAlbums("Halsey");
+    // Collection.search("Halsey");
+
     // Collection.search("jasjie");
     // Collection.search("Jason Molina");
     // Collection.search("Kanye");
     // Collection.search("Life of Pablo");
+
+    // Collection.search("For my Parents");
+
+    // Jason Molina: 364910
+
+    // Molina & Roberts: 1194500
+    // Collection.album("1194500");
+
+    // For My Parents: 3855676
+    // Collection.album("3855676");
+
+    // The life of pablo
+    // Collection.album("8115775");
   }
 
   static void database() {
