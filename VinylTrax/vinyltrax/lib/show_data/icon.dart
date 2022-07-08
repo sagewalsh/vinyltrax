@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../pages/albumDetailsPage.dart';
 import '../pages/searchresultspage.dart';
 import '../pages/discogsArtist.dart';
+import '../pages/discogsAlbum.dart';
 import 'package:marquee/marquee.dart';
 
 class ShowIcon extends StatelessWidget {
@@ -167,6 +168,6 @@ class NextPageDisAlb extends StatefulWidget {
 class _NextDisAlbState extends State<NextPageDisAlb> {
   @override
   Widget build(BuildContext context) {
-    return Text("Search Discogs");
+    return DiscogsAlbum(["${widget.id}", "${widget.name}"]);
   }
 }

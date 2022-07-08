@@ -38,6 +38,12 @@ Authentication Data
 /*
 ##########################################################################
 Albums by a certain Artist given ArtistID
+
+Returns a Map with the album title as the key and a list as the value:
+[0]: AlbumName
+[1]: AlbumID
+[2]: ArtistName
+[3]: CoverArt
 ##########################################################################
 */
   static Future<Map<String, List<String>>> albumsBy(String artistID) async {
@@ -108,6 +114,7 @@ Returns a list of album details:
 [3]: year
 [4]: [ [ trackName, duration ], ... ]
 [5]: [ [ contributorName, role, id ], ... ]
+[6]: coverArt
 ##########################################################################
 */
   static Future<List<dynamic>> album(String albumID) async {
@@ -162,6 +169,8 @@ Returns a list of album details:
     });
     details.add(list);
     list = [];
+    details.add(
+        "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg");
 
     details.forEach((element) {
       print(element);
