@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import '../database.dart';
+import '../buttons/addAlbumPopUp.dart';
 
 class AlbumDetailsPage extends StatefulWidget {
   final List<String> input;
   final bool inInventory;
+
   AlbumDetailsPage(this.input, this.inInventory);
 
   @override
@@ -12,6 +14,9 @@ class AlbumDetailsPage extends StatefulWidget {
 }
 
 class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
+  late String locationValue;
+  late String format;
+
   @override
   Widget build(BuildContext context) {
     Future<List<Text>> _results;
@@ -25,7 +30,15 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
 
     if (!widget.inInventory) {
       temp = TextButton(
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AddAlbumPopUp(_results);
+              },
+            );
+           // addToButton(context);
+          },
           child: Text(
             "Add",
             style: TextStyle(
@@ -72,7 +85,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                       height: 150,
                       width: 150,
                       child: Image(
-                        image: NetworkImage(snapshot.data?[i + 2].data as String),
+                        image: NetworkImage(snapshot.data?[i + 2]
+                            .data as String),
                       ),
                     ),
                   ));
@@ -92,7 +106,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                   children.add(Center(
                     // GENRE and Year
                     child: Text(
-                        (snapshot.data?[i + 3].data as String) + "  •  " + (snapshot.data?[i + 4].data as String)
+                        (snapshot.data?[i + 3].data as String) + "  •  " +
+                            (snapshot.data?[i + 4].data as String)
                     ),
                   ));
                   //All below for tracklist
@@ -106,15 +121,17 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                     ),
                   ));
 
+                  // Assuming the tracklist is one string, below will parse through it
                   List<ListTile> tracklist = <ListTile>[];
-                  List<String> songs = (snapshot.data?[i + 5].data as String).split('\n');
+                  List<String> songs = (snapshot.data?[i + 5].data as String)
+                      .split('\n');
                   for (int i = 0; i < songs.length; i++) {
                     tracklist.add(ListTile(
                       visualDensity: VisualDensity(vertical: -4),
                       title: Text(songs[i],
-                      style: TextStyle(
-                        fontSize: 12
-                      )),
+                          style: TextStyle(
+                              fontSize: 12
+                          )),
                       tileColor: i.isOdd ? Colors.black12 : Colors.white,
                     ));
                   }
@@ -123,15 +140,17 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                     children: tracklist,
                   ));
                   children.add(Divider(
-                      color: Colors.black,
-                      thickness: 1,
-                      height: 0,
+                    color: Colors.black,
+                    thickness: 1,
+                    height: 0,
                   ));
                   children.add(SizedBox(
                     width: double.infinity,
                     height: 30,
                     child: const Text(""),
                   ));
+
+                  //Notes section
                   if (widget.inInventory) {
                     children.add(Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -146,12 +165,12 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                           print(value);
                         },
                         decoration: InputDecoration(
-                            labelText: 'Notes',
-                            border: const OutlineInputBorder(),
-                            suffixIcon: IconButton(
-                              onPressed: _controller.clear,
-                              icon: Icon(Icons.clear),
-                            ),
+                          labelText: 'Notes',
+                          border: const OutlineInputBorder(),
+                          suffixIcon: IconButton(
+                            onPressed: _controller.clear,
+                            icon: Icon(Icons.clear),
+                          ),
                         ),
                       ),
                     ));
@@ -172,9 +191,9 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                   ];
                 }
                 return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: children,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: children,
                 );
               },
             )),

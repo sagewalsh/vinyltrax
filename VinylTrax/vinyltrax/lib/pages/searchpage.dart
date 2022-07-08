@@ -70,13 +70,7 @@ class _SearchPageState extends State<SearchPage> {
             Container(
               //Icon/List buttons and Top/Artist/Album/Song buttons
               color: Color.fromRGBO(30, 0, 105, 1),
-              child: Row(
-                children: [
-                  iconOrList(),
-                  SizedBox(width: 5),
-                  filterButtons(),
-                ],
-              ),
+              child: filterButtons(),
             ),
           ],
         ),
@@ -90,13 +84,13 @@ class _SearchPageState extends State<SearchPage> {
               color: Color.fromRGBO(30, 0, 105, 1),
               height: 5,
             ),
-            Divider(
-              color: Color.fromRGBO(225, 80, 129, 30),
-              height: 5,
-              thickness: .5,
-              indent: 8,
-              endIndent: 8,
-            ),
+            // Divider(
+            //   color: Color.fromRGBO(225, 80, 129, 30),
+            //   height: 5,
+            //   thickness: .5,
+            //   indent: 8,
+            //   endIndent: 8,
+            // ),
           ],
         ),
       ),

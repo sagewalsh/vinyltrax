@@ -17,10 +17,8 @@ class _filterButtonsState extends State<filterButtons> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 200,
       height: 30,
       child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
         physics: AlwaysScrollableScrollPhysics(),
         child: CupertinoSegmentedControl(
           padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
@@ -30,28 +28,28 @@ class _filterButtonsState extends State<filterButtons> {
           children: {
             _Tab.one: Container(
               height: 30,
-              width: 80,
+              width: 85,
               child: Center(
                 child: Text("Top", style: TextStyle(fontSize: 14)),
               ),
             ),
             _Tab.two: Container(
               height: 30,
-              width: 80,
+              width: 85,
               child: Center(
                 child: Text("Artist", style: TextStyle(fontSize: 14)),
               ),
             ),
             _Tab.three: Container(
               height: 30,
-              width: 80,
+              width: 85,
               child: Center(
                 child: Text("Album", style: TextStyle(fontSize: 14)),
               ),
             ),
             _Tab.four: Container(
               height: 30,
-              width: 80,
+              width: 85,
               child: Center(
                 child: Text("Song", style: TextStyle(fontSize: 14)),
               ),

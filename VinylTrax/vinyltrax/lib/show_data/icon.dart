@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../pages/albumDetailsPage.dart';
 import '../pages/searchresultspage.dart';
+import 'package:marquee/marquee.dart';
 
 class ShowIcon extends StatelessWidget {
   final String coverArt;
@@ -12,14 +13,44 @@ class ShowIcon extends StatelessWidget {
   ShowIcon(
       this.artistName, this.albumName, this.coverArt, this.isArtist, this.id);
 
+  Widget buildAnimatedText(String text) => Container(
+    height: 18,
+    width: 150,
+    child: Marquee(
+      text: text,
+      blankSpace: 30,
+      velocity: 30,
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
-    String outputAlb = albumName;
-    String outputArt = artistName;
+    Widget outputAlb = SizedBox();
+    Widget outputArt = SizedBox();
 
-    if (albumName.length > 20) outputAlb = albumName.substring(0, 17) + "...";
+    if (albumName.length > 18)
+      outputAlb = buildAnimatedText(albumName);
+    else
+      outputAlb = SizedBox(
+          width: 150,
+          height: 18,
+          child: Text(
+            albumName,
+            textAlign: TextAlign.center,
+          )
+      );
 
-    if (artistName.length > 20) outputArt = artistName.substring(0, 17) + "...";
+    if (artistName.length > 18)
+      outputArt = buildAnimatedText(artistName);
+    else
+      outputArt = SizedBox(
+          width: 150,
+          height: 18,
+          child: Text(
+            artistName,
+            textAlign: TextAlign.center,
+          )
+      );
 
     Widget avatar = SizedBox();
     if (this.isArtist) {
@@ -49,8 +80,8 @@ class ShowIcon extends StatelessWidget {
       child: Column(
         children: [
           avatar,
-          Text(outputArt),
-          Text(outputAlb),
+          outputArt,
+          outputAlb
         ],
       ),
     );
