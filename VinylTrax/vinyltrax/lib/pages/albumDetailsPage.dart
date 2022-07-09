@@ -18,10 +18,10 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    Future<List<Text>> _results = Database.fullData(widget.input[0]); //replace this with discogs info
+    Future<List<Text>> _results =
+        Database.fullData(widget.input[0]); //replace this with discogs info
     String album = widget.input[1];
     var _controller = TextEditingController();
-
 
     // [0] artist name
     // [1] album name
@@ -31,9 +31,18 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
     // [5] tracklist (on a single string, it is parsed here)
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFFFFEF9),
       appBar: AppBar(
-        title: Text(album),
+        backgroundColor: Color(0xFFFFFEF9),
+        leading: BackButton(
+          color: Colors.black,
+        ),
+        title: Text(
+          album,
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),
@@ -60,8 +69,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                       height: 150,
                       width: 150,
                       child: Image(
-                        image: NetworkImage(snapshot.data?[i + 2]
-                            .data as String),
+                        image:
+                            NetworkImage(snapshot.data?[i + 2].data as String),
                       ),
                     ),
                   ));
@@ -70,9 +79,7 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                     // ALBUM NAME
                     child: Text(
                       snapshot.data?[i + 1].data as String,
-                      style: TextStyle(
-                          color: Colors.grey[700]
-                      ),
+                      style: TextStyle(color: Colors.grey[700]),
                     ),
                   ));
                   children.add(Center(
@@ -81,10 +88,9 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                   ));
                   children.add(Center(
                     // GENRE and Year
-                    child: Text(
-                        (snapshot.data?[i + 3].data as String) + "  •  " +
-                            (snapshot.data?[i + 4].data as String)
-                    ),
+                    child: Text((snapshot.data?[i + 3].data as String) +
+                        "  •  " +
+                        (snapshot.data?[i + 4].data as String)),
                   ));
                   //All below for tracklist
                   //Starting with the divider
@@ -99,16 +105,13 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
 
                   // Assuming the tracklist is one string, below will parse through it
                   List<ListTile> tracklist = <ListTile>[];
-                  List<String> songs = (snapshot.data?[i + 5].data as String)
-                      .split('\n');
+                  List<String> songs =
+                      (snapshot.data?[i + 5].data as String).split('\n');
                   for (int i = 0; i < songs.length; i++) {
                     tracklist.add(ListTile(
                       visualDensity: VisualDensity(vertical: -4),
-                      title: Text(songs[i],
-                          style: TextStyle(
-                              fontSize: 12
-                          )),
-                      tileColor: i.isOdd ? Colors.black12 : Colors.white,
+                      title: Text(songs[i], style: TextStyle(fontSize: 12)),
+                      tileColor: i.isOdd ? Color(0x20FF5A5A) : Colors.white,
                     ));
                   }
                   children.add(ListView(
@@ -128,27 +131,27 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
 
                   //Notes section
                   children.add(Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: TextField(
-                        controller: _controller,
-                        keyboardType: TextInputType.text,
-                        maxLines: null,
-                        maxLength: 500,
-                        onSubmitted: (value) {
-                          //value here is the text after enter is pressed
-                          //within here you can add it to the database
-                          print(value);
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Notes',
-                          border: const OutlineInputBorder(),
-                          suffixIcon: IconButton(
-                            onPressed: _controller.clear,
-                            icon: Icon(Icons.clear),
-                          ),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: TextField(
+                      controller: _controller,
+                      keyboardType: TextInputType.text,
+                      maxLines: null,
+                      maxLength: 500,
+                      onSubmitted: (value) {
+                        //value here is the text after enter is pressed
+                        //within here you can add it to the database
+                        print(value);
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Notes',
+                        border: const OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          onPressed: _controller.clear,
+                          icon: Icon(Icons.clear),
                         ),
                       ),
-                    ));
+                    ),
+                  ));
                 } else if (snapshot.hasError) {
                   children = <Widget>[
                     Icon(Icons.error),

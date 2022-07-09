@@ -35,7 +35,8 @@ class _SearchPageState extends State<SearchPage> {
             Container(
               width: double.infinity,
               alignment: Alignment.center,
-              child: const Text("Search Page", style: TextStyle(color: Colors.black)),
+              child: const Text("Search Page",
+                  style: TextStyle(color: Colors.black)),
             ),
             Container(
               color: Color(0xFFFFFEF9),
@@ -95,11 +96,7 @@ class _SearchPageState extends State<SearchPage> {
     String scanResult;
     try {
       scanResult = await FlutterBarcodeScanner.scanBarcode(
-          "#E52638",
-          "Cancel",
-          true,
-          ScanMode.BARCODE
-      );
+          "#E52638", "Cancel", true, ScanMode.BARCODE);
     } on PlatformException {
       scanResult = 'Failed to get platform version';
     }

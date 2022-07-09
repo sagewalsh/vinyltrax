@@ -59,7 +59,7 @@ class _TextInputState extends State<TextInput> {
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 hintText: "Artist, Album, Song",
                 hintStyle: TextStyle(
-                  color: Color.fromRGBO(225, 80, 129, 30),
+                  color: Color(0xFFFF5A5A),
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
@@ -72,9 +72,7 @@ class _TextInputState extends State<TextInput> {
                 ),
                 suffixIcon: Icon(
                   Icons.search,
-                  color: focus.hasFocus
-                      ? Color(0xFFFF5A5A)
-                      : Colors.black,
+                  color: focus.hasFocus ? Color(0xFFFF5A5A) : Colors.black,
                 ),
               ),
               onSubmitted: (text) {

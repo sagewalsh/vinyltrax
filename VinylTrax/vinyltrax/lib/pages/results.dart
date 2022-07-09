@@ -17,9 +17,14 @@ class Results extends StatelessWidget {
     String name = input;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFFFFEF9),
       appBar: AppBar(
-        title: Text(name),
+        backgroundColor: Color(0xFFFFFEF9),
+        leading: BackButton(color: Colors.black),
+        title: Text(
+          name,
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),

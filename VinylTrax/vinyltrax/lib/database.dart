@@ -421,7 +421,7 @@ Given Album Data from Discogs in the form:
             "Name": albumdata[2][i][0],
             "Albums": [albumdata[0]],
             "Image":
-                "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
+                "https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg",
           }
         });
       }

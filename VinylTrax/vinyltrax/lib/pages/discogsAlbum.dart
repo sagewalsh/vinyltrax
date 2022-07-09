@@ -25,12 +25,17 @@ class DiscogsAlbum extends StatelessWidget {
       );
     }
 
-
-
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFFFFEF9),
       appBar: AppBar(
-        title: Text(name),
+        backgroundColor: Color(0xFFFFFEF9),
+        leading: BackButton(
+          color: Colors.black,
+        ),
+        title: Text(
+          name,
+          style: TextStyle(color: Colors.black),
+        ),
         actions: [
           TextButton(
               onPressed: () {
@@ -44,7 +49,7 @@ class DiscogsAlbum extends StatelessWidget {
               },
               child: Text(
                 "Add",
-                style: TextStyle(color: Colors.white, fontSize: 18),
+                style: TextStyle(color: Colors.black, fontSize: 18),
               ))
         ],
       ),
@@ -108,10 +113,7 @@ class DiscogsAlbum extends StatelessWidget {
                   // TRACKLIST
                   children.add(Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Text("Tracklist",
-                    style: TextStyle(
-                      fontSize: 17
-                    )),
+                    child: Text("Tracklist", style: TextStyle(fontSize: 17)),
                   ));
                   children.add(addBlackLine());
                   List<ListTile> tracklist = <ListTile>[];
@@ -126,7 +128,7 @@ class DiscogsAlbum extends StatelessWidget {
                         data[4][i][1],
                         style: TextStyle(fontSize: 13),
                       ),
-                      tileColor: i.isOdd ? Colors.black12 : Colors.white,
+                      tileColor: i.isOdd ? Color(0x20FF5A5A) : Colors.white,
                     ));
                   }
                   children.add(ListView(
@@ -140,10 +142,7 @@ class DiscogsAlbum extends StatelessWidget {
                   // CONTRIBUTORS
                   children.add(Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Text("Contributors",
-                        style: TextStyle(
-                            fontSize: 17
-                        )),
+                    child: Text("Contributors", style: TextStyle(fontSize: 17)),
                   ));
                   children.add(addBlackLine());
                   List<ListTile> contributors = <ListTile>[];
@@ -158,7 +157,7 @@ class DiscogsAlbum extends StatelessWidget {
                         data[5][j][1].toString(),
                         style: TextStyle(fontSize: 13),
                       ),
-                      tileColor: j.isOdd ? Colors.black12 : Colors.white,
+                      tileColor: j.isOdd ? Color(0x20FF5A5A) : Colors.white,
                     ));
                   }
                   children.add(ListView(
