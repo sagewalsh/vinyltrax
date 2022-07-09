@@ -25,7 +25,7 @@ class AlbumOrderArtist extends StatelessWidget {
                   ListEntry temp = ListEntry(snapshot.data?[i].data as String, snapshot.data?[i + 2].data as String, false);
                   temp.artistID = snapshot.data?[i + 1].data as String;
                   if (children.length % 2 != 0)
-                    temp.color = Colors.black12;
+                    temp.color = Color(0x20FF5A5A);
                   children.add(temp);
                 }
             }

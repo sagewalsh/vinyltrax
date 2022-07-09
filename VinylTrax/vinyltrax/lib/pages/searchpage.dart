@@ -25,20 +25,20 @@ class _SearchPageState extends State<SearchPage> {
     input = textBox.getString();
     if (input.isNotEmpty) return Results(input);
     return Scaffold(
-      // backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFFFFEF9),
       appBar: AppBar(
         titleSpacing: 0,
         toolbarHeight: 150,
-        backgroundColor: Color.fromRGBO(30, 0, 105, 1),
+        backgroundColor: Color(0xFFFFFEF9),
         title: Column(
           children: [
             Container(
               width: double.infinity,
               alignment: Alignment.center,
-              child: const Text("Search Page"),
+              child: const Text("Search Page", style: TextStyle(color: Colors.black)),
             ),
             Container(
-              color: Color.fromRGBO(30, 0, 105, 1),
+              color: Color(0xFFFFFEF9),
               //Search bar, Camera button, and barcode scanning button
               child: Row(
                 children: [
@@ -48,7 +48,7 @@ class _SearchPageState extends State<SearchPage> {
                     height: 75,
                   ),
                   IconButton(
-                    color: Colors.white,
+                    color: Colors.black,
                     padding: EdgeInsets.all(5),
                     constraints: BoxConstraints(),
                     onPressed: () {
@@ -58,7 +58,7 @@ class _SearchPageState extends State<SearchPage> {
                     iconSize: 37,
                   ),
                   IconButton(
-                    color: Colors.white,
+                    color: Colors.black,
                     padding: EdgeInsets.all(5),
                     constraints: BoxConstraints(),
                     onPressed: scanBarcode,
@@ -70,7 +70,7 @@ class _SearchPageState extends State<SearchPage> {
             ),
             Container(
               //Icon/List buttons and Top/Artist/Album/Song buttons
-              color: Color.fromRGBO(30, 0, 105, 1),
+              color: Color(0xFFFFFEF9),
               child: filterButtons(),
             ),
           ],
@@ -82,7 +82,7 @@ class _SearchPageState extends State<SearchPage> {
           children: [
             //Divider between UI and output
             Container(
-              color: Color.fromRGBO(30, 0, 105, 1),
+              color: Color(0xFFFFFEF9),
               height: 5,
             ),
           ],

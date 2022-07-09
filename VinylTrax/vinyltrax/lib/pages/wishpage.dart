@@ -41,25 +41,25 @@ class _WishPageState extends State<WishPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFFFFEF9),
       appBar: AppBar(
         toolbarHeight: 75,
-        backgroundColor: Color.fromRGBO(30, 0, 105, 1),
+        backgroundColor: Color(0xFFFFFEF9),
         title: Column(
           children: [
             Container(
               width: double.infinity,
               alignment: Alignment.center,
-              child: const Text("Wishlist"),
+              child: const Text("Wishlist", style: TextStyle(color: Colors.black)),
             ),
             Container(
-              color: Color.fromRGBO(30, 0, 105, 1),
+              color: Color(0xFFFFFEF9),
               padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 0.0),
               child: CupertinoSegmentedControl(
                 padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 6.0),
-                selectedColor: Color.fromRGBO(225, 80, 129, 30),
-                borderColor: Color.fromRGBO(225, 80, 129, 30),
-                pressedColor: Color.fromRGBO(225, 80, 129, 30),
+                selectedColor: Color(0xFFFF5A5A),
+                borderColor: Color(0xFFFF5A5A),
+                pressedColor: Color(0x64FF5A5A),
                 children: {
                   _Order.artist: Container(
                     height: 30,
@@ -99,8 +99,8 @@ class _WishPageState extends State<WishPage> {
             print(value);
           });
         },
-        backgroundColor: Color.fromRGBO(30, 0, 105, 1),
-        child: const Icon(Icons.add),
+        backgroundColor: Color(0xFFFFFEF9),
+        child: const Icon(Icons.add, color: Colors.black),
       ),
     );
   }

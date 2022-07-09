@@ -40,7 +40,7 @@ class _TextInputState extends State<TextInput> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFFDF6),
+      backgroundColor: Color(0xFFFFFEF9),
       // backgroundColor: Color.fromARGB(255, 244, 244, 244),
       body: Padding(
           padding: EdgeInsets.all(8.0),
@@ -48,7 +48,7 @@ class _TextInputState extends State<TextInput> {
             // color: Color.fromARGB(255, 244, 244, 244),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: Color.fromARGB(255, 244, 244, 244),
+              color: Color(0xFFFFFEF9),
             ),
             child: TextField(
               controller: textController,
@@ -67,13 +67,13 @@ class _TextInputState extends State<TextInput> {
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide(
-                    color: Color.fromRGBO(225, 80, 129, 1),
+                    color: Color(0xFFFF5A5A),
                   ),
                 ),
                 suffixIcon: Icon(
                   Icons.search,
                   color: focus.hasFocus
-                      ? Color.fromRGBO(225, 80, 129, 1)
+                      ? Color(0xFFFF5A5A)
                       : Colors.black,
                 ),
               ),

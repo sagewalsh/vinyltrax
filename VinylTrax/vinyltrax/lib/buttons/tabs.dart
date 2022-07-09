@@ -18,8 +18,8 @@ class Tabs extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Color(0xFFFFFDF6),
         bottomNavigationBar: TabBar(
-          indicatorColor: Color.fromRGBO(225, 80, 129, 30),
-          labelColor: Color.fromRGBO(225, 80, 129, 30),
+          indicatorColor: Color(0xFFFF5A5A),
+          labelColor: Color(0xFFFF5A5A),
           unselectedLabelColor: Colors.black,
           tabs: <Widget>[
             Tab(
