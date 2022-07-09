@@ -40,7 +40,7 @@ class _TextInputState extends State<TextInput> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(30, 0, 105, 1),
+      backgroundColor: Color(0xFFFFFDF6),
       // backgroundColor: Color.fromARGB(255, 244, 244, 244),
       body: Padding(
           padding: EdgeInsets.all(8.0),

@@ -25,7 +25,7 @@ class _StaxPageState extends State<StaxPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFFFFDF6),
       appBar: AppBar(
         titleSpacing: 0,
         toolbarHeight: 180,
@@ -35,8 +35,8 @@ class _StaxPageState extends State<StaxPage> {
               // Name of Page
               width: double.infinity,
               alignment: Alignment.center,
-              child: const Text("Stax of Trax"),
-              color: Color.fromRGBO(30, 0, 105, 1),
+              child: const Text("Stax of Trax", style: TextStyle(color: Colors.black)),
+              color: Color(0xFFFFFDF6),
             ),
             Container(
               // Search Bar
@@ -47,12 +47,12 @@ class _StaxPageState extends State<StaxPage> {
             ),
             Container(
               // Artist / Albums / Genre Buttons
-              color: Color.fromRGBO(30, 0, 105, 1),
+              color: Color(0xFFFFFDF6),
               child: CupertinoSegmentedControl(
                 padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 6.0),
-                selectedColor: Color.fromRGBO(225, 80, 129, 30),
-                borderColor: Color.fromRGBO(225, 80, 129, 30),
-                pressedColor: Color.fromRGBO(225, 80, 129, 30),
+                selectedColor: Color(0xFFFF5A5A),
+                borderColor: Color(0xFFFF5A5A),
+                pressedColor: Color(0x64FF5A5A),
                 children: {
                   _Order.artist: Container(
                     height: 30,
@@ -86,12 +86,12 @@ class _StaxPageState extends State<StaxPage> {
             ),
             Container(
               // Vinyl / CD / All Buttons
-              color: Color.fromRGBO(30, 0, 105, 1),
+              color: Color(0xFFFFF9E9),
               child: CupertinoSegmentedControl(
                 padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-                selectedColor: Color.fromRGBO(225, 80, 129, 30),
-                borderColor: Color.fromRGBO(225, 80, 129, 30),
-                pressedColor: Color.fromRGBO(225, 80, 129, 30),
+                selectedColor: Color(0xFFFF5A5A),
+                borderColor: Color(0xFFFF5A5A),
+                pressedColor:Color(0x64FF5A5A),
                 children: {
                   _Type.vinyl: Container(
                     height: 30,
@@ -125,7 +125,7 @@ class _StaxPageState extends State<StaxPage> {
             ),
           ],
         ),
-        backgroundColor: Color.fromRGBO(30, 0, 105, 1),
+        backgroundColor: Color(0xFFFFF9E9),
       ),
       body: SingleChildScrollView(
         // Inventory View Outputs

@@ -16,11 +16,11 @@ class Tabs extends StatelessWidget {
     return const DefaultTabController(
       length: 4,
       child: Scaffold(
-        backgroundColor: Color.fromRGBO(30, 0, 105, 1),
+        backgroundColor: Color(0xFFFFFDF6),
         bottomNavigationBar: TabBar(
           indicatorColor: Color.fromRGBO(225, 80, 129, 30),
           labelColor: Color.fromRGBO(225, 80, 129, 30),
-          unselectedLabelColor: Colors.white,
+          unselectedLabelColor: Colors.black,
           tabs: <Widget>[
             Tab(
               icon: Icon(VinylIcon.cd),
