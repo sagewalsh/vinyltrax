@@ -34,13 +34,18 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFFFFDF6),
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(30, 0, 105, 1),
+        backgroundColor: Color(0xFFFFFDF6),
         title: Container(
           width: double.infinity,
           alignment: Alignment.center,
-          child: const Text("Settings Page"),
+          child: const Text(
+            "Settings Page",
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
         ),
       ),
       body: Container(
@@ -51,7 +56,7 @@ class _SettingsPageState extends State<SettingsPage> {
             Row(children: [
               Icon(
                 Icons.person,
-                color: Colors.blue,
+                color: Color(0xFFFF5A5A),
               ),
               SizedBox(width: 10),
               Text("Account", style: TextStyle(fontSize: 22))
@@ -65,7 +70,7 @@ class _SettingsPageState extends State<SettingsPage> {
             Row(children: [
               Icon(
                 Icons.settings_suggest,
-                color: Colors.blue,
+                color: Color(0xFFFF5A5A),
               ),
               SizedBox(width: 10),
               Text("Others", style: TextStyle(fontSize: 22))
@@ -118,7 +123,7 @@ class _SettingsPageState extends State<SettingsPage> {
           Transform.scale(
             scale: .7,
             child: CupertinoSwitch(
-              activeColor: Colors.blue,
+              activeColor: Color(0xFFFF5A5A),
               trackColor: Colors.grey,
               value: value,
               onChanged: (bool newValue) {
