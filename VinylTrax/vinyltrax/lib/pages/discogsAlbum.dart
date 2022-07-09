@@ -33,21 +33,19 @@ class DiscogsAlbum extends StatelessWidget {
         title: Text(name),
         actions: [
           TextButton(
-          onPressed: () {
-            showDialog(context: context, builder: (BuildContext context) {
-                return AddAlbumPopUp(_results);
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AddAlbumPopUp(_results, input[0]);
+                  },
+                );
+                // addToButton(context);
               },
-            );
-          // addToButton(context);
-            },
-            child: Text(
-              "Add",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18
-                ),
-            )
-          )
+              child: Text(
+                "Add",
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ))
         ],
       ),
       body: SingleChildScrollView(

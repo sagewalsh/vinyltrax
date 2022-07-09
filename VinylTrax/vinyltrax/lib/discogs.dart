@@ -217,10 +217,10 @@ Returns a list of album details:
             "https://images.pexels.com/photos/12509854/pexels-photo-12509854.jpeg?cs=srgb&dl=pexels-mati-mango-12509854.jpg&fm=jpg")
         : details.add(results["thumb"]);
 
-    print(albumID);
-    details.forEach((element) {
-      print(element);
-    });
+    // print(albumID);
+    // details.forEach((element) {
+    //   print(element);
+    // });
     return details;
   }
 

@@ -401,6 +401,29 @@ Given Album Data from Discogs in the form:
         "Contributors": albumdata[7],
       }
     });
+
+    for (int i = 0; i < (albumdata[2] as List<dynamic>).length; i++) {
+      final snapshot = await ref.child("Artists/${albumdata[2][i][1]}").get();
+      if (snapshot.exists) {
+        List<dynamic> albums = [];
+        ((snapshot.value as Map<Object?, Object?>)["Albums"] as List<dynamic>)
+            .forEach((element) {
+          albums.add(element);
+        });
+        albums.add(albumdata[0]);
+        ref.update({
+          "Artists/${albumdata[2][i][1]}/Albums": albums,
+        });
+      } else {
+        await ref.update({
+          "Artists/${albumdata[2][i][1]}": {
+            "UniqueID": albumdata[2][i][1],
+            "Name": albumdata[2][i][0],
+            "Albums": [albumdata[0]],
+          }
+        });
+      }
+    }
   }
 
 /*
@@ -1083,135 +1106,133 @@ Below: Code that is viable to be changed or removed at a later date
             "Hotline Bling",
           ]
         },
-        "Artists": {
-          1111: {
-            "UniqueID": 1111,
-            "Name": "Kanye West",
-            "Image":
-                "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-            "Albums": [
-              1216,
-              1217,
-              1218,
-            ],
-          },
-          1112: {
-            "UniqueID": 1112,
-            "Name": "Halsey",
-            "Image":
-                "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
-            "Albums": [
-              1219,
-              1220,
-              1221,
-            ]
-          },
-          1113: {
-            "UniqueID": 1113,
-            "Name": "Kendrick Lamar",
-            "Image":
-                "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-            "Albums": [
-              1222,
-              1223,
-            ]
-          },
-          1114: {
-            "UniqueID": 1114,
-            "Name": "Rihanna",
-            "Image":
-                "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
-            "Albums": [
-              1224,
-              1225,
-              1226,
-            ]
-          },
-          1115: {
-            "UniqueID": 1115,
-            "Name": "Muse",
-            "Image":
-                "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-            "Albums": [
-              1227,
-              1228,
-            ]
-          },
-          1116: {
-            "UniqueID": 1116,
-            "Name": "Ke\$ha",
-            "Image":
-                "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
-            "Albums": [
-              1229,
-              1230,
-              1231,
-            ]
-          },
-          1117: {
-            "UniqueID": 1117,
-            "Name": "Lizzo",
-            "Image":
-                "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
-            "Albums": [
-              1232,
-              1233,
-            ]
-          },
-          1118: {
-            "UniqueID": 1118,
-            "Name": "Eminem",
-            "Image":
-                "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-            "Albums": [
-              1234,
-              1235,
-              1236,
-            ]
-          },
-          1119: {
-            "UniqueID": 1119,
-            "Name": "Billie Eilish",
-            "Image":
-                "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
-            "Albums": [
-              1237,
-              1238,
-              1239,
-            ]
-          },
-          1120: {
-            "UniqueID": 1120,
-            "Name": "Cardi B",
-            "Image":
-                "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
-            "Albums": [
-              1240,
-            ]
-          },
-          1121: {
-            "UniqueID": 1121,
-            "Name": "Anderson .Paak",
-            "Image":
-                "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-            "Albums": [
-              1241,
-              1242,
-              1243,
-            ]
-          },
-          1122: {
-            "UniqueID": 1122,
-            "Name": "Drake",
-            "Image":
-                "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-            "Albums": [
-              1245,
-              1246,
-              1247,
-              1248,
-            ]
-          },
+        "Artists/1111": {
+          "UniqueID": 1111,
+          "Name": "Kanye West",
+          "Image":
+              "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          "Albums": [
+            1216,
+            1217,
+            1218,
+          ],
+        },
+        "Artists/1112": {
+          "UniqueID": 1112,
+          "Name": "Halsey",
+          "Image":
+              "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
+          "Albums": [
+            1219,
+            1220,
+            1221,
+          ]
+        },
+        "Artists/1113": {
+          "UniqueID": 1113,
+          "Name": "Kendrick Lamar",
+          "Image":
+              "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          "Albums": [
+            1222,
+            1223,
+          ]
+        },
+        "Artists/1114": {
+          "UniqueID": 1114,
+          "Name": "Rihanna",
+          "Image":
+              "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
+          "Albums": [
+            1224,
+            1225,
+            1226,
+          ]
+        },
+        "Artists/1115": {
+          "UniqueID": 1115,
+          "Name": "Muse",
+          "Image":
+              "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          "Albums": [
+            1227,
+            1228,
+          ]
+        },
+        "Artists/1116": {
+          "UniqueID": 1116,
+          "Name": "Ke\$ha",
+          "Image":
+              "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
+          "Albums": [
+            1229,
+            1230,
+            1231,
+          ]
+        },
+        "Artists/1117": {
+          "UniqueID": 1117,
+          "Name": "Lizzo",
+          "Image":
+              "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
+          "Albums": [
+            1232,
+            1233,
+          ]
+        },
+        "Artists/1118": {
+          "UniqueID": 1118,
+          "Name": "Eminem",
+          "Image":
+              "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          "Albums": [
+            1234,
+            1235,
+            1236,
+          ]
+        },
+        "Artists/1119": {
+          "UniqueID": 1119,
+          "Name": "Billie Eilish",
+          "Image":
+              "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
+          "Albums": [
+            1237,
+            1238,
+            1239,
+          ]
+        },
+        "Artists/1120": {
+          "UniqueID": 1120,
+          "Name": "Cardi B",
+          "Image":
+              "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
+          "Albums": [
+            1240,
+          ]
+        },
+        "Artists/1121": {
+          "UniqueID": 1121,
+          "Name": "Anderson .Paak",
+          "Image":
+              "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          "Albums": [
+            1241,
+            1242,
+            1243,
+          ]
+        },
+        "Artists/1122": {
+          "UniqueID": 1122,
+          "Name": "Drake",
+          "Image":
+              "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          "Albums": [
+            1245,
+            1246,
+            1247,
+            1248,
+          ]
         },
       },
     );
