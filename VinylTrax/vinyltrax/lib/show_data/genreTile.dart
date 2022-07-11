@@ -11,7 +11,7 @@ class GenreTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color? color = Colors.white;
-    if (isEven) color = Colors.black12;
+    if (isEven) color = Color(0x20FF5A5A);
 
     return ListTile(
       title: Text(genreName),
