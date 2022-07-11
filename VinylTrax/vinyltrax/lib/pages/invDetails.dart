@@ -113,10 +113,12 @@ class _InvDetails extends State<InvDetails> {
                       tileColor: i.isOdd ? Color(0x20FF5A5A) : Colors.white,
                     ));
                   }
-                  children.add(ListView(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    children: tracklist,
+                  children.add(Scrollbar(
+                    child: ListView(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      children: tracklist,
+                    ),
                   ));
                   children.add(Divider(
                     color: Colors.black,

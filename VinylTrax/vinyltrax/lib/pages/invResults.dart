@@ -25,70 +25,72 @@ class InvResults extends StatelessWidget {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        child: SizedBox(
-            width: double.infinity,
-            child: FutureBuilder<List<List<Text>>>(
-              future: _results,
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<List<Text>>> snapshot) {
-                List<Widget> children;
-                if (snapshot.hasData) {
-                  children = <Widget>[];
-                  if (snapshot.data!.length == 0) {
-                    children.add(
-                        Text("No Inventory Found with the Name: " + input));
-                  }
-                  for (int i = 0; i < snapshot.data!.length; i++) {
-                    var data = snapshot.data![i];
-                    // Artist Data
-                    if (data.length == 3) {
-                      children.add(ShowIcon(
-                          data[0].data.toString(),
-                          "",
-                          data[2].data.toString(),
-                          true,
-                          true,
-                          data[1].data.toString()));
+      body: Scrollbar(
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: SizedBox(
+              width: double.infinity,
+              child: FutureBuilder<List<List<Text>>>(
+                future: _results,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<List<Text>>> snapshot) {
+                  List<Widget> children;
+                  if (snapshot.hasData) {
+                    children = <Widget>[];
+                    if (snapshot.data!.length == 0) {
+                      children.add(
+                          Text("No Inventory Found with the Name: " + input));
                     }
-                    // Album Data
-                    if (data.length == 4) {
-                      children.add(ShowIcon(
-                          data[1].data.toString(),
-                          data[0].data.toString(),
-                          data[2].data.toString(),
-                          false,
-                          true,
-                          data[3].data.toString()));
+                    for (int i = 0; i < snapshot.data!.length; i++) {
+                      var data = snapshot.data![i];
+                      // Artist Data
+                      if (data.length == 3) {
+                        children.add(ShowIcon(
+                            data[0].data.toString(),
+                            "",
+                            data[2].data.toString(),
+                            true,
+                            true,
+                            data[1].data.toString()));
+                      }
+                      // Album Data
+                      if (data.length == 4) {
+                        children.add(ShowIcon(
+                            data[1].data.toString(),
+                            data[0].data.toString(),
+                            data[2].data.toString(),
+                            false,
+                            true,
+                            data[3].data.toString()));
+                      }
                     }
+                    children.add(SizedBox(
+                      width: double.infinity,
+                      height: 30,
+                      child: const Text(""),
+                    ));
+                  } else if (snapshot.hasError) {
+                    children = <Widget>[
+                      Icon(Icons.error),
+                    ];
+                  } else {
+                    children = <Widget>[
+                      SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(),
+                      )
+                    ];
                   }
-                  children.add(SizedBox(
-                    width: double.infinity,
-                    height: 30,
-                    child: const Text(""),
-                  ));
-                } else if (snapshot.hasError) {
-                  children = <Widget>[
-                    Icon(Icons.error),
-                  ];
-                } else {
-                  children = <Widget>[
-                    SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: CircularProgressIndicator(),
-                    )
-                  ];
-                }
-                return Column(
-                  children: [
-                    SizedBox(height: 20),
-                    IconList(children),
-                  ],
-                );
-              },
-            )),
+                  return Column(
+                    children: [
+                      SizedBox(height: 20),
+                      IconList(children),
+                    ],
+                  );
+                },
+              )),
+        ),
       ),
     );
   }
