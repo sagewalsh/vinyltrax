@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:vinyltrax/show_data/genreList.dart';
 import 'package:vinyltrax/returnedData/getInvAlbum.dart';
 import '../returnedData/getInvArtist.dart';
-import '../textinput.dart';
+import 'invResults.dart';
 
 enum _Order { artist, albums, genre }
 
@@ -17,6 +17,8 @@ class StaxPage extends StatefulWidget {
 }
 
 class _StaxPageState extends State<StaxPage> {
+  final TextEditingController textController = TextEditingController();
+  FocusNode focus = FocusNode();
   _Order _selectedOrder = _Order.artist;
   _Type _selectedType = _Type.vinyl;
   bool isGenreButton = false;
@@ -40,8 +42,48 @@ class _StaxPageState extends State<StaxPage> {
             ),
             Container(
               // Search Bar
-              color: const Color.fromARGB(255, 244, 244, 244),
-              child: TextInput("Search Inventory", true),
+              color: Color(0xFFFFFEF9),
+              child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Container(
+                    // color: Color.fromARGB(255, 244, 244, 244),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Color(0xFFFFFEF9),
+                    ),
+                    child: TextField(
+                      controller: textController,
+                      focusNode: focus,
+                      onTap: () => FocusScope.of(context).requestFocus(focus),
+                      decoration: InputDecoration(
+                        labelText: "Search Inventory",
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        hintText: "Artist, Album, Song",
+                        hintStyle: TextStyle(
+                          color: Color(0xFFFF5A5A),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(
+                            color: Color(0xFFFF5A5A),
+                          ),
+                        ),
+                        suffixIcon: Icon(
+                          Icons.search,
+                          color: focus.hasFocus ? Color(0xFFFF5A5A) : Colors.black,
+                        ),
+                      ),
+                      onSubmitted: (text) {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                              return InvResults(text);
+                            }));
+                      },
+                    ),
+                  )),
               width: double.infinity,
               height: 75,
             ),
@@ -142,5 +184,10 @@ class _StaxPageState extends State<StaxPage> {
         ),
       ),
     );
+  }
+
+  void dispose() {
+    textController.dispose();
+    super.dispose();
   }
 }
