@@ -1,33 +1,34 @@
+library my_prj.globals;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+bool listBool = false;
+
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key}) : super(key: key);
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool valNotify1 = true;
-  bool valNotify2 = false;
+  bool darkTheme = true;
   bool valNotify3 = true;
 
-  changeFunct1(bool newValue1) {
+  changeTheme(bool newVal) {
     setState(() {
-      valNotify1 = newValue1;
+      darkTheme = newVal;
     });
   }
 
-  changeFunct2(bool newValue2) {
+  listMode(bool newVal) {
     setState(() {
-      valNotify2 = newValue2;
+      listBool = newVal;
     });
   }
 
-  changeFunct3(bool newValue3) {
+  changeFunct3(bool newVal) {
     setState(() {
-      valNotify3 = newValue3;
+      valNotify3 = newVal;
     });
   }
 
@@ -77,8 +78,8 @@ class _SettingsPageState extends State<SettingsPage> {
             ]),
             Divider(height: 10, thickness: 1),
             SizedBox(height: 10),
-            otherOptions("Dark Theme", valNotify1, changeFunct1),
-            otherOptions("Test2", valNotify2, changeFunct2),
+            otherOptions("Dark Theme", darkTheme, changeTheme),
+            otherOptions("List Mode", listBool, listMode),
             otherOptions("Test3", valNotify3, changeFunct3),
           ],
         ),

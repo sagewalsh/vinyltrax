@@ -12,7 +12,7 @@ class Tabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const DefaultTabController(
+    return DefaultTabController(
       length: 4,
       child: Scaffold(
         backgroundColor: Color(0xFFFFFDF6),

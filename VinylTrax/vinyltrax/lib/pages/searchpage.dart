@@ -4,6 +4,8 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:vinyltrax/button_icons/barcode.dart';
 import 'package:vinyltrax/buttons/fliterButtons.dart';
 import 'disResults.dart';
+import 'settingspage.dart' as settings;
+
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -21,11 +23,24 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    double toolbarHeight = 110;
+    Widget addFilterButtons = SizedBox();
+    if (settings.listBool) {
+      toolbarHeight = 150;
+      addFilterButtons = Container(
+        //Icon/List buttons and Top/Artist/Album/Song buttons
+        color: Color(0xFFFFFEF9),
+        child: FilterButtons(),
+      );
+    }
+    else
+      toolbarHeight = 110;
+
     return Scaffold(
       backgroundColor: Color(0xFFFFFEF9),
       appBar: AppBar(
         titleSpacing: 0,
-        toolbarHeight: 150,
+        toolbarHeight: toolbarHeight,
         backgroundColor: Color(0xFFFFFEF9),
         title: Column(
           children: [
@@ -106,11 +121,7 @@ class _SearchPageState extends State<SearchPage> {
                 ],
               ),
             ),
-            Container(
-              //Icon/List buttons and Top/Artist/Album/Song buttons
-              color: Color(0xFFFFFEF9),
-              child: FilterButtons(),
-            ),
+            addFilterButtons,
           ],
         ),
       ),
