@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import '../database.dart';
-import '../buttons/addAlbumPopUp.dart';
 
 class InvDetails extends StatefulWidget {
   final List<String> input;
@@ -115,6 +114,7 @@ class _InvDetails extends State<InvDetails> {
                     ));
                   }
                   children.add(ListView(
+                    physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     children: tracklist,
                   ));
