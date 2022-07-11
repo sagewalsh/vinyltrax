@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:vinyltrax/show_data/iconList.dart';
 import '../buttons/addAlbumPopUp.dart';
-import '../show_data/icon.dart';
 import '../discogs.dart';
 
-class DiscogsAlbum extends StatelessWidget {
+class DisDetails extends StatelessWidget {
   final List<String> input;
-  DiscogsAlbum(this.input);
+  DisDetails(this.input);
 
   @override
   Widget build(BuildContext context) {

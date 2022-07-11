@@ -6,9 +6,9 @@ import '../database.dart';
 import '../returnedData/albumData.dart';
 import '../show_data/icon.dart';
 
-class SearchResultsPage extends StatelessWidget {
+class InvAlbumsBy extends StatelessWidget {
   final List<String> input;
-  SearchResultsPage(this.input);
+  InvAlbumsBy(this.input);
 
   @override
   Widget build(BuildContext context) {

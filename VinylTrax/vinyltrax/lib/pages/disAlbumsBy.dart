@@ -3,9 +3,9 @@ import 'package:vinyltrax/show_data/iconList.dart';
 import '../show_data/icon.dart';
 import '../discogs.dart';
 
-class DiscogsArtist extends StatelessWidget {
+class DisAlbumsBy extends StatelessWidget {
   final List<String> input;
-  DiscogsArtist(this.input);
+  DisAlbumsBy(this.input);
 
   @override
   Widget build(BuildContext context) {

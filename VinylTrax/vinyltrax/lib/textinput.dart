@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import './pages/results.dart';
+import 'pages/invResults.dart';
 import './pages/discogsResults.dart';
 
 class TextInput extends StatefulWidget {
@@ -79,7 +79,7 @@ class _TextInputState extends State<TextInput> {
                 isInventory
                     ? Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                        return Results(text);
+                        return InvResults(text);
                       }))
                     : Navigator.push(context,
                         MaterialPageRoute(builder: (context) {

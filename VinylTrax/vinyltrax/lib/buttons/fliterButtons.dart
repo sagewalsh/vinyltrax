@@ -1,17 +1,15 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 
-class filterButtons extends StatefulWidget {
-  const filterButtons({Key? key}) : super(key: key);
+class FilterButtons extends StatefulWidget {
+  const FilterButtons({Key? key}) : super(key: key);
 
   @override
-  State<filterButtons> createState() => _filterButtonsState();
+  State<FilterButtons> createState() => _FilterButtonsState();
 }
 
 enum _Tab { one, two, three, four }
 
-class _filterButtonsState extends State<filterButtons> {
+class _FilterButtonsState extends State<FilterButtons> {
   _Tab _selectedTab = _Tab.one;
 
   @override

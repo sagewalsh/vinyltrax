@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vinyltrax/pages/searchresultspage.dart';
+import 'package:vinyltrax/pages/InvAlbumsBy.dart';
 
 class ListEntry extends StatelessWidget {
   String name = "";
@@ -25,8 +25,7 @@ class ListEntry extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget avatar = SizedBox();
     if (!isAlbum) {
-      avatar = CircleAvatar(
-          foregroundImage: NetworkImage(image));
+      avatar = CircleAvatar(foregroundImage: NetworkImage(image));
     } else {
       avatar = Container(
         height: 40,
@@ -65,6 +64,6 @@ class NextPageArtist extends StatefulWidget {
 class _NextPageArtistState extends State<NextPageArtist> {
   @override
   Widget build(BuildContext context) {
-    return SearchResultsPage(["${widget.artistID}", "${widget.artistName}"]);
+    return InvAlbumsBy(["${widget.artistID}", "${widget.artistName}"]);
   }
 }

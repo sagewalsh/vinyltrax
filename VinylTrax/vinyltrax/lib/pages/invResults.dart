@@ -6,9 +6,9 @@ import '../database.dart';
 import '../returnedData/albumData.dart';
 import '../show_data/icon.dart';
 
-class Results extends StatelessWidget {
+class InvResults extends StatelessWidget {
   final String input;
-  Results(this.input);
+  InvResults(this.input);
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../pages/albumDetailsPage.dart';
-import '../pages/searchresultspage.dart';
-import '../pages/discogsArtist.dart';
-import '../pages/discogsAlbum.dart';
+import '../pages/invDetails.dart';
+import '../pages/InvAlbumsBy.dart';
+import '../pages/disAlbumsBy.dart';
+import '../pages/disDetails.dart';
 import 'package:marquee/marquee.dart';
 
 class ShowIcon extends StatelessWidget {
@@ -108,7 +108,7 @@ class NextPageAlbum extends StatefulWidget {
 class _NextPageAlbumState extends State<NextPageAlbum> {
   @override
   Widget build(BuildContext context) {
-    return AlbumDetailsPage(["${widget.id}", "${widget.name}"]);
+    return InvDetails(["${widget.id}", "${widget.name}"]);
   }
 }
 
@@ -128,7 +128,7 @@ class NextPageArtist extends StatefulWidget {
 class _NextPageArtistState extends State<NextPageArtist> {
   @override
   Widget build(BuildContext context) {
-    return SearchResultsPage(["${widget.id}", "${widget.name}"]);
+    return InvAlbumsBy(["${widget.id}", "${widget.name}"]);
   }
 }
 
@@ -148,7 +148,7 @@ class NextPageDisArt extends StatefulWidget {
 class _NextDisArtState extends State<NextPageDisArt> {
   @override
   Widget build(BuildContext context) {
-    return DiscogsArtist(["${widget.id}", "${widget.name}"]);
+    return DisAlbumsBy(["${widget.id}", "${widget.name}"]);
   }
 }
 
@@ -168,6 +168,6 @@ class NextPageDisAlb extends StatefulWidget {
 class _NextDisAlbState extends State<NextPageDisAlb> {
   @override
   Widget build(BuildContext context) {
-    return DiscogsAlbum(["${widget.id}", "${widget.name}"]);
+    return DisDetails(["${widget.id}", "${widget.name}"]);
   }
 }

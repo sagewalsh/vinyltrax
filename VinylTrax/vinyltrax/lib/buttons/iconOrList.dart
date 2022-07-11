@@ -1,17 +1,15 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 
-class iconOrList extends StatefulWidget {
-  const iconOrList({Key? key}) : super(key: key);
+class IconOrList extends StatefulWidget {
+  const IconOrList({Key? key}) : super(key: key);
 
   @override
-  State<iconOrList> createState() => _iconOrListState();
+  State<IconOrList> createState() => _IconOrListState();
 }
 
 enum _Tab { one, two }
 
-class _iconOrListState extends State<iconOrList> {
+class _IconOrListState extends State<IconOrList> {
   _Tab _selectedTab = _Tab.one;
 
   @override

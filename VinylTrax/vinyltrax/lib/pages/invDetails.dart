@@ -3,16 +3,16 @@ import 'package:flutter/src/widgets/framework.dart';
 import '../database.dart';
 import '../buttons/addAlbumPopUp.dart';
 
-class AlbumDetailsPage extends StatefulWidget {
+class InvDetails extends StatefulWidget {
   final List<String> input;
 
-  AlbumDetailsPage(this.input);
+  InvDetails(this.input);
 
   @override
-  State<AlbumDetailsPage> createState() => _AlbumDetailsPageState();
+  State<InvDetails> createState() => _InvDetails();
 }
 
-class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
+class _InvDetails extends State<InvDetails> {
   late String locationValue;
   late String format;
 

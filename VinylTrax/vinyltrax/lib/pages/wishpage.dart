@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 
-enum _Order { artist, albums}
+enum _Order { artist, albums }
 
 class WishPage extends StatefulWidget {
   const WishPage({Key? key}) : super(key: key);
@@ -14,11 +13,12 @@ class WishPage extends StatefulWidget {
 class _WishPageState extends State<WishPage> {
   _Order _selectedOrder = _Order.artist;
 
-
   Future createAlertDialog(BuildContext context) {
     TextEditingController _customController = TextEditingController();
 
-    return showDialog(context: context, builder: (context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
           return AlertDialog(
             title: Text("What do you wish for?"),
             content: TextField(
@@ -34,8 +34,7 @@ class _WishPageState extends State<WishPage> {
               ),
             ],
           );
-        }
-    );
+        });
   }
 
   @override
@@ -50,7 +49,8 @@ class _WishPageState extends State<WishPage> {
             Container(
               width: double.infinity,
               alignment: Alignment.center,
-              child: const Text("Wishlist", style: TextStyle(color: Colors.black)),
+              child:
+                  const Text("Wishlist", style: TextStyle(color: Colors.black)),
             ),
             Container(
               color: Color(0xFFFFFEF9),

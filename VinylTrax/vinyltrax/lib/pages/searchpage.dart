@@ -4,9 +4,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:vinyltrax/button_icons/barcode.dart';
 import 'package:vinyltrax/buttons/fliterButtons.dart';
 import '../textinput.dart' as search;
-import '../buttons/iconOrList.dart';
-import './searchresultspage.dart';
-import './results.dart';
+import 'invResults.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -23,7 +21,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     input = textBox.getString();
-    if (input.isNotEmpty) return Results(input);
+    if (input.isNotEmpty) return InvResults(input);
     return Scaffold(
       backgroundColor: Color(0xFFFFFEF9),
       appBar: AppBar(
@@ -72,7 +70,7 @@ class _SearchPageState extends State<SearchPage> {
             Container(
               //Icon/List buttons and Top/Artist/Album/Song buttons
               color: Color(0xFFFFFEF9),
-              child: filterButtons(),
+              child: FilterButtons(),
             ),
           ],
         ),

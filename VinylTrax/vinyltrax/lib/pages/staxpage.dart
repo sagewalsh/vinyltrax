@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:vinyltrax/show_data/genreList.dart';
 import 'package:vinyltrax/returnedData/byAlbum.dart';
 import '../returnedData/byArtist.dart';
@@ -35,7 +34,8 @@ class _StaxPageState extends State<StaxPage> {
               // Name of Page
               width: double.infinity,
               alignment: Alignment.center,
-              child: const Text("Stax of Trax", style: TextStyle(color: Colors.black)),
+              child: const Text("Stax of Trax",
+                  style: TextStyle(color: Colors.black)),
               color: Color(0xFFFFFDF6),
             ),
             Container(
@@ -91,7 +91,7 @@ class _StaxPageState extends State<StaxPage> {
                 padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
                 selectedColor: Color(0xFFFF5A5A),
                 borderColor: Color(0xFFFF5A5A),
-                pressedColor:Color(0x64FF5A5A),
+                pressedColor: Color(0x64FF5A5A),
                 children: {
                   _Type.vinyl: Container(
                     height: 30,
