@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import '../pages/invDetails.dart';
-import '../pages/InvAlbumsBy.dart';
-import '../pages/disAlbumsBy.dart';
-import '../pages/disDetails.dart';
+import '../pages/nextPage.dart';
 import 'package:marquee/marquee.dart';
 
 class ShowIcon extends StatelessWidget {
@@ -89,85 +86,5 @@ class ShowIcon extends StatelessWidget {
         children: [avatar, outputArt, outputAlb],
       ),
     );
-  }
-}
-
-/*
-##########################################################################
-Clicked an Album in Inventory
-##########################################################################
-*/
-class NextPageAlbum extends StatefulWidget {
-  final String id, name;
-
-  NextPageAlbum(this.id, this.name);
-  @override
-  State<NextPageAlbum> createState() => _NextPageAlbumState();
-}
-
-class _NextPageAlbumState extends State<NextPageAlbum> {
-  @override
-  Widget build(BuildContext context) {
-    return InvDetails(["${widget.id}", "${widget.name}"]);
-  }
-}
-
-/*
-##########################################################################
-Clicked an Artist in Invetory
-##########################################################################
-*/
-class NextPageArtist extends StatefulWidget {
-  final String id, name;
-
-  NextPageArtist(this.id, this.name);
-  @override
-  State<NextPageArtist> createState() => _NextPageArtistState();
-}
-
-class _NextPageArtistState extends State<NextPageArtist> {
-  @override
-  Widget build(BuildContext context) {
-    return InvAlbumsBy(["${widget.id}", "${widget.name}"]);
-  }
-}
-
-/*
-##########################################################################
-Clicked an Artist in Discogs
-##########################################################################
-*/
-class NextPageDisArt extends StatefulWidget {
-  final String id, name;
-
-  NextPageDisArt(this.id, this.name);
-  @override
-  State<NextPageDisArt> createState() => _NextDisArtState();
-}
-
-class _NextDisArtState extends State<NextPageDisArt> {
-  @override
-  Widget build(BuildContext context) {
-    return DisAlbumsBy(["${widget.id}", "${widget.name}"]);
-  }
-}
-
-/*
-##########################################################################
-Clicked an Album in Discogs
-##########################################################################
-*/
-class NextPageDisAlb extends StatefulWidget {
-  final String id, name;
-
-  NextPageDisAlb(this.id, this.name);
-  @override
-  State<NextPageDisAlb> createState() => _NextDisAlbState();
-}
-
-class _NextDisAlbState extends State<NextPageDisAlb> {
-  @override
-  Widget build(BuildContext context) {
-    return DisDetails(["${widget.id}", "${widget.name}"]);
   }
 }

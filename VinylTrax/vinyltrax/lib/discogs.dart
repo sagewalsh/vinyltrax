@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:diacritic/diacritic.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +35,7 @@ Returns a Map with the album title as the key and a list as the value:
   static Future<Map<String, List<String>>> albumsBy(String artistID) async {
     Map<String, List<String>> albums = {};
     Map<String, List<String>> second = {};
-    var query = "/artists/$artistID/releases?sort=year&sort_order=desc";
+    var query = "/artists/$artistID/releases?sort=format";
     final url = 'https://api.discogs.com$query';
     late String quantity;
 
@@ -263,10 +261,10 @@ i: 0-19
       _log.severe('Failed to read the chached file', e);
     }
 
-    var data = json.decode(quantity)["pagination"]["items"];
+    var data = json.decode(quantity)["pagination"]["pages"];
 
-    for (int i = 1; i < data / 50; i++) {
-      // print("page #: " + i.toString());
+    for (int i = 1; i < data; i++) {
+      print("page #: " + i.toString());
       final url = 'https://api.discogs.com$query&page=$i';
       late String content;
 
@@ -364,9 +362,9 @@ i: 0-39
       _log.severe('Failed to read the chached file', e);
     }
 
-    var data = json.decode(quantity)["pagination"]["items"];
+    var data = json.decode(quantity)["pagination"]["pages"];
 
-    for (int i = 1; i < data / 50; i++) {
+    for (int i = 1; i < data; i++) {
       final url = 'https://api.discogs.com$query&page=$i';
       late String content;
 

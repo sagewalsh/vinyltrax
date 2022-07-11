@@ -1,6 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../buttons/addAlbumPopUp.dart';
 import '../discogs.dart';
+import '../pages/nextPage.dart';
 
 class DisDetails extends StatelessWidget {
   final List<String> input;
@@ -92,13 +94,46 @@ class DisDetails extends StatelessWidget {
                   ));
 
                   // ARTIST NAME
-                  String artists = data[0][0][0].toString();
-                  for (int i = 1; i < (data[0] as List<dynamic>).length; i++) {
-                    artists += " and " + data[0][i][0].toString();
+                  var artists = <TextSpan>[];
+                  int size = (data[0] as List<dynamic>).length;
+                  for (int i = 0; i < size; i++) {
+                    artists.add(
+                      TextSpan(
+                        text: data[0][i][0].toString(),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = (() {
+                            var route = new MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return new NextPageDisArt(
+                                  data[0][i][1].toString(),
+                                  data[0][i][0].toString());
+                            });
+                            Navigator.of(context).push(route);
+                          }),
+                        style: TextStyle(
+                          color: Colors.black,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    );
+                    if (i + 1 < size) {
+                      artists.add(TextSpan(
+                        text: " & ",
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ));
+                    }
                   }
-                  children.add(Center(
-                    child: Text(artists),
-                  ));
+                  children.add(
+                    Center(
+                      child: RichText(
+                        text: TextSpan(
+                          children: artists,
+                        ),
+                      ),
+                    ),
+                  );
 
                   // GENRE AND YEAR
                   children.add(Center(
