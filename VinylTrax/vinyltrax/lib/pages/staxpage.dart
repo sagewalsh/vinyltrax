@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/show_data/genreList.dart';
-import 'package:vinyltrax/returnedData/byAlbum.dart';
-import '../returnedData/byArtist.dart';
+import 'package:vinyltrax/returnedData/getInvAlbum.dart';
+import '../returnedData/getInvArtist.dart';
 import '../textinput.dart';
 
 enum _Order { artist, albums, genre }
@@ -135,9 +135,9 @@ class _StaxPageState extends State<StaxPage> {
             if (_selectedOrder == _Order.genre)
               GenreList()
             else if (_selectedOrder == _Order.artist)
-              AlbumOrderArtist()
+              GetInvArtist()
             else
-              AlbumOrderAlbum()
+              GetInvAlbum()
           ],
         ),
       ),

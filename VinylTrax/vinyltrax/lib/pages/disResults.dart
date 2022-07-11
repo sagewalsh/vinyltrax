@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../returnedData/disArtists.dart';
-import '../returnedData/disAlbums.dart';
+import '../returnedData/getDisArtist.dart';
+import '../returnedData/getDisAlbum.dart';
 
-class DiscogsResults extends StatelessWidget {
+class DisResults extends StatelessWidget {
   final String input;
-  DiscogsResults(this.input);
+  DisResults(this.input);
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +27,8 @@ class DiscogsResults extends StatelessWidget {
         physics: AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
-            DiscogsArtists(input),
-            DiscogsAlbums(input),
+            GetDisArtist(input),
+            GetDisAlbum(input),
           ],
         ),
       ),

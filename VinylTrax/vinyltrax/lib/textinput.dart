@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'pages/invResults.dart';
-import './pages/discogsResults.dart';
+import 'pages/disResults.dart';
 
 class TextInput extends StatefulWidget {
   final textController = TextEditingController();
@@ -83,7 +83,7 @@ class _TextInputState extends State<TextInput> {
                       }))
                     : Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                        return DiscogsResults(text);
+                        return DisResults(text);
                       }));
               },
             ),

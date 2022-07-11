@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:vinyltrax/buttons/addAlbumPopUp.dart';
-import 'package:vinyltrax/returnedData/scrollResults.dart';
 import '../database.dart';
 import '../show_data/icon.dart';
 import '../show_data/iconList.dart';
 
-class AlbumOrderAlbum extends StatelessWidget {
-  AlbumOrderAlbum({Key? key}) : super(key: key);
-
-  final Future<List<Text>> _results = Database.displayByName();
-  List<Widget> children = <Widget>[];
+class GetInvGenre extends StatelessWidget {
+  final String genre;
+  // AlbumsOfGenre({Key? key}) : super(key: key);
+  GetInvGenre(this.genre);
 
   @override
   Widget build(BuildContext context) {
+    final Future<List<Text>> _results = Database.displayByGenre(genre);
     return SizedBox(
       width: double.infinity,
       child: FutureBuilder<List<Text>>(
@@ -22,9 +20,6 @@ class AlbumOrderAlbum extends StatelessWidget {
             if (snapshot.hasData) {
               children = <Widget>[];
               for (int i = 0; i < snapshot.data!.length; i += 4) {
-                //   var data = snapshot.data![i + 1].data as List<dynamic>;
-                //   String artists = data[0].toString();
-
                 children.add(ShowIcon(
                     snapshot.data?[i + 1].data as String,
                     snapshot.data?[i].data as String,

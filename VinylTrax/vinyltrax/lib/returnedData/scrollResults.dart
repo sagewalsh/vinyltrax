@@ -11,10 +11,8 @@ class ScrollResults extends StatefulWidget {
 }
 
 class _ScrollResultsState extends State<ScrollResults> {
-
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: EdgeInsets.fromLTRB(8, 15, 8, 0),
       child: Column(
@@ -25,15 +23,15 @@ class _ScrollResultsState extends State<ScrollResults> {
           Container(
             height: 190,
             child: ListView.separated(
-                itemCount: widget.children.length - 1,
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return widget.children[index];
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(width: 15);
-                },
+              itemCount: widget.children.length - 1,
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) {
+                return widget.children[index];
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return SizedBox(width: 15);
+              },
             ),
           ),
         ],

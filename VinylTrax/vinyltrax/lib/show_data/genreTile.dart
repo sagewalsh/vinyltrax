@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../returnedData/byGenre.dart';
+import '../returnedData/getInvGenre.dart';
 
 class GenreTile extends StatelessWidget {
   final String genreName;
@@ -54,7 +54,7 @@ class _NextPageState extends State<NextPage> {
                 height: 30,
                 child: Text(""),
               ),
-              AlbumsOfGenre("${widget.genreName}"),
+              GetInvGenre("${widget.genreName}"),
               SizedBox(
                 width: double.infinity,
                 height: 30,
