@@ -36,80 +36,101 @@ Returns a Map with the album title as the key and a list as the value:
     Map<String, List<String>> albums = {};
     Map<String, List<String>> second = {};
     var query = "/artists/$artistID/releases?";
+    late String quantity;
 
-    var data = 1;
-    for (int i = 1; i <= data; i++) {
-      print("Page: " + i.toString());
-      final url = "https://api.discogs.com$query&page=$i";
-      late String content;
-
-      try {
-        content =
-            (await DefaultCacheManager().getSingleFile(url, headers: _headers))
-                .readAsStringSync();
-      } on SocketException catch (e) {
+    try {
+      quantity = (await DefaultCacheManager().getSingleFile(
+              'https://api.discogs.com$query',
+              headers: _headers))
+          .readAsStringSync();
+    } on SocketException catch (e) {
+      throw Exception(
+          'Could not connect to Discogs. Please check your internet connection and try again later.');
+    } on HttpExceptionWithStatus catch (e) {
+      // If that response was not OK, throw an error.
+      if (e.statusCode == 404) {
         throw Exception(
-            'Could not connect to Discogs. Please check your internet connection and try again later.');
-      } on HttpExceptionWithStatus catch (e) {
-        // If that response was not OK, throw an error.
-        if (e.statusCode == 404) {
-          throw Exception(
-              'Oops! Couldn\'t find what you\'re looking for on Discogs (404 error).');
-        } else if (e.statusCode >= 400) {
-          throw Exception(
-              'The Discogs service is currently unavailable (${e.statusCode}). Please try again later.');
-        }
-      } on HttpException catch (e) {
-        // If that response was not OK, throw an error.
+            'Oops! Couldn\'t find what you\'re looking for on Discogs (404 error).');
+      } else if (e.statusCode >= 400) {
         throw Exception(
-            'The Discogs service is currently unavailable. Please try again later.');
-      } on FileSystemException catch (e) {
-        _log.severe('Failed to read the chached file', e);
+            'The Discogs service is currently unavailable (${e.statusCode}). Please try again later.');
       }
+    } on HttpException catch (e) {
+      // If that response was not OK, throw an error.
+      throw Exception(
+          'The Discogs service is currently unavailable. Please try again later.');
+    } on FileSystemException catch (e) {
+      _log.severe('Failed to read the chached file', e);
+    }
 
-      var results = json.decode(content)["releases"] as List<dynamic>;
-      print(results);
+    var data = json.decode(quantity)["pagination"]["items"];
 
-      String artist = results[0]["artist"];
+    final url = "https://api.discogs.com$query&per_page=$data";
+    late String content;
 
-      for (int j = 0; j < results.length; j++) {
-        List<String> data = [];
-
-        if (!albums.containsKey(results[j]["title"]) &&
-            // results[j]["artist"] != "Various" &&
-            // results[j]["main_release"] != null &&
-            !results[j]["format"].toString().contains("Single") &&
-            results[j]["role"] == "Main") {
-          data.add(results[j]["title"]);
-
-          results[j]["main_release"] != null
-              ? data.add(results[j]["main_release"].toString())
-              : data.add(results[j]["id"].toString());
-
-          data.add(results[j]["artist"]);
-          results[j]["thumb"] == ""
-              ? data.add(
-                  "https://images.pexels.com/photos/12509854/pexels-photo-12509854.jpeg?cs=srgb&dl=pexels-mati-mango-12509854.jpg&fm=jpg")
-              : data.add(results[j]["thumb"]);
-          albums[results[j]["title"]] = data;
-        } else if (!second.containsKey(results[j]["title"]) &&
-            !results[j]["format"].toString().contains("Single") &&
-            results[j]["role"] == "Main") {
-          data.add(results[j]["title"]);
-
-          results[j]["main_release"] != null
-              ? data.add(results[j]["main_release"].toString())
-              : data.add(results[j]["id"].toString());
-
-          data.add(results[j]["artist"]);
-          results[j]["thumb"] == ""
-              ? data.add(
-                  "https://images.pexels.com/photos/12509854/pexels-photo-12509854.jpeg?cs=srgb&dl=pexels-mati-mango-12509854.jpg&fm=jpg")
-              : data.add(results[j]["thumb"]);
-          second[results[j]["title"]] = data;
-        }
+    try {
+      content =
+          (await DefaultCacheManager().getSingleFile(url, headers: _headers))
+              .readAsStringSync();
+    } on SocketException catch (e) {
+      throw Exception(
+          'Could not connect to Discogs. Please check your internet connection and try again later.');
+    } on HttpExceptionWithStatus catch (e) {
+      // If that response was not OK, throw an error.
+      if (e.statusCode == 404) {
+        throw Exception(
+            'Oops! Couldn\'t find what you\'re looking for on Discogs (404 error).');
+      } else if (e.statusCode >= 400) {
+        throw Exception(
+            'The Discogs service is currently unavailable (${e.statusCode}). Please try again later.');
       }
-      data = json.decode(content)["pagination"]["pages"];
+    } on HttpException catch (e) {
+      // If that response was not OK, throw an error.
+      throw Exception(
+          'The Discogs service is currently unavailable. Please try again later.');
+    } on FileSystemException catch (e) {
+      _log.severe('Failed to read the chached file', e);
+    }
+
+    var results = json.decode(content)["releases"] as List<dynamic>;
+    // print(results);
+
+    for (int j = 0; j < results.length; j++) {
+      List<String> data = [];
+
+      if (!albums.containsKey(results[j]["title"]) &&
+          // results[j]["artist"] != "Various" &&
+          // results[j]["main_release"] != null &&
+          !results[j]["format"].toString().contains("Single") &&
+          results[j]["role"] == "Main") {
+        data.add(results[j]["title"]);
+
+        results[j]["main_release"] != null
+            ? data.add(results[j]["main_release"].toString())
+            : data.add(results[j]["id"].toString());
+
+        data.add(results[j]["artist"]);
+        results[j]["thumb"] == ""
+            ? data.add(
+                "https://images.pexels.com/photos/12509854/pexels-photo-12509854.jpeg?cs=srgb&dl=pexels-mati-mango-12509854.jpg&fm=jpg")
+            : data.add(results[j]["thumb"]);
+        albums[results[j]["title"]] = data;
+      } else if (!second.containsKey(results[j]["title"]) &&
+          !results[j]["format"].toString().contains("Single") &&
+          results[j]["role"] == "Main") {
+        data.add(results[j]["title"]);
+
+        results[j]["main_release"] != null
+            ? data.add(results[j]["main_release"].toString())
+            : data.add(results[j]["id"].toString());
+
+        data.add(results[j]["artist"]);
+        results[j]["thumb"] == ""
+            ? data.add(
+                "https://images.pexels.com/photos/12509854/pexels-photo-12509854.jpeg?cs=srgb&dl=pexels-mati-mango-12509854.jpg&fm=jpg")
+            : data.add(results[j]["thumb"]);
+        second[results[j]["title"]] = data;
+      }
     }
     // albums.length < 20
     //     ? albums.addEntries(second.entries)
@@ -188,12 +209,12 @@ Returns a list of album details:
             "https://images.pexels.com/photos/12509854/pexels-photo-12509854.jpeg?cs=srgb&dl=pexels-mati-mango-12509854.jpg&fm=jpg")
         : details.add(results["thumb"]);
 
-    print(" ");
-    print(albumID);
-    details.forEach((element) {
-      print(element);
-    });
-    print(results["master_id"]);
+    // print(" ");
+    // print(albumID);
+    // details.forEach((element) {
+    //   print(element);
+    // });
+    // print(results["master_id"]);
     return details;
   }
 
@@ -209,11 +230,40 @@ i: 0-19
   static Future<List<String>> getArtists(String input) async {
     List<String> artists = [];
     String query = "/database/search?q={$input}";
-    final url = 'https://api.discogs.com$query';
     late String quantity;
 
     try {
-      quantity =
+      quantity = (await DefaultCacheManager().getSingleFile(
+              'https://api.discogs.com$query',
+              headers: _headers))
+          .readAsStringSync();
+    } on SocketException catch (e) {
+      throw Exception(
+          'Could not connect to Discogs. Please check your internet connection and try again later.');
+    } on HttpExceptionWithStatus catch (e) {
+      // If that response was not OK, throw an error.
+      if (e.statusCode == 404) {
+        throw Exception(
+            'Oops! Couldn\'t find what you\'re looking for on Discogs (404 error).');
+      } else if (e.statusCode >= 400) {
+        throw Exception(
+            'The Discogs service is currently unavailable (${e.statusCode}). Please try again later.');
+      }
+    } on HttpException catch (e) {
+      // If that response was not OK, throw an error.
+      throw Exception(
+          'The Discogs service is currently unavailable. Please try again later.');
+    } on FileSystemException catch (e) {
+      _log.severe('Failed to read the chached file', e);
+    }
+
+    var data = json.decode(quantity)["pagination"]["items"];
+
+    final url = 'https://api.discogs.com$query&per_page=$data';
+    late String content;
+
+    try {
+      content =
           (await DefaultCacheManager().getSingleFile(url, headers: _headers))
               .readAsStringSync();
     } on SocketException catch (e) {
@@ -236,61 +286,29 @@ i: 0-19
       _log.severe('Failed to read the chached file', e);
     }
 
-    var data = json.decode(quantity)["pagination"]["pages"];
+    var results = json.decode(content)["results"] as List<dynamic>;
+    // print(results);
 
-    for (int i = 1; i < data; i++) {
-      // print("page #: " + i.toString());
-      final url = 'https://api.discogs.com$query&page=$i';
-      late String content;
-
-      try {
-        content =
-            (await DefaultCacheManager().getSingleFile(url, headers: _headers))
-                .readAsStringSync();
-      } on SocketException catch (e) {
-        throw Exception(
-            'Could not connect to Discogs. Please check your internet connection and try again later.');
-      } on HttpExceptionWithStatus catch (e) {
-        // If that response was not OK, throw an error.
-        if (e.statusCode == 404) {
-          throw Exception(
-              'Oops! Couldn\'t find what you\'re looking for on Discogs (404 error).');
-        } else if (e.statusCode >= 400) {
-          throw Exception(
-              'The Discogs service is currently unavailable (${e.statusCode}). Please try again later.');
-        }
-      } on HttpException catch (e) {
-        // If that response was not OK, throw an error.
-        throw Exception(
-            'The Discogs service is currently unavailable. Please try again later.');
-      } on FileSystemException catch (e) {
-        _log.severe('Failed to read the chached file', e);
+    for (int j = 0; j < results.length; j++) {
+      if (artists.length >= 30) {
+        // print(artists.toString());
+        return artists;
       }
 
-      var results = json.decode(content)["results"] as List<dynamic>;
-      // print(results);
-
-      for (int j = 0; j < results.length; j++) {
-        if (artists.length >= 30) {
-          // print(artists.toString());
-          return artists;
-        }
-
-        if (results[j]["type"] == "artist" &&
-            !artists.contains(results[j]["title"])) {
-          // print("id: " +
-          //     results[j]["id"].toString() +
-          //     "   title: " +
-          //     results[j]["title"].toString());
-          artists.add(results[j]["title"]);
-          artists.add(results[j]["id"].toString());
-          results[j]["thumb"] == ""
-              ? artists.add(
-                  "https://images.pexels.com/photos/12509854/pexels-photo-12509854.jpeg?cs=srgb&dl=pexels-mati-mango-12509854.jpg&fm=jpg")
-              : artists.add(results[j]["thumb"]);
-          // print(artists.length);
-          // print(results);
-        }
+      if (results[j]["type"] == "artist" &&
+          !artists.contains(results[j]["title"])) {
+        // print("id: " +
+        //     results[j]["id"].toString() +
+        //     "   title: " +
+        //     results[j]["title"].toString());
+        artists.add(results[j]["title"]);
+        artists.add(results[j]["id"].toString());
+        results[j]["thumb"] == ""
+            ? artists.add(
+                "https://images.pexels.com/photos/12509854/pexels-photo-12509854.jpeg?cs=srgb&dl=pexels-mati-mango-12509854.jpg&fm=jpg")
+            : artists.add(results[j]["thumb"]);
+        // print(artists.length);
+        // print(results);
       }
     }
     // print(artists.toString());
