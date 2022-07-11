@@ -19,7 +19,7 @@ class ShowIcon extends StatelessWidget {
         child: Marquee(
           text: text,
           blankSpace: 30,
-          velocity: 30,
+          velocity: 25,
         ),
       );
 

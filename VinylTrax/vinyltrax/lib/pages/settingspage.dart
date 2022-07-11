@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 bool listBool = false;
+bool darkTheme = false;
 
 class SettingsPage extends StatefulWidget {
 
@@ -11,7 +12,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool darkTheme = true;
+
   bool valNotify3 = true;
 
   changeTheme(bool newVal) {

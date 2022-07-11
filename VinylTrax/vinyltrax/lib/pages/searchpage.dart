@@ -1,8 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:vinyltrax/button_icons/barcode.dart';
-import 'package:vinyltrax/buttons/fliterButtons.dart';
 import 'disResults.dart';
 import 'settingspage.dart' as settings;
 
@@ -14,10 +14,13 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
+enum _Tab { one, two, three, four }
+
 class _SearchPageState extends State<SearchPage> {
   String? scanResult; //use this to get the barcode number of an album
-  Widget output = SizedBox();
+  _Tab _selectedTab = _Tab.one;
 
+  Widget output = SizedBox();
   final TextEditingController textController = TextEditingController();
   FocusNode focus = FocusNode();
 
@@ -30,7 +33,54 @@ class _SearchPageState extends State<SearchPage> {
       addFilterButtons = Container(
         //Icon/List buttons and Top/Artist/Album/Song buttons
         color: Color(0xFFFFFEF9),
-        child: FilterButtons(),
+        child: SizedBox(
+        height: 30,
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: CupertinoSegmentedControl(
+            padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+            selectedColor: Color(0xFFFF5A5A),
+            borderColor: Color(0xFFFF5A5A),
+            pressedColor: Color(0x64FF5A5A),
+            children: {
+              _Tab.one: Container(
+                height: 30,
+                width: 85,
+                child: Center(
+                  child: Text("Top", style: TextStyle(fontSize: 14)),
+                ),
+              ),
+              _Tab.two: Container(
+                height: 30,
+                width: 85,
+                child: Center(
+                  child: Text("Artist", style: TextStyle(fontSize: 14)),
+                ),
+              ),
+              _Tab.three: Container(
+                height: 30,
+                width: 85,
+                child: Center(
+                  child: Text("Album", style: TextStyle(fontSize: 14)),
+                ),
+              ),
+              _Tab.four: Container(
+                height: 30,
+                width: 85,
+                child: Center(
+                  child: Text("Song", style: TextStyle(fontSize: 14)),
+                ),
+              ),
+            },
+            onValueChanged: (value) {
+              setState(() {
+                _selectedTab = value as _Tab;
+              });
+            },
+            groupValue: _selectedTab,
+          ),
+        ),
+      ),
       );
     }
     else

@@ -19,6 +19,9 @@ class InvAlbumsBy extends StatelessWidget {
       backgroundColor: Color(0xFFFFFEF9),
       appBar: AppBar(
         backgroundColor: Color(0xFFFFFEF9),
+        leading: BackButton(
+          color: Colors.black,
+        ),
         title: Text(
           name,
           style: TextStyle(color: Colors.black),
