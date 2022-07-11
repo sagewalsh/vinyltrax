@@ -21,6 +21,9 @@ class GetDisArtist extends StatelessWidget {
             List<Widget> children;
             if (snapshot.hasData) {
               children = <Widget>[];
+              if (snapshot.data!.length == 0) {
+                children.add(Text("No Artists Found with the Name: " + input));
+              }
               for (int i = 0; i < snapshot.data!.length; i += 3) {
                 var data = [
                   snapshot.data![i],

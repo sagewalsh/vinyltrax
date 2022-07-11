@@ -36,7 +36,11 @@ class InvResults extends StatelessWidget {
                 List<Widget> children;
                 if (snapshot.hasData) {
                   children = <Widget>[];
-                  //
+                  if (snapshot.data!.length == 0) {
+                    children.add(
+                        Text("No Inventory Found with the Name: " + input));
+                  }
+
                   for (int i = 0; i < snapshot.data!.length; i++) {
                     var data = snapshot.data![i];
                     // Artist Data

@@ -21,6 +21,9 @@ class GetDisAlbum extends StatelessWidget {
             List<Widget> children;
             if (snapshot.hasData) {
               children = <Widget>[];
+              if (snapshot.data!.length == 0) {
+                children.add(Text("No Albums Found with the Name: " + input));
+              }
               for (int i = 0; i < snapshot.data!.length; i += 4) {
                 var data = [
                   snapshot.data![i],
