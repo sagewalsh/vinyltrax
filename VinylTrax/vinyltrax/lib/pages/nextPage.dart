@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../pages/invDetails.dart';
-import '../pages/InvAlbumsBy.dart';
-import '../pages/disAlbumsBy.dart';
-import '../pages/disDetails.dart';
+import 'invDetails.dart';
+import 'invAlbumsBy.dart';
+import 'disAlbumsBy.dart';
+import 'disDetails.dart';
 
 /*
 ##########################################################################

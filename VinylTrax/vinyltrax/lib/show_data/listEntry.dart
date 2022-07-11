@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vinyltrax/pages/InvAlbumsBy.dart';
+import 'package:vinyltrax/pages/invAlbumsBy.dart';
 
 class ListEntry extends StatelessWidget {
   String name = "";

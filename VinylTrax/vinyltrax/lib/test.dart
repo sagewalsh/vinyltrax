@@ -65,6 +65,28 @@ class Test {
 
     // https://api.discogs.com/releases/8115775
     // https://api.discogs.com//artists/4298621/releases?sort=year
+
+    // albumsBy(3415529) where results[j]["artist"] == "Kehlani" list of albumIDs
+    var list = [
+      6045932,
+      11067559,
+      11067567,
+      7345871,
+      11067610,
+      10600393,
+      11067602,
+      9720490,
+      13302837,
+      15301424,
+      15305496,
+      15301268,
+      23061677,
+      12124509,
+      13895167
+    ];
+    // for (int i = 0; i < list.length; i++) {
+    //   Collection.album(list[i].toString());
+    // }
   }
 
   static void database() {

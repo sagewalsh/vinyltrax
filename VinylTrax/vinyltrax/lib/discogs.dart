@@ -35,37 +35,11 @@ Returns a Map with the album title as the key and a list as the value:
   static Future<Map<String, List<String>>> albumsBy(String artistID) async {
     Map<String, List<String>> albums = {};
     Map<String, List<String>> second = {};
-    var query = "/artists/$artistID/releases?sort=format";
-    final url = 'https://api.discogs.com$query';
-    late String quantity;
+    var query = "/artists/$artistID/releases?";
 
-    try {
-      quantity =
-          (await DefaultCacheManager().getSingleFile(url, headers: _headers))
-              .readAsStringSync();
-    } on SocketException catch (e) {
-      throw Exception(
-          'Could not connect to Discogs. Please check your internet connection and try again later.');
-    } on HttpExceptionWithStatus catch (e) {
-      // If that response was not OK, throw an error.
-      if (e.statusCode == 404) {
-        throw Exception(
-            'Oops! Couldn\'t find what you\'re looking for on Discogs (404 error).');
-      } else if (e.statusCode >= 400) {
-        throw Exception(
-            'The Discogs service is currently unavailable (${e.statusCode}). Please try again later.');
-      }
-    } on HttpException catch (e) {
-      // If that response was not OK, throw an error.
-      throw Exception(
-          'The Discogs service is currently unavailable. Please try again later.');
-    } on FileSystemException catch (e) {
-      _log.severe('Failed to read the chached file', e);
-    }
-
-    var data = json.decode(quantity)["pagination"]["pages"];
-
-    for (int i = 1; i < data; i++) {
+    var data = 1;
+    for (int i = 1; i <= data; i++) {
+      print("Page: " + i.toString());
       final url = "https://api.discogs.com$query&page=$i";
       late String content;
 
@@ -94,20 +68,18 @@ Returns a Map with the album title as the key and a list as the value:
       }
 
       var results = json.decode(content)["releases"] as List<dynamic>;
-      // print(results[0]);
+      print(results);
 
       String artist = results[0]["artist"];
 
       for (int j = 0; j < results.length; j++) {
         List<String> data = [];
 
-        // print(results[j]);
         if (!albums.containsKey(results[j]["title"]) &&
             // results[j]["artist"] != "Various" &&
-            results[j]["role"] == "Main" &&
             // results[j]["main_release"] != null &&
-            (results[j]["artist"] as String) == artist &&
-            !results[j]["format"].toString().contains("Single")) {
+            !results[j]["format"].toString().contains("Single") &&
+            results[j]["role"] == "Main") {
           data.add(results[j]["title"]);
 
           results[j]["main_release"] != null
@@ -121,8 +93,8 @@ Returns a Map with the album title as the key and a list as the value:
               : data.add(results[j]["thumb"]);
           albums[results[j]["title"]] = data;
         } else if (!second.containsKey(results[j]["title"]) &&
-            results[j]["role"] == "Main" &&
-            (results[j]["artist"] as String).contains(artist)) {
+            !results[j]["format"].toString().contains("Single") &&
+            results[j]["role"] == "Main") {
           data.add(results[j]["title"]);
 
           results[j]["main_release"] != null
@@ -137,10 +109,11 @@ Returns a Map with the album title as the key and a list as the value:
           second[results[j]["title"]] = data;
         }
       }
+      data = json.decode(content)["pagination"]["pages"];
     }
-    albums.length < 20
-        ? albums.addEntries(second.entries)
-        : print(albums.length);
+    // albums.length < 20
+    //     ? albums.addEntries(second.entries)
+    //     : print(albums.length);
     return albums;
   }
 
@@ -215,10 +188,12 @@ Returns a list of album details:
             "https://images.pexels.com/photos/12509854/pexels-photo-12509854.jpeg?cs=srgb&dl=pexels-mati-mango-12509854.jpg&fm=jpg")
         : details.add(results["thumb"]);
 
-    // print(albumID);
-    // details.forEach((element) {
-    //   print(element);
-    // });
+    print(" ");
+    print(albumID);
+    details.forEach((element) {
+      print(element);
+    });
+    print(results["master_id"]);
     return details;
   }
 
@@ -264,7 +239,7 @@ i: 0-19
     var data = json.decode(quantity)["pagination"]["pages"];
 
     for (int i = 1; i < data; i++) {
-      print("page #: " + i.toString());
+      // print("page #: " + i.toString());
       final url = 'https://api.discogs.com$query&page=$i';
       late String content;
 
