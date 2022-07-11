@@ -3,8 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:vinyltrax/button_icons/barcode.dart';
 import 'package:vinyltrax/buttons/fliterButtons.dart';
-import '../textinput.dart' as search;
-import 'invResults.dart';
+import 'disResults.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -14,14 +13,14 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final textBox = search.TextInput("Search", false);
-  var input = "";
   String? scanResult; //use this to get the barcode number of an album
+  Widget output = SizedBox();
+
+  final TextEditingController textController = TextEditingController();
+  FocusNode focus = FocusNode();
 
   @override
   Widget build(BuildContext context) {
-    input = textBox.getString();
-    if (input.isNotEmpty) return InvResults(input);
     return Scaffold(
       backgroundColor: Color(0xFFFFFEF9),
       appBar: AppBar(
@@ -42,7 +41,47 @@ class _SearchPageState extends State<SearchPage> {
               child: Row(
                 children: [
                   Container(
-                    child: textBox,
+                    child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Container(
+                          // color: Color.fromARGB(255, 244, 244, 244),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Color(0xFFFFFEF9),
+                          ),
+                          child: TextField(
+                            controller: textController,
+                            focusNode: focus,
+                            onTap: () => FocusScope.of(context).requestFocus(focus),
+                            decoration: InputDecoration(
+                              labelText: "Search",
+                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                              hintText: "Artist, Album, Song",
+                              hintStyle: TextStyle(
+                                color: Color(0xFFFF5A5A),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: BorderSide(
+                                  color: Color(0xFFFF5A5A),
+                                ),
+                              ),
+                              suffixIcon: Icon(
+                                Icons.search,
+                                color: focus.hasFocus ? Color(0xFFFF5A5A) : Colors.black,
+                              ),
+                            ),
+                            onSubmitted: (text) {
+                              setState((){
+                                output = DisResults(text);
+                              });
+                            },
+                          ),
+                        )
+                    ),
                     width: 295,
                     height: 75,
                   ),
@@ -84,10 +123,16 @@ class _SearchPageState extends State<SearchPage> {
               color: Color(0xFFFFFEF9),
               height: 5,
             ),
+            output
           ],
         ),
       ),
     );
+  }
+
+  void dispose() {
+    textController.dispose();
+    super.dispose();
   }
 
   Future scanBarcode() async {

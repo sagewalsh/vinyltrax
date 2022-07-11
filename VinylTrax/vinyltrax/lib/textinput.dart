@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'pages/invResults.dart';
 import 'pages/disResults.dart';
 
@@ -7,6 +6,7 @@ class TextInput extends StatefulWidget {
   final textController = TextEditingController();
   final String label;
   final bool isInventory;
+  late Widget output = SizedBox();
   // const TextInput({Key? key}) : super(key: key);
   TextInput(this.label, this.isInventory);
 
@@ -81,10 +81,9 @@ class _TextInputState extends State<TextInput> {
                         MaterialPageRoute(builder: (context) {
                         return InvResults(text);
                       }))
-                    : Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                        return DisResults(text);
-                      }));
+                    : setState((){
+                  widget.output = DisResults(text);
+                });
               },
             ),
           )),
