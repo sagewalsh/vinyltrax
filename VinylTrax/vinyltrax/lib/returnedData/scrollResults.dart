@@ -25,7 +25,7 @@ class _ScrollResultsState extends State<ScrollResults> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.title, style: TextStyle(fontSize: 18)),
+          FittedBox(fit: BoxFit.fitWidth, child: Text(widget.title, style: TextStyle(fontSize: 18))),
           Divider(),
           Container(
             height: MediaQuery.of(context).size.height * 0.236,//190
