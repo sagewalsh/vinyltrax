@@ -11,7 +11,7 @@ class InvAlbumsBy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<List<Text>> _results = Database.albumsBy(input[0]);
+    Future<List<dynamic>> _results = Database.albumsBy(input[0]);
     // late String name = "Artist not found";
     String name = input[1];
 
@@ -32,22 +32,31 @@ class InvAlbumsBy extends StatelessWidget {
           physics: AlwaysScrollableScrollPhysics(),
           child: SizedBox(
               width: double.infinity,
-              child: FutureBuilder<List<Text>>(
+              child: FutureBuilder<List<dynamic>>(
                 future: _results,
-                builder:
-                    (BuildContext context, AsyncSnapshot<List<Text>> snapshot) {
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<dynamic>> snapshot) {
                   List<Widget> children;
                   if (snapshot.hasData) {
                     children = <Widget>[];
-                    //
+
                     for (int i = 0; i < snapshot.data!.length; i += 4) {
+                      // Compile the Artists' Names
+                      String artist = "";
+                      var data = snapshot.data![i + 2] as List<dynamic>;
+                      for (int j = 0; j < data.length; j++) {
+                        artist += data[j][0].toString();
+                        if (j + 1 < data.length) {
+                          artist += " & ";
+                        }
+                      }
                       children.add(ShowIcon(
-                          snapshot.data?[i + 1].data as String,
-                          snapshot.data?[i].data as String,
-                          snapshot.data?[i + 2].data as String,
+                          artist,
+                          snapshot.data![i + 1].toString(),
+                          snapshot.data![i + 3].toString(),
                           false,
                           true,
-                          snapshot.data?[i + 3].data as String));
+                          snapshot.data![i].toString()));
                     }
                     children.add(SizedBox(
                       width: double.infinity,

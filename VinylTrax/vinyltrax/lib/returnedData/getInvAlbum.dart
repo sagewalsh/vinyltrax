@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vinyltrax/buttons/addAlbumPopUp.dart';
-import 'package:vinyltrax/returnedData/scrollResults.dart';
 import '../database.dart';
 import '../show_data/icon.dart';
 import '../show_data/iconList.dart';
@@ -9,7 +7,7 @@ class GetInvAlbum extends StatelessWidget {
   GetInvAlbum({Key? key}) : super(key: key);
 
   final Future<List<dynamic>> _results = Database.displayByName();
-  List<Widget> children = <Widget>[];
+  final List<Widget> children = <Widget>[];
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +37,7 @@ class GetInvAlbum extends StatelessWidget {
                     snapshot.data![i + 3].toString(),
                     false,
                     true,
-                    snapshot.data![0].toString()));
+                    snapshot.data![i].toString()));
               }
             } else if (snapshot.hasError) {
               children = <Widget>[

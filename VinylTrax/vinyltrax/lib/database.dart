@@ -128,6 +128,7 @@ class Database {
       results.add(albumdata["Name"]);
       results.add(albumdata["Artist"]);
       results.add(albumdata["Cover"]);
+      // print(albumdata["UniqueID"]);
     });
     return results;
   }
@@ -141,11 +142,11 @@ Data is returned as a list of text widgets
 [1]: Artist ID
 [2]: Image
 */
-  static Future<List<Text>> artists() async {
+  static Future<List<dynamic>> artists() async {
     // Get a snapshot from the artist database
     final snapshot = await ref.child("Artists").get();
     // List of artists to return
-    List<Text> results = [];
+    List<dynamic> results = [];
 
     if (snapshot.exists) {
       // Map{ ArtistID: {Artist Data} }
@@ -166,9 +167,9 @@ Data is returned as a list of text widgets
       // Add each artist and their id to the returning list
       list.forEach((element) {
         var artistdata = element.value as Map<Object?, Object?>;
-        results.add(Text(artistdata["Name"].toString()));
-        results.add(Text(artistdata["UniqueID"].toString()));
-        results.add(Text(artistdata["Image"].toString()));
+        results.add(artistdata["Name"]);
+        results.add(artistdata["UniqueID"]);
+        results.add(artistdata["Image"]);
       });
     }
     // Return artists and their ids
@@ -185,7 +186,7 @@ Data is returned as a list of text widgets:
 [1]: Artist Name
 [2]: Cover Art
 */
-  static Future<List<Text>> albumsBy(String artistid) async {
+  static Future<List<dynamic>> albumsBy(String artistid) async {
     // Get a snapshot from the ARTIST database
     final snapArtist = await ref.child("Artists").get();
     // Get a snapshot from the ALBUM database
@@ -216,7 +217,7 @@ Data is returned as a list of text widgets:
           }
         });
         // Return the album data of the given Artist's albums
-        return _displayAlbums(albums);
+        return _albumDisplay(albums);
       }
     }
     return [];
@@ -239,6 +240,8 @@ Data is returned as a list of strings
   static Future<List<dynamic>> albumDetails(String albumid) async {
     // Get a snapshot from the database
     final snapshot = await ref.child("Albums").get();
+
+    print("albumDetails id: " + albumid);
 
     if (snapshot.exists) {
       // Map{ albumID: {albumData} }
@@ -378,6 +381,9 @@ Given Album Data from Discogs in the form:
     // albumdata.forEach((element) {
     //   print(element);
     // });
+    if ((albumdata[7] as List<dynamic>).isEmpty) {
+      albumdata[7] = ["none", "0"];
+    }
     await ref.update({
       "Albums/${albumdata[0]}": {
         "UniqueID": albumdata[0],

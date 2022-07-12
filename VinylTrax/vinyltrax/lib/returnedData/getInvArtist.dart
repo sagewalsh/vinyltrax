@@ -6,22 +6,26 @@ import '../show_data/listEntryList.dart';
 class GetInvArtist extends StatelessWidget {
   GetInvArtist({Key? key}) : super(key: key);
 
-  final Future<List<Text>> _results = Database.artists();
+  final Future<List<dynamic>> _results = Database.artists();
   List<Widget> children = <Widget>[];
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: FutureBuilder<List<Text>>(
+      child: FutureBuilder<List<dynamic>>(
           future: _results,
-          builder: (BuildContext context, AsyncSnapshot<List<Text>> snapshot) {
+          builder:
+              (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
             List<Widget> children = <Widget>[];
             if (snapshot.hasData) {
               for (int i = 0; i < snapshot.data!.length; i += 3) {
-                ListEntry temp = ListEntry(snapshot.data?[i].data as String,
-                    snapshot.data?[i + 2].data as String, false);
-                temp.artistID = snapshot.data?[i + 1].data as String;
+                ListEntry temp = ListEntry(
+                  snapshot.data![i].toString(),
+                  snapshot.data![i + 2].toString(),
+                  false,
+                );
+                temp.artistID = snapshot.data![i + 1].toString();
                 if (children.length % 2 != 0) temp.color = Color(0x20FF5A5A);
                 children.add(temp);
               }

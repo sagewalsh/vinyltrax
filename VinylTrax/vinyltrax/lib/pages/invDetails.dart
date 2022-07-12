@@ -22,6 +22,9 @@ class _InvDetails extends State<InvDetails> {
     String album = widget.input[1];
     var _controller = TextEditingController();
 
+    print(widget.input[0]);
+    print(widget.input[1]);
+
     Widget addBlackLine() {
       return Padding(
         padding: const EdgeInsets.only(top: 8, left: 5, right: 5),
@@ -178,34 +181,34 @@ class _InvDetails extends State<InvDetails> {
                     children.add(SizedBox(height: 30));
 
                     // CONTRIBUTORS
-                    children.add(Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child:
-                          Text("Contributors", style: TextStyle(fontSize: 17)),
-                    ));
-                    children.add(addBlackLine());
-                    List<ListTile> contributors = <ListTile>[];
-                    for (int j = 0;
-                        j < (data[5] as List<dynamic>).length;
-                        j++) {
-                      contributors.add(ListTile(
-                        visualDensity: VisualDensity(vertical: -4),
-                        title: Text(
-                          data[5][j][0].toString(),
-                          style: TextStyle(fontSize: 13),
-                        ),
-                        subtitle: Text(
-                          data[5][j][1].toString(),
-                          style: TextStyle(fontSize: 13),
-                        ),
-                        tileColor: j.isOdd ? Color(0x20FF5A5A) : Colors.white,
-                      ));
-                    }
-                    children.add(ListView(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      children: contributors,
-                    ));
+                    // children.add(Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 5),
+                    //   child:
+                    //       Text("Contributors", style: TextStyle(fontSize: 17)),
+                    // ));
+                    // children.add(addBlackLine());
+                    // List<ListTile> contributors = <ListTile>[];
+                    // for (int j = 0;
+                    //     j < (data[5] as List<dynamic>).length;
+                    //     j++) {
+                    //   contributors.add(ListTile(
+                    //     visualDensity: VisualDensity(vertical: -4),
+                    //     title: Text(
+                    //       data[5][j][0].toString(),
+                    //       style: TextStyle(fontSize: 13),
+                    //     ),
+                    //     subtitle: Text(
+                    //       data[5][j][1].toString(),
+                    //       style: TextStyle(fontSize: 13),
+                    //     ),
+                    //     tileColor: j.isOdd ? Color(0x20FF5A5A) : Colors.white,
+                    //   ));
+                    // }
+                    // children.add(ListView(
+                    //   physics: NeverScrollableScrollPhysics(),
+                    //   shrinkWrap: true,
+                    //   children: contributors,
+                    // ));
 
                     children.add(Divider(
                       color: Colors.black,
