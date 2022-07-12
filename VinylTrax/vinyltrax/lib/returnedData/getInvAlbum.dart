@@ -23,16 +23,23 @@ class GetInvAlbum extends StatelessWidget {
             if (snapshot.hasData) {
               children = <Widget>[];
               for (int i = 0; i < snapshot.data!.length; i += 4) {
-                //   var data = snapshot.data![i + 1].data as List<dynamic>;
-                //   String artists = data[0].toString();
+                // Compile the Artists' Names
+                String artist = "";
+                var data = snapshot.data![i + 2] as List<dynamic>;
+                for (int j = 0; j < data.length; j++) {
+                  artist += data[j][0].toString();
+                  if (j + 1 < data.length) {
+                    artist += " & ";
+                  }
+                }
 
                 children.add(ShowIcon(
-                    snapshot.data?[i + 1].data as String,
-                    snapshot.data?[i].data as String,
-                    snapshot.data?[i + 2].data as String,
+                    artist,
+                    snapshot.data![i + 1].toString(),
+                    snapshot.data![i + 3].toString(),
                     false,
                     true,
-                    snapshot.data?[i + 3].data as String));
+                    snapshot.data![0].toString()));
               }
             } else if (snapshot.hasError) {
               children = <Widget>[

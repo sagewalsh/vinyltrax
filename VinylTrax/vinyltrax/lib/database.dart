@@ -15,7 +15,7 @@ class Database {
   [2]: Cover Art
   [3]: Album ID
   */
-  static Future<List<Text>> displayByName() async {
+  static Future<List<dynamic>> displayByName() async {
     // Get a snapshot from the album database
     final snapshot = await ref.child("Albums").get();
 
@@ -36,7 +36,7 @@ class Database {
       }));
 
       //Convert list of maps into list of widgets
-      return _displayAlbums(list);
+      return _albumDisplay(list);
     } else {
       // Something went wrong when getting a snapshot from the database
       print("No data available");
