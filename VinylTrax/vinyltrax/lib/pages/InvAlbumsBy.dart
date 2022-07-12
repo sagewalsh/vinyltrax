@@ -40,7 +40,7 @@ class InvAlbumsBy extends StatelessWidget {
                   if (snapshot.hasData) {
                     children = <Widget>[];
 
-                    for (int i = 0; i < snapshot.data!.length; i += 4) {
+                    for (int i = 0; i < snapshot.data!.length; i += 5) {
                       // Compile the Artists' Names
                       String artist = "";
                       var data = snapshot.data![i + 2] as List<dynamic>;

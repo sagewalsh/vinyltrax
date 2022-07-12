@@ -14,6 +14,7 @@ class Database {
   [1]: Artist Name
   [2]: Cover Art
   [3]: Album ID
+  [4]: format
   */
   static Future<List<dynamic>> displayByName() async {
     // Get a snapshot from the album database
@@ -119,6 +120,7 @@ class Database {
   [1]: albumName
   [2]: [ [ artistName, artistID ], ... ]
   [3]: coverArt
+  [4]: format
   */
   static List<dynamic> _albumDisplay(List<MapEntry<Object?, Object?>> list) {
     List<dynamic> results = [];
@@ -128,6 +130,7 @@ class Database {
       results.add(albumdata["Name"]);
       results.add(albumdata["Artist"]);
       results.add(albumdata["Cover"]);
+      results.add(albumdata["Format"]);
       // print(albumdata["UniqueID"]);
     });
     return results;
@@ -185,6 +188,7 @@ Data is returned as a list of text widgets:
 [0]: Album Name
 [1]: Artist Name
 [2]: Cover Art
+[4]: format
 */
   static Future<List<dynamic>> albumsBy(String artistid) async {
     // Get a snapshot from the ARTIST database

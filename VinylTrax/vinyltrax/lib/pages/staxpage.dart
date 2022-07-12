@@ -7,7 +7,7 @@ import 'invResults.dart';
 
 enum _Order { artist, albums, genre }
 
-enum _Type { vinyl, cd, all }
+enum Type { vinyl, cd, all }
 
 class StaxPage extends StatefulWidget {
   const StaxPage({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class _StaxPageState extends State<StaxPage> {
   final TextEditingController textController = TextEditingController();
   FocusNode focus = FocusNode();
   _Order _selectedOrder = _Order.artist;
-  _Type _selectedType = _Type.vinyl;
+  Type _selectedType = Type.vinyl;
   bool isGenreButton = false;
 
   @override
@@ -73,14 +73,16 @@ class _StaxPageState extends State<StaxPage> {
                           ),
                           suffixIcon: Icon(
                             Icons.search,
-                            color: focus.hasFocus ? Color(0xFFFF5A5A) : Colors.black,
+                            color: focus.hasFocus
+                                ? Color(0xFFFF5A5A)
+                                : Colors.black,
                           ),
                         ),
                         onSubmitted: (text) {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                                return InvResults(text);
-                              }));
+                            return InvResults(text);
+                          }));
                         },
                       ),
                     )),
@@ -135,21 +137,21 @@ class _StaxPageState extends State<StaxPage> {
                   borderColor: Color(0xFFFF5A5A),
                   pressedColor: Color(0x64FF5A5A),
                   children: {
-                    _Type.vinyl: Container(
+                    Type.vinyl: Container(
                       height: MediaQuery.of(context).size.height * 0.037, //30
                       width: MediaQuery.of(context).size.width * 0.4897, //140
                       child: const Center(
                         child: Text("Vinyl", style: TextStyle(fontSize: 14)),
                       ),
                     ),
-                    _Type.cd: Container(
+                    Type.cd: Container(
                       height: MediaQuery.of(context).size.height * 0.037, //30
                       width: MediaQuery.of(context).size.width * 0.4897, //140
                       child: const Center(
                         child: Text("CD", style: TextStyle(fontSize: 14)),
                       ),
                     ),
-                    _Type.all: Container(
+                    Type.all: Container(
                       height: MediaQuery.of(context).size.height * 0.037, //30
                       width: MediaQuery.of(context).size.width * 0.4897, //140
                       child: const Center(
@@ -159,7 +161,7 @@ class _StaxPageState extends State<StaxPage> {
                   },
                   onValueChanged: (value) {
                     setState(() {
-                      _selectedType = value as _Type;
+                      _selectedType = value as Type;
                     });
                   },
                   groupValue: _selectedType,
@@ -179,7 +181,7 @@ class _StaxPageState extends State<StaxPage> {
               else if (_selectedOrder == _Order.artist)
                 GetInvArtist()
               else
-                GetInvAlbum()
+                GetInvAlbum(_selectedType)
             ],
           ),
         ),

@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import '../database.dart';
 import '../show_data/icon.dart';
 import '../show_data/iconList.dart';
+import '../pages/staxpage.dart';
 
 class GetInvAlbum extends StatelessWidget {
-  GetInvAlbum({Key? key}) : super(key: key);
+  // GetInvAlbum({Key? key}) : super(key: key);
+  GetInvAlbum(this._selectedType);
 
+  final Type _selectedType;
   final Future<List<dynamic>> _results = Database.displayByName();
   final List<Widget> children = <Widget>[];
 
@@ -20,24 +23,70 @@ class GetInvAlbum extends StatelessWidget {
             List<Widget> children;
             if (snapshot.hasData) {
               children = <Widget>[];
-              for (int i = 0; i < snapshot.data!.length; i += 4) {
-                // Compile the Artists' Names
-                String artist = "";
-                var data = snapshot.data![i + 2] as List<dynamic>;
-                for (int j = 0; j < data.length; j++) {
-                  artist += data[j][0].toString();
-                  if (j + 1 < data.length) {
-                    artist += " & ";
+              if (_selectedType == Type.vinyl) {
+                for (int i = 0; i < snapshot.data!.length; i += 5) {
+                  if (snapshot.data![i + 4] == "Vinyl") {
+                    // Compile the Artists' Names
+                    String artist = "";
+                    var data = snapshot.data![i + 2] as List<dynamic>;
+                    for (int j = 0; j < data.length; j++) {
+                      artist += data[j][0].toString();
+                      if (j + 1 < data.length) {
+                        artist += " & ";
+                      }
+                    }
+
+                    children.add(ShowIcon(
+                        artist,
+                        snapshot.data![i + 1].toString(),
+                        snapshot.data![i + 3].toString(),
+                        false,
+                        true,
+                        snapshot.data![i].toString()));
                   }
                 }
+              } else if (_selectedType == Type.cd) {
+                for (int i = 0; i < snapshot.data!.length; i += 5) {
+                  if (snapshot.data![i + 4] == "CD") {
+                    // Compile the Artists' Names
+                    String artist = "";
+                    var data = snapshot.data![i + 2] as List<dynamic>;
+                    for (int j = 0; j < data.length; j++) {
+                      artist += data[j][0].toString();
+                      if (j + 1 < data.length) {
+                        artist += " & ";
+                      }
+                    }
 
-                children.add(ShowIcon(
-                    artist,
-                    snapshot.data![i + 1].toString(),
-                    snapshot.data![i + 3].toString(),
-                    false,
-                    true,
-                    snapshot.data![i].toString()));
+                    children.add(ShowIcon(
+                        artist,
+                        snapshot.data![i + 1].toString(),
+                        snapshot.data![i + 3].toString(),
+                        false,
+                        true,
+                        snapshot.data![i].toString()));
+                  }
+                }
+              } else {
+                for (int i = 0; i < snapshot.data!.length; i += 5) {
+                  // Compile the Artists' Names
+                  String artist = "";
+                  var data = snapshot.data![i + 2] as List<dynamic>;
+                  for (int j = 0; j < data.length; j++) {
+                    artist += data[j][0].toString();
+                    if (j + 1 < data.length) {
+                      artist += " & ";
+                    }
+                  }
+
+                  children.add(ShowIcon(
+                      artist,
+                      snapshot.data![i + 1].toString(),
+                      snapshot.data![i + 3].toString(),
+                      false,
+                      true,
+                      snapshot.data![i].toString()));
+                }
               }
             } else if (snapshot.hasError) {
               children = <Widget>[
