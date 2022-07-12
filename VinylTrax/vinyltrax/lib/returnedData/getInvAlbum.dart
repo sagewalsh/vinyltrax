@@ -8,16 +8,17 @@ import '../show_data/iconList.dart';
 class GetInvAlbum extends StatelessWidget {
   GetInvAlbum({Key? key}) : super(key: key);
 
-  final Future<List<Text>> _results = Database.displayByName();
+  final Future<List<dynamic>> _results = Database.displayByName();
   List<Widget> children = <Widget>[];
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: FutureBuilder<List<Text>>(
+      child: FutureBuilder<List<dynamic>>(
           future: _results,
-          builder: (BuildContext context, AsyncSnapshot<List<Text>> snapshot) {
+          builder:
+              (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
             List<Widget> children;
             if (snapshot.hasData) {
               children = <Widget>[];
