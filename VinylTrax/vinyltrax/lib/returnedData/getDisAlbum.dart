@@ -21,9 +21,6 @@ class GetDisAlbum extends StatelessWidget {
             List<Widget> children;
             if (snapshot.hasData) {
               children = <Widget>[];
-              if (snapshot.data!.length == 0) {
-                children.add(Text("No Albums Found with the Name: " + input));
-              }
               for (int i = 0; i < snapshot.data!.length; i += 4) {
                 var data = [
                   snapshot.data![i],
@@ -60,7 +57,10 @@ class GetDisAlbum extends StatelessWidget {
                 )
               ];
             }
-            return ScrollResults(children, "Albums");
+            if (children.length > 1) // sizedbox is added after data
+              return ScrollResults(children, "Albums");
+            else
+              return SizedBox();
           },
         ));
   }

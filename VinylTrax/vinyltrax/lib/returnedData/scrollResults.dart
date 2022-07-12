@@ -11,8 +11,10 @@ class ScrollResults extends StatefulWidget {
 }
 
 class _ScrollResultsState extends State<ScrollResults> {
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)
+  {
     return Padding(
       padding: EdgeInsets.fromLTRB(
           MediaQuery.of(context).size.width * 0.02,//8

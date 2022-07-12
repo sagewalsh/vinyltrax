@@ -21,9 +21,6 @@ class GetDisArtist extends StatelessWidget {
             List<Widget> children;
             if (snapshot.hasData) {
               children = <Widget>[];
-              if (snapshot.data!.length == 0) {
-                children.add(Text("No Artists Found with the Name: " + input));
-              }
               for (int i = 0; i < snapshot.data!.length; i += 3) {
                 var data = [
                   snapshot.data![i],
@@ -59,7 +56,10 @@ class GetDisArtist extends StatelessWidget {
                 )
               ];
             }
-            return ScrollResults(children, "Artists");
+            if (children.length > 1) // sizedbox is added after data
+              return ScrollResults(children, "Artists");
+            else
+              return SizedBox();
           },
         ));
   }

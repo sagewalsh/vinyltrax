@@ -138,10 +138,19 @@ class DisDetails extends StatelessWidget {
                       );
 
                       // GENRE AND YEAR
-                      children.add(Center(
-                          child: Text(
-                        data[2][0].toString() + "  •  " + data[3].toString(),
-                      )));
+                      if (data[3].toString().length == 4) {
+                        children.add(Center(
+                            child: Text(
+                              data[2][0].toString() + "  •  " +
+                                  data[3].toString(),
+                            )));
+                      }
+                      else {
+                        children.add(Center(
+                            child: Text(
+                              data[2][0].toString()
+                            )));
+                      }
 
                       children.add(SizedBox(height: 30));
 
@@ -175,32 +184,37 @@ class DisDetails extends StatelessWidget {
                       children.add(SizedBox(height: 30));
 
                       // CONTRIBUTORS
-                      children.add(Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: Text("Contributors", style: TextStyle(fontSize: 17)),
-                      ));
-                      children.add(addBlackLine());
-                      List<ListTile> contributors = <ListTile>[];
-                      for (int j = 0; j < (data[5] as List<dynamic>).length; j++) {
-                        contributors.add(ListTile(
-                          visualDensity: VisualDensity(vertical: -4),
-                          title: Text(
-                            data[5][j][0].toString(),
-                            style: TextStyle(fontSize: 13),
-                          ),
-                          subtitle: Text(
-                            data[5][j][1].toString(),
-                            style: TextStyle(fontSize: 13),
-                          ),
-                          tileColor: j.isOdd ? Color(0x20FF5A5A) : Colors.white,
+                      if ((data[5] as List<dynamic>).length > 0) {
+                        children.add(Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Text(
+                              "Contributors", style: TextStyle(fontSize: 17)),
+                        ));
+                        children.add(addBlackLine());
+                        List<ListTile> contributors = <ListTile>[];
+                        for (int j = 0; j < (data[5] as List<dynamic>)
+                            .length; j++) {
+                          contributors.add(ListTile(
+                            visualDensity: VisualDensity(vertical: -4),
+                            title: Text(
+                              data[5][j][0].toString(),
+                              style: TextStyle(fontSize: 13),
+                            ),
+                            subtitle: Text(
+                              data[5][j][1].toString(),
+                              style: TextStyle(fontSize: 13),
+                            ),
+                            tileColor: j.isOdd ? Color(0x20FF5A5A) : Colors
+                                .white,
+                          ));
+                        }
+
+                        children.add(ListView(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          children: contributors,
                         ));
                       }
-                      children.add(ListView(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        children: contributors,
-                      ));
-
                       children.add(SizedBox(
                         width: double.infinity,
                         height: 30,
