@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'icon.dart';
 
 class IconList extends StatelessWidget {
   //IconList({Key? key}) : super(key: key);
@@ -11,13 +10,14 @@ class IconList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.0765,
+          vertical: MediaQuery.of(context).size.height * 0.0062),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Wrap(
             direction: Axis.horizontal,
-            spacing: 30,
-            runSpacing: 20,
+            spacing: MediaQuery.of(context).size.width * 0.0765,
+            runSpacing: MediaQuery.of(context).size.width * 0.051,
             children: children),
       ),
     );

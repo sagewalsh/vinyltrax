@@ -51,14 +51,12 @@ class _NextPageState extends State<NextPage> {
             children: [
               SizedBox(
                 width: double.infinity,
-                height: 30,
-                child: Text(""),
+                height: MediaQuery.of(context).size.height * 0.0372,
               ),
               GetInvGenre("${widget.genreName}"),
               SizedBox(
                 width: double.infinity,
-                height: 30,
-                child: Text(""),
+                height: MediaQuery.of(context).size.height * 0.0372,
               ),
             ],
           ),

@@ -13,12 +13,13 @@ class ShowIcon extends StatelessWidget {
   ShowIcon(this.artistName, this.albumName, this.coverArt, this.isArtist,
       this.isInv, this.id);
 
-  Widget buildAnimatedText(String text) => Container(
-        height: 18,
-        width: 150,
+  Widget buildAnimatedText(String text, BuildContext context) => Container(
+        height: MediaQuery.of(context).size.height * .022, //18
+        width: MediaQuery.of(context).size.width * .38, //150
         child: Marquee(
+          pauseAfterRound: Duration(seconds: 1),
           text: text,
-          blankSpace: 30,
+          blankSpace: MediaQuery.of(context).size.width * .0765,
           velocity: 25,
         ),
       );
@@ -29,22 +30,22 @@ class ShowIcon extends StatelessWidget {
     Widget outputArt = SizedBox();
 
     if (albumName.length > 18)
-      outputAlb = buildAnimatedText(albumName);
+      outputAlb = buildAnimatedText(albumName, context);
     else
       outputAlb = SizedBox(
-          width: 150,
-          height: 18,
+          width: MediaQuery.of(context).size.width * .38,
+          height: MediaQuery.of(context).size.height * .022,
           child: Text(
             albumName,
             textAlign: TextAlign.center,
           ));
 
     if (artistName.length > 18)
-      outputArt = buildAnimatedText(artistName);
+      outputArt = buildAnimatedText(artistName, context);
     else
       outputArt = SizedBox(
-          width: 150,
-          height: 18,
+          width: MediaQuery.of(context).size.width * .38,
+          height: MediaQuery.of(context).size.width * .38,
           child: Text(
             artistName,
             textAlign: TextAlign.center,
@@ -53,11 +54,11 @@ class ShowIcon extends StatelessWidget {
     Widget avatar = SizedBox();
     if (this.isArtist) {
       avatar =
-          CircleAvatar(radius: 75, foregroundImage: NetworkImage(coverArt));
+          CircleAvatar(radius: MediaQuery.of(context).size.width * .191, foregroundImage: NetworkImage(coverArt));
     } else {
       avatar = Container(
-        height: 150,
-        width: 150,
+        height: MediaQuery.of(context).size.width * .38,
+        width: MediaQuery.of(context).size.width * .38,
         child: Image(
           image: NetworkImage(coverArt),
         ),

@@ -54,8 +54,8 @@ class GetDisAlbum extends StatelessWidget {
             } else {
               children = <Widget>[
                 SizedBox(
-                  width: 50,
-                  height: 50,
+                  width: MediaQuery.of(context).size.width * 0.1275, //50
+                  height: MediaQuery.of(context).size.height * 0.062, //50
                   child: CircularProgressIndicator(),
                 )
               ];

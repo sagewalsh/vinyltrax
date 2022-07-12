@@ -50,39 +50,41 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(10),
-        child: ListView(
-          children: [
-            SizedBox(height: 40),
-            Row(children: [
-              Icon(
-                Icons.person,
-                color: Color(0xFFFF5A5A),
-              ),
-              SizedBox(width: 10),
-              Text("Account", style: TextStyle(fontSize: 22))
-            ]),
-            Divider(height: 10, thickness: 1),
-            SizedBox(height: 10),
-            accountOptions(context, "Account Details"),
-            accountOptions(context, "Delete Account"),
-            accountOptions(context, "Log Out"),
-            SizedBox(height: 40),
-            Row(children: [
-              Icon(
-                Icons.settings_suggest,
-                color: Color(0xFFFF5A5A),
-              ),
-              SizedBox(width: 10),
-              Text("Others", style: TextStyle(fontSize: 22))
-            ]),
-            Divider(height: 10, thickness: 1),
-            SizedBox(height: 10),
-            otherOptions("Dark Theme", darkTheme, changeTheme),
-            otherOptions("List Mode", listBool, listMode),
-            otherOptions("Test3", valNotify3, changeFunct3),
-          ],
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          child: ListView(
+            children: [
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05), //40
+              Row(children: [
+                Icon(
+                  Icons.person,
+                  color: Color(0xFFFF5A5A),
+                ),
+                SizedBox(width: MediaQuery.of(context).size.width * 0.025),
+                Text("Account", style: TextStyle(fontSize: 22))
+              ]),
+              Divider(height: MediaQuery.of(context).size.height * 0.0124, thickness: 1), //10
+              SizedBox(height: MediaQuery.of(context).size.height * 0.0124), //10
+              accountOptions(context, "Account Details"),
+              accountOptions(context, "Delete Account"),
+              accountOptions(context, "Log Out"),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+              Row(children: [
+                Icon(
+                  Icons.settings_suggest,
+                  color: Color(0xFFFF5A5A),
+                ),
+                SizedBox(width: MediaQuery.of(context).size.width * 0.025), //10
+                Text("Others", style: TextStyle(fontSize: 22))
+              ]),
+              Divider(height: MediaQuery.of(context).size.height * 0.0124, thickness: 1), //10
+              SizedBox(height: MediaQuery.of(context).size.height * 0.0124), //10
+              otherOptions("Dark Theme", darkTheme, changeTheme),
+              otherOptions("List Mode", listBool, listMode),
+              otherOptions("Test3", valNotify3, changeFunct3),
+            ],
+          ),
         ),
       ),
     );

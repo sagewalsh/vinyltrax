@@ -42,7 +42,7 @@ class _WishPageState extends State<WishPage> {
     return Scaffold(
       backgroundColor: Color(0xFFFFFEF9),
       appBar: AppBar(
-        toolbarHeight: 75,
+        toolbarHeight: MediaQuery.of(context).size.height * 0.093, //75
         backgroundColor: Color(0xFFFFFEF9),
         title: Column(
           children: [
@@ -54,23 +54,27 @@ class _WishPageState extends State<WishPage> {
             ),
             Container(
               color: Color(0xFFFFFEF9),
-              padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 0.0),
+              padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.0099), // 8
               child: CupertinoSegmentedControl(
-                padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 6.0),
+                padding: EdgeInsets.fromLTRB(
+                    MediaQuery.of(context).size.width * 0.02, //8
+                    0.0,
+                    MediaQuery.of(context).size.width * 0.02, //8
+                    MediaQuery.of(context).size.height * 0.015), //6
                 selectedColor: Color(0xFFFF5A5A),
                 borderColor: Color(0xFFFF5A5A),
                 pressedColor: Color(0x64FF5A5A),
                 children: {
                   _Order.artist: Container(
-                    height: 30,
-                    width: 140,
+                    height: MediaQuery.of(context).size.height * 0.037, //30
+                    width: MediaQuery.of(context).size.width * 0.357, //140
                     child: const Center(
                       child: Text("Artist", style: TextStyle(fontSize: 14)),
                     ),
                   ),
                   _Order.albums: Container(
-                    height: 30,
-                    width: 140,
+                    height: MediaQuery.of(context).size.height * 0.037, //30
+                    width: MediaQuery.of(context).size.width * 0.357, //140
                     child: const Center(
                       child: Text("Albums", style: TextStyle(fontSize: 14)),
                     ),
@@ -87,10 +91,12 @@ class _WishPageState extends State<WishPage> {
           ],
         ),
       ),
-      body: Column(
-        children: [
-          //Listview for inventory
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            //Listview for inventory
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -99,8 +105,8 @@ class _WishPageState extends State<WishPage> {
             print(value);
           });
         },
-        backgroundColor: Color(0xFFFFFEF9),
-        child: const Icon(Icons.add, color: Colors.black),
+        backgroundColor: Color(0xFFFF5A5A),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

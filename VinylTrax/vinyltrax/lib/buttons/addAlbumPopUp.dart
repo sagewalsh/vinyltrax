@@ -16,13 +16,14 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
   String locationValue = 'Inventory';
   String format = 'Vinyl';
   bool visible = true;
-  double height = 150;
+  late double height;
   String albumID;
 
   _AddAlbumPopUpState(this.albumID);
 
   @override
   Widget build(BuildContext context) {
+    height = MediaQuery.of(context).size.height * 0.186; //150
     return StatefulBuilder(builder: (context, setState) {
       return FutureBuilder<List<dynamic>>(
           future: widget.input,
@@ -43,10 +44,10 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
                         locationValue = newVal!;
                         setState(() {
                           if (newVal == 'Inventory') {
-                            height = 150;
+                            height = MediaQuery.of(context).size.height * 0.186; //150
                             visible = true;
                           } else {
-                            height = 100;
+                            height = MediaQuery.of(context).size.height * 0.124;
                             visible = false;
                           }
                         });

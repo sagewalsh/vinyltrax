@@ -28,8 +28,8 @@ class ListEntry extends StatelessWidget {
       avatar = CircleAvatar(foregroundImage: NetworkImage(image));
     } else {
       avatar = Container(
-        height: 40,
-        width: 40,
+        height: MediaQuery.of(context).size.height * 0.049689,
+        width: MediaQuery.of(context).size.width * .102,
         child: Image(
           image: NetworkImage(image),
         ),

@@ -147,8 +147,8 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         )
                     ),
-                    width: 295,
-                    height: 75,
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    height: MediaQuery.of(context).size.height * 0.09,
                   ),
                   IconButton(
                     color: Colors.black,
@@ -175,17 +175,19 @@ class _SearchPageState extends State<SearchPage> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //Divider between UI and output
-            Container(
-              color: Color(0xFFFFFEF9),
-              height: 5,
-            ),
-            output
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              //Divider between UI and output
+              Container(
+                color: Color(0xFFFFFEF9),
+                height: 5,
+              ),
+              output
+            ],
+          ),
         ),
       ),
     );

@@ -42,7 +42,7 @@ class GetDisArtist extends StatelessWidget {
               }
               children.add(SizedBox(
                 width: double.infinity,
-                height: 30,
+                height: MediaQuery.of(context).size.height * 0.0372, //30
                 child: const Text(""),
               ));
             } else if (snapshot.hasError) {
@@ -53,8 +53,8 @@ class GetDisArtist extends StatelessWidget {
             } else {
               children = <Widget>[
                 SizedBox(
-                  width: 50,
-                  height: 50,
+                  width: MediaQuery.of(context).size.width * 0.1275, //50
+                  height: MediaQuery.of(context).size.height * 0.062, //50
                   child: CircularProgressIndicator(),
                 )
               ];
