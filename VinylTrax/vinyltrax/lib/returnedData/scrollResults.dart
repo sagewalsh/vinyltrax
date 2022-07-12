@@ -28,7 +28,7 @@ class _ScrollResultsState extends State<ScrollResults> {
           FittedBox(fit: BoxFit.fitWidth, child: Text(widget.title, style: TextStyle(fontSize: 18))),
           Divider(),
           Container(
-            height: MediaQuery.of(context).size.height * 0.236,//190
+            height: MediaQuery.of(context).size.height * 0.24,//190
             child: ListView.separated(
               itemCount: widget.children.length - 1,
               scrollDirection: Axis.horizontal,
