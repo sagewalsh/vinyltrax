@@ -45,7 +45,7 @@ class ShowIcon extends StatelessWidget {
     else
       outputArt = SizedBox(
           width: MediaQuery.of(context).size.width * .38,
-          height: MediaQuery.of(context).size.width * .38,
+          height: MediaQuery.of(context).size.height * .022,
           child: Text(
             artistName,
             textAlign: TextAlign.center,
