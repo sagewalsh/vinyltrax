@@ -7,6 +7,47 @@ class Database {
 
   /*
   Returns only the display information from Album JSON
+  in order of Artist Name.
+
+  Data returned as a list of text widgets.
+  [0]: Album Name
+  [1]: Artist Name
+  [2]: Cover art
+  [3]: Album ID
+  */
+  static Future<List<Text>> displayByArtist() async {
+    // Get a snapshot from the album database
+    final snapshot = await ref.child("Albums").get();
+
+    if (snapshot.exists) {
+      // Map{ AlbumID: {Album data} }
+      var values = snapshot.value as Map<Object?, Object?>;
+      // List[ Map{ "Artist" : name, "Name": album name, ... }, Map {...}, ]
+      var list = values.entries.toList();
+
+      // Sort the list of album data based on the artist name
+      list.sort(
+        (a, b) {
+          var albumA = a.value as Map<Object?, Object?>;
+          var albumB = b.value as Map<Object?, Object?>;
+          return albumA["Artist"]
+              .toString()
+              .toLowerCase()
+              .compareTo(albumB["Artist"].toString().toLowerCase());
+        },
+      );
+
+      // Convert list of maps into list of widgets
+      return _displayAlbums(list);
+    } else {
+      // Something went wrong when getting a snapshot from the database
+      print("No data available");
+      return [];
+    }
+  }
+
+  /*
+  Returns only the display information from Album JSON
   in order of the Album's name.
 
   Data is returned as a list of text widgets
@@ -105,33 +146,6 @@ class Database {
     return results;
   }
 
-  /*
-  _albumDisplay
-  Helper Function  
-  Given a list of map entries containing album data:
-  Returns a list of text widgets of album data used when 
-  displaying albums.
-
-  Converts a list of map entries filled with album data into 
-  a dynamic list
-
-  [0]: albumID
-  [1]: albumName
-  [2]: [ [ artistName, artistID ], ... ]
-  [3]: coverArt
-  */
-  static List<dynamic> _albumDisplay(List<MapEntry<Object?, Object?>> list) {
-    List<dynamic> results = [];
-    list.forEach((element) {
-      var albumdata = element.value as Map<Object?, Object?>;
-      results.add(albumdata["UniqueID"]);
-      results.add(albumdata["Name"]);
-      results.add(albumdata["Artist"]);
-      results.add(albumdata["Cover"]);
-    });
-    return results;
-  }
-
 /*
 Returns all of the artists in the database in order of
 the Artist's name. 
@@ -223,37 +237,35 @@ Data is returned as a list of text widgets:
   }
 
 /*
-albumDetails
 Given an AlbumID:
 Returns a list of the albums full data in the JSON.
 
-Data is returned as a list of strings
-[0]: [ [ artistName, artistID ], ... ]
-[1]: albumName
-[2]: [ genre, ... ]
-[3]: year
-[4]: [ [ trackName, duration ], ... ]
-[5]: [ [ contributorName, role, id ], ... ]
-[6]: coverArt
+Data is returned as a list of text widgets
+[0]: Album Name
+[1]: Artist Name
+[2]: Cover Art
+[3]: Genre
+[4]: Year
 */
-  static Future<List<dynamic>> albumDetails(String albumid) async {
+  static Future<List<Text>> fullData(String albumid) async {
     // Get a snapshot from the database
     final snapshot = await ref.child("Albums").get();
 
     if (snapshot.exists) {
-      // Map{ albumID: {albumData} }
+      // Map{ AlbumID: {Album data} }
       var values = snapshot.value as Map<Object?, Object?>;
       if (values.containsKey(albumid)) {
         var list = {albumid: values[albumid.toString()]}.entries.toList();
-        // Convert list of maps into list of string data
-        return _albumDetails(list);
+        // Convert list of maps into list of widgets
+        return _albumData(list);
       }
     }
+    // Something went wrong when getting a snapshot from the database
+    print("No data available");
     return [];
   }
 
 /*
-_albumDetails
 Helper Function.
 Given a list of map entries containing album data:
 Returns a list of text widgets of full album used when
@@ -262,28 +274,27 @@ displaying a specific album's data.
 Converts a list of map entries filled with album data into a 
 list of text widgets.
 
-Data is returned as a list of strings
-[0]: [ [ artistName, artistID ], ... ]
-[1]: albumName
-[2]: [ genre, ... ]
-[3]: year
-[4]: [ [ trackName, duration ], ... ]
-[5]: [ [ contributorName, role, id ], ... ]
-[6]: coverArt
-[7]: format
+[0]: Album Name
+[1]: Artist Name
+[2]: Cover Art
+[3]: Genre
+[4]: Year
 */
-  static List<dynamic> _albumDetails(List<MapEntry<Object?, Object?>> list) {
-    List<dynamic> results = [];
+  static List<Text> _albumData(List<MapEntry<Object?, Object?>> list) {
+    List<Text> results = [];
     list.forEach((element) {
       var albumdata = element.value as Map<Object?, Object?>;
-      results.add(albumdata["Artist"]);
-      results.add(albumdata["Name"]);
-      results.add(albumdata["Genre"]);
-      results.add(albumdata["Year"]);
-      results.add(albumdata["Tracklist"]);
-      results.add(albumdata["Contributors"]);
-      results.add(albumdata["Cover"]);
-      results.add(albumdata["Format"]);
+      String tracklist = "Tracklist:";
+      results.add(Text(albumdata["Name"].toString()));
+      results.add(Text(albumdata["Artist"].toString()));
+      results.add(Text(albumdata["Cover"].toString()));
+      results.add(Text(albumdata["Genre"].toString()));
+      results.add(Text(albumdata["Year"].toString()));
+      var tracks = albumdata["Tracklist"] as List<Object?>;
+      for (int i = 0; i < tracks.length; i++) {
+        tracklist += "\n   " + (i + 1).toString() + ". " + tracks[i].toString();
+      }
+      results.add(Text(tracklist));
     });
     return results;
   }
@@ -364,7 +375,7 @@ Add an album to your inventory
 
 Given Album Data from Discogs in the form:
 [0]: albumID
-[1]: format
+[1]: type
 [2]: [ [ artistName, artistID ], ... ]
 [3]: albumName
 [4]: [ genre, ... ]
@@ -388,7 +399,6 @@ Given Album Data from Discogs in the form:
         "Cover": albumdata[8],
         "Tracklist": albumdata[6],
         "Contributors": albumdata[7],
-        "Format": albumdata[1],
       }
     });
 
@@ -435,112 +445,6 @@ Add pressing data to an album
 Below: Code that is viable to be changed or removed at a later date
 #############################################################################
 */
-
-// /*
-// fullData
-// Given an AlbumID:
-// Returns a list of the albums full data in the JSON.
-
-// Data is returned as a list of text widgets
-// [0]: Album Name
-// [1]: Artist Name
-// [2]: Cover Art
-// [3]: Genre
-// [4]: Year
-// */
-//   static Future<List<Text>> fullData(String albumid) async {
-//     // Get a snapshot from the database
-//     final snapshot = await ref.child("Albums").get();
-
-//     if (snapshot.exists) {
-//       // Map{ AlbumID: {Album data} }
-//       var values = snapshot.value as Map<Object?, Object?>;
-//       if (values.containsKey(albumid)) {
-//         var list = {albumid: values[albumid.toString()]}.entries.toList();
-//         // Convert list of maps into list of widgets
-//         return _albumData(list);
-//       }
-//     }
-//     // Something went wrong when getting a snapshot from the database
-//     print("No data available");
-//     return [];
-//   }
-
-// /*
-// Helper Function.
-// Given a list of map entries containing album data:
-// Returns a list of text widgets of full album used when
-// displaying a specific album's data.
-
-// Converts a list of map entries filled with album data into a
-// list of text widgets.
-
-// [0]: Album Name
-// [1]: Artist Name
-// [2]: Cover Art
-// [3]: Genre
-// [4]: Year
-// */
-//   static List<Text> _albumData(List<MapEntry<Object?, Object?>> list) {
-//     List<Text> results = [];
-//     list.forEach((element) {
-//       var albumdata = element.value as Map<Object?, Object?>;
-//       String tracklist = "Tracklist:";
-//       results.add(Text(albumdata["Name"].toString()));
-//       results.add(Text(albumdata["Artist"].toString()));
-//       results.add(Text(albumdata["Cover"].toString()));
-//       results.add(Text(albumdata["Genre"].toString()));
-//       results.add(Text(albumdata["Year"].toString()));
-//       var tracks = albumdata["Tracklist"] as List<Object?>;
-//       for (int i = 0; i < tracks.length; i++) {
-//         tracklist += "\n   " + (i + 1).toString() + ". " + tracks[i].toString();
-//       }
-//       results.add(Text(tracklist));
-//     });
-//     return results;
-//   }
-
-// /*
-//   Returns only the display information from Album JSON
-//   in order of Artist Name.
-
-//   Data returned as a list of text widgets.
-//   [0]: Album Name
-//   [1]: Artist Name
-//   [2]: Cover art
-//   [3]: Album ID
-//   */
-//   static Future<List<Text>> displayByArtist() async {
-//     // Get a snapshot from the album database
-//     final snapshot = await ref.child("Albums").get();
-
-//     if (snapshot.exists) {
-//       // Map{ AlbumID: {Album data} }
-//       var values = snapshot.value as Map<Object?, Object?>;
-//       // List[ Map{ "Artist" : name, "Name": album name, ... }, Map {...}, ]
-//       var list = values.entries.toList();
-
-//       // Sort the list of album data based on the artist name
-//       list.sort(
-//         (a, b) {
-//           var albumA = a.value as Map<Object?, Object?>;
-//           var albumB = b.value as Map<Object?, Object?>;
-//           return albumA["Artist"]
-//               .toString()
-//               .toLowerCase()
-//               .compareTo(albumB["Artist"].toString().toLowerCase());
-//         },
-//       );
-
-//       // Convert list of maps into list of widgets
-//       return _displayAlbums(list);
-//     } else {
-//       // Something went wrong when getting a snapshot from the database
-//       print("No data available");
-//       return [];
-//     }
-//   }
-
   // /*
   // Given an Artist ID prints the name of the artist
   // listed in JSON Artist:

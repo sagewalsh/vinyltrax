@@ -25,36 +25,36 @@ class DisDetails extends StatelessWidget {
       );
     }
 
-    return Scaffold(
-      backgroundColor: Color(0xFFFFFEF9),
-      appBar: AppBar(
+    return SafeArea(
+      child: Scaffold(
         backgroundColor: Color(0xFFFFFEF9),
-        leading: BackButton(
-          color: Colors.black,
+        appBar: AppBar(
+          backgroundColor: Color(0xFFFFFEF9),
+          leading: BackButton(
+            color: Colors.black,
+          ),
+          title: Text(
+            name,
+            style: TextStyle(color: Colors.black),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AddAlbumPopUp(_results, input[0]);
+                    },
+                  );
+                  // addToButton(context);
+                },
+                child: Text(
+                  "Add",
+                  style: TextStyle(color: Colors.black, fontSize: 18),
+                ))
+          ],
         ),
-        title: Text(
-          name,
-          style: TextStyle(color: Colors.black),
-        ),
-        actions: [
-          TextButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AddAlbumPopUp(_results, input[0]);
-                  },
-                );
-                // addToButton(context);
-              },
-              child: Text(
-                "Add",
-                style: TextStyle(color: Colors.black, fontSize: 18),
-              ))
-        ],
-      ),
-      body: SafeArea(
-        child: Scrollbar(
+        body: Scrollbar(
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
             child: SizedBox(

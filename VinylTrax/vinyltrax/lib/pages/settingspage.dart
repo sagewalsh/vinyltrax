@@ -35,23 +35,23 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFFFFDF6),
-      appBar: AppBar(
+    return SafeArea(
+      child: Scaffold(
         backgroundColor: Color(0xFFFFFDF6),
-        title: Container(
-          width: double.infinity,
-          alignment: Alignment.center,
-          child: const Text(
-            "Settings Page",
-            style: TextStyle(
-              color: Colors.black,
+        appBar: AppBar(
+          backgroundColor: Color(0xFFFFFDF6),
+          title: Container(
+            width: double.infinity,
+            alignment: Alignment.center,
+            child: const Text(
+              "Settings Page",
+              style: TextStyle(
+                color: Colors.black,
+              ),
             ),
           ),
         ),
-      ),
-      body: SafeArea(
-        child: Container(
+        body: Container(
           padding: const EdgeInsets.all(10),
           child: ListView(
             children: [

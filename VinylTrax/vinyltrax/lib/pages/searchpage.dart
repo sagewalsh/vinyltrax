@@ -86,97 +86,97 @@ class _SearchPageState extends State<SearchPage> {
     else
       toolbarHeight = 110;
 
-    return Scaffold(
-      backgroundColor: Color(0xFFFFFEF9),
-      appBar: AppBar(
-        titleSpacing: 0,
-        toolbarHeight: toolbarHeight,
+    return SafeArea(
+      child: Scaffold(
         backgroundColor: Color(0xFFFFFEF9),
-        title: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              alignment: Alignment.center,
-              child: const Text("Search Page",
-                  style: TextStyle(color: Colors.black)),
-            ),
-            Container(
-              color: Color(0xFFFFFEF9),
-              //Search bar, Camera button, and barcode scanning button
-              child: Row(
-                children: [
-                  Container(
-                    child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Container(
-                          // color: Color.fromARGB(255, 244, 244, 244),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Color(0xFFFFFEF9),
-                          ),
-                          child: TextField(
-                            controller: textController,
-                            focusNode: focus,
-                            onTap: () => FocusScope.of(context).requestFocus(focus),
-                            decoration: InputDecoration(
-                              labelText: "Search",
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                              hintText: "Artist, Album, Song",
-                              hintStyle: TextStyle(
-                                color: Color(0xFFFF5A5A),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                borderSide: BorderSide(
+        appBar: AppBar(
+          titleSpacing: 0,
+          toolbarHeight: toolbarHeight,
+          backgroundColor: Color(0xFFFFFEF9),
+          title: Column(
+            children: [
+              Container(
+                width: double.infinity,
+                alignment: Alignment.center,
+                child: const Text("Search Page",
+                    style: TextStyle(color: Colors.black)),
+              ),
+              Container(
+                color: Color(0xFFFFFEF9),
+                //Search bar, Camera button, and barcode scanning button
+                child: Row(
+                  children: [
+                    Container(
+                      child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Container(
+                            // color: Color.fromARGB(255, 244, 244, 244),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Color(0xFFFFFEF9),
+                            ),
+                            child: TextField(
+                              controller: textController,
+                              focusNode: focus,
+                              onTap: () => FocusScope.of(context).requestFocus(focus),
+                              decoration: InputDecoration(
+                                labelText: "Search",
+                                floatingLabelBehavior: FloatingLabelBehavior.never,
+                                hintText: "Artist, Album, Song",
+                                hintStyle: TextStyle(
                                   color: Color(0xFFFF5A5A),
                                 ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide(
+                                    color: Color(0xFFFF5A5A),
+                                  ),
+                                ),
+                                suffixIcon: Icon(
+                                  Icons.search,
+                                  color: focus.hasFocus ? Color(0xFFFF5A5A) : Colors.black,
+                                ),
                               ),
-                              suffixIcon: Icon(
-                                Icons.search,
-                                color: focus.hasFocus ? Color(0xFFFF5A5A) : Colors.black,
-                              ),
+                              onSubmitted: (text) {
+                                setState((){
+                                  output = DisResults(text);
+                                });
+                              },
                             ),
-                            onSubmitted: (text) {
-                              setState((){
-                                output = DisResults(text);
-                              });
-                            },
-                          ),
-                        )
+                          )
+                      ),
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      height: MediaQuery.of(context).size.height * 0.09,
                     ),
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    height: MediaQuery.of(context).size.height * 0.09,
-                  ),
-                  IconButton(
-                    color: Colors.black,
-                    padding: EdgeInsets.all(5),
-                    constraints: BoxConstraints(),
-                    onPressed: () {
-                      print("camera");
-                    },
-                    icon: Icon(Icons.camera_alt_sharp),
-                    iconSize: 37,
-                  ),
-                  IconButton(
-                    color: Colors.black,
-                    padding: EdgeInsets.all(5),
-                    constraints: BoxConstraints(),
-                    onPressed: scanBarcode,
-                    icon: Icon(BarcodeIcon.barcode),
-                    iconSize: 35,
-                  ),
-                ],
+                    IconButton(
+                      color: Colors.black,
+                      padding: EdgeInsets.all(5),
+                      constraints: BoxConstraints(),
+                      onPressed: () {
+                        print("camera");
+                      },
+                      icon: Icon(Icons.camera_alt_sharp),
+                      iconSize: 37,
+                    ),
+                    IconButton(
+                      color: Colors.black,
+                      padding: EdgeInsets.all(5),
+                      constraints: BoxConstraints(),
+                      onPressed: scanBarcode,
+                      icon: Icon(BarcodeIcon.barcode),
+                      iconSize: 35,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            addFilterButtons,
-          ],
+              addFilterButtons,
+            ],
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
+        body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

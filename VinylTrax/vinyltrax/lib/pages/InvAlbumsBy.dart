@@ -15,20 +15,20 @@ class InvAlbumsBy extends StatelessWidget {
     // late String name = "Artist not found";
     String name = input[1];
 
-    return Scaffold(
-      backgroundColor: Color(0xFFFFFEF9),
-      appBar: AppBar(
+    return SafeArea(
+      child: Scaffold(
         backgroundColor: Color(0xFFFFFEF9),
-        leading: BackButton(
-          color: Colors.black,
+        appBar: AppBar(
+          backgroundColor: Color(0xFFFFFEF9),
+          leading: BackButton(
+            color: Colors.black,
+          ),
+          title: Text(
+            name,
+            style: TextStyle(color: Colors.black),
+          ),
         ),
-        title: Text(
-          name,
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
+        body: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           child: SizedBox(
               width: double.infinity,
