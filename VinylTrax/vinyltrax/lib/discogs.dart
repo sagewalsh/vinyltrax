@@ -73,10 +73,13 @@ Returns a Map with the album title as the key and a list as the value:
 [2]: ArtistName
 [3]: CoverArt
 */
-  static Future<Map<String, List<String>>> testing(String artistName) async {
-    Map<String, List<String>> albums = {};
+  static Future<Map<String, List<String>>> testing(
+    String artistName,
+    int i,
+    Map<String, List<String>> albums,
+  ) async {
     var query = "/database/search?q={$artistName}&format=album";
-    final url = "https://api.discogs.com$query&per_page=500";
+    final url = "https://api.discogs.com$query&page=$i&per_page=500";
     late String content;
 
     try {
@@ -103,19 +106,24 @@ Returns a Map with the album title as the key and a list as the value:
       _log.severe('Failed to read the chached file', e);
     }
 
-    var results = json.decode(content)["results"] as List<dynamic>;
+    var j = json.decode(content);
+    var results = j["results"] as List<dynamic>;
 
     // Breakdown the results
     results.forEach((element) {
       element = element as Map<dynamic, dynamic>;
-      var artist_album = element["title"].toString().split(" - ");
+
       // artistName += " ?";
+      var artist_album = element["title"].toString().split(" - ");
       var first_last = artistName.split(" ");
+
+      // if statement
       if (!albums.containsKey(element["master_id"]) &&
           (artist_album[0].contains(artistName))) {
+        // print(" ");
         List<String> data = [];
         element.forEach((key, value) {
-          print(key.toString() + ": " + value.toString());
+          // print(key.toString() + ": " + value.toString());
           data.add(artist_album[1]);
           data.add(element["id"].toString());
           data.add(artist_album[0]);
@@ -124,7 +132,8 @@ Returns a Map with the album title as the key and a list as the value:
         albums.addAll({element["master_id"].toString(): data});
       }
     });
-    return albums;
+    if (i == j["pagination"]["pages"]) return albums;
+    return testing(artistName, i + 1, albums);
   }
 
 /*

@@ -92,6 +92,9 @@ class Test {
     // for (int i = 0; i < list.length; i++) {
     //   Collection.album(list[i].toString());
     // }
+
+    // ABBA: 69866
+    // Collection.testing("ABBA", 1, {});
   }
 
   static void database() {

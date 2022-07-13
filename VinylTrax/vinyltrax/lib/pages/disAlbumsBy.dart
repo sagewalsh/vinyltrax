@@ -10,7 +10,8 @@ class DisAlbumsBy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Future<Map<String, List<String>>> _results = Collection.albumsBy(input[0]);
-    Future<Map<String, List<String>>> _results = Collection.testing(input[1]);
+    Future<Map<String, List<String>>> _results =
+        Collection.testing(input[1], 1, {});
     // late String name = "Artist not found";
     String name = input[1];
 
