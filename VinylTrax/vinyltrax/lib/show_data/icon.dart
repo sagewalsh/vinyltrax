@@ -67,6 +67,8 @@ class ShowIcon extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
+        print(MediaQuery.of(context).size.width);
+        print(MediaQuery.of(context).size.height);
         // print(albumName);
         var route = new MaterialPageRoute(builder: (BuildContext context) {
           if (isInv) {

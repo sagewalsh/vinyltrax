@@ -31,6 +31,7 @@ class _ScrollResultsState extends State<ScrollResults> {
             height: MediaQuery.of(context).size.height * 0.27,
             // height: 190,
             child: ListView.separated(
+              key: ObjectKey(widget.children[0]),
               itemCount: widget.children.length - 1,
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
