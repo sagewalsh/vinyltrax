@@ -119,7 +119,7 @@ Returns a Map with the album title as the key and a list as the value:
 
       // if statement
       if (!albums.containsKey(element["master_id"]) &&
-          (artist_album[0].contains(artistName))) {
+          (artist_album[0] == artistName)) {
         // print(" ");
         List<String> data = [];
         element.forEach((key, value) {
@@ -132,6 +132,8 @@ Returns a Map with the album title as the key and a list as the value:
         albums.addAll({element["master_id"].toString(): data});
       }
     });
+    // print("int i : " + i.toString());
+    // print("pages: " + j["pagination"]["pages"].toString());
     if (i == j["pagination"]["pages"]) return albums;
     return testing(artistName, i + 1, albums);
   }
