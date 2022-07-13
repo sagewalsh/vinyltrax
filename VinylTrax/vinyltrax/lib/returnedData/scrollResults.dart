@@ -11,24 +11,25 @@ class ScrollResults extends StatefulWidget {
 }
 
 class _ScrollResultsState extends State<ScrollResults> {
-
   @override
-  Widget build(BuildContext context)
-  {
+  Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.fromLTRB(
-          MediaQuery.of(context).size.width * 0.02,//8
-          MediaQuery.of(context).size.height * 0.0186,//15
-          MediaQuery.of(context).size.width * 0.02,//8
-          0
-      ),
+          MediaQuery.of(context).size.width * 0.02, //8
+          MediaQuery.of(context).size.height * 0.0186, //15
+          MediaQuery.of(context).size.width * 0.02, //8
+          0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FittedBox(fit: BoxFit.fitWidth, child: Text(widget.title, style: TextStyle(fontSize: 18))),
+          FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(widget.title, style: TextStyle(fontSize: 18))),
           Divider(),
           Container(
-            height: MediaQuery.of(context).size.height * 0.24,//190
+            // height: MediaQuery.of(context).size.height * 0.24, //190
+            height: MediaQuery.of(context).size.height * 0.27,
+            // height: 190,
             child: ListView.separated(
               itemCount: widget.children.length - 1,
               scrollDirection: Axis.horizontal,
@@ -37,7 +38,8 @@ class _ScrollResultsState extends State<ScrollResults> {
                 return widget.children[index];
               },
               separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(width: MediaQuery.of(context).size.width * 0.038); //15
+                return SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.038); //15
               },
             ),
           ),

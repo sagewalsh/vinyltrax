@@ -3,14 +3,13 @@ import 'package:vinyltrax/show_data/iconList.dart';
 import '../show_data/icon.dart';
 import '../discogs.dart';
 
-class DisAlbumsBy extends StatelessWidget {
+class DisArtist extends StatelessWidget {
   final List<String> input;
-  DisAlbumsBy(this.input);
+  DisArtist(this.input);
 
   @override
   Widget build(BuildContext context) {
-    // Future<Map<String, List<String>>> _results = Collection.albumsBy(input[0]);
-    Future<Map<String, List<String>>> _results = Collection.testing(input[1]);
+    Future<List<dynamic>> _results = Collection.artistData(input[0]);
     // late String name = "Artist not found";
     String name = input[1];
 
@@ -34,24 +33,35 @@ class DisAlbumsBy extends StatelessWidget {
             physics: AlwaysScrollableScrollPhysics(),
             child: SizedBox(
                 width: double.infinity,
-                child: FutureBuilder<Map<String, List<String>>>(
+                child: FutureBuilder<List<dynamic>>(
                   future: _results,
                   builder: (BuildContext context,
-                      AsyncSnapshot<Map<String, List<String>>> snapshot) {
+                      AsyncSnapshot<List<dynamic>> snapshot) {
                     List<Widget> children;
                     if (snapshot.hasData) {
                       children = <Widget>[];
-                      snapshot.data!.forEach((key, value) {
-                        // print(key.toString() + ": " + value.toString());
-                        children.add(ShowIcon(
-                          value[2],
-                          value[0],
-                          value[3],
-                          false,
-                          false,
-                          value[1],
-                        ));
-                      });
+                      var data = snapshot.data! as List<dynamic>;
+                      if (data.length == 3) {
+                        children.add(Text(data[0].toString()));
+                        children.add(Text(data[1].toString()));
+                        children.add(Text(data[2].toString()));
+                      }
+                      if (data.length == 4) {
+                        var members = data[3] as List<dynamic>;
+                        var names = "Band Members:\n";
+                        members.forEach((element) {
+                          element = element as Map<dynamic, dynamic>;
+                          names += "id: " +
+                              element["id"].toString() +
+                              "   name: " +
+                              element["name"].toString() +
+                              "\n";
+                        });
+                        children.add(Text(data[0].toString()));
+                        children.add(Text(data[1].toString()));
+                        children.add(Text(data[2].toString()));
+                        children.add(Text(names));
+                      }
 
                       children.add(SizedBox(
                         width: double.infinity,

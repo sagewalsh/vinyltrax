@@ -10,11 +10,16 @@ class Test {
     // Collection.getArtists("Halsey");
     // Collection.getAlbums("Halsey");
     // Collection.search("Halsey");
+    // Collection.artistData("4298621");
 
+    // Collection.artistData("69866");
     // Collection.search("jasjie");
     // Collection.search("Jason Molina");
     // Collection.getArtists("Kanye");
     // Collection.search("Life of Pablo");
+
+    // Collection.testing("Halsey");
+    // Collection.testing("Jason Molina");
 
     // Collection.search("For my Parents");
 

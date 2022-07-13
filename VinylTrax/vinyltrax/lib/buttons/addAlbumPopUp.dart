@@ -23,7 +23,8 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
 
   @override
   Widget build(BuildContext context) {
-    height = MediaQuery.of(context).size.height * 0.186; //150
+    // height = MediaQuery.of(context).size.height * 0.186; //150
+    height = MediaQuery.of(context).size.height * 0.22;
     return StatefulBuilder(builder: (context, setState) {
       return FutureBuilder<List<dynamic>>(
           future: widget.input,
@@ -44,7 +45,8 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
                         locationValue = newVal!;
                         setState(() {
                           if (newVal == 'Inventory') {
-                            height = MediaQuery.of(context).size.height * 0.186; //150
+                            height = MediaQuery.of(context).size.height *
+                                0.186; //150
                             visible = true;
                           } else {
                             height = MediaQuery.of(context).size.height * 0.124;
