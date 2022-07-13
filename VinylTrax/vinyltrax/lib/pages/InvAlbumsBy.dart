@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:marquee/marquee.dart';
 import 'package:vinyltrax/show_data/iconList.dart';
 import '../database.dart';
 import '../show_data/icon.dart';
@@ -15,6 +16,28 @@ class InvAlbumsBy extends StatelessWidget {
     // late String name = "Artist not found";
     String name = input[1];
 
+    Widget title = Text(
+      name,
+      style: TextStyle(
+        color: Colors.black,
+      ),
+    );
+
+    if (name.length > 25) {
+      title = Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Marquee(
+          velocity: 20,
+          blankSpace: 30,
+          text: name,
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      );
+    }
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFFFFFEF9),
@@ -23,10 +46,7 @@ class InvAlbumsBy extends StatelessWidget {
           leading: BackButton(
             color: Colors.black,
           ),
-          title: Text(
-            name,
-            style: TextStyle(color: Colors.black),
-          ),
+          title: title,
         ),
         body: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),

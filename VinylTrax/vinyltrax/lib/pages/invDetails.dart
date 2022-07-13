@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:marquee/marquee.dart';
 import '../database.dart';
 
 class InvDetails extends StatefulWidget {
@@ -34,6 +35,28 @@ class _InvDetails extends State<InvDetails> {
       );
     }
 
+    Widget title = Text(
+      album,
+      style: TextStyle(
+        color: Colors.black,
+      ),
+    );
+
+    if (album.length > 22) {
+      title = Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Marquee(
+          velocity: 20,
+          blankSpace: 30,
+          text: album,
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      );
+    }
+
     // [0] artist name
     // [1] album name
     // [2] album cover
@@ -49,12 +72,7 @@ class _InvDetails extends State<InvDetails> {
           leading: BackButton(
             color: Colors.black,
           ),
-          title: Text(
-            album,
-            style: TextStyle(
-              color: Colors.black,
-            ),
-          ),
+          title: title,
           actions: [
             TextButton(
                 onPressed: () {

@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:marquee/marquee.dart';
 import '../buttons/addAlbumPopUp.dart';
 import '../discogs.dart';
 import '../pages/nextPage.dart';
@@ -13,6 +14,28 @@ class DisDetails extends StatelessWidget {
     Future<List<dynamic>> _results = Collection.album(input[0]);
     // late String name = "Artist not found";
     String name = input[1];
+
+    Widget title = Text(
+      name,
+      style: TextStyle(
+        color: Colors.black,
+      ),
+    );
+
+    if (name.length > 22) {
+      title = Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Marquee(
+          velocity: 20,
+          blankSpace: 30,
+          text: name,
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      );
+    }
 
     Widget addBlackLine() {
       return Padding(
@@ -33,10 +56,7 @@ class DisDetails extends StatelessWidget {
           leading: BackButton(
             color: Colors.black,
           ),
-          title: Text(
-            name,
-            style: TextStyle(color: Colors.black),
-          ),
+          title: title,
           actions: [
             TextButton(
                 onPressed: () {
