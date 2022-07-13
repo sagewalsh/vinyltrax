@@ -22,8 +22,6 @@ class _InvDetails extends State<InvDetails> {
     String album = widget.input[1];
     var _controller = TextEditingController();
 
-    print(widget.input[0]);
-    print(widget.input[1]);
 
     Widget addBlackLine() {
       return Padding(
@@ -57,6 +55,43 @@ class _InvDetails extends State<InvDetails> {
               color: Colors.black,
             ),
           ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Confirm Removal?", textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    //here you will remove the current album from the database
+
+                                    //below will take you back two pages, to the album page
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Yes")
+                              ),
+                              SizedBox(width: 20),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context); //returns user back to page
+                                  },
+                                  child: Text("No")
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                  );
+                },
+                child: Text("Remove", style: TextStyle(color: Colors.black)),
+            )
+          ],
         ),
         body: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
