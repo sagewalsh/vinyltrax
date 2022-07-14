@@ -28,7 +28,7 @@ class _ScrollResultsState extends State<ScrollResults> {
           Divider(),
           Container(
             // height: MediaQuery.of(context).size.height * 0.24, //190
-            height: MediaQuery.of(context).size.height * 0.27,
+            height: MediaQuery.of(context).size.height * 0.24,
             // height: 190,
             child: ListView.separated(
               key: ObjectKey(widget.children[0]),
@@ -36,7 +36,12 @@ class _ScrollResultsState extends State<ScrollResults> {
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
-                return widget.children[index];
+                return Container(
+                  height: 190,
+                  width: 190,
+                  decoration: BoxDecoration(color: Color(0x20FF5A5A), borderRadius: BorderRadius.circular(20)),
+                  child: Padding(padding: EdgeInsets.only(top: 6), child: widget.children[index])
+                );
               },
               separatorBuilder: (BuildContext context, int index) {
                 return SizedBox(
