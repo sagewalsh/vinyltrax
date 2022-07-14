@@ -23,7 +23,7 @@ class DisAlbumsBy extends StatelessWidget {
       ),
     );
 
-    if (name.length > 25) {
+    if (name.length > 27) {
       title = Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,

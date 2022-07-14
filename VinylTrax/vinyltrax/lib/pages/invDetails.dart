@@ -91,6 +91,8 @@ class _InvDetails extends State<InvDetails> {
                                     //below will take you back two pages, to the album page
                                     Navigator.pop(context);
                                     Navigator.pop(context);
+                                    if (Navigator.canPop(context))
+                                      Navigator.pop(context);
                                   },
                                   child: Text("Yes")
                               ),

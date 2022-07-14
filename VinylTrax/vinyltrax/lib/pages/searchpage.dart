@@ -207,6 +207,10 @@ class _SearchPageState extends State<SearchPage> {
       scanResult = 'Failed to get platform version';
     }
     if (!mounted) return;
-    setState(() => this.scanResult = scanResult);
+    setState(() {
+      this.scanResult = scanResult;
+      // Under here is where you use the scan results information to do whatever you need
+      print(scanResult);
+    });
   }
 }

@@ -83,19 +83,41 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
                             });
                           }),
                     ),
-                    TextButton(
-                        onPressed: () {
-                          //lets us go back to the album page
-                          Navigator.of(context).pop();
-                          // Test function, allows us to see if everything works properly
-                          print(
-                              'Location: $locationValue \nFormat: $format \nAlbum Name: ${snapshot.data?[0].toString()}'
-                              ' \nArtist: ${snapshot.data?[1].toString()}');
-                          List<dynamic> album = [albumID, format];
-                          album += snapshot.data!;
-                          Database.addAlbumToInv(album);
-                        },
-                        child: Text("Add")),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                            onPressed: () {
+                              //lets us go back to the album page
+                              List<dynamic> album = [albumID, format];
+                              album += snapshot.data!;
+                              Database.addAlbumToInv(album);
+                              Navigator.of(context).pop();
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    Future.delayed(Duration(seconds: 1), () {
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
+                                      if (Navigator.canPop(context))
+                                        Navigator.of(context).pop();
+                                    });
+                                    return AlertDialog(
+                                      title: Text('Album Added', textAlign: TextAlign.center),
+                                    );
+                                  }
+                              );
+                            },
+                            child: Text("Add")
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              //lets us go back to the album page
+                              Navigator.of(context).pop();
+                            },
+                            child: Text("Cancel")),
+                      ],
+                    ),
                   ],
                 ),
               ),

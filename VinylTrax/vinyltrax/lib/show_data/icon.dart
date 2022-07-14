@@ -65,6 +65,12 @@ class ShowIcon extends StatelessWidget {
       );
     }
 
+    List<Widget> children = [];
+    if (artistName == "")
+      children = [avatar, outputAlb];
+    else
+      children = [avatar, outputArt, outputAlb];
+
     return GestureDetector(
       onTap: () {
         print(MediaQuery.of(context).size.width);
@@ -86,7 +92,7 @@ class ShowIcon extends StatelessWidget {
         Navigator.of(context).push(route);
       },
       child: Column(
-        children: [avatar, outputArt, outputAlb],
+        children: children,
       ),
     );
   }
