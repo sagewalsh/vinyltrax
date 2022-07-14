@@ -17,7 +17,7 @@ class VinylTrax extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //Test.fillDatabase();
+    Test.fillDatabase();
     Test.database();
     Test.discogs();
 

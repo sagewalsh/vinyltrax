@@ -3,10 +3,13 @@ import 'discogs.dart';
 
 class Test {
   static void fillDatabase() {
-    Database.startingData();
+    // Database.clear();
+    // Database.startingData();
   }
 
   static void discogs() {
+    // Collection.getAlbums("Ring Ring");
+
     // Collection.getArtists("Halsey");
     // Collection.getAlbums("Halsey");
     // Collection.search("Halsey");

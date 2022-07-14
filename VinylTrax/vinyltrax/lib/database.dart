@@ -1,9 +1,14 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'discogs.dart';
 
 class Database {
   static final fb = FirebaseDatabase.instance;
   static final ref = fb.ref();
+
+  static void clear() async {
+    await ref.remove();
+  }
 
   /*
   Returns only the display information from Album JSON
@@ -382,12 +387,18 @@ Given Album Data from Discogs in the form:
 #############################################################################
 */
   static void addAlbumToInv(List<dynamic> albumdata) async {
-    // albumdata.forEach((element) {
-    //   print(element);
-    // });
+    // Vinyl Copies of records get a 1 added to the end
+    // CD Copies of records get a 2 added to the end
+    if (albumdata[1] == "Vinyl")
+      albumdata[0] += "1";
+    else if (albumdata[1] == "CD") albumdata[0] += "2";
+
+    // Create an empty list if no contributors
     if ((albumdata[7] as List<dynamic>).isEmpty) {
       albumdata[7] = ["none", "0"];
     }
+
+    // Add album data to database
     await ref.update({
       "Albums/${albumdata[0]}": {
         "UniqueID": albumdata[0],
@@ -402,19 +413,29 @@ Given Album Data from Discogs in the form:
       }
     });
 
+    // Add album to each artist's data
     for (int i = 0; i < (albumdata[2] as List<dynamic>).length; i++) {
       final snapshot = await ref.child("Artists/${albumdata[2][i][1]}").get();
+      // If the artist already exists
       if (snapshot.exists) {
+        // Create a list of already existing albums
         List<dynamic> albums = [];
         ((snapshot.value as Map<Object?, Object?>)["Albums"] as List<dynamic>)
             .forEach((element) {
           albums.add(element);
         });
-        albums.add(albumdata[0]);
+        if (!albums.contains(albumdata[0]))
+          // Add new album to list
+          albums.add(albumdata[0]);
+
+        // Update artist's albums
         ref.update({
           "Artists/${albumdata[2][i][1]}/Albums": albums,
         });
-      } else {
+      }
+      // If the artist doesn't exist
+      else {
+        // Create new artist
         await ref.update({
           "Artists/${albumdata[2][i][1]}": {
             "UniqueID": albumdata[2][i][1],
@@ -440,909 +461,1070 @@ Add pressing data to an album
 #############################################################################
 */
 
-/*
-#############################################################################
-Below: Code that is viable to be changed or removed at a later date
-#############################################################################
-*/
-
-// /*
-// fullData
-// Given an AlbumID:
-// Returns a list of the albums full data in the JSON.
-
-// Data is returned as a list of text widgets
-// [0]: Album Name
-// [1]: Artist Name
-// [2]: Cover Art
-// [3]: Genre
-// [4]: Year
-// */
-//   static Future<List<Text>> fullData(String albumid) async {
-//     // Get a snapshot from the database
-//     final snapshot = await ref.child("Albums").get();
-
-//     if (snapshot.exists) {
-//       // Map{ AlbumID: {Album data} }
-//       var values = snapshot.value as Map<Object?, Object?>;
-//       if (values.containsKey(albumid)) {
-//         var list = {albumid: values[albumid.toString()]}.entries.toList();
-//         // Convert list of maps into list of widgets
-//         return _albumData(list);
-//       }
-//     }
-//     // Something went wrong when getting a snapshot from the database
-//     print("No data available");
-//     return [];
-//   }
-
-// /*
-// Helper Function.
-// Given a list of map entries containing album data:
-// Returns a list of text widgets of full album used when
-// displaying a specific album's data.
-
-// Converts a list of map entries filled with album data into a
-// list of text widgets.
-
-// [0]: Album Name
-// [1]: Artist Name
-// [2]: Cover Art
-// [3]: Genre
-// [4]: Year
-// */
-//   static List<Text> _albumData(List<MapEntry<Object?, Object?>> list) {
-//     List<Text> results = [];
-//     list.forEach((element) {
-//       var albumdata = element.value as Map<Object?, Object?>;
-//       String tracklist = "Tracklist:";
-//       results.add(Text(albumdata["Name"].toString()));
-//       results.add(Text(albumdata["Artist"].toString()));
-//       results.add(Text(albumdata["Cover"].toString()));
-//       results.add(Text(albumdata["Genre"].toString()));
-//       results.add(Text(albumdata["Year"].toString()));
-//       var tracks = albumdata["Tracklist"] as List<Object?>;
-//       for (int i = 0; i < tracks.length; i++) {
-//         tracklist += "\n   " + (i + 1).toString() + ". " + tracks[i].toString();
-//       }
-//       results.add(Text(tracklist));
-//     });
-//     return results;
-//   }
-
-// /*
-//   Returns only the display information from Album JSON
-//   in order of Artist Name.
-
-//   Data returned as a list of text widgets.
-//   [0]: Album Name
-//   [1]: Artist Name
-//   [2]: Cover art
-//   [3]: Album ID
-//   */
-//   static Future<List<Text>> displayByArtist() async {
-//     // Get a snapshot from the album database
-//     final snapshot = await ref.child("Albums").get();
-
-//     if (snapshot.exists) {
-//       // Map{ AlbumID: {Album data} }
-//       var values = snapshot.value as Map<Object?, Object?>;
-//       // List[ Map{ "Artist" : name, "Name": album name, ... }, Map {...}, ]
-//       var list = values.entries.toList();
-
-//       // Sort the list of album data based on the artist name
-//       list.sort(
-//         (a, b) {
-//           var albumA = a.value as Map<Object?, Object?>;
-//           var albumB = b.value as Map<Object?, Object?>;
-//           return albumA["Artist"]
-//               .toString()
-//               .toLowerCase()
-//               .compareTo(albumB["Artist"].toString().toLowerCase());
-//         },
-//       );
-
-//       // Convert list of maps into list of widgets
-//       return _displayAlbums(list);
-//     } else {
-//       // Something went wrong when getting a snapshot from the database
-//       print("No data available");
-//       return [];
-//     }
-//   }
-
-  // /*
-  // Given an Artist ID prints the name of the artist
-  // listed in JSON Artist:
-  //     Database --> Artist --> Name: String
-  // */
-  // static void artistGivenID(int artistid) async {
-  //   var path = "Artists/" + artistid.toString() + "/Name";
-  //   final snapshot = await ref.child(path).get();
-  //   if (snapshot.exists) {
-  //     print(snapshot.value);
-  //   } else {
-  //     print("Something went wrong at path: " + path);
-  //   }
-  // }
-
-  // /*
-  // Given an Artist ID prints the albums listed in the
-  // album array under JSON Artist:
-  //     Database --> Artist --> Albums: [<Object?>]
-  // */
-  // static Future<Text> albumsFrom(int artistid) async {
-  //   String results = "\nAlbums by ";
-  //   var snapshot =
-  //       await ref.child("Artists/" + artistid.toString() + "/Name").get();
-  //   results += snapshot.value.toString() + "\n";
-  //   var path = "Artists/" + artistid.toString() + "/Albums";
-  //   snapshot = await ref.child(path).get();
-  //   if (snapshot.exists) {
-  //     List<Object?> albums = snapshot.value as List<Object?>;
-  //     for (int i = 0; i < albums.length; i++) {
-  //       results += "\n" + albums[i].toString();
-  //     }
-  //     return Text(results);
-  //   } else {
-  //     return Text("Something went wrong at path: " + path);
-  //   }
-  // }
-
-  // /*
-  // Given an Album ID prints the data listed in
-  // JSON Album:
-  //     Database --> Album --> artist, genre, name, tracklist, uniqueid, year
-  // */
-  // static void albumGivenID(int albumid) async {
-  //   var snapshot = await ref.child("Albums").get();
-
-  //   if (snapshot.exists) {
-  //     var values = snapshot.value as Map<Object?, Object?>;
-  //     if (values.containsKey(albumid.toString())) {
-  //       var list =
-  //           {albumid.toString(): values[albumid.toString()]}.entries.toList();
-  //       _printAlbumData(list);
-  //     } else {
-  //       print("Album ID: " + albumid.toString() + " does not exist.");
-  //     }
-  //   } else {
-  //     print("Something went wrong at path: " + "Albums");
-  //   }
-  // }
-
-  // /*
-  // Given an Album name prints the data listed in
-  // JSON Album:
-  //     Database --> Album --> artist, genre, name, tracklist, uniqueid, year
-  // */
-  // static Future<Text> albumGivenName(String name) async {
-  //   var snapshot = await ref.child("Albums").get();
-
-  //   if (snapshot.exists) {
-  //     List<MapEntry<Object?, Object?>> list = [];
-  //     var values = snapshot.value as Map<Object?, Object?>;
-  //     values.forEach((key, value) {
-  //       var album = value as Map<Object?, Object?>;
-  //       if (album["Name"] == name) {
-  //         list += {key: value}.entries.toList();
-  //       }
-  //     });
-  //     // _printAlbumData(list);
-  //     return _alertAlbumData(list);
-  //   }
-  //   return Text("");
-  // }
-
-  // /*
-  // Outputs album data to the console ordered by Album
-  // title alphabetically
-  // */
-  // static Future<Text> albumsOrderName() async {
-  //   final snapshot = await ref.child("Albums").get();
-  //   if (snapshot.exists) {
-  //     var values = snapshot.value as Map<Object?, Object?>;
-  //     var list = values.entries.toList();
-
-  //     list.sort(((a, b) {
-  //       var albumA = a.value as Map<Object?, Object?>;
-  //       var albumB = b.value as Map<Object?, Object?>;
-  //       return albumA["Name"]
-  //           .toString()
-  //           .toLowerCase()
-  //           .compareTo(albumB["Name"].toString().toLowerCase());
-  //     }));
-  //     // _printAlbumData(list);
-  //     return _alertAlbumData(list);
-  //   } else {
-  //     print("No data available");
-  //   }
-  //   return Text("");
-  // }
-
-  // /*
-  // Outputs all the albums of a given genre
-  // */
-  // static Future<Text> albumsOrderGenre(String genre) async {
-  //   final snapshot = await ref.child("Albums").get();
-
-  //   if (snapshot.exists) {
-  //     List<MapEntry<Object?, Object?>> list = [];
-  //     var values = snapshot.value as Map<Object?, Object?>;
-  //     values.forEach((key, value) {
-  //       var album = value as Map<Object?, Object?>;
-  //       if (album["Genre"] == genre) {
-  //         list += {key: value}.entries.toList();
-  //       }
-  //     });
-  //     return _alertAlbumData(list);
-  //   } else {
-  //     return Text("No data available");
-  //   }
-  // }
-
-  // /*
-  // Outputs album data to the console ordered by Artist name
-  // alphabetically
-  // */
-  // static Future<Text> albumsOrderArtist() async {
-  //   final snapshot = await ref.child("Albums").get();
-  //   if (snapshot.exists) {
-  //     var values = snapshot.value as Map<Object?, Object?>;
-  //     var list = values.entries.toList();
-
-  //     list.sort(
-  //       (a, b) {
-  //         var albumA = a.value as Map<Object?, Object?>;
-  //         var albumB = b.value as Map<Object?, Object?>;
-  //         return albumA["Artist"]
-  //             .toString()
-  //             .toLowerCase()
-  //             .compareTo(albumB["Artist"].toString().toLowerCase());
-  //       },
-  //     );
-
-  //     // _printAlbumData(list);
-  //     return _alertAlbumData(list);
-  //   } else {
-  //     print("No data available");
-  //   }
-  //   return Text("");
-  // }
-
-  // /*
-  // Helper Function
-  // Given a list of Map Entries for album data,
-  // prints the album data to the console
-  // */
-  // static void _printAlbumData(List<MapEntry<Object?, Object?>> list) {
-  //   list.forEach((element) {
-  //     print("\n");
-  //     var albumdata = element.value as Map<Object?, Object?>;
-  //     print("   Name: " + albumdata["Name"].toString());
-  //     print("   Artist: " + albumdata["Artist"].toString());
-  //     print("   Genre: " + albumdata["Genre"].toString());
-  //     print("   Year: " + albumdata["Year"].toString());
-  //     print("   Tracklist: ");
-  //     var tracks = albumdata["Tracklist"] as List<Object?>;
-  //     for (int i = 0; i < tracks.length; i++) {
-  //       print("      " + (i + 1).toString() + ". " + tracks[i].toString());
-  //     }
-  //   });
-  // }
-
-  // /*
-  // Helper Function
-  // Given a list of Map Entries for album data,
-  // builds a widget that holds to formatted data
-  // */
-  // static Text _alertAlbumData(List<MapEntry<Object?, Object?>> list) {
-  //   String data = "";
-
-  //   list.forEach((element) {
-  //     var albumdata = element.value as Map<Object?, Object?>;
-  //     data += "\n\nName: " + albumdata["Name"].toString();
-  //     data += "\nArtist: " + albumdata["Artist"].toString();
-  //     data += "\nGenre: " + albumdata["Genre"].toString();
-  //     data += "\nYear: " + albumdata["Year"].toString();
-  //     data += "\nTracklist: ";
-  //     var tracks = albumdata["Tracklist"] as List<Object?>;
-  //     tracks.forEach((element) {
-  //       data += "\n   " + element.toString();
-  //     });
-  //   });
-
-  //   return Text(data);
-  // }
-
-  // /*
-  // Returns a list of text widgets of album data used when
-  // displaying albums
-  // */
-  // static Future<List<Text>> displayAlbum(int albumid) async {
-  //   var snapshot = await ref.child("Albums").get();
-
-  //   if (snapshot.exists) {
-  //     var values = snapshot.value as Map<Object?, Object?>;
-  //     List<Text> results = [];
-  //     if (values.containsKey(albumid.toString())) {
-  //       // print(values[albumid.toString()]);
-  //       var albumdata = values[albumid.toString()] as Map<Object?, Object?>;
-  //       // print(albumdata["Name"]);
-  //       // print(albumdata["Artist"]);
-  //       // print(albumdata["Genre"]);
-  //       results.add(Text(albumdata["Name"].toString()));
-  //       results.add(Text(albumdata["Artist"].toString()));
-  //       // results.add(Text(albumdata["Cover"].toString()));
-  //     }
-  //   }
-  //   return [Text("")];
-  // }
-
   /*
   Fills the firebase realtime database with dummy data
   */
   static void startingData() async {
-    await ref.update(
-      {
-        "Albums/1216": {
-          "UniqueID": 1216,
-          "Name": "The Life of Pablo",
-          "Artist": "Kanye West",
-          "Year": 2016,
-          "Genre": "Hip-Hop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Ultralight Beam (explicit)",
-            "Saint Pablo (explicit)",
-          ]
-        },
-        "Albums/1217": {
-          "UniqueID": 1217,
-          "Name": "My Beautiful Dark Twisted Fantasy",
-          "Artist": "Kanye West",
-          "Year": 2010,
-          "Genre": "Hip-Hop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Dark Fantasy (explicit)",
-            "Who Will Survive in America (explicit)",
-          ]
-        },
-        "Albums/1218": {
-          "UniqueID": 1218,
-          "Name": "808s & Heartbreak",
-          "Artist": "Kanye West",
-          "Year": 2008,
-          "Genre": "Hip-Hop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Say You Will",
-            "Coldest Winter",
-          ]
-        },
-        "Albums/1219": {
-          "UniqueID": 1219,
-          "Name": "If I Can't Have Love I Want Power",
-          "Artist": "Halsey",
-          "Year": 2021,
-          "Genre": "Alternative",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "The Tradition",
-            "People Disappear Here",
-          ]
-        },
-        "Albums/1220": {
-          "UniqueID": 1220,
-          "Name": "Manic",
-          "Artist": "Halsey",
-          "Year": 2020,
-          "Genre": "Alternative",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Ashley",
-            "929",
-          ]
-        },
-        "Albums/1221": {
-          "UniqueID": 1221,
-          "Name": "Badlands",
-          "Artist": "Halsey",
-          "Year": 2015,
-          "Genre": "Alternative",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Castle",
-            "I Walk the Line",
-          ]
-        },
-        "Albums/1222": {
-          "UniqueID": 1222,
-          "Name": "good kid, m.A.A.d city",
-          "Artist": "Kendrick Lamar",
-          "Year": 2012,
-          "Genre": "Hip-Hop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Sherane a.k.a Master Splinter's Daughter",
-            "Bitch, Don't Kill My Vibe"
-          ]
-        },
-        "Albums/1223": {
-          "UniqueID": 1223,
-          "Name": "DAMN.",
-          "Artist": "Kendrick Lamar",
-          "Year": 2017,
-          "Genre": "Hip-Hop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "BLOOD. (explicit)",
-            "DUCKWORTH (explicit)",
-          ]
-        },
-        "Albums/1224": {
-          "UniqueID": 1224,
-          "Name": "ANTI",
-          "Artist": "Rihanna",
-          "Year": 2016,
-          "Genre": "Pop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Consideration (feat. SZA) (explicit)",
-            "Sex With Me (explicit)",
-          ]
-        },
-        "Albums/1225": {
-          "UniqueID": 1225,
-          "Name": "Loud",
-          "Artist": "Rihanna",
-          "Year": 2010,
-          "Genre": "Pop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "S&M",
-            "Skin",
-          ]
-        },
-        "Albums/1226": {
-          "UniqueID": 1226,
-          "Name": "Good Girl Gone Bad: Reloaded",
-          "Artist": "Rihanna",
-          "Year": 2008,
-          "Genre": "Pop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Umbrella (feat. JAY Z)",
-            "Take a Bow",
-          ]
-        },
-        "Albums/1227": {
-          "UniqueID": 1227,
-          "Name": "Black Holes and Revelations",
-          "Artist": "Muse",
-          "Year": 2006,
-          "Genre": "Alternative",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Take a Bow",
-            "Knights of Cydonia",
-          ]
-        },
-        "Albums/1228": {
-          "UniqueID": 1228,
-          "Name": "Will of the People",
-          "Artist": "Muse",
-          "Year": 2022,
-          "Genre": "Alternative",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Will of the People",
-            "We are F*****g F****d",
-          ]
-        },
-        "Albums/1229": {
-          "UniqueID": 1229,
-          "Name": "Animal",
-          "Artist": "Ke\$ha",
-          "Year": 2010,
-          "Genre": "Pop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Your Love is My Drug",
-            "c U Next Tuesday",
-          ]
-        },
-        "Albums/1230": {
-          "UniqueID": 1230,
-          "Name": "Rainbow",
-          "Artist": "Ke\$ha",
-          "Year": 2017,
-          "Genre": "Pop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Bastards",
-            "Spaceship",
-          ]
-        },
-        "Albums/1231": {
-          "UniqueID": 1231,
-          "Name": "High Road",
-          "Artist": "Ke\$ha",
-          "Year": 2020,
-          "Genre": "Pop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Tonight",
-            "Summer",
-          ]
-        },
-        "Albums/1232": {
-          "UniqueID": 1232,
-          "Name": "Cuz I Love You",
-          "Artist": "Lizzo",
-          "Year": 2019,
-          "Genre": "Pop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Cuz I Love You",
-            "Lingerie",
-          ]
-        },
-        "Albums/1233": {
-          "UniqueID": 1233,
-          "Name": "Special",
-          "Artist": "Lizzo",
-          "Year": 2022,
-          "Genre": "Pop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "About Damn Time",
-            "Grrrls",
-          ]
-        },
-        "Albums/1234": {
-          "UniqueID": 1234,
-          "Name": "The Eminem Show",
-          "Artist": "Eminem",
-          "Year": 2002,
-          "Genre": "Hip-Hop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Curtains Up",
-            "Curtains Close",
-          ]
-        },
-        "Albums/1235": {
-          "UniqueID": 1235,
-          "Name": "The Marshall Mathers LP",
-          "Artist": "Eminem",
-          "Year": 2000,
-          "Genre": "Hip-Hop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Public Service Announcement 2000",
-            "Criminal",
-          ]
-        },
-        "Albums/1236": {
-          "UniqueID": 1236,
-          "Name": "Recovery",
-          "Artist": "Eminem",
-          "Year": 2010,
-          "Genre": "Hip-Hop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Cold Wind Blows",
-            "Session One",
-          ]
-        },
-        "Albums/1237": {
-          "UniqueID": 1237,
-          "Name": "dont smile at me",
-          "Artist": "Billie Eilish",
-          "Year": 2017,
-          "Genre": "Alternative",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "COPYCAT",
-            "&burn",
-          ]
-        },
-        "Albums/1238": {
-          "UniqueID": 1238,
-          "Name": "WHEN WE ALL FALL ASLEEP, WHERE DO WE GO?",
-          "Artist": "Billie Eilish",
-          "Year": 2019,
-          "Genre": "Alternative",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "!!!!!!!!",
-            "goodbye",
-          ]
-        },
-        "Albums/1239": {
-          "UniqueID": 1239,
-          "Name": "Happier Than Ever",
-          "Artist": "Billie Eilish",
-          "Year": 2021,
-          "Genre": "Alternative",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Getting Older",
-            "Male Fantasy",
-          ]
-        },
-        "Albums/1240": {
-          "UniqueID": 1240,
-          "Name": "Invasion of Privacy",
-          "Artist": "Cardi B",
-          "Year": 2018,
-          "Genre": "Hip-Hop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Get Up 10",
-            "I Do",
-          ]
-        },
-        "Albums/1241": {
-          "UniqueID": 1241,
-          "Name": "Oxnard",
-          "Artist": "Anderson .Paak",
-          "Year": 2018,
-          "Genre": "Hip-Hop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "The Chase",
-            "Left to Right",
-          ]
-        },
-        "Albums/1242": {
-          "UniqueID": 1242,
-          "Name": "Malibu",
-          "Artist": "Anderson .Paak",
-          "Year": 2016,
-          "Genre": "R&B",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "The Bird",
-            "The Dreamer",
-          ]
-        },
-        "Albums/1243": {
-          "UniqueID": 1243,
-          "Name": "Ventura",
-          "Artist": "Anderson .Paak",
-          "Year": 2019,
-          "Genre": "R&B",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Come Home",
-            "What Can We Do?",
-          ]
-        },
-        // 1244": {
-        //   "UniqueID": 1244,
-        //   "Name": "An Evening with Silk Sonic",
-        //   "Artist": {"Bruno Mars", "Anderson .Paak", "Silk Sonic"},
-        //   "Year": 2021,
-        //   "Genre": "R&B",
-        //   "Cover":
-        //       "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-        //   "Tracklist": [
-        //     "Silk Sonic Intro",
-        //     "Blast Off",
-        //   ]
-        // },
-        "Albums/1245": {
-          "UniqueID": 1245,
-          "Name": "Take Care",
-          "Artist": "Drake",
-          "Year": 2011,
-          "Genre": "Hip-Hop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Over My Dead Body",
-            "The Ride",
-          ]
-        },
-        "Albums/1246": {
-          "UniqueID": 1246,
-          "Name": "Nothing Was the Same",
-          "Artist": "Drake",
-          "Year": 2013,
-          "Genre": "Hip-Hop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Tuscan Leather",
-            "All Me",
-          ]
-        },
-        "Albums/1247": {
-          "UniqueID": 1247,
-          "Name": "If You're Reading This It's Too Late",
-          "Artist": "Drake",
-          "Year": 2015,
-          "Genre": "Hip-Hop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Legend",
-            "6PM in New York",
-          ]
-        },
-        "Albums/1248": {
-          "UniqueID": 1248,
-          "Name": "Views",
-          "Artist": "Drake",
-          "Year": 2016,
-          "Genre": "Hip-Hop",
-          "Cover":
-              "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg",
-          "Tracklist": [
-            "Keep the Family Close",
-            "Hotline Bling",
-          ]
-        },
-        "Artists/1111": {
-          "UniqueID": 1111,
-          "Name": "Kanye West",
-          "Image":
-              "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          "Albums": [
-            1216,
-            1217,
-            1218,
-          ],
-        },
-        "Artists/1112": {
-          "UniqueID": 1112,
-          "Name": "Halsey",
-          "Image":
-              "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
-          "Albums": [
-            1219,
-            1220,
-            1221,
-          ]
-        },
-        "Artists/1113": {
-          "UniqueID": 1113,
-          "Name": "Kendrick Lamar",
-          "Image":
-              "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          "Albums": [
-            1222,
-            1223,
-          ]
-        },
-        "Artists/1114": {
-          "UniqueID": 1114,
-          "Name": "Rihanna",
-          "Image":
-              "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
-          "Albums": [
-            1224,
-            1225,
-            1226,
-          ]
-        },
-        "Artists/1115": {
-          "UniqueID": 1115,
-          "Name": "Muse",
-          "Image":
-              "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          "Albums": [
-            1227,
-            1228,
-          ]
-        },
-        "Artists/1116": {
-          "UniqueID": 1116,
-          "Name": "Ke\$ha",
-          "Image":
-              "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
-          "Albums": [
-            1229,
-            1230,
-            1231,
-          ]
-        },
-        "Artists/1117": {
-          "UniqueID": 1117,
-          "Name": "Lizzo",
-          "Image":
-              "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
-          "Albums": [
-            1232,
-            1233,
-          ]
-        },
-        "Artists/1118": {
-          "UniqueID": 1118,
-          "Name": "Eminem",
-          "Image":
-              "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          "Albums": [
-            1234,
-            1235,
-            1236,
-          ]
-        },
-        "Artists/1119": {
-          "UniqueID": 1119,
-          "Name": "Billie Eilish",
-          "Image":
-              "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
-          "Albums": [
-            1237,
-            1238,
-            1239,
-          ]
-        },
-        "Artists/1120": {
-          "UniqueID": 1120,
-          "Name": "Cardi B",
-          "Image":
-              "https://images.pexels.com/photos/11438329/pexels-photo-11438329.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load",
-          "Albums": [
-            1240,
-          ]
-        },
-        "Artists/1121": {
-          "UniqueID": 1121,
-          "Name": "Anderson .Paak",
-          "Image":
-              "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          "Albums": [
-            1241,
-            1242,
-            1243,
-          ]
-        },
-        "Artists/1122": {
-          "UniqueID": 1122,
-          "Name": "Drake",
-          "Image":
-              "https://images.pexels.com/photos/11411390/pexels-photo-11411390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          "Albums": [
-            1245,
-            1246,
-            1247,
-            1248,
-          ]
-        },
-      },
-    );
+    // Arular
+    Collection.album("424354").then((result) {
+      var album = [];
+      album.add("424354");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Folklore
+    Collection.album("461651").then((result) {
+      var album = [];
+      album.add("461651");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    //Stiff Upper Lip
+    Collection.album("487630").then((result) {
+      var album = [];
+      album.add("487630");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Let's Do It For Johnny!!
+    Collection.album("512610").then((result) {
+      var album = [];
+      album.add("512610");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Drunk Enough to Dance
+    Collection.album("512612").then((result) {
+      var album = [];
+      album.add("512612");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Mama Said
+    Collection.album("609305").then((result) {
+      var album = [];
+      album.add("609305");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Love.Angel.Music.Baby
+    Collection.album("676489").then((result) {
+      var album = [];
+      album.add("676489");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Loose
+    Collection.album("726173").then((result) {
+      var album = [];
+      album.add("726173");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Circus
+    Collection.album("796353").then((result) {
+      var album = [];
+      album.add("796353");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // The Open Door
+    Collection.album("802389").then((result) {
+      var album = [];
+      album.add("802389");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Under the Iron Sea
+    Collection.album("803017").then((result) {
+      var album = [];
+      album.add("803017");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // The Razors Edge
+    Collection.album("813717").then((result) {
+      var album = [];
+      album.add("813717");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Fly On the Wall
+    Collection.album("864310").then((result) {
+      var album = [];
+      album.add("864310");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Dirty Deedds Done Dirt Cheap
+    Collection.album("864991").then((result) {
+      var album = [];
+      album.add("864991");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Mirage
+    Collection.album("873439").then((result) {
+      var album = [];
+      album.add("873439");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Lap of Luxury
+    Collection.album("877057").then((result) {
+      var album = [];
+      album.add("877057");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Blow Up You Video
+    Collection.album("1001639").then((result) {
+      var album = [];
+      album.add("4616100163951");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // X & Y
+    Collection.album("1044164").then((result) {
+      var album = [];
+      album.add("1044164");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Our Love to Admire
+    Collection.album("1055329").then((result) {
+      var album = [];
+      album.add("1055329");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // The Album
+    Collection.album("1116735").then((result) {
+      var album = [];
+      album.add("1116735");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Bare Trees
+    Collection.album("1118530").then((result) {
+      var album = [];
+      album.add("1118530");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Powerage
+    Collection.album("1152320").then((result) {
+      var album = [];
+      album.add("1152320");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // It Is Time For a Love Revolution
+    Collection.album("1236130").then((result) {
+      var album = [];
+      album.add("1236130");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Kala
+    Collection.album("1278408").then((result) {
+      var album = [];
+      album.add("1278408");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Viva La Vida Or Death And All His Friends
+    Collection.album("1373719").then((result) {
+      var album = [];
+      album.add("1373719");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Viva La Vida
+    Collection.album("1406749").then((result) {
+      var album = [];
+      album.add("1373719");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Viva La Cobra
+    Collection.album("1436737").then((result) {
+      var album = [];
+      album.add("1436737");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Evening Out With Your Girlfriend
+    Collection.album("1462121").then((result) {
+      var album = [];
+      album.add("1462121");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Black Ice
+    Collection.album("1596665").then((result) {
+      var album = [];
+      album.add("1596665");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // In Color
+    Collection.album("1603248").then((result) {
+      var album = [];
+      album.add("1603248");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Infinity on High
+    Collection.album("1740745").then((result) {
+      var album = [];
+      album.add("1740745");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // All Shook Up
+    Collection.album("1760271").then((result) {
+      var album = [];
+      album.add("1760271");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // One on One
+    Collection.album("1760282").then((result) {
+      var album = [];
+      album.add("1760282");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Buddha
+    Collection.album("1800929").then((result) {
+      var album = [];
+      album.add("1800929");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Don't Believe The Truth
+    Collection.album("1865972").then((result) {
+      var album = [];
+      album.add("1865972");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Mi Plan
+    Collection.album("1937233").then((result) {
+      var album = [];
+      album.add("1937233");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Wild Young Hearts
+    Collection.album("1941286").then((result) {
+      var album = [];
+      album.add("1941286");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Back In Black
+    Collection.album("1949857").then((result) {
+      var album = [];
+      album.add("1949857");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Sorry for Partyin
+    Collection.album("1997838").then((result) {
+      var album = [];
+      album.add("1997838");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Let There Be Rock
+    Collection.album("2078177").then((result) {
+      var album = [];
+      album.add("2078177");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Dream Police
+    Collection.album("2107112").then((result) {
+      var album = [];
+      album.add("2107112");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Next Position Please
+    Collection.album("2140555").then((result) {
+      var album = [];
+      album.add("2140555");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Night Train
+    Collection.album("2267965").then((result) {
+      var album = [];
+      album.add("2267965");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // The ArchAndroid
+    Collection.album("2358638").then((result) {
+      var album = [];
+      album.add("2358638");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Cheap Trick
+    Collection.album("2372199").then((result) {
+      var album = [];
+      album.add("2372199");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Penguin
+    Collection.album("2415058").then((result) {
+      var album = [];
+      album.add("2415058");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Interpol
+    Collection.album("2435602").then((result) {
+      var album = [];
+      album.add("2435602");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Sketches For My Sweethear the Drunk
+    Collection.album("2513116").then((result) {
+      var album = [];
+      album.add("2513116");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Highway to Hell
+    Collection.album("2520300").then((result) {
+      var album = [];
+      album.add("2520300");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // High Voltage
+    Collection.album("2588535").then((result) {
+      var album = [];
+      album.add("2588535");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // A Hangover You Don't Deserve
+    Collection.album("2612166").then((result) {
+      var album = [];
+      album.add("2612166");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Folie À Deux
+    Collection.album("2621572").then((result) {
+      var album = [];
+      album.add("2621572");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // While the City Sleeps, We Rule the Streets
+    Collection.album("2728452").then((result) {
+      var album = [];
+      album.add("2728452");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Lungs
+    Collection.album("2804664").then((result) {
+      var album = [];
+      album.add("2804664");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // For Those About to Rock
+    Collection.album("2817619").then((result) {
+      var album = [];
+      album.add("2817619");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Grace
+    Collection.album("2825029").then((result) {
+      var album = [];
+      album.add("2825029");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Rumours
+    Collection.album("2832092").then((result) {
+      var album = [];
+      album.add("2832092");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // James Blake
+    Collection.album("2832463").then((result) {
+      var album = [];
+      album.add("2832463");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Rock On Honorable Ones
+    Collection.album("2921774").then((result) {
+      var album = [];
+      album.add("2921774");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Busted
+    Collection.album("3050774").then((result) {
+      var album = [];
+      album.add("3050774");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Black and White America
+    Collection.album("3069737").then((result) {
+      var album = [];
+      album.add("3069737");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Night Shades
+    Collection.album("3078209").then((result) {
+      var album = [];
+      album.add("3078209");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Parachutes
+    Collection.album("3092119").then((result) {
+      var album = [];
+      album.add("3092119");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Arrival
+    Collection.album("3104211").then((result) {
+      var album = [];
+      album.add("3104211");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // ABBA
+    Collection.album("3105226").then((result) {
+      var album = [];
+      album.add("3105226");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Waterloo
+    Collection.album("3105284").then((result) {
+      var album = [];
+      album.add("3105284");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Voulez-Vous
+    Collection.album("3105488").then((result) {
+      var album = [];
+      album.add("3105488");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Petergreen's Fleetwood Mac
+    Collection.album("3107317").then((result) {
+      var album = [];
+      album.add("3107317");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Mylo Xyloto
+    Collection.album("3174863").then((result) {
+      var album = [];
+      album.add("3174863");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Ceremonials
+    Collection.album("3210249").then((result) {
+      var album = [];
+      album.add("3210249");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Antics
+    Collection.album("3415175").then((result) {
+      var album = [];
+      album.add("3415175");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Blue Side Park
+    Collection.album("3492331").then((result) {
+      var album = [];
+      album.add("3492331");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Boys and Girls
+    Collection.album("3529250").then((result) {
+      var album = [];
+      album.add("3529250");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Fleetwood Mac
+    Collection.album("3586233").then((result) {
+      var album = [];
+      album.add("3586233");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Strangeland
+    Collection.album("3592552").then((result) {
+      var album = [];
+      album.add("3592552");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Fishin for Woos
+    Collection.album("3630396").then((result) {
+      var album = [];
+      album.add("3630396");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // The Doctor
+    Collection.album("3984662").then((result) {
+      var album = [];
+      album.add("3984662");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Whats the time Mr Wolf
+    Collection.album("4248516").then((result) {
+      var album = [];
+      album.add("4248516");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // If You Leave
+    Collection.album("4389520").then((result) {
+      var album = [];
+      album.add("4389520");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Overgrown
+    Collection.album("4445420").then((result) {
+      var album = [];
+      album.add("4445420");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Save Rock and Roll
+    Collection.album("4488806").then((result) {
+      var album = [];
+      album.add("4488806");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Flick of the Switch
+    Collection.album("4689119").then((result) {
+      var album = [];
+      album.add("4689119");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Mr Wonderful
+    Collection.album("4727885").then((result) {
+      var album = [];
+      album.add("4727885");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Ring Ring
+    Collection.album("4998939").then((result) {
+      var album = [];
+      album.add("4998939");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Matangi
+    Collection.album("5126620").then((result) {
+      var album = [];
+      album.add("5126620");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Pax-AM Days
+    Collection.album("5148207").then((result) {
+      var album = [];
+      album.add("5148207");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Blink-182
+    Collection.album("5224539").then((result) {
+      var album = [];
+      album.add("5224539");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Metropolis: The Chase Suite
+    Collection.album("5303025").then((result) {
+      var album = [];
+      album.add("5303025");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // The Great Burrito Extortion Case
+    Collection.album("5381927").then((result) {
+      var album = [];
+      album.add("5381927");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Lunch Drunk Love
+    Collection.album("5387555").then((result) {
+      var album = [];
+      album.add("5387555");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Ballbreaker
+    Collection.album("5587613").then((result) {
+      var album = [];
+      album.add("5587613");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Definitely Maybe
+    Collection.album("5697791").then((result) {
+      var album = [];
+      album.add("5697791");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Ghost Stories
+    Collection.album("5699282").then((result) {
+      var album = [];
+      album.add("5699282");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Dude Ranch
+    Collection.album("5757545").then((result) {
+      var album = [];
+      album.add("5757545");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Cheshire Cat
+    Collection.album("5868594").then((result) {
+      var album = [];
+      album.add("5868594");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Infinity on High
+    Collection.album("5869463").then((result) {
+      var album = [];
+      album.add("5869463");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Electric Lady
+    Collection.album("5970762").then((result) {
+      var album = [];
+      album.add("5970762");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // El Pintor
+    Collection.album("6058798").then((result) {
+      var album = [];
+      album.add("6058798");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // The Vistors
+    Collection.album("6111979").then((result) {
+      var album = [];
+      album.add("6111979");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Whats the Story Morning Glory?
+    Collection.album("6127871").then((result) {
+      var album = [];
+      album.add("6127871");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Hozier
+    Collection.album("6160782").then((result) {
+      var album = [];
+      album.add("6160782");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Rock or Bust
+    Collection.album("6343565").then((result) {
+      var album = [];
+      album.add("6343565");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Songs People Actually Liked, Volume 1: The First Ten Years 1994-2003
+    Collection.album("6621374").then((result) {
+      var album = [];
+      album.add("6621374");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Tell me when to whoa!
+    Collection.album("6621531").then((result) {
+      var album = [];
+      album.add("6621531");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Sound and Color
+    Collection.album("6764040").then((result) {
+      var album = [];
+      album.add("6764040");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Turn on the Bright Lights
+    Collection.album("6799508").then((result) {
+      var album = [];
+      album.add("6799508");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Then Play On
+    Collection.album("6941523").then((result) {
+      var album = [];
+      album.add("6941523");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    //
+    Collection.album("6974841").then((result) {
+      var album = [];
+      album.add("6974841");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // American Beauty / American Psycho
+    Collection.album("3104211").then((result) {
+      var album = [];
+      album.add("3104211");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // How Big how blue how beautiful
+    Collection.album("7064888").then((result) {
+      var album = [];
+      album.add("7064888");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // A Rush of blood to the head
+    Collection.album("7266689").then((result) {
+      var album = [];
+      album.add("7266689");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Dig out your soul
+    Collection.album("7315964").then((result) {
+      var album = [];
+      album.add("7315964");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // A head full of dreams
+    Collection.album("7810100").then((result) {
+      var album = [];
+      album.add("7810100");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Not to disappear
+    Collection.album("7975258").then((result) {
+      var album = [];
+      album.add("7975258");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // You and i
+    Collection.album("8235792").then((result) {
+      var album = [];
+      album.add("8235792");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Play
+    Collection.album("8465720").then((result) {
+      var album = [];
+      album.add("8465720");
+      album.add("Vinyl");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // Merry Flippin' Christmas Volumes 1 And 2
+    Collection.album("8568544").then((result) {
+      var album = [];
+      album.add("8568544");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+
+    // This is what the truth feels like
+    Collection.album("8576403").then((result) {
+      var album = [];
+      album.add("8576403");
+      album.add("CD");
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
   }
 }
