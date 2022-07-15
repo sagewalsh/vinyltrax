@@ -429,12 +429,12 @@ i: 0-39
           if (RegExp(r'^[0-9 ]+$').hasMatch(barcodes[k].toString()) &&
               barcodes[k].toString().length >= 6 &&
               !albums.contains(barcodes[k])) {
-            print(albums.length.toString() +
-                ".   "
-                    "id: " +
-                results[j]["id"].toString() +
-                "   title: " +
-                results[j]["title"].toString());
+            // print(albums.length.toString() +
+            //     ".   "
+            //         "id: " +
+            //     results[j]["id"].toString() +
+            //     "   title: " +
+            //     results[j]["title"].toString());
 
             albums.add(results[j]["title"]);
             albums.add(results[j]["id"].toString());

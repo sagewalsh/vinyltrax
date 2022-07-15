@@ -4,7 +4,7 @@ import 'discogs.dart';
 class Test {
   static void fillDatabase() {
     // Database.clear();
-    // Database.startingData();
+    Database.startingData();
   }
 
   static void discogs() {

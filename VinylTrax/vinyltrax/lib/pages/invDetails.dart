@@ -23,7 +23,6 @@ class _InvDetails extends State<InvDetails> {
     String album = widget.input[1];
     var _controller = TextEditingController();
 
-
     Widget addBlackLine() {
       return Padding(
         padding: const EdgeInsets.only(top: 8, left: 5, right: 5),
@@ -75,41 +74,41 @@ class _InvDetails extends State<InvDetails> {
           title: title,
           actions: [
             TextButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text("Confirm Removal?", textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                  onPressed: () {
-                                    //here you will remove the current album from the database
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("Confirm Removal?",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 16)),
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  //here you will remove the current album from the database
 
-                                    //below will take you back two pages, to the album page
+                                  //below will take you back two pages, to the album page
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  if (Navigator.canPop(context))
                                     Navigator.pop(context);
-                                    Navigator.pop(context);
-                                    if (Navigator.canPop(context))
-                                      Navigator.pop(context);
-                                  },
-                                  child: Text("Yes")
-                              ),
-                              SizedBox(width: 20),
-                              ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context); //returns user back to page
-                                  },
-                                  child: Text("No")
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                  );
-                },
-                child: Text("Remove", style: TextStyle(color: Colors.black)),
+                                },
+                                child: Text("Yes")),
+                            SizedBox(width: 20),
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(
+                                      context); //returns user back to page
+                                },
+                                child: Text("No")),
+                          ],
+                        ),
+                      );
+                    });
+              },
+              child: Text("Remove", style: TextStyle(color: Colors.black)),
             )
           ],
         ),
@@ -133,137 +132,158 @@ class _InvDetails extends State<InvDetails> {
                     ));
 
                     // COVER ART
-                    children.add(Center(
-                      child: Container(
-                        height: MediaQuery.of(context).size.width *
-                            .38, //150 square
-                        width: MediaQuery.of(context).size.width * .38,
-                        child: Image(
-                          image: NetworkImage(data[6].toString()),
+                    if (data[6] != null) {
+                      children.add(Center(
+                        child: Container(
+                          height: MediaQuery.of(context).size.width *
+                              .38, //150 square
+                          width: MediaQuery.of(context).size.width * .38,
+                          child: Image(
+                            image: NetworkImage(data[6].toString()),
+                          ),
                         ),
-                      ),
-                    ));
+                      ));
+                    }
 
                     // ALBUM NAME
-                    children.add(Center(
-                      child: Text(
-                        data[1].toString(),
-                        style: TextStyle(
-                          color: Colors.grey[700],
+                    if (data[1] != null) {
+                      children.add(Center(
+                        child: Text(
+                          data[1].toString(),
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                          ),
                         ),
-                      ),
-                    ));
+                      ));
+                    }
 
                     // ARTIST NAME
-                    var artists = <TextSpan>[];
-                    int size = (data[0] as List<dynamic>).length;
-                    for (int i = 0; i < size; i++) {
-                      artists.add(
-                        TextSpan(
-                          text: data[0][i][0].toString(),
-                          // recognizer: TapGestureRecognizer()
-                          //   ..onTap = (() {
-                          //     var route = new MaterialPageRoute(
-                          //         builder: (BuildContext context) {
-                          //       return new NextPageDisArt(
-                          //           data[0][i][1].toString(),
-                          //           data[0][i][0].toString());
-                          //     });
-                          //     Navigator.of(context).push(route);
-                          //   }),
-                          style: TextStyle(
-                            color: Colors.black,
-                            // decoration: TextDecoration.underline,
+                    if (data[0] != null) {
+                      var artists = <TextSpan>[];
+                      int size = (data[0] as List<dynamic>).length;
+                      for (int i = 0; i < size; i++) {
+                        artists.add(
+                          TextSpan(
+                            text: data[0][i][0].toString(),
+                            // recognizer: TapGestureRecognizer()
+                            //   ..onTap = (() {
+                            //     var route = new MaterialPageRoute(
+                            //         builder: (BuildContext context) {
+                            //       return new NextPageDisArt(
+                            //           data[0][i][1].toString(),
+                            //           data[0][i][0].toString());
+                            //     });
+                            //     Navigator.of(context).push(route);
+                            //   }),
+                            style: TextStyle(
+                              color: Colors.black,
+                              // decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        );
+                        if (i + 1 < size) {
+                          artists.add(TextSpan(
+                            text: " & ",
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ));
+                        }
+                      }
+                      children.add(
+                        Center(
+                          child: RichText(
+                            text: TextSpan(
+                              children: artists,
+                            ),
                           ),
                         ),
                       );
-                      if (i + 1 < size) {
-                        artists.add(TextSpan(
-                          text: " & ",
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ));
-                      }
                     }
-                    children.add(
-                      Center(
-                        child: RichText(
-                          text: TextSpan(
-                            children: artists,
-                          ),
-                        ),
-                      ),
-                    );
 
                     // GENRE AND YEAR
-                    children.add(Center(
-                        child: Text(
-                      data[2][0].toString() + "  •  " + data[3].toString(),
-                    )));
+                    if (data[2] != null && data[3] != null && data[3] != 0) {
+                      children.add(Center(
+                          child: Text(
+                        data[2][0].toString() + "  •  " + data[3].toString(),
+                      )));
+                    } else if (data[2] != null) {
+                      children.add(Center(
+                        child: Text(data[2][0].toString()),
+                      ));
+                    } else if (data[3] != null && data[3] != 0) {
+                      children.add(Center(
+                        child: Text(data[3].toString()),
+                      ));
+                    }
 
                     children.add(SizedBox(height: 30));
 
                     // TRACKLIST
-                    children.add(Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: Text("Tracklist", style: TextStyle(fontSize: 17)),
-                    ));
-                    children.add(addBlackLine());
-                    List<ListTile> tracklist = <ListTile>[];
-                    for (int i = 0;
-                        i < (data[4] as List<dynamic>).length;
-                        i++) {
-                      tracklist.add(ListTile(
-                        visualDensity: VisualDensity(vertical: -4),
-                        leading: Text(
-                          data[4][i][0].toString(),
-                          style: TextStyle(fontSize: 13),
-                        ),
-                        trailing: Text(
-                          data[4][i][1],
-                          style: TextStyle(fontSize: 13),
-                        ),
-                        tileColor: i.isOdd ? Color(0x20FF5A5A) : Colors.white,
+                    if (data[4] != null) {
+                      children.add(Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child:
+                            Text("Tracklist", style: TextStyle(fontSize: 17)),
                       ));
-                    }
-                    children.add(ListView(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      children: tracklist,
-                    ));
+                      children.add(addBlackLine());
+                      List<ListTile> tracklist = <ListTile>[];
+                      for (int i = 0;
+                          i < (data[4] as List<dynamic>).length;
+                          i++) {
+                        tracklist.add(ListTile(
+                          visualDensity: VisualDensity(vertical: -4),
+                          leading: Text(
+                            data[4][i][0].toString(),
+                            style: TextStyle(fontSize: 13),
+                          ),
+                          trailing: Text(
+                            data[4][i][1],
+                            style: TextStyle(fontSize: 13),
+                          ),
+                          tileColor: i.isOdd ? Color(0x20FF5A5A) : Colors.white,
+                        ));
+                      }
+                      children.add(ListView(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        children: tracklist,
+                      ));
 
-                    children.add(SizedBox(height: 30));
+                      children.add(SizedBox(height: 30));
+                    }
 
                     // CONTRIBUTORS
-                    // children.add(Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 5),
-                    //   child:
-                    //       Text("Contributors", style: TextStyle(fontSize: 17)),
-                    // ));
-                    // children.add(addBlackLine());
-                    // List<ListTile> contributors = <ListTile>[];
-                    // for (int j = 0;
-                    //     j < (data[5] as List<dynamic>).length;
-                    //     j++) {
-                    //   contributors.add(ListTile(
-                    //     visualDensity: VisualDensity(vertical: -4),
-                    //     title: Text(
-                    //       data[5][j][0].toString(),
-                    //       style: TextStyle(fontSize: 13),
-                    //     ),
-                    //     subtitle: Text(
-                    //       data[5][j][1].toString(),
-                    //       style: TextStyle(fontSize: 13),
-                    //     ),
-                    //     tileColor: j.isOdd ? Color(0x20FF5A5A) : Colors.white,
-                    //   ));
-                    // }
-                    // children.add(ListView(
-                    //   physics: NeverScrollableScrollPhysics(),
-                    //   shrinkWrap: true,
-                    //   children: contributors,
-                    // ));
+                    if (data[5] != null) {
+                      children.add(Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Text("Contributors",
+                            style: TextStyle(fontSize: 17)),
+                      ));
+                      children.add(addBlackLine());
+                      List<ListTile> contributors = <ListTile>[];
+                      for (int j = 0;
+                          j < (data[5] as List<dynamic>).length;
+                          j++) {
+                        contributors.add(ListTile(
+                          visualDensity: VisualDensity(vertical: -4),
+                          title: Text(
+                            data[5][j][0].toString(),
+                            style: TextStyle(fontSize: 13),
+                          ),
+                          subtitle: Text(
+                            data[5][j][1].toString(),
+                            style: TextStyle(fontSize: 13),
+                          ),
+                          tileColor: j.isOdd ? Color(0x20FF5A5A) : Colors.white,
+                        ));
+                      }
+                      children.add(ListView(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        children: contributors,
+                      ));
+                    }
 
                     children.add(Divider(
                       color: Colors.black,

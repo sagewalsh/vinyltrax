@@ -393,11 +393,6 @@ Given Album Data from Discogs in the form:
       albumdata[0] += "1";
     else if (albumdata[1] == "CD") albumdata[0] += "2";
 
-    // Create an empty list if no contributors
-    if ((albumdata[7] as List<dynamic>).isEmpty) {
-      albumdata[7] = ["none", "0"];
-    }
-
     // Add album data to database
     await ref.update({
       "Albums/${albumdata[0]}": {
@@ -424,9 +419,9 @@ Given Album Data from Discogs in the form:
             .forEach((element) {
           albums.add(element);
         });
-        if (!albums.contains(albumdata[0]))
-          // Add new album to list
-          albums.add(albumdata[0]);
+        // if (!albums.contains(albumdata[0]))
+        // Add new album to list
+        albums.add(albumdata[0]);
 
         // Update artist's albums
         ref.update({
