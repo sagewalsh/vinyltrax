@@ -4,7 +4,8 @@ import 'discogs.dart';
 class Test {
   static void fillDatabase() {
     // Database.clear();
-    Database.startingData();
+    // Database.fillartists();
+    // Database.startingData();
   }
 
   static void discogs() {
@@ -176,5 +177,7 @@ class Test {
     // Database.displayByArtist();
 
     // Database.albumsFrom(1112);
+    // print("Testing");
+    // Database.removeAlbum("20398592");
   }
 }

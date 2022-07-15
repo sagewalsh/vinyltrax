@@ -56,13 +56,6 @@ class _InvDetails extends State<InvDetails> {
       );
     }
 
-    // [0] artist name
-    // [1] album name
-    // [2] album cover
-    // [3] genre
-    // [4] year
-    // [5] tracklist (on a single string, it is parsed here)
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFFFFFEF9),
@@ -87,7 +80,8 @@ class _InvDetails extends State<InvDetails> {
                           children: [
                             ElevatedButton(
                                 onPressed: () {
-                                  //here you will remove the current album from the database
+                                  // Remove album from inventory
+                                  Database.removeAlbum(widget.input[0]);
 
                                   //below will take you back two pages, to the album page
                                   Navigator.pop(context);

@@ -88,10 +88,12 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
                       children: [
                         TextButton(
                             onPressed: () {
-                              //lets us go back to the album page
+                              // Add album to inventory
                               List<dynamic> album = [albumID, format];
                               album += snapshot.data!;
                               Database.addAlbumToInv(album);
+
+                              //lets us go back to the album page
                               Navigator.of(context).pop();
                               showDialog(
                                   context: context,
@@ -103,13 +105,12 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
                                         Navigator.of(context).pop();
                                     });
                                     return AlertDialog(
-                                      title: Text('Album Added', textAlign: TextAlign.center),
+                                      title: Text('Album Added',
+                                          textAlign: TextAlign.center),
                                     );
-                                  }
-                              );
+                                  });
                             },
-                            child: Text("Add")
-                        ),
+                            child: Text("Add")),
                         TextButton(
                             onPressed: () {
                               //lets us go back to the album page

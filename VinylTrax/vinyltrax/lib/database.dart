@@ -370,6 +370,45 @@ Data is returned as a list of strings
     return results;
   }
 
+  static void removeAlbum(String albumID) async {
+    // Get album data
+    var snapshot = await ref.child("Albums/$albumID").get();
+    if (snapshot.exists) {
+      var values = snapshot.value as Map<Object?, Object?>;
+
+      // Get IDs of artists on the album
+      List<String> artistIDs = [];
+      (values["Artist"] as List<dynamic>).forEach((element) {
+        artistIDs.add(element[1].toString());
+      });
+
+      // Delete the album from album database
+      await ref.child("Albums/$albumID").remove();
+
+      // Delete the album under each artist
+      artistIDs.forEach((element) async {
+        var artsnap = await ref.child("Artists/$element").get();
+        if (artsnap.exists) {
+          var data = artsnap.value as Map<Object?, Object?>;
+          List<dynamic> albums = [];
+          albums.addAll(data["Albums"] as List<dynamic>);
+          albums.remove(albumID);
+
+          // If the artist has no more albums: delete the artist
+          if (albums.isEmpty) {
+            await ref.child("Artists/$element").remove();
+          }
+          // Otherwise: update the artist's albums list
+          else {
+            await ref.update({
+              "Artists/$element/Albums": albums,
+            });
+          }
+        }
+      });
+    }
+  }
+
 /*
 #############################################################################
 Add an album to your inventory
@@ -413,23 +452,27 @@ Given Album Data from Discogs in the form:
       final snapshot = await ref.child("Artists/${albumdata[2][i][1]}").get();
       // If the artist already exists
       if (snapshot.exists) {
+        // print("SNAPSHOT EXISTS");
         // Create a list of already existing albums
-        List<dynamic> albums = [];
-        ((snapshot.value as Map<Object?, Object?>)["Albums"] as List<dynamic>)
-            .forEach((element) {
-          albums.add(element);
-        });
-        // if (!albums.contains(albumdata[0]))
-        // Add new album to list
-        albums.add(albumdata[0]);
 
-        // Update artist's albums
-        ref.update({
-          "Artists/${albumdata[2][i][1]}/Albums": albums,
-        });
+        if ((snapshot.value as Map<Object?, Object?>)["Albums"] != null) {
+          print("Albums Exists");
+          List<dynamic> albums = (snapshot.value
+              as Map<Object?, Object?>)["Albums"] as List<dynamic>;
+          if (!albums.contains(albumdata[0])) albums += [albumdata[0]];
+          // Update artist's albums
+          ref.update({
+            "Artists/${albumdata[2][i][1]}/Albums": albums,
+          });
+        } else {
+          ref.update({
+            "Artists/${albumdata[2][i][1]}/Albums": [albumdata[0]],
+          });
+        }
       }
       // If the artist doesn't exist
       else {
+        print("snapshot does not exist");
         // Create new artist
         await ref.update({
           "Artists/${albumdata[2][i][1]}": {
@@ -456,1070 +499,418 @@ Add pressing data to an album
 #############################################################################
 */
 
+  static void fillartists() async {
+    var list = [
+      3853178,
+      47333,
+      69866,
+      318185,
+      293333,
+      445868,
+      141549,
+      159169,
+      2218596,
+      21731,
+      163505,
+      132066,
+      63332,
+      29735,
+      1031,
+      461584,
+      2635770,
+      140140,
+      2165577,
+      84752,
+      1500084,
+      36158,
+      994835,
+      80395,
+      810616,
+      71725,
+      234647
+    ];
+    list.forEach((element) {
+      Collection.artistData(element.toString()).then((value) {
+        ref.update({
+          "Artists/${value[0]}": {
+            "UniqueID": value[0],
+            "Name": value[1],
+            "Albums": [],
+            "Image":
+                "https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg",
+          }
+        });
+      });
+    });
+  }
+
+  static Future<bool> fill(String id, String format) async {
+    Collection.album(id).then((result) {
+      var album = [];
+      album.add(id);
+      album.add(format);
+      album.addAll(result);
+      Database.addAlbumToInv(album);
+    });
+    return true;
+  }
+
   /*
   Fills the firebase realtime database with dummy data
   */
   static void startingData() async {
     // Arular
-    Collection.album("424354").then((result) {
-      var album = [];
-      album.add("424354");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("424354", "CD");
 
     // Folklore
-    Collection.album("461651").then((result) {
-      var album = [];
-      album.add("461651");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("461651", "Vinyl");
 
     //Stiff Upper Lip
-    Collection.album("487630").then((result) {
-      var album = [];
-      album.add("487630");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("487630", "Vinyl");
 
     // Let's Do It For Johnny!!
-    Collection.album("512610").then((result) {
-      var album = [];
-      album.add("512610");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("512610", "Vinyl");
 
     // Drunk Enough to Dance
-    Collection.album("512612").then((result) {
-      var album = [];
-      album.add("512612");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("512612", "Vinyl");
 
     // Mama Said
-    Collection.album("609305").then((result) {
-      var album = [];
-      album.add("609305");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("609305", "Vinyl");
 
     // Love.Angel.Music.Baby
-    Collection.album("676489").then((result) {
-      var album = [];
-      album.add("676489");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("676489", "Vinyl");
 
     // Loose
-    Collection.album("726173").then((result) {
-      var album = [];
-      album.add("726173");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("726173", "Vinyl");
 
     // Circus
-    Collection.album("796353").then((result) {
-      var album = [];
-      album.add("796353");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("796353", "Vinyl");
 
     // The Open Door
-    Collection.album("802389").then((result) {
-      var album = [];
-      album.add("802389");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("802389", "Vinyl");
 
     // Under the Iron Sea
-    Collection.album("803017").then((result) {
-      var album = [];
-      album.add("803017");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("803017", "Vinyl");
 
     // The Razors Edge
-    Collection.album("813717").then((result) {
-      var album = [];
-      album.add("813717");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("813717", "Vinyl");
 
     // Fly On the Wall
-    Collection.album("864310").then((result) {
-      var album = [];
-      album.add("864310");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("864310", "Vinyl");
 
     // Dirty Deedds Done Dirt Cheap
-    Collection.album("864991").then((result) {
-      var album = [];
-      album.add("864991");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("864991", "Vinyl");
 
     // Mirage
-    Collection.album("873439").then((result) {
-      var album = [];
-      album.add("873439");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("873439", "Vinyl");
 
     // Lap of Luxury
-    Collection.album("877057").then((result) {
-      var album = [];
-      album.add("877057");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("877057", "Vinyl");
 
     // Blow Up You Video
-    Collection.album("1001639").then((result) {
-      var album = [];
-      album.add("4616100163951");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1001639", "Vinyl");
 
     // X & Y
-    Collection.album("1044164").then((result) {
-      var album = [];
-      album.add("1044164");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1044164", "Vinyl");
 
     // Our Love to Admire
-    Collection.album("1055329").then((result) {
-      var album = [];
-      album.add("1055329");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1055329", "Vinyl");
 
     // The Album
-    Collection.album("1116735").then((result) {
-      var album = [];
-      album.add("1116735");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1116735", "Vinyl");
 
     // Bare Trees
-    Collection.album("1118530").then((result) {
-      var album = [];
-      album.add("1118530");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1118530", "Vinyl");
 
     // Powerage
-    Collection.album("1152320").then((result) {
-      var album = [];
-      album.add("1152320");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1152320", "Vinyl");
 
     // It Is Time For a Love Revolution
-    Collection.album("1236130").then((result) {
-      var album = [];
-      album.add("1236130");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1236130", "Vinyl");
 
     // Kala
-    Collection.album("1278408").then((result) {
-      var album = [];
-      album.add("1278408");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1278408", "Vinyl");
 
     // Viva La Vida Or Death And All His Friends
-    Collection.album("1373719").then((result) {
-      var album = [];
-      album.add("1373719");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1373719", "Vinyl");
 
     // Viva La Vida
-    Collection.album("1406749").then((result) {
-      var album = [];
-      album.add("1373719");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1406749", "Vinyl");
 
     // Viva La Cobra
-    Collection.album("1436737").then((result) {
-      var album = [];
-      album.add("1436737");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1436737", "Vinyl");
 
     // Evening Out With Your Girlfriend
-    Collection.album("1462121").then((result) {
-      var album = [];
-      album.add("1462121");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1462121", "Vinyl");
 
     // Black Ice
-    Collection.album("1596665").then((result) {
-      var album = [];
-      album.add("1596665");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1596665", "Vinyl");
 
     // In Color
-    Collection.album("1603248").then((result) {
-      var album = [];
-      album.add("1603248");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1603248", "Vinyl");
 
     // Infinity on High
-    Collection.album("1740745").then((result) {
-      var album = [];
-      album.add("1740745");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1740745", "Vinyl");
 
     // All Shook Up
-    Collection.album("1760271").then((result) {
-      var album = [];
-      album.add("1760271");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1760271", "Vinyl");
 
     // One on One
-    Collection.album("1760282").then((result) {
-      var album = [];
-      album.add("1760282");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1760282", "Vinyl");
 
     // Buddha
-    Collection.album("1800929").then((result) {
-      var album = [];
-      album.add("1800929");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1800929", "Vinyl");
 
     // Don't Believe The Truth
-    Collection.album("1865972").then((result) {
-      var album = [];
-      album.add("1865972");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1865972", "Vinyl");
 
     // Mi Plan
-    Collection.album("1937233").then((result) {
-      var album = [];
-      album.add("1937233");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1937233", "Vinyl");
 
     // Wild Young Hearts
-    Collection.album("1941286").then((result) {
-      var album = [];
-      album.add("1941286");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1941286", "Vinyl");
 
     // Back In Black
-    Collection.album("1949857").then((result) {
-      var album = [];
-      album.add("1949857");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1949857", "Vinyl");
 
     // Sorry for Partyin
-    Collection.album("1997838").then((result) {
-      var album = [];
-      album.add("1997838");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("1997838", "Vinyl");
 
     // Let There Be Rock
-    Collection.album("2078177").then((result) {
-      var album = [];
-      album.add("2078177");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2078177", "Vinyl");
 
     // Dream Police
-    Collection.album("2107112").then((result) {
-      var album = [];
-      album.add("2107112");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2107112", "Vinyl");
 
     // Next Position Please
-    Collection.album("2140555").then((result) {
-      var album = [];
-      album.add("2140555");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2140555", "Vinyl");
 
     // Night Train
-    Collection.album("2267965").then((result) {
-      var album = [];
-      album.add("2267965");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2267965", "Vinyl");
 
     // The ArchAndroid
-    Collection.album("2358638").then((result) {
-      var album = [];
-      album.add("2358638");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2358638", "Vinyl");
 
     // Cheap Trick
-    Collection.album("2372199").then((result) {
-      var album = [];
-      album.add("2372199");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2372199", "Vinyl");
 
     // Penguin
-    Collection.album("2415058").then((result) {
-      var album = [];
-      album.add("2415058");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2415058", "Vinyl");
 
     // Interpol
-    Collection.album("2435602").then((result) {
-      var album = [];
-      album.add("2435602");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2435602", "Vinyl");
 
     // Sketches For My Sweethear the Drunk
-    Collection.album("2513116").then((result) {
-      var album = [];
-      album.add("2513116");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2513116", "Vinyl");
 
     // Highway to Hell
-    Collection.album("2520300").then((result) {
-      var album = [];
-      album.add("2520300");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2520300", "Vinyl");
 
     // High Voltage
-    Collection.album("2588535").then((result) {
-      var album = [];
-      album.add("2588535");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2588535", "Vinyl");
 
     // A Hangover You Don't Deserve
-    Collection.album("2612166").then((result) {
-      var album = [];
-      album.add("2612166");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2612166", "Vinyl");
 
     // Folie À Deux
-    Collection.album("2621572").then((result) {
-      var album = [];
-      album.add("2621572");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2621572", "Vinyl");
 
     // While the City Sleeps, We Rule the Streets
-    Collection.album("2728452").then((result) {
-      var album = [];
-      album.add("2728452");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2728452", "Vinyl");
 
     // Lungs
-    Collection.album("2804664").then((result) {
-      var album = [];
-      album.add("2804664");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2804664", "Vinyl");
 
     // For Those About to Rock
-    Collection.album("2817619").then((result) {
-      var album = [];
-      album.add("2817619");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2817619", "Vinyl");
 
     // Grace
-    Collection.album("2825029").then((result) {
-      var album = [];
-      album.add("2825029");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2825029", "Vinyl");
 
     // Rumours
-    Collection.album("2832092").then((result) {
-      var album = [];
-      album.add("2832092");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2832092", "Vinyl");
 
     // James Blake
-    Collection.album("2832463").then((result) {
-      var album = [];
-      album.add("2832463");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2832463", "Vinyl");
 
     // Rock On Honorable Ones
-    Collection.album("2921774").then((result) {
-      var album = [];
-      album.add("2921774");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("2921774", "Vinyl");
 
     // Busted
-    Collection.album("3050774").then((result) {
-      var album = [];
-      album.add("3050774");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3050774", "Vinyl");
 
     // Black and White America
-    Collection.album("3069737").then((result) {
-      var album = [];
-      album.add("3069737");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3069737", "Vinyl");
 
     // Night Shades
-    Collection.album("3078209").then((result) {
-      var album = [];
-      album.add("3078209");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3078209", "Vinyl");
 
     // Parachutes
-    Collection.album("3092119").then((result) {
-      var album = [];
-      album.add("3092119");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3092119", "Vinyl");
 
     // Arrival
-    Collection.album("3104211").then((result) {
-      var album = [];
-      album.add("3104211");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3104211", "Vinyl");
 
     // ABBA
-    Collection.album("3105226").then((result) {
-      var album = [];
-      album.add("3105226");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3105226", "Vinyl");
 
     // Waterloo
-    Collection.album("3105284").then((result) {
-      var album = [];
-      album.add("3105284");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3105284", "Vinyl");
 
     // Voulez-Vous
-    Collection.album("3105488").then((result) {
-      var album = [];
-      album.add("3105488");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3105488", "Vinyl");
 
     // Petergreen's Fleetwood Mac
-    Collection.album("3107317").then((result) {
-      var album = [];
-      album.add("3107317");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3107317", "Vinyl");
 
     // Mylo Xyloto
-    Collection.album("3174863").then((result) {
-      var album = [];
-      album.add("3174863");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3174863", "Vinyl");
 
     // Ceremonials
-    Collection.album("3210249").then((result) {
-      var album = [];
-      album.add("3210249");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3210249", "Vinyl");
 
     // Antics
-    Collection.album("3415175").then((result) {
-      var album = [];
-      album.add("3415175");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3415175", "Vinyl");
 
     // Blue Side Park
-    Collection.album("3492331").then((result) {
-      var album = [];
-      album.add("3492331");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3492331", "Vinyl");
 
     // Boys and Girls
-    Collection.album("3529250").then((result) {
-      var album = [];
-      album.add("3529250");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3529250", "Vinyl");
 
     // Fleetwood Mac
-    Collection.album("3586233").then((result) {
-      var album = [];
-      album.add("3586233");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3586233", "Vinyl");
 
     // Strangeland
-    Collection.album("3592552").then((result) {
-      var album = [];
-      album.add("3592552");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3592552", "Vinyl");
 
     // Fishin for Woos
-    Collection.album("3630396").then((result) {
-      var album = [];
-      album.add("3630396");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3630396", "Vinyl");
 
     // The Doctor
-    Collection.album("3984662").then((result) {
-      var album = [];
-      album.add("3984662");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3984662", "Vinyl");
 
     // Whats the time Mr Wolf
-    Collection.album("4248516").then((result) {
-      var album = [];
-      album.add("4248516");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("4248516", "Vinyl");
 
     // If You Leave
-    Collection.album("4389520").then((result) {
-      var album = [];
-      album.add("4389520");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("4389520", "Vinyl");
 
     // Overgrown
-    Collection.album("4445420").then((result) {
-      var album = [];
-      album.add("4445420");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("4445420", "Vinyl");
 
     // Save Rock and Roll
-    Collection.album("4488806").then((result) {
-      var album = [];
-      album.add("4488806");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("4488806", "Vinyl");
 
     // Flick of the Switch
-    Collection.album("4689119").then((result) {
-      var album = [];
-      album.add("4689119");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("4689119", "Vinyl");
 
     // Mr Wonderful
-    Collection.album("4727885").then((result) {
-      var album = [];
-      album.add("4727885");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("4727885", "Vinyl");
 
     // Ring Ring
-    Collection.album("4998939").then((result) {
-      var album = [];
-      album.add("4998939");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("4998939", "Vinyl");
 
     // Matangi
-    Collection.album("5126620").then((result) {
-      var album = [];
-      album.add("5126620");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("5126620", "Vinyl");
 
     // Pax-AM Days
-    Collection.album("5148207").then((result) {
-      var album = [];
-      album.add("5148207");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("5148207", "Vinyl");
 
     // Blink-182
-    Collection.album("5224539").then((result) {
-      var album = [];
-      album.add("5224539");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("5224539", "Vinyl");
 
     // Metropolis: The Chase Suite
-    Collection.album("5303025").then((result) {
-      var album = [];
-      album.add("5303025");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("5303025", "Vinyl");
 
     // The Great Burrito Extortion Case
-    Collection.album("5381927").then((result) {
-      var album = [];
-      album.add("5381927");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("5381927", "Vinyl");
 
     // Lunch Drunk Love
-    Collection.album("5387555").then((result) {
-      var album = [];
-      album.add("5387555");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("5387555", "Vinyl");
 
     // Ballbreaker
-    Collection.album("5587613").then((result) {
-      var album = [];
-      album.add("5587613");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("5587613", "Vinyl");
 
     // Definitely Maybe
-    Collection.album("5697791").then((result) {
-      var album = [];
-      album.add("5697791");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("5697791", "Vinyl");
 
     // Ghost Stories
-    Collection.album("5699282").then((result) {
-      var album = [];
-      album.add("5699282");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("5699282", "Vinyl");
 
     // Dude Ranch
-    Collection.album("5757545").then((result) {
-      var album = [];
-      album.add("5757545");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("5757545", "Vinyl");
 
     // Cheshire Cat
-    Collection.album("5868594").then((result) {
-      var album = [];
-      album.add("5868594");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("5868594", "Vinyl");
 
     // Infinity on High
-    Collection.album("5869463").then((result) {
-      var album = [];
-      album.add("5869463");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("5869463", "Vinyl");
 
     // Electric Lady
-    Collection.album("5970762").then((result) {
-      var album = [];
-      album.add("5970762");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("5970762", "Vinyl");
 
     // El Pintor
-    Collection.album("6058798").then((result) {
-      var album = [];
-      album.add("6058798");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("6058798", "Vinyl");
 
     // The Vistors
-    Collection.album("6111979").then((result) {
-      var album = [];
-      album.add("6111979");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("6111979", "Vinyl");
 
     // Whats the Story Morning Glory?
-    Collection.album("6127871").then((result) {
-      var album = [];
-      album.add("6127871");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("6127871", "Vinyl");
 
     // Hozier
-    Collection.album("6160782").then((result) {
-      var album = [];
-      album.add("6160782");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("6160782", "Vinyl");
 
     // Rock or Bust
-    Collection.album("6343565").then((result) {
-      var album = [];
-      album.add("6343565");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("6343565", "Vinyl");
 
     // Songs People Actually Liked, Volume 1: The First Ten Years 1994-2003
-    Collection.album("6621374").then((result) {
-      var album = [];
-      album.add("6621374");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("6621374", "Vinyl");
 
     // Tell me when to whoa!
-    Collection.album("6621531").then((result) {
-      var album = [];
-      album.add("6621531");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("6621531", "Vinyl");
 
     // Sound and Color
-    Collection.album("6764040").then((result) {
-      var album = [];
-      album.add("6764040");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("6764040", "Vinyl");
 
     // Turn on the Bright Lights
-    Collection.album("6799508").then((result) {
-      var album = [];
-      album.add("6799508");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("6799508", "Vinyl");
 
     // Then Play On
-    Collection.album("6941523").then((result) {
-      var album = [];
-      album.add("6941523");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("6941523", "Vinyl");
 
     //
-    Collection.album("6974841").then((result) {
-      var album = [];
-      album.add("6974841");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("6974841", "Vinyl");
 
     // American Beauty / American Psycho
-    Collection.album("3104211").then((result) {
-      var album = [];
-      album.add("3104211");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("3104211", "Vinyl");
 
     // How Big how blue how beautiful
-    Collection.album("7064888").then((result) {
-      var album = [];
-      album.add("7064888");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("7064888", "Vinyl");
 
     // A Rush of blood to the head
-    Collection.album("7266689").then((result) {
-      var album = [];
-      album.add("7266689");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("7266689", "Vinyl");
 
     // Dig out your soul
-    Collection.album("7315964").then((result) {
-      var album = [];
-      album.add("7315964");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("7315964", "Vinyl");
 
     // A head full of dreams
-    Collection.album("7810100").then((result) {
-      var album = [];
-      album.add("7810100");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("7810100", "Vinyl");
 
     // Not to disappear
-    Collection.album("7975258").then((result) {
-      var album = [];
-      album.add("7975258");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("7975258", "Vinyl");
 
     // You and i
-    Collection.album("8235792").then((result) {
-      var album = [];
-      album.add("8235792");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("8235792", "Vinyl");
 
     // Play
-    Collection.album("8465720").then((result) {
-      var album = [];
-      album.add("8465720");
-      album.add("Vinyl");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("8465720", "Vinyl");
 
     // Merry Flippin' Christmas Volumes 1 And 2
-    Collection.album("8568544").then((result) {
-      var album = [];
-      album.add("8568544");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("8568544", "Vinyl");
 
     // This is what the truth feels like
-    Collection.album("8576403").then((result) {
-      var album = [];
-      album.add("8576403");
-      album.add("CD");
-      album.addAll(result);
-      Database.addAlbumToInv(album);
-    });
+    await fill("8576403", "Vinyl");
   }
 }
