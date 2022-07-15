@@ -22,9 +22,22 @@ class _ScrollResultsState extends State<ScrollResults> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text(widget.title, style: TextStyle(fontSize: 18))),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(widget.title, style: TextStyle(fontSize: 18))
+              ),
+              Spacer(),
+              TextButton(
+                  onPressed: () {
+                    //go to a larger list of results
+                  },
+                  child: Text("See all")
+              ),
+            ],
+          ),
           Divider(),
           Container(
             // height: MediaQuery.of(context).size.height * 0.24, //190
