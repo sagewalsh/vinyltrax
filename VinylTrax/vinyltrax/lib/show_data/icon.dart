@@ -14,7 +14,7 @@ class ShowIcon extends StatelessWidget {
       this.isInv, this.id);
 
   Widget buildAnimatedText(String text, BuildContext context) => Container(
-        height: MediaQuery.of(context).size.height * .022, //18
+        height: MediaQuery.of(context).size.height * .0262, //18
         width: MediaQuery.of(context).size.width * .38, //150
         child: Marquee(
           pauseAfterRound: Duration(seconds: 1),
@@ -34,7 +34,7 @@ class ShowIcon extends StatelessWidget {
     else
       outputAlb = SizedBox(
           width: MediaQuery.of(context).size.width * .38,
-          height: MediaQuery.of(context).size.height * .022,
+          height: MediaQuery.of(context).size.height * .0262,
           child: Text(
             albumName,
             textAlign: TextAlign.center,
@@ -45,7 +45,7 @@ class ShowIcon extends StatelessWidget {
     else
       outputArt = SizedBox(
           width: MediaQuery.of(context).size.width * .38,
-          height: MediaQuery.of(context).size.height * .022,
+          height: MediaQuery.of(context).size.height * .0262,
           child: Text(
             artistName,
             textAlign: TextAlign.center,
@@ -54,11 +54,11 @@ class ShowIcon extends StatelessWidget {
     Widget avatar = SizedBox();
     if (this.isArtist) {
       avatar =
-          CircleAvatar(radius: MediaQuery.of(context).size.width * .191, foregroundImage: NetworkImage(coverArt));
+          CircleAvatar(radius: MediaQuery.of(context).size.height * 0.093, foregroundImage: NetworkImage(coverArt));
     } else {
       avatar = Container(
-        height: MediaQuery.of(context).size.width * .38,
-        width: MediaQuery.of(context).size.width * .38,
+        height: MediaQuery.of(context).size.height * 0.19,
+        width: MediaQuery.of(context).size.height * 0.19,
         child: Image(
           image: NetworkImage(coverArt),
         ),
@@ -92,8 +92,8 @@ class ShowIcon extends StatelessWidget {
         Navigator.of(context).push(route);
       },
       child: Column(
-        children: children,
-      ),
+          children: children,
+        ),
     );
   }
 }

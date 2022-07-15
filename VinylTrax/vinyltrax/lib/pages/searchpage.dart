@@ -177,6 +177,7 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
         body: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
