@@ -447,14 +447,50 @@ Given Album Data from Discogs in the form:
       }
     });
 
-    // Add album to each artist's data
-    for (int i = 0; i < (albumdata[2] as List<dynamic>).length; i++) {
-      final snapshot = await ref.child("Artists/${albumdata[2][i][1]}").get();
-      // If the artist already exists
-      if (snapshot.exists) {
-        // print("SNAPSHOT EXISTS");
-        // Create a list of already existing albums
+    // // Add album to each artist's data
+    // for (int i = 0; i < (albumdata[2] as List<dynamic>).length; i++) {
+    //   final snapshot = await ref.child("Artists/${albumdata[2][i][1]}").get();
+    //   // If the artist already exists
+    //   if (snapshot.exists) {
+    //     // print("SNAPSHOT EXISTS");
+    //     // Create a list of already existing albums
 
+    //     if ((snapshot.value as Map<Object?, Object?>)["Albums"] != null) {
+    //       print("Albums Exists");
+    //       List<dynamic> albums = (snapshot.value
+    //           as Map<Object?, Object?>)["Albums"] as List<dynamic>;
+    //       if (!albums.contains(albumdata[0])) albums += [albumdata[0]];
+    //       // Update artist's albums
+    //       ref.update({
+    //         "Artists/${albumdata[2][i][1]}/Albums": albums,
+    //       });
+    //     } else {
+    //       ref.update({
+    //         "Artists/${albumdata[2][i][1]}/Albums": [albumdata[0]],
+    //       });
+    //     }
+    //   }
+    //   // If the artist doesn't exist
+    //   else {
+    //     print("snapshot does not exist");
+    //     // Create new artist
+    //     await ref.update({
+    //       "Artists/${albumdata[2][i][1]}": {
+    //         "UniqueID": albumdata[2][i][1],
+    //         "Name": albumdata[2][i][0],
+    //         "Albums": [albumdata[0]],
+    //         "Image":
+    //             "https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg",
+    //       }
+    //     });
+    //   }
+    // }
+
+    // Add album to each artist's data
+    (albumdata[2] as List<dynamic>).forEach((element) async {
+      var snapshot = await ref.child("Artists/${element[1]}").get();
+      // If the artist exitst
+      if (snapshot.exists) {
         if ((snapshot.value as Map<Object?, Object?>)["Albums"] != null) {
           print("Albums Exists");
           List<dynamic> albums = (snapshot.value
@@ -462,11 +498,11 @@ Given Album Data from Discogs in the form:
           if (!albums.contains(albumdata[0])) albums += [albumdata[0]];
           // Update artist's albums
           ref.update({
-            "Artists/${albumdata[2][i][1]}/Albums": albums,
+            "Artists/${element[1]}/Albums": albums,
           });
         } else {
           ref.update({
-            "Artists/${albumdata[2][i][1]}/Albums": [albumdata[0]],
+            "Artists/${element[1]}/Albums": [albumdata[0]],
           });
         }
       }
@@ -475,16 +511,16 @@ Given Album Data from Discogs in the form:
         print("snapshot does not exist");
         // Create new artist
         await ref.update({
-          "Artists/${albumdata[2][i][1]}": {
-            "UniqueID": albumdata[2][i][1],
-            "Name": albumdata[2][i][0],
+          "Artists/${element[1]}": {
+            "UniqueID": element[1],
+            "Name": element[0],
             "Albums": [albumdata[0]],
             "Image":
                 "https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg",
           }
         });
       }
-    }
+    });
   }
 
 /*
