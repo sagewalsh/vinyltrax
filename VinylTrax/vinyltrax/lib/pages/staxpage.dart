@@ -177,9 +177,9 @@ class _StaxPageState extends State<StaxPage> {
           child: Column(
             children: [
               if (_selectedOrder == _Order.genre)
-                GenreList()
+                GenreList(_selectedType)
               else if (_selectedOrder == _Order.artist)
-                GetInvArtist()
+                GetInvArtist(_selectedType)
               else
                 GetInvAlbum(_selectedType)
             ],

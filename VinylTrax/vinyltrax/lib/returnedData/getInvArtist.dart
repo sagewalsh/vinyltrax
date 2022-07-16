@@ -2,15 +2,26 @@ import 'package:flutter/material.dart';
 import '../database.dart';
 import '../show_data/listEntry.dart';
 import '../show_data/listEntryList.dart';
+import '../pages/staxpage.dart';
 
 class GetInvArtist extends StatelessWidget {
-  GetInvArtist({Key? key}) : super(key: key);
-
-  final Future<List<dynamic>> _results = Database.artists();
-  List<Widget> children = <Widget>[];
+  final Type genre;
+  GetInvArtist(this.genre);
 
   @override
   Widget build(BuildContext context) {
+    // Set input genre
+    String input = "All";
+    if (genre == Type.vinyl)
+      input = "Vinyl";
+    else if (genre == Type.cd) input = "CD";
+
+    // Get artists from the database
+    final Future<List<dynamic>> _results = Database.artists(input);
+
+    //Widgets to be displayed
+    List<Widget> children = <Widget>[];
+
     return SizedBox(
       width: double.infinity,
       child: FutureBuilder<List<dynamic>>(

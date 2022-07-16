@@ -60,7 +60,8 @@ class Database {
   [2]: Cover Art
   [3]: Album ID
   */
-  static Future<List<Text>> displayByGenre(String genre) async {
+  static Future<List<dynamic>> displayByGenre(
+      String genre, String format) async {
     // Get a snapshot from the album database
     final snapshot = await ref.child("Albums").get();
 
@@ -73,13 +74,14 @@ class Database {
       // For every album in the database: check if it is the correct genre
       values.forEach((key, value) {
         var album = value as Map<Object?, Object?>;
-        if (album["Genre"] == genre) {
+        if ((album["Genre"] as List<Object?>).contains(genre) &&
+            album["Format"] == format) {
           // Add the album to the list
           list += {key: value}.entries.toList();
         }
       });
       // Convert list of maps into list of widgets
-      return _displayAlbums(list);
+      return _albumDisplay(list);
     } else {
       return [];
     }
@@ -150,7 +152,7 @@ Data is returned as a list of text widgets
 [1]: Artist ID
 [2]: Image
 */
-  static Future<List<dynamic>> artists() async {
+  static Future<List<dynamic>> artists(String genre) async {
     // Get a snapshot from the artist database
     final snapshot = await ref.child("Artists").get();
     // List of artists to return
@@ -175,11 +177,29 @@ Data is returned as a list of text widgets
       // Add each artist and their id to the returning list
       list.forEach((element) {
         var artistdata = element.value as Map<Object?, Object?>;
-        results.add(artistdata["Name"]);
-        results.add(artistdata["UniqueID"]);
-        results.add(artistdata["Image"]);
+        print(element);
+        if (genre == "All") {
+          print("all entered");
+          results.add(artistdata["Name"]);
+          results.add(artistdata["UniqueID"]);
+          results.add(artistdata["Image"]);
+        } else {
+          print("else entered");
+          var albums = artistdata["Albums"] as Map<Object?, Object?>;
+
+          albums.forEach((key, value) {
+            if (!results.contains(artistdata["Name"]) &&
+                ((value.toString().endsWith("1") && genre == "Vinyl") ||
+                    value.toString().endsWith("2") && genre == "CD")) {
+              results.add(artistdata["Name"]);
+              results.add(artistdata["UniqueID"]);
+              results.add(artistdata["Image"]);
+            }
+          });
+        }
       });
     }
+    print(results);
     // Return artists and their ids
     return results;
   }
@@ -215,16 +235,17 @@ Data is returned as a list of text widgets:
         // Map{ "Name": name, "Albums": [], ... }
         var artist = values[artistid] as Map<Object?, Object?>;
         // AlbumIDs of the albums the given artist has created
-        var albumids = artist["Albums"] as List<Object?>;
+        var albumids = artist["Albums"] as Map<Object?, Object?>;
 
-        albumids.forEach((element) {
-          if (albumValues.containsKey(element.toString())) {
+        albumids.forEach((key, value) {
+          if (albumValues.containsKey(value.toString())) {
             // Add album data to returned list
-            albums += {element.toString(): albumValues[element.toString()]}
+            albums += {value.toString(): albumValues[value.toString()]}
                 .entries
                 .toList();
           }
         });
+
         // Return the album data of the given Artist's albums
         return _albumDisplay(albums);
       }
@@ -300,8 +321,8 @@ Data is returned as a list of strings
     return results;
   }
 
-  static Future<List<List<Text>>> search(String input) async {
-    List<List<Text>> results = [];
+  static Future<List<List<dynamic>>> search(String input) async {
+    List<List<dynamic>> results = [];
     // Get a snapshot of the Artists database
     final snapArtist = await ref.child("Artists").get();
     // Get a snapshot of the Albums database
@@ -330,22 +351,22 @@ Data is returned as a list of strings
                 .contains(artist["Name"].toString().toLowerCase())) {
           // Add the artist to the results
           results.add([
-            Text(artist["Name"].toString()),
-            Text(artist["UniqueID"].toString()),
-            Text(artist["Image"].toString()),
+            artist["Name"],
+            artist["UniqueID"],
+            artist["Image"],
           ]);
           // AlbumIDs of the albums the given artist has created
-          var albumids = artist["Albums"] as List<Object?>;
+          var albumids = artist["Albums"] as Map<Object?, Object?>;
 
-          albumids.forEach((element) {
-            if (albumValues.containsKey(element.toString())) {
+          albumids.forEach((key, value) {
+            if (albumValues.containsKey(value.toString())) {
               // Add album data to returned list
-              list = {element.toString(): albumValues[element.toString()]}
+              list = {value.toString(): albumValues[value.toString()]}
                   .entries
                   .toList();
 
               // Return the album data of the given Artist's albums
-              results.add(_displayAlbums(list));
+              results.add(_albumDisplay(list));
             }
           });
         }
@@ -365,7 +386,7 @@ Data is returned as a list of strings
           list += {key: value}.entries.toList();
         }
       });
-      if (list.isNotEmpty) results.add(_displayAlbums(list));
+      if (list.isNotEmpty) results.add(_albumDisplay(list));
     }
     return results;
   }
@@ -446,65 +467,14 @@ Given Album Data from Discogs in the form:
         "Format": albumdata[1],
       }
     });
-
-    // // Add album to each artist's data
-    // for (int i = 0; i < (albumdata[2] as List<dynamic>).length; i++) {
-    //   final snapshot = await ref.child("Artists/${albumdata[2][i][1]}").get();
-    //   // If the artist already exists
-    //   if (snapshot.exists) {
-    //     // print("SNAPSHOT EXISTS");
-    //     // Create a list of already existing albums
-
-    //     if ((snapshot.value as Map<Object?, Object?>)["Albums"] != null) {
-    //       print("Albums Exists");
-    //       List<dynamic> albums = (snapshot.value
-    //           as Map<Object?, Object?>)["Albums"] as List<dynamic>;
-    //       if (!albums.contains(albumdata[0])) albums += [albumdata[0]];
-    //       // Update artist's albums
-    //       ref.update({
-    //         "Artists/${albumdata[2][i][1]}/Albums": albums,
-    //       });
-    //     } else {
-    //       ref.update({
-    //         "Artists/${albumdata[2][i][1]}/Albums": [albumdata[0]],
-    //       });
-    //     }
-    //   }
-    //   // If the artist doesn't exist
-    //   else {
-    //     print("snapshot does not exist");
-    //     // Create new artist
-    //     await ref.update({
-    //       "Artists/${albumdata[2][i][1]}": {
-    //         "UniqueID": albumdata[2][i][1],
-    //         "Name": albumdata[2][i][0],
-    //         "Albums": [albumdata[0]],
-    //         "Image":
-    //             "https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg",
-    //       }
-    //     });
-    //   }
-    // }
-
     // Add album to each artist's data
     (albumdata[2] as List<dynamic>).forEach((element) async {
       var snapshot = await ref.child("Artists/${element[1]}").get();
       // If the artist exitst
       if (snapshot.exists) {
-        if ((snapshot.value as Map<Object?, Object?>)["Albums"] != null) {
-          print("Albums Exists");
-          List<dynamic> albums = (snapshot.value
-              as Map<Object?, Object?>)["Albums"] as List<dynamic>;
-          if (!albums.contains(albumdata[0])) albums += [albumdata[0]];
-          // Update artist's albums
-          ref.update({
-            "Artists/${element[1]}/Albums": albums,
-          });
-        } else {
-          ref.update({
-            "Artists/${element[1]}/Albums": [albumdata[0]],
-          });
-        }
+        var snapalbum = await ref.child("Artists/${element[1]}/Albums");
+        var newAlbum = snapalbum.push();
+        newAlbum.set(albumdata[0]);
       }
       // If the artist doesn't exist
       else {
@@ -514,11 +484,13 @@ Given Album Data from Discogs in the form:
           "Artists/${element[1]}": {
             "UniqueID": element[1],
             "Name": element[0],
-            "Albums": [albumdata[0]],
             "Image":
                 "https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg",
           }
         });
+        var snapalbum = await ref.child("Artists/${element[1]}/Albums");
+        var newAlbum = snapalbum.push();
+        newAlbum.set(albumdata[0]);
       }
     });
   }
@@ -594,359 +566,359 @@ Add pressing data to an album
   /*
   Fills the firebase realtime database with dummy data
   */
-  static void startingData() async {
+  static void startingData() {
     // Arular
-    await fill("424354", "CD");
+    fill("424354", "CD");
 
     // Folklore
-    await fill("461651", "Vinyl");
+    fill("461651", "Vinyl");
 
     //Stiff Upper Lip
-    await fill("487630", "Vinyl");
+    fill("487630", "Vinyl");
 
     // Let's Do It For Johnny!!
-    await fill("512610", "Vinyl");
+    fill("512610", "Vinyl");
 
     // Drunk Enough to Dance
-    await fill("512612", "Vinyl");
+    fill("512612", "Vinyl");
 
     // Mama Said
-    await fill("609305", "Vinyl");
+    fill("609305", "Vinyl");
 
     // Love.Angel.Music.Baby
-    await fill("676489", "Vinyl");
+    fill("676489", "Vinyl");
 
     // Loose
-    await fill("726173", "Vinyl");
+    fill("726173", "Vinyl");
 
     // Circus
-    await fill("796353", "Vinyl");
+    fill("796353", "Vinyl");
 
     // The Open Door
-    await fill("802389", "Vinyl");
+    fill("802389", "Vinyl");
 
     // Under the Iron Sea
-    await fill("803017", "Vinyl");
+    fill("803017", "Vinyl");
 
     // The Razors Edge
-    await fill("813717", "Vinyl");
+    fill("813717", "Vinyl");
 
     // Fly On the Wall
-    await fill("864310", "Vinyl");
+    fill("864310", "Vinyl");
 
     // Dirty Deedds Done Dirt Cheap
-    await fill("864991", "Vinyl");
+    fill("864991", "Vinyl");
 
     // Mirage
-    await fill("873439", "Vinyl");
+    fill("873439", "Vinyl");
 
     // Lap of Luxury
-    await fill("877057", "Vinyl");
+    fill("877057", "Vinyl");
 
     // Blow Up You Video
-    await fill("1001639", "Vinyl");
+    fill("1001639", "Vinyl");
 
     // X & Y
-    await fill("1044164", "Vinyl");
+    fill("1044164", "Vinyl");
 
     // Our Love to Admire
-    await fill("1055329", "Vinyl");
+    fill("1055329", "Vinyl");
 
     // The Album
-    await fill("1116735", "Vinyl");
+    fill("1116735", "Vinyl");
 
     // Bare Trees
-    await fill("1118530", "Vinyl");
+    fill("1118530", "Vinyl");
 
     // Powerage
-    await fill("1152320", "Vinyl");
+    fill("1152320", "Vinyl");
 
     // It Is Time For a Love Revolution
-    await fill("1236130", "Vinyl");
+    fill("1236130", "Vinyl");
 
     // Kala
-    await fill("1278408", "Vinyl");
+    fill("1278408", "Vinyl");
 
     // Viva La Vida Or Death And All His Friends
-    await fill("1373719", "Vinyl");
+    fill("1373719", "Vinyl");
 
     // Viva La Vida
-    await fill("1406749", "Vinyl");
+    fill("1406749", "Vinyl");
 
     // Viva La Cobra
-    await fill("1436737", "Vinyl");
+    fill("1436737", "Vinyl");
 
     // Evening Out With Your Girlfriend
-    await fill("1462121", "Vinyl");
+    fill("1462121", "Vinyl");
 
     // Black Ice
-    await fill("1596665", "Vinyl");
+    fill("1596665", "Vinyl");
 
     // In Color
-    await fill("1603248", "Vinyl");
+    fill("1603248", "Vinyl");
 
     // Infinity on High
-    await fill("1740745", "Vinyl");
+    fill("1740745", "Vinyl");
 
     // All Shook Up
-    await fill("1760271", "Vinyl");
+    fill("1760271", "Vinyl");
 
     // One on One
-    await fill("1760282", "Vinyl");
+    fill("1760282", "Vinyl");
 
     // Buddha
-    await fill("1800929", "Vinyl");
+    fill("1800929", "Vinyl");
 
     // Don't Believe The Truth
-    await fill("1865972", "Vinyl");
+    fill("1865972", "Vinyl");
 
     // Mi Plan
-    await fill("1937233", "Vinyl");
+    fill("1937233", "Vinyl");
 
     // Wild Young Hearts
-    await fill("1941286", "Vinyl");
+    fill("1941286", "Vinyl");
 
     // Back In Black
-    await fill("1949857", "Vinyl");
+    fill("1949857", "Vinyl");
 
     // Sorry for Partyin
-    await fill("1997838", "Vinyl");
+    fill("1997838", "Vinyl");
 
     // Let There Be Rock
-    await fill("2078177", "Vinyl");
+    fill("2078177", "Vinyl");
 
     // Dream Police
-    await fill("2107112", "Vinyl");
+    fill("2107112", "Vinyl");
 
     // Next Position Please
-    await fill("2140555", "Vinyl");
+    fill("2140555", "Vinyl");
 
     // Night Train
-    await fill("2267965", "Vinyl");
+    fill("2267965", "Vinyl");
 
     // The ArchAndroid
-    await fill("2358638", "Vinyl");
+    fill("2358638", "Vinyl");
 
     // Cheap Trick
-    await fill("2372199", "Vinyl");
+    fill("2372199", "Vinyl");
 
     // Penguin
-    await fill("2415058", "Vinyl");
+    fill("2415058", "Vinyl");
 
     // Interpol
-    await fill("2435602", "Vinyl");
+    fill("2435602", "Vinyl");
 
     // Sketches For My Sweethear the Drunk
-    await fill("2513116", "Vinyl");
+    fill("2513116", "Vinyl");
 
     // Highway to Hell
-    await fill("2520300", "Vinyl");
+    fill("2520300", "Vinyl");
 
     // High Voltage
-    await fill("2588535", "Vinyl");
+    fill("2588535", "Vinyl");
 
     // A Hangover You Don't Deserve
-    await fill("2612166", "Vinyl");
+    fill("2612166", "Vinyl");
 
     // Folie À Deux
-    await fill("2621572", "Vinyl");
+    fill("2621572", "Vinyl");
 
     // While the City Sleeps, We Rule the Streets
-    await fill("2728452", "Vinyl");
+    fill("2728452", "Vinyl");
 
     // Lungs
-    await fill("2804664", "Vinyl");
+    fill("2804664", "Vinyl");
 
     // For Those About to Rock
-    await fill("2817619", "Vinyl");
+    fill("2817619", "Vinyl");
 
     // Grace
-    await fill("2825029", "Vinyl");
+    fill("2825029", "Vinyl");
 
     // Rumours
-    await fill("2832092", "Vinyl");
+    fill("2832092", "Vinyl");
 
     // James Blake
-    await fill("2832463", "Vinyl");
+    fill("2832463", "Vinyl");
 
     // Rock On Honorable Ones
-    await fill("2921774", "Vinyl");
+    fill("2921774", "Vinyl");
 
     // Busted
-    await fill("3050774", "Vinyl");
+    fill("3050774", "Vinyl");
 
     // Black and White America
-    await fill("3069737", "Vinyl");
+    fill("3069737", "Vinyl");
 
     // Night Shades
-    await fill("3078209", "Vinyl");
+    fill("3078209", "Vinyl");
 
     // Parachutes
-    await fill("3092119", "Vinyl");
+    fill("3092119", "Vinyl");
 
     // Arrival
-    await fill("3104211", "Vinyl");
+    fill("3104211", "Vinyl");
 
     // ABBA
-    await fill("3105226", "Vinyl");
+    fill("3105226", "Vinyl");
 
     // Waterloo
-    await fill("3105284", "Vinyl");
+    fill("3105284", "Vinyl");
 
     // Voulez-Vous
-    await fill("3105488", "Vinyl");
+    fill("3105488", "Vinyl");
 
     // Petergreen's Fleetwood Mac
-    await fill("3107317", "Vinyl");
+    fill("3107317", "Vinyl");
 
     // Mylo Xyloto
-    await fill("3174863", "Vinyl");
+    fill("3174863", "Vinyl");
 
     // Ceremonials
-    await fill("3210249", "Vinyl");
+    fill("3210249", "Vinyl");
 
     // Antics
-    await fill("3415175", "Vinyl");
+    fill("3415175", "Vinyl");
 
     // Blue Side Park
-    await fill("3492331", "Vinyl");
+    fill("3492331", "Vinyl");
 
     // Boys and Girls
-    await fill("3529250", "Vinyl");
+    fill("3529250", "Vinyl");
 
     // Fleetwood Mac
-    await fill("3586233", "Vinyl");
+    fill("3586233", "Vinyl");
 
     // Strangeland
-    await fill("3592552", "Vinyl");
+    fill("3592552", "Vinyl");
 
     // Fishin for Woos
-    await fill("3630396", "Vinyl");
+    fill("3630396", "Vinyl");
 
     // The Doctor
-    await fill("3984662", "Vinyl");
+    fill("3984662", "Vinyl");
 
     // Whats the time Mr Wolf
-    await fill("4248516", "Vinyl");
+    fill("4248516", "Vinyl");
 
     // If You Leave
-    await fill("4389520", "Vinyl");
+    fill("4389520", "Vinyl");
 
     // Overgrown
-    await fill("4445420", "Vinyl");
+    fill("4445420", "Vinyl");
 
     // Save Rock and Roll
-    await fill("4488806", "Vinyl");
+    fill("4488806", "Vinyl");
 
     // Flick of the Switch
-    await fill("4689119", "Vinyl");
+    fill("4689119", "Vinyl");
 
     // Mr Wonderful
-    await fill("4727885", "Vinyl");
+    fill("4727885", "Vinyl");
 
     // Ring Ring
-    await fill("4998939", "Vinyl");
+    fill("4998939", "Vinyl");
 
     // Matangi
-    await fill("5126620", "Vinyl");
+    fill("5126620", "Vinyl");
 
     // Pax-AM Days
-    await fill("5148207", "Vinyl");
+    fill("5148207", "Vinyl");
 
     // Blink-182
-    await fill("5224539", "Vinyl");
+    fill("5224539", "Vinyl");
 
     // Metropolis: The Chase Suite
-    await fill("5303025", "Vinyl");
+    fill("5303025", "Vinyl");
 
     // The Great Burrito Extortion Case
-    await fill("5381927", "Vinyl");
+    fill("5381927", "Vinyl");
 
     // Lunch Drunk Love
-    await fill("5387555", "Vinyl");
+    fill("5387555", "Vinyl");
 
     // Ballbreaker
-    await fill("5587613", "Vinyl");
+    fill("5587613", "Vinyl");
 
     // Definitely Maybe
-    await fill("5697791", "Vinyl");
+    fill("5697791", "Vinyl");
 
     // Ghost Stories
-    await fill("5699282", "Vinyl");
+    fill("5699282", "Vinyl");
 
     // Dude Ranch
-    await fill("5757545", "Vinyl");
+    fill("5757545", "Vinyl");
 
     // Cheshire Cat
-    await fill("5868594", "Vinyl");
+    fill("5868594", "Vinyl");
 
     // Infinity on High
-    await fill("5869463", "Vinyl");
+    fill("5869463", "Vinyl");
 
     // Electric Lady
-    await fill("5970762", "Vinyl");
+    fill("5970762", "Vinyl");
 
     // El Pintor
-    await fill("6058798", "Vinyl");
+    fill("6058798", "Vinyl");
 
     // The Vistors
-    await fill("6111979", "Vinyl");
+    fill("6111979", "Vinyl");
 
     // Whats the Story Morning Glory?
-    await fill("6127871", "Vinyl");
+    fill("6127871", "Vinyl");
 
     // Hozier
-    await fill("6160782", "Vinyl");
+    fill("6160782", "Vinyl");
 
     // Rock or Bust
-    await fill("6343565", "Vinyl");
+    fill("6343565", "Vinyl");
 
     // Songs People Actually Liked, Volume 1: The First Ten Years 1994-2003
-    await fill("6621374", "Vinyl");
+    fill("6621374", "Vinyl");
 
     // Tell me when to whoa!
-    await fill("6621531", "Vinyl");
+    fill("6621531", "Vinyl");
 
     // Sound and Color
-    await fill("6764040", "Vinyl");
+    fill("6764040", "Vinyl");
 
     // Turn on the Bright Lights
-    await fill("6799508", "Vinyl");
+    fill("6799508", "Vinyl");
 
     // Then Play On
-    await fill("6941523", "Vinyl");
+    fill("6941523", "Vinyl");
 
     //
-    await fill("6974841", "Vinyl");
+    fill("6974841", "Vinyl");
 
     // American Beauty / American Psycho
-    await fill("3104211", "Vinyl");
+    fill("3104211", "Vinyl");
 
     // How Big how blue how beautiful
-    await fill("7064888", "Vinyl");
+    fill("7064888", "Vinyl");
 
     // A Rush of blood to the head
-    await fill("7266689", "Vinyl");
+    fill("7266689", "Vinyl");
 
     // Dig out your soul
-    await fill("7315964", "Vinyl");
+    fill("7315964", "Vinyl");
 
     // A head full of dreams
-    await fill("7810100", "Vinyl");
+    fill("7810100", "Vinyl");
 
     // Not to disappear
-    await fill("7975258", "Vinyl");
+    fill("7975258", "Vinyl");
 
     // You and i
-    await fill("8235792", "Vinyl");
+    fill("8235792", "Vinyl");
 
     // Play
-    await fill("8465720", "Vinyl");
+    fill("8465720", "Vinyl");
 
     // Merry Flippin' Christmas Volumes 1 And 2
-    await fill("8568544", "Vinyl");
+    fill("8568544", "Vinyl");
 
     // This is what the truth feels like
-    await fill("8576403", "Vinyl");
+    fill("8576403", "Vinyl");
   }
 }

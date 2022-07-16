@@ -11,7 +11,7 @@ class InvResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<List<List<Text>>> _results = Database.search(input);
+    Future<List<List<dynamic>>> _results = Database.search(input);
     // late String name = "Artist not found";
     String name = input;
 
@@ -31,10 +31,10 @@ class InvResults extends StatelessWidget {
             physics: AlwaysScrollableScrollPhysics(),
             child: SizedBox(
                 width: double.infinity,
-                child: FutureBuilder<List<List<Text>>>(
+                child: FutureBuilder<List<List<dynamic>>>(
                   future: _results,
                   builder: (BuildContext context,
-                      AsyncSnapshot<List<List<Text>>> snapshot) {
+                      AsyncSnapshot<List<List<dynamic>>> snapshot) {
                     List<Widget> children;
                     if (snapshot.hasData) {
                       children = <Widget>[];
@@ -44,25 +44,35 @@ class InvResults extends StatelessWidget {
                       }
                       for (int i = 0; i < snapshot.data!.length; i++) {
                         var data = snapshot.data![i];
+
                         // Artist Data
                         if (data.length == 3) {
                           children.add(ShowIcon(
-                              data[0].data.toString(),
+                              data[0].toString(),
                               "",
-                              data[2].data.toString(),
+                              data[2].toString(),
                               true,
                               true,
-                              data[1].data.toString()));
+                              data[1].toString()));
                         }
+
                         // Album Data
-                        if (data.length == 4) {
+                        if (data.length == 5) {
+                          String artists = "";
+                          var list = data[2] as List<dynamic>;
+                          for (int i = 0; i < list.length; i++) {
+                            artists += list[i][0].toString();
+                            if (i + 1 < list.length) {
+                              artists += " & ";
+                            }
+                          }
                           children.add(ShowIcon(
-                              data[1].data.toString(),
-                              data[0].data.toString(),
-                              data[2].data.toString(),
+                              artists,
+                              data[1].toString(),
+                              data[3].toString(),
                               false,
                               true,
-                              data[3].data.toString()));
+                              data[0].toString()));
                         }
                       }
                       children.add(SizedBox(
@@ -77,8 +87,10 @@ class InvResults extends StatelessWidget {
                     } else {
                       children = <Widget>[
                         SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.1275, //50
-                          height: MediaQuery.of(context).size.height * 0.062, //50
+                          width:
+                              MediaQuery.of(context).size.width * 0.1275, //50
+                          height:
+                              MediaQuery.of(context).size.height * 0.062, //50
                           child: CircularProgressIndicator(),
                         )
                       ];
