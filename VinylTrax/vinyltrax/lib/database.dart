@@ -153,7 +153,6 @@ Data is returned as a list of text widgets
 [2]: Image
 */
   static Future<List<dynamic>> artists(String format) async {
-    print(format);
     // Get a snapshot from the artist database
     final snapshot = await ref.child("Artists").get();
     // List of artists to return
@@ -178,16 +177,23 @@ Data is returned as a list of text widgets
       // Add each artist and their id to the returning list
       list.forEach((element) {
         var artistdata = element.value as Map<Object?, Object?>;
+        print(artistdata);
+        // print(element);
         if (format == "All") {
+          // print("all entered");
           results.add(artistdata["Name"]);
           results.add(artistdata["UniqueID"]);
           results.add(artistdata["Image"]);
         } else {
-          var albums = artistdata["Albums"] as List<Object?>;
-          albums.forEach((element) {
+          // print("else entered");
+          var albums = artistdata["Albums"] as Map<Object?, Object?>;
+
+          print(albums);
+          albums.forEach((key, value) {
+            print(key.toString() + ": " + value.toString());
             if (!results.contains(artistdata["Name"]) &&
-                ((element.toString().endsWith("1") && format == "Vinyl") ||
-                    element.toString().endsWith("2") && format == "CD")) {
+                ((value.toString().endsWith("1") && format == "Vinyl") ||
+                    value.toString().endsWith("2") && format == "CD")) {
               results.add(artistdata["Name"]);
               results.add(artistdata["UniqueID"]);
               results.add(artistdata["Image"]);
@@ -196,6 +202,7 @@ Data is returned as a list of text widgets
         }
       });
     }
+    // print(results);
     // Return artists and their ids
     return results;
   }
