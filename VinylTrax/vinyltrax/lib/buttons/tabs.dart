@@ -8,11 +8,14 @@ import '../pages/settingspage.dart';
 import '../pages/wishpage.dart';
 
 class Tabs extends StatelessWidget {
-  const Tabs({Key? key}) : super(key: key);
+  final int startingPos;
+
+  Tabs(this.startingPos);
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
+      initialIndex: startingPos,
       length: 4,
       child: Scaffold(
         backgroundColor: Color(0xFFFFFDF6),

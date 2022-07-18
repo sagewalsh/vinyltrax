@@ -38,10 +38,13 @@ class VinylTrax extends StatelessWidget {
           }
         });
     return MaterialApp(
-      initialRoute: 'home', //switch to 'start' for our sake, but for testing I'll leave as is
+      initialRoute: 'home', //switch to 'inven' for our sake, but for testing I'll leave as is
       routes: {
         'home': (context) => const HomePage(),
-        'start': (context) => const Tabs()
+        'inven': (context) => Tabs(0),
+        'wish': (context) => Tabs(1),
+        'search': (context) => Tabs(2),
+        'setting': (context) => Tabs(3),
       },
       theme: ThemeData(fontFamily: 'OpenSans'),
     );
