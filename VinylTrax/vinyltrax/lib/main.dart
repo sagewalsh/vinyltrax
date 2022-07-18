@@ -20,6 +20,7 @@ class VinylTrax extends StatelessWidget {
     Test.fillDatabase();
     Test.database();
     Test.discogs();
+    Test.spotify();
 
     FutureBuilder(
         future: _fbApp,

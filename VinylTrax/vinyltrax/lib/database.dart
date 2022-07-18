@@ -177,14 +177,14 @@ Data is returned as a list of text widgets
       // Add each artist and their id to the returning list
       list.forEach((element) {
         var artistdata = element.value as Map<Object?, Object?>;
-        print(element);
+        // print(element);
         if (genre == "All") {
-          print("all entered");
+          // print("all entered");
           results.add(artistdata["Name"]);
           results.add(artistdata["UniqueID"]);
           results.add(artistdata["Image"]);
         } else {
-          print("else entered");
+          // print("else entered");
           var albums = artistdata["Albums"] as Map<Object?, Object?>;
 
           albums.forEach((key, value) {
@@ -199,7 +199,7 @@ Data is returned as a list of text widgets
         }
       });
     }
-    print(results);
+    // print(results);
     // Return artists and their ids
     return results;
   }
@@ -271,7 +271,7 @@ Data is returned as a list of strings
     // Get a snapshot from the database
     final snapshot = await ref.child("Albums").get();
 
-    print("albumDetails id: " + albumid);
+    // print("albumDetails id: " + albumid);
 
     if (snapshot.exists) {
       // Map{ albumID: {albumData} }

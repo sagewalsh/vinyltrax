@@ -1,11 +1,16 @@
 import 'database.dart';
 import 'discogs.dart';
+import 'spotify.dart';
 
 class Test {
   static void fillDatabase() {
     // Database.clear();
     // Database.fillartists();
     // Database.startingData();
+  }
+
+  static void spotify() {
+    // Spotify.search("Halsey");
   }
 
   static void discogs() {
