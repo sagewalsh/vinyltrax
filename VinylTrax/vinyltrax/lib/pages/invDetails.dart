@@ -84,10 +84,7 @@ class _InvDetails extends State<InvDetails> {
                                   Database.removeAlbum(widget.input[0]);
 
                                   //below will take you back two pages, to the album page
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
-                                  if (Navigator.canPop(context))
-                                    Navigator.pop(context);
+                                  Navigator.pushNamed(context, 'inven');
                                 },
                                 child: Text("Yes")),
                             SizedBox(width: 20),

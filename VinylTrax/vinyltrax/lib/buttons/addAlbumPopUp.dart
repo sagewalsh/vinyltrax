@@ -99,10 +99,7 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
                                   context: context,
                                   builder: (context) {
                                     Future.delayed(Duration(seconds: 1), () {
-                                      Navigator.of(context).pop();
-                                      Navigator.of(context).pop();
-                                      if (Navigator.canPop(context))
-                                        Navigator.of(context).pop();
+                                      Navigator.pushNamed(context, 'search');
                                     });
                                     return AlertDialog(
                                       title: Text('Album Added',
