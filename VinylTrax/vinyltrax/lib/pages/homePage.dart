@@ -56,13 +56,13 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       ElevatedButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, 'start');
+                            Navigator.pushNamed(context, 'inven');
                           },
                           child: Text("See Inventory")
                       ),
                       ElevatedButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, 'start');
+                            Navigator.pushNamed(context, 'search');
                           },
                           child: Text("Start Search")
                       ),
