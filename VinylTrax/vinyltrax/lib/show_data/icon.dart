@@ -57,8 +57,8 @@ class ShowIcon extends StatelessWidget {
           CircleAvatar(radius: MediaQuery.of(context).size.height * 0.093, foregroundImage: NetworkImage(coverArt));
     } else {
       avatar = Container(
-        height: MediaQuery.of(context).size.height * 0.19,
-        width: MediaQuery.of(context).size.height * 0.19,
+        height: MediaQuery.of(context).size.height * 0.18,
+        width: MediaQuery.of(context).size.height * 0.18,
         child: Image(
           image: NetworkImage(coverArt),
         ),

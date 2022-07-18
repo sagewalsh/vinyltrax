@@ -5,6 +5,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:vinyltrax/button_icons/barcode.dart';
 import 'disResults.dart';
 import 'settingspage.dart' as settings;
+//import 'package:camera/camera.dart';
 
 
 class SearchPage extends StatefulWidget {
