@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vinyltrax/pages/homePage.dart';
 import 'buttons/tabs.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -37,7 +38,11 @@ class VinylTrax extends StatelessWidget {
           }
         });
     return MaterialApp(
-      home: Tabs(),
+      initialRoute: 'home', //switch to 'start' for our sake, but for testing I'll leave as is
+      routes: {
+        'home': (context) => const HomePage(),
+        'start': (context) => const Tabs()
+      },
       theme: ThemeData(fontFamily: 'OpenSans'),
     );
   }

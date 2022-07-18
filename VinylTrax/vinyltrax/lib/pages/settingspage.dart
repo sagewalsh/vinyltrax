@@ -39,6 +39,7 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Scaffold(
         backgroundColor: Color(0xFFFFFDF6),
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Color(0xFFFFFDF6),
           title: Container(
             width: double.infinity,
