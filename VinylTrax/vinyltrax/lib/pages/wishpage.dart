@@ -100,6 +100,9 @@ class _WishPageState extends State<WishPage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
+            //lets me see with no issue what the sizes are
+            print(MediaQuery.of(context).size.width);
+            print(MediaQuery.of(context).size.height);
             createAlertDialog(context).then((value) {
               //when value is returned (a string) store it in the wishlist db
               print(value);

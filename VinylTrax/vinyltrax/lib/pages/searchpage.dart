@@ -27,10 +27,10 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    double toolbarHeight = 110;
+    double toolbarHeight = 130;
     Widget addFilterButtons = SizedBox();
     if (settings.listBool) {
-      toolbarHeight = 150;
+      toolbarHeight = 170;
       addFilterButtons = Container(
         //Icon/List buttons and Top/Artist/Album/Song buttons
         color: Color(0xFFFFFEF9),
@@ -158,10 +158,10 @@ class _SearchPageState extends State<SearchPage> {
                       padding: EdgeInsets.all(5),
                       constraints: BoxConstraints(),
                       onPressed: () {
-                        print("camera");
+                        Navigator.pushNamed(context, 'camera');
                       },
                       icon: Icon(Icons.camera_alt_sharp),
-                      iconSize: 37,
+                      iconSize: MediaQuery.of(context).size.width * 0.1,
                     ),
                     IconButton(
                       color: Colors.black,
@@ -169,7 +169,7 @@ class _SearchPageState extends State<SearchPage> {
                       constraints: BoxConstraints(),
                       onPressed: scanBarcode,
                       icon: Icon(BarcodeIcon.barcode),
-                      iconSize: 35,
+                      iconSize: MediaQuery.of(context).size.width * 0.094,
                     ),
                   ],
                 ),
