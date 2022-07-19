@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:logging/logging.dart';
 import 'package:flutter/material.dart';
+import './const.dart';
 
 class Collection extends ChangeNotifier {
   static final Logger _log = Logger('Collection');
@@ -16,8 +17,8 @@ Authentication Data
 */
   static Map<String, String> get _headers => <String, String>{
         'Authorization':
-            'Discogs key=pHCSKEvAYcdziOzwcJoV, secret=XXFgxrfktsLtrovCnjzUqcSaxgZeJryP',
-        'User-Agent': "Sage",
+            'Discogs key=${Const.DISCOGS_CONSUMER_KEY}, secret=${Const.DISCOGS_CONSUMER_SECRET}',
+        'User-Agent': "VinylTrax",
       };
 
 /*
