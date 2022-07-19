@@ -44,7 +44,7 @@ class _WishPageState extends State<WishPage> {
         backgroundColor: Color(0xFFFFFEF9),
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: MediaQuery.of(context).size.height * 0.093, //75
+          toolbarHeight: MediaQuery.of(context).size.height * 0.11, //75
           backgroundColor: Color(0xFFFFFEF9),
           title: Column(
             children: [

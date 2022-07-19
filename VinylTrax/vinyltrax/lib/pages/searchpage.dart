@@ -85,7 +85,7 @@ class _SearchPageState extends State<SearchPage> {
       );
     }
     else
-      toolbarHeight = 110;
+      toolbarHeight = 130;
 
     return SafeArea(
       child: Scaffold(

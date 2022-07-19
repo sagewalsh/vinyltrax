@@ -30,8 +30,8 @@ class _StaxPageState extends State<StaxPage> {
         backgroundColor: Color(0xFFFFFEF9),
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          titleSpacing: 0,
-          toolbarHeight: MediaQuery.of(context).size.height * 0.223, //180
+          titleSpacing: 10,
+          toolbarHeight: MediaQuery.of(context).size.height * 0.24, //180
           title: Column(
             children: [
               Container(
