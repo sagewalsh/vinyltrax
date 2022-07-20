@@ -25,23 +25,24 @@ Authentication Data
 
   static void search(String query) async {
     final authenticate =
-        'https://accounts.spotify.com/authorize?client_id=${Const.SPOTIFY_CLIENT_ID}&redirect_uri=https://sagewalsh.github.io/vinyltrax/&response_type=code';
+        'https://accounts.spotify.com/authorize?client_id=${Const.SPOTIFY_CLIENT_ID}&redirect_uri=https://sagewalsh.github.io/vinyltrax/&response_type=code&status=s';
     late var content;
 
     try {
-      content = (await DefaultCacheManager().getSingleFile(
-        authenticate,
-        headers: _headers,
-      ))
-          .readAsStringSync();
+      content = await http.post(
+        Uri.parse(authenticate),
+        // headers: _headers,
+        // body: _headers,
+      );
     } catch (error) {
       print(error);
       return;
     }
 
-    final code = Uri.parse(content).queryParameters['code'];
-    print(Uri.parse(content));
-    print(code);
+    print(content.body);
+    // final code = Uri.parse(content).queryParameters['code'];
+    // print(Uri.parse(content));
+    // print(code);
     // Randomize given state and check that the state remains the same when returned for security purposes
     // var code =
     //     'AQCpj79CqK6FjPrh0EptTreHgFm56ZtUCtY8tAhUSjBzQPhYjoy1jmbdYikLI_D3FNVVSOyBmJaEqeVHiCOblSRud9QSV86nXU_cYP1eBXFoQGj2yHNczfQidTMa2Dm_-rgqNdCBR2kGv-V8YXUpfo6Zi_mRtjWncajnTJMq-aDYX55Rv8942_Fr';

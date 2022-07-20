@@ -10,7 +10,7 @@ class Test {
   }
 
   static void spotify() {
-    Spotify.search("Halsey");
+    // Spotify.search("Halsey");
   }
 
   static void discogs() {
