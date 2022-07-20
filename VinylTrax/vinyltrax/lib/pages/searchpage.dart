@@ -7,7 +7,6 @@ import 'disResults.dart';
 import 'settingspage.dart' as settings;
 //import 'package:camera/camera.dart';
 
-
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
 
@@ -35,56 +34,55 @@ class _SearchPageState extends State<SearchPage> {
         //Icon/List buttons and Top/Artist/Album/Song buttons
         color: Color(0xFFFFFEF9),
         child: SizedBox(
-        height: 30,
-        child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          child: CupertinoSegmentedControl(
-            padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-            selectedColor: Color(0xFFFF5A5A),
-            borderColor: Color(0xFFFF5A5A),
-            pressedColor: Color(0x64FF5A5A),
-            children: {
-              _Tab.one: Container(
-                height: 30,
-                width: 85,
-                child: Center(
-                  child: Text("Top", style: TextStyle(fontSize: 14)),
+          height: 30,
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: CupertinoSegmentedControl(
+              padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+              selectedColor: Color(0xFFFF5A5A),
+              borderColor: Color(0xFFFF5A5A),
+              pressedColor: Color(0x64FF5A5A),
+              children: {
+                _Tab.one: Container(
+                  height: 30,
+                  width: 85,
+                  child: Center(
+                    child: Text("Top", style: TextStyle(fontSize: 14)),
+                  ),
                 ),
-              ),
-              _Tab.two: Container(
-                height: 30,
-                width: 85,
-                child: Center(
-                  child: Text("Artist", style: TextStyle(fontSize: 14)),
+                _Tab.two: Container(
+                  height: 30,
+                  width: 85,
+                  child: Center(
+                    child: Text("Artist", style: TextStyle(fontSize: 14)),
+                  ),
                 ),
-              ),
-              _Tab.three: Container(
-                height: 30,
-                width: 85,
-                child: Center(
-                  child: Text("Album", style: TextStyle(fontSize: 14)),
+                _Tab.three: Container(
+                  height: 30,
+                  width: 85,
+                  child: Center(
+                    child: Text("Album", style: TextStyle(fontSize: 14)),
+                  ),
                 ),
-              ),
-              _Tab.four: Container(
-                height: 30,
-                width: 85,
-                child: Center(
-                  child: Text("Song", style: TextStyle(fontSize: 14)),
+                _Tab.four: Container(
+                  height: 30,
+                  width: 85,
+                  child: Center(
+                    child: Text("Song", style: TextStyle(fontSize: 14)),
+                  ),
                 ),
-              ),
-            },
-            onValueChanged: (value) {
-              setState(() {
-                _selectedTab = value as _Tab;
-              });
-            },
-            groupValue: _selectedTab,
+              },
+              onValueChanged: (value) {
+                setState(() {
+                  _selectedTab = value as _Tab;
+                });
+              },
+              groupValue: _selectedTab,
+            ),
           ),
         ),
-      ),
       );
-    }
-    else
+    } else
       toolbarHeight = 130;
 
     return SafeArea(
@@ -120,10 +118,12 @@ class _SearchPageState extends State<SearchPage> {
                             child: TextField(
                               controller: textController,
                               focusNode: focus,
-                              onTap: () => FocusScope.of(context).requestFocus(focus),
+                              onTap: () =>
+                                  FocusScope.of(context).requestFocus(focus),
                               decoration: InputDecoration(
                                 labelText: "Search",
-                                floatingLabelBehavior: FloatingLabelBehavior.never,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
                                 hintText: "Artist, Album, Song",
                                 hintStyle: TextStyle(
                                   color: Color(0xFFFF5A5A),
@@ -139,17 +139,18 @@ class _SearchPageState extends State<SearchPage> {
                                 ),
                                 suffixIcon: Icon(
                                   Icons.search,
-                                  color: focus.hasFocus ? Color(0xFFFF5A5A) : Colors.black,
+                                  color: focus.hasFocus
+                                      ? Color(0xFFFF5A5A)
+                                      : Colors.black,
                                 ),
                               ),
                               onSubmitted: (text) {
-                                setState((){
+                                setState(() {
                                   output = DisResults(text);
                                 });
                               },
                             ),
-                          )
-                      ),
+                          )),
                       width: MediaQuery.of(context).size.width * 0.75,
                       height: MediaQuery.of(context).size.height * 0.09,
                     ),
@@ -213,7 +214,7 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {
       this.scanResult = scanResult;
       // Under here is where you use the scan results information to do whatever you need
-      print(scanResult);
+      // print(scanResult);
     });
   }
 }

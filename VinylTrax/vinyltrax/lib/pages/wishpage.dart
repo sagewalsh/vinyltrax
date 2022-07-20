@@ -51,12 +51,13 @@ class _WishPageState extends State<WishPage> {
               Container(
                 width: double.infinity,
                 alignment: Alignment.center,
-                child:
-                    const Text("Wishlist", style: TextStyle(color: Colors.black)),
+                child: const Text("Wishlist",
+                    style: TextStyle(color: Colors.black)),
               ),
               Container(
                 color: Color(0xFFFFFEF9),
-                padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.0099), // 8
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.0099), // 8
                 child: CupertinoSegmentedControl(
                   padding: EdgeInsets.fromLTRB(
                       MediaQuery.of(context).size.width * 0.02, //8
@@ -101,11 +102,11 @@ class _WishPageState extends State<WishPage> {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             //lets me see with no issue what the sizes are
-            print(MediaQuery.of(context).size.width);
-            print(MediaQuery.of(context).size.height);
+            // print(MediaQuery.of(context).size.width);
+            // print(MediaQuery.of(context).size.height);
             createAlertDialog(context).then((value) {
               //when value is returned (a string) store it in the wishlist db
-              print(value);
+              // print(value);
             });
           },
           backgroundColor: Color(0xFFFF5A5A),

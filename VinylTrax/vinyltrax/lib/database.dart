@@ -177,7 +177,7 @@ Data is returned as a list of text widgets
       // Add each artist and their id to the returning list
       list.forEach((element) {
         var artistdata = element.value as Map<Object?, Object?>;
-        print(artistdata);
+        // print(artistdata);
         // print(element);
         if (format == "All") {
           // print("all entered");
@@ -188,9 +188,9 @@ Data is returned as a list of text widgets
           // print("else entered");
           var albums = artistdata["Albums"] as Map<Object?, Object?>;
 
-          print(albums);
+          // print(albums);
           albums.forEach((key, value) {
-            print(key.toString() + ": " + value.toString());
+            // print(key.toString() + ": " + value.toString());
             if (!results.contains(artistdata["Name"]) &&
                 ((value.toString().endsWith("1") && format == "Vinyl") ||
                     value.toString().endsWith("2") && format == "CD")) {

@@ -53,8 +53,9 @@ class ShowIcon extends StatelessWidget {
 
     Widget avatar = SizedBox();
     if (this.isArtist) {
-      avatar =
-          CircleAvatar(radius: MediaQuery.of(context).size.height * 0.093, foregroundImage: NetworkImage(coverArt));
+      avatar = CircleAvatar(
+          radius: MediaQuery.of(context).size.height * 0.093,
+          foregroundImage: NetworkImage(coverArt));
     } else {
       avatar = Container(
         height: MediaQuery.of(context).size.height * 0.18,
@@ -73,8 +74,8 @@ class ShowIcon extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        print(MediaQuery.of(context).size.width);
-        print(MediaQuery.of(context).size.height);
+        // print(MediaQuery.of(context).size.width);
+        // print(MediaQuery.of(context).size.height);
         // print(albumName);
         var route = new MaterialPageRoute(builder: (BuildContext context) {
           if (isInv) {
@@ -92,8 +93,8 @@ class ShowIcon extends StatelessWidget {
         Navigator.of(context).push(route);
       },
       child: Column(
-          children: children,
-        ),
+        children: children,
+      ),
     );
   }
 }

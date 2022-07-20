@@ -22,8 +22,11 @@ Authentication Data
       };
 
 /*
+##########################################################################
 artistData
+
 Collect data about the artist including name, profile, and bandmembers
+##########################################################################
 */
   static Future<List<dynamic>> artistData(String artistID) async {
     List<dynamic> data = [];
@@ -66,15 +69,17 @@ Collect data about the artist including name, profile, and bandmembers
   }
 
 /*
-TESTING
-to replace albumsBy
+##########################################################################
+albumsBy
+
 Returns a Map with the album title as the key and a list as the value:
 [0]: AlbumName
 [1]: AlbumID
 [2]: ArtistName
 [3]: CoverArt
+##########################################################################
 */
-  static Future<Map<String, List<String>>> testing(
+  static Future<Map<String, List<String>>> albumsBy(
     String artistName,
     int i,
     Map<String, List<String>> albums,
@@ -131,107 +136,24 @@ Returns a Map with the album title as the key and a list as the value:
           data.add(element["cover_image"].toString());
         });
         albums.addAll({element["master_id"].toString(): data});
+        // print(artist_album[1] +
+        //     ": " +
+        //     element["master_id"].toString() +
+        //     " " +
+        //     element["id"].toString());
       }
     });
     // print("int i : " + i.toString());
     // print("pages: " + j["pagination"]["pages"].toString());
     if (i == j["pagination"]["pages"]) return albums;
-    return testing(artistName, i + 1, albums);
+    return albumsBy(artistName, i + 1, albums);
   }
 
 /*
 ##########################################################################
-albumsBy
-Albums by a certain Artist given ArtistID
+album
 
-Returns a Map with the album title as the key and a list as the value:
-[0]: AlbumName
-[1]: AlbumID
-[2]: ArtistName
-[3]: CoverArt
-##########################################################################
-*/
-  static Future<Map<String, List<String>>> albumsBy(String artistID) async {
-    Map<String, List<String>> albums = {};
-    Map<String, List<String>> second = {};
-    var query = "/artists/$artistID/releases?";
-    final url = 'https://api.discogs.com$query&per_page=500';
-    late String content;
-
-    try {
-      content =
-          (await DefaultCacheManager().getSingleFile(url, headers: _headers))
-              .readAsStringSync();
-    } on SocketException catch (e) {
-      throw Exception(
-          'Could not connect to Discogs. Please check your internet connection and try again later.');
-    } on HttpExceptionWithStatus catch (e) {
-      // If that response was not OK, throw an error.
-      if (e.statusCode == 404) {
-        throw Exception(
-            'Oops! Couldn\'t find what you\'re looking for on Discogs (404 error).');
-      } else if (e.statusCode >= 400) {
-        throw Exception(
-            'The Discogs service is currently unavailable (${e.statusCode}). Please try again later.');
-      }
-    } on HttpException catch (e) {
-      // If that response was not OK, throw an error.
-      throw Exception(
-          'The Discogs service is currently unavailable. Please try again later.');
-    } on FileSystemException catch (e) {
-      _log.severe('Failed to read the chached file', e);
-    }
-
-    var results = json.decode(content)["releases"] as List<dynamic>;
-    // print(results);
-
-    for (int j = 0; j < results.length; j++) {
-      List<String> data = [];
-
-      if (!albums.containsKey(results[j]["title"]) &&
-          // results[j]["artist"] != "Various" &&
-          // results[j]["main_release"] != null &&
-          !results[j]["format"].toString().contains("Single") &&
-          results[j]["role"] == "Main") {
-        data.add(results[j]["title"]);
-
-        results[j]["main_release"] != null
-            ? data.add(results[j]["main_release"].toString())
-            : data.add(results[j]["id"].toString());
-
-        data.add(results[j]["artist"]);
-        results[j]["thumb"] == ""
-            ? data.add(
-                "https://images.pexels.com/photos/12509854/pexels-photo-12509854.jpeg?cs=srgb&dl=pexels-mati-mango-12509854.jpg&fm=jpg")
-            : data.add(results[j]["thumb"]);
-        albums[results[j]["title"]] = data;
-      } else if (!second.containsKey(results[j]["title"]) &&
-          !results[j]["format"].toString().contains("Single") &&
-          results[j]["role"] == "Main") {
-        data.add(results[j]["title"]);
-
-        results[j]["main_release"] != null
-            ? data.add(results[j]["main_release"].toString())
-            : data.add(results[j]["id"].toString());
-
-        data.add(results[j]["artist"]);
-        results[j]["thumb"] == ""
-            ? data.add(
-                "https://images.pexels.com/photos/12509854/pexels-photo-12509854.jpeg?cs=srgb&dl=pexels-mati-mango-12509854.jpg&fm=jpg")
-            : data.add(results[j]["thumb"]);
-        second[results[j]["title"]] = data;
-      }
-    }
-    // albums.length < 20
-    //     ? albums.addEntries(second.entries)
-    //     : print(albums.length);
-    return albums;
-  }
-
-/*
-##########################################################################
 Album data given albumid
-
 Returns a list of album details:
 [0]: [ [ artistName, artistID ], ... ]
 [1]: albumName
@@ -243,6 +165,7 @@ Returns a list of album details:
 ##########################################################################
 */
   static Future<List<dynamic>> album(String albumID) async {
+    // print(albumID);
     // add checks to albumID
     List<dynamic> details = [];
     var query = "/releases/$albumID";
@@ -310,7 +233,76 @@ Returns a list of album details:
 
 /*
 ##########################################################################
+barcode
+
+Album data given a
+Returns a list of album details:
+[0]: [ [ artistName, artistID ], ... ]
+[1]: albumName
+[2]: [ genre, ... ]
+[3]: year
+[4]: [ [ trackName, duration ], ... ]
+[5]: [ [ contributorName, role, id ], ... ]
+[6]: coverArt
+##########################################################################
+*/
+  static Future<List<dynamic>> barcode(String barcode) async {
+    // add checks to albumID
+    List<dynamic> details = [];
+    String query = "/database/search?q={$barcode}";
+    final url = "https://api.discogs.com$query";
+    late String content;
+
+    try {
+      content =
+          (await DefaultCacheManager().getSingleFile(url, headers: _headers))
+              .readAsStringSync();
+    } on SocketException catch (e) {
+      throw Exception(
+          'Could not connect to Discogs. Please check your internet connection and try again later.');
+    } on HttpExceptionWithStatus catch (e) {
+      // If that response was not OK, throw an error.
+      if (e.statusCode == 404) {
+        throw Exception(
+            'Oops! Couldn\'t find what you\'re looking for on Discogs (404 error).');
+      } else if (e.statusCode >= 400) {
+        throw Exception(
+            'The Discogs service is currently unavailable (${e.statusCode}). Please try again later.');
+      }
+    } on HttpException catch (e) {
+      // If that response was not OK, throw an error.
+      throw Exception(
+          'The Discogs service is currently unavailable. Please try again later.');
+    } on FileSystemException catch (e) {
+      _log.severe('Failed to read the chached file', e);
+    }
+
+    var results = ((json.decode(content) as Map<Object?, Object?>)["results"]
+            as List<Object?>)
+        .forEach((element) {
+      print(element);
+    });
+
+    // print(results);
+
+    // try {
+    //   content = (await DefaultCacheManager().getSingleFile(
+    //           'https://api.discogs.com/database/search?q=${results["master_id"]}&type=master',
+    //           headers: _headers))
+    //       .readAsStringSync();
+    // } catch (e) {
+    //   print(e);
+    // }
+
+    // var album = json.decode(content);
+    // print(album);
+    return details;
+  }
+
+/*
+##########################################################################
 getArtists
+
 i: 0-19
 [i]: "ArtistName"
 [i+1]: "ArtistID"
@@ -378,6 +370,7 @@ i: 0-19
 /*
 ##########################################################################
 getAlbums
+
 i: 0-39
 [i]: "ArtistName - AlbumName"
 [i+1]: "id"

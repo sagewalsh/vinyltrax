@@ -298,7 +298,7 @@ class _InvDetails extends State<InvDetails> {
                         onSubmitted: (value) {
                           //value here is the text after enter is pressed
                           //within here you can add it to the database
-                          print(value);
+                          // print(value);
                         },
                         decoration: InputDecoration(
                           labelText: 'Notes',

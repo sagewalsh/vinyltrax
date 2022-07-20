@@ -14,6 +14,7 @@ class Test {
   }
 
   static void discogs() {
+    Collection.barcode("656605321318");
     // Collection.getAlbums("Ring Ring");
 
     // Collection.getArtists("Halsey");
