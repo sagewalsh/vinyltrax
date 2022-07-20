@@ -326,7 +326,6 @@ Returns a list of album details:
 ##########################################################################
 getArtists
 
-i: 0-19
 [i]: "ArtistName"
 [i+1]: "ArtistID"
 [i+2]: "CoverArt"
@@ -366,10 +365,10 @@ i: 0-19
     // print(results);
 
     for (int j = 0; j < results.length; j++) {
-      if (artists.length >= 30) {
-        // print(artists.toString());
-        return artists;
-      }
+      // Limits results to 10 artists
+      // if (artists.length >= 30) {
+      //   return artists;
+      // }
 
       if (!artists.contains(results[j]["title"])) {
         // print("id: " +
@@ -387,6 +386,7 @@ i: 0-19
       }
     }
     // print(artists.toString());
+    print(artists.length / 3);
     return artists;
   }
 
@@ -394,7 +394,6 @@ i: 0-19
 ##########################################################################
 getAlbums
 
-i: 0-39
 [i]: "ArtistName - AlbumName"
 [i+1]: "id"
 [i+2]: "barcode"
@@ -434,9 +433,10 @@ i: 0-39
     var results = json.decode(content)["results"] as List<dynamic>;
 
     for (int j = 0; j < results.length; j++) {
-      if (albums.length >= 40) {
-        return albums;
-      }
+      // // Limits returned albums to 10 results
+      // if (albums.length >= 40) {
+      //   return albums;
+      // }
 
       // If the result is a released album
       if (!albums.contains(results[j]["title"])) {
@@ -466,6 +466,7 @@ i: 0-39
       }
     }
     // print(albums.toString());
+    print(albums.length);
     return albums;
   }
 }
