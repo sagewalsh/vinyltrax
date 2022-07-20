@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
@@ -36,6 +38,34 @@ class DisDetails extends StatelessWidget {
         ),
       );
     }
+
+    Widget extendedName = Center(
+      child: Text(
+        name,
+        style: TextStyle(
+          color: Colors.grey[700],
+        ),
+      ),
+    );
+
+    if (name.length > 45) {
+      extendedName = Center(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: 20,
+          child: Marquee(
+            velocity: 10,
+            blankSpace: 100,
+            text: name,
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+        )
+      );
+    }
+
+
 
     Widget addBlackLine() {
       return Padding(
@@ -107,14 +137,7 @@ class DisDetails extends StatelessWidget {
                       ));
 
                       // ALBUM NAME
-                      children.add(Center(
-                        child: Text(
-                          data[1].toString(),
-                          style: TextStyle(
-                            color: Colors.grey[700],
-                          ),
-                        ),
-                      ));
+                      children.add(extendedName);
 
                       // ARTIST NAME
                       var artists = <TextSpan>[];

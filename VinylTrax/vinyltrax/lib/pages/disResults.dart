@@ -16,6 +16,7 @@ class DisResults extends StatelessWidget {
           children: [
             GetDisArtist(input),
             GetDisAlbum(input),
+            GetDisAlbum(input),
           ],
         ),
       );

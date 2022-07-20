@@ -55,6 +55,32 @@ class _InvDetails extends State<InvDetails> {
       );
     }
 
+    Widget extendedName = Center(
+      child: Text(
+        album,
+        style: TextStyle(
+          color: Colors.grey[700],
+        ),
+      ),
+    );
+
+    if (album.length > 45) {
+      extendedName = Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 20,
+            child: Marquee(
+              velocity: 10,
+              blankSpace: 100,
+              text: album,
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+          )
+      );
+    }
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFFFFFEF9),
@@ -137,14 +163,7 @@ class _InvDetails extends State<InvDetails> {
 
                     // ALBUM NAME
                     if (data[1] != null) {
-                      children.add(Center(
-                        child: Text(
-                          data[1].toString(),
-                          style: TextStyle(
-                            color: Colors.grey[700],
-                          ),
-                        ),
-                      ));
+                      children.add(extendedName);
                     }
 
                     // ARTIST NAME

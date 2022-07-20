@@ -183,6 +183,7 @@ class _SearchPageState extends State<SearchPage> {
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               //Divider between UI and output
               Container(
