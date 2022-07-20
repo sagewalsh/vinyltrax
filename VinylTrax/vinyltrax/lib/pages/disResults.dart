@@ -11,11 +11,10 @@ class DisResults extends StatelessWidget {
     // late String name = "Artist not found";
 
     return SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
+        physics: ClampingScrollPhysics(),
         child: Column(
           children: [
             GetDisArtist(input),
-            GetDisAlbum(input),
             GetDisAlbum(input),
           ],
         ),

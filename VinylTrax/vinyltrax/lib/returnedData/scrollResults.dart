@@ -53,6 +53,7 @@ class _ScrollResultsState extends State<ScrollResults> {
               key: ObjectKey(widget.children[0]),
               itemCount: widget.children.length - 1,
               scrollDirection: Axis.horizontal,
+              physics: ClampingScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
