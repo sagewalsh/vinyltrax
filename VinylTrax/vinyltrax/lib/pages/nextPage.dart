@@ -32,7 +32,7 @@ Clicked an Artist in Invetory
 class NextPageArtist extends StatefulWidget {
   final String id, name, format;
 
-  NextPageArtist({required this.id, required this.name, this.format = ""});
+  NextPageArtist({required this.id, required this.name, this.format = "All"});
   @override
   State<NextPageArtist> createState() => _NextPageArtistState();
 }

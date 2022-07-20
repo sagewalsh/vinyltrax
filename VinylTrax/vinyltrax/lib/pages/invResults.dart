@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vinyltrax/show_data/iconList.dart';
 import '../database.dart';
 import '../show_data/icon.dart';
+import 'dart:developer';
 
 class InvResults extends StatelessWidget {
   final String input;
@@ -40,24 +41,22 @@ class InvResults extends StatelessWidget {
                         children.add(
                             Text("No Inventory Found with the Name: " + input));
                       }
-                      for (int i = 0; i < snapshot.data!.length; i++) {
-                        var data = snapshot.data![i];
-
+                      snapshot.data!.forEach((result) {
                         // Artist Data
-                        if (data.length == 3) {
+                        if (result.length == 3) {
                           children.add(ShowIcon(
-                            artistName: data[0].toString(),
-                            coverArt: data[2].toString(),
+                            artistName: result[0].toString(),
+                            coverArt: result[2].toString(),
                             isArtist: true,
                             isInv: true,
-                            id: data[1].toString(),
+                            id: result[1].toString(),
                           ));
                         }
-
                         // Album Data
-                        if (data.length == 5) {
+                        if (result.length == 6) {
+                          log("length 6");
                           String artists = "";
-                          var list = data[2] as List<dynamic>;
+                          var list = result[2] as List<dynamic>;
                           for (int i = 0; i < list.length; i++) {
                             artists += list[i][0].toString();
                             if (i + 1 < list.length) {
@@ -66,13 +65,18 @@ class InvResults extends StatelessWidget {
                           }
                           children.add(ShowIcon(
                               artistName: artists,
-                              albumName: data[1].toString(),
-                              coverArt: data[3].toString(),
+                              albumName: result[1].toString(),
+                              coverArt: result[3].toString(),
                               isArtist: false,
                               isInv: true,
-                              id: data[0].toString()));
+                              id: result[0].toString()));
                         }
-                      }
+                      });
+                      // for (int i = 0; i < snapshot.data!.length; i++) {
+                      //   var data = snapshot.data![i];
+
+                      //   }
+                      // }
                       children.add(SizedBox(
                         width: double.infinity,
                         height: 30,

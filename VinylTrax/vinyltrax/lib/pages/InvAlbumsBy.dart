@@ -10,7 +10,7 @@ class InvAlbumsBy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<List<dynamic>> _results =
+    Future<List<List<dynamic>>> _results =
         Database.albumsBy(artistid: input[0], format: input[2]);
     // late String name = "Artist not found";
     String name = input[1];
@@ -51,33 +51,24 @@ class InvAlbumsBy extends StatelessWidget {
           physics: AlwaysScrollableScrollPhysics(),
           child: SizedBox(
               width: double.infinity,
-              child: FutureBuilder<List<dynamic>>(
+              child: FutureBuilder<List<List<dynamic>>>(
                 future: _results,
                 builder: (BuildContext context,
-                    AsyncSnapshot<List<dynamic>> snapshot) {
+                    AsyncSnapshot<List<List<dynamic>>> snapshot) {
                   List<Widget> children;
                   if (snapshot.hasData) {
                     children = <Widget>[];
 
-                    for (int i = 0; i < snapshot.data!.length; i += 5) {
-                      // Compile the Artists' Names
-                      String artist = "";
-                      var data = snapshot.data![i + 2] as List<dynamic>;
-                      for (int j = 0; j < data.length; j++) {
-                        artist += data[j][0]
-                            .toString()
-                            .replaceAll(RegExp(r'\([0-9]+\)'), "");
-                        if (j + 1 < data.length) {
-                          artist += " & ";
-                        }
-                      }
+                    snapshot.data!.forEach((element) {
                       children.add(ShowIcon(
-                          albumName: snapshot.data![i + 1].toString(),
-                          coverArt: snapshot.data![i + 3].toString(),
-                          isArtist: false,
-                          isInv: true,
-                          id: snapshot.data![i].toString()));
-                    }
+                        albumName: element[1].toString(),
+                        coverArt: element[3].toString(),
+                        isArtist: false,
+                        isInv: true,
+                        id: element[0].toString(),
+                      ));
+                    });
+
                     children.add(SizedBox(
                       width: double.infinity,
                       height: 30,

@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'discogs.dart';
+import 'dart:developer';
 
 class Database {
   static final fb = FirebaseDatabase.instance;
@@ -21,7 +22,7 @@ class Database {
   [3]: Album ID
   [4]: format
   */
-  static Future<List<dynamic>> displayByName() async {
+  static Future<List<List<dynamic>>> displayByName() async {
     // Get a snapshot from the album database
     final snapshot = await ref.child("Albums").get();
 
@@ -42,7 +43,7 @@ class Database {
       }));
 
       //Convert list of maps into list of widgets
-      return _albumDisplay(list);
+      return _displayAlbum(list);
     } else {
       // Something went wrong when getting a snapshot from the database
       print("No data available");
@@ -55,12 +56,18 @@ class Database {
   a given genre.
 
   Data returned as a list of text widgets
-  [0]: Album Name
-  [1]: Artist Name
-  [2]: Cover Art
-  [3]: Album ID
+  [
+    [0]: albumID
+    [1]: albumName
+    [2]: [ [ artistName, artistID ], ... ]
+    [3]: coverArt
+    [4]: format
+    [5]: year
+  ,
+  ...
+  ]
   */
-  static Future<List<dynamic>> displayByGenre(
+  static Future<List<List<dynamic>>> displayByGenre(
       String genre, String format) async {
     // Get a snapshot from the album database
     final snapshot = await ref.child("Albums").get();
@@ -80,8 +87,37 @@ class Database {
           list += {key: value}.entries.toList();
         }
       });
+
       // Convert list of maps into list of widgets
-      return _albumDisplay(list);
+      var ordered = _displayAlbum(list);
+      ordered.sort(
+        (a, b) {
+          // Order by album name:
+          // return a[1].toString().compareTo(b[1].toString());
+
+          // Order by Artist name:
+          String aart = "";
+          var data = a[2] as List<dynamic>;
+          for (int i = 0; i < data.length; i++) {
+            aart += data[i][0].toString();
+            if (i + 1 < data.length) {
+              aart += " & ";
+            }
+          }
+
+          String bart = "";
+          data = b[2] as List<dynamic>;
+          for (int j = 0; j < data.length; j++) {
+            bart += data[j][0].toString();
+            if (j + 1 < data.length) {
+              bart += " & ";
+            }
+          }
+
+          return aart.compareTo(bart);
+        },
+      );
+      return ordered;
     } else {
       return [];
     }
@@ -97,21 +133,31 @@ class Database {
   Converts a list of map entries filled with album data into 
   a dynamic list
 
-  [0]: albumID
-  [1]: albumName
-  [2]: [ [ artistName, artistID ], ... ]
-  [3]: coverArt
-  [4]: format
+  [
+    [0]: albumID
+    [1]: albumName
+    [2]: [ [ artistName, artistID ], ... ]
+    [3]: coverArt
+    [4]: format
+    [5]: year
+  ,
+  ...
+  ]
   */
-  static List<dynamic> _albumDisplay(List<MapEntry<Object?, Object?>> list) {
-    List<dynamic> results = [];
+  static List<List<dynamic>> _displayAlbum(
+      List<MapEntry<Object?, Object?>> list) {
+    List<List<dynamic>> results = [];
     list.forEach((element) {
       var albumdata = element.value as Map<Object?, Object?>;
-      results.add(albumdata["UniqueID"]);
-      results.add(albumdata["Name"]);
-      results.add(albumdata["Artist"]);
-      results.add(albumdata["Cover"]);
-      results.add(albumdata["Format"]);
+      var temp = [
+        albumdata["UniqueID"],
+        albumdata["Name"],
+        albumdata["Artist"],
+        albumdata["Cover"],
+        albumdata["Format"],
+        albumdata["Year"],
+      ];
+      results.add(temp);
       // print(albumdata["UniqueID"]);
     });
     return results;
@@ -187,12 +233,18 @@ Returns a list of text widgets of album data for each album
 that artist has in the database.
 
 Data is returned as a list of text widgets:
-[0]: Album Name
-[1]: Artist Name
-[2]: Cover Art
-[4]: format
+  [
+    [0]: albumID
+    [1]: albumName
+    [2]: [ [ artistName, artistID ], ... ]
+    [3]: coverArt
+    [4]: format
+    [5]: year
+  ,
+  ...
+  ]
 */
-  static Future<List<dynamic>> albumsBy(
+  static Future<List<List<dynamic>>> albumsBy(
       {required String artistid, String format = "All"}) async {
     // Get a snapshot from the ARTIST database
     final snapArtist = await ref.child("Artists").get();
@@ -226,8 +278,16 @@ Data is returned as a list of text widgets:
           }
         });
 
+        // print("hello");
+
         // Return the album data of the given Artist's albums
-        return _albumDisplay(albums);
+        var list = _displayAlbum(albums);
+
+        list.sort((a, b) {
+          return a[5].toString().compareTo(b[5].toString());
+        });
+
+        return list;
       }
     }
     return [];
@@ -301,6 +361,17 @@ Data is returned as a list of strings
     return results;
   }
 
+/*
+search
+[
+  [
+    0: Artist Name
+    1: Unique ID
+    2: Image
+  ],
+]
+Search the user's inventory for given text
+*/
   static Future<List<List<dynamic>>> search(String input) async {
     List<List<dynamic>> results = [];
     // Get a snapshot of the Artists database
@@ -346,7 +417,8 @@ Data is returned as a list of strings
                   .toList();
 
               // Return the album data of the given Artist's albums
-              results.add(_albumDisplay(list));
+              // results.add(_displayAlbum(list));
+              results.addAll(_displayAlbum(list));
             }
           });
         }
@@ -366,7 +438,7 @@ Data is returned as a list of strings
           list += {key: value}.entries.toList();
         }
       });
-      if (list.isNotEmpty) results.add(_albumDisplay(list));
+      if (list.isNotEmpty) results.addAll(_displayAlbum(list));
     }
     return results;
   }

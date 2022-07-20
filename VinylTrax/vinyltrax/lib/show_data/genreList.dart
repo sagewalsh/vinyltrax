@@ -23,7 +23,7 @@ class GenreList extends StatelessWidget {
       GenreTile("Electronic", false, format),
       GenreTile("Folk, Work, and Country", true, format),
       GenreTile("Funk / Soul", false, format),
-      GenreTile("Hip-Hop", true, format),
+      GenreTile("Hip Hop", true, format),
       GenreTile("Jazz", false, format),
       GenreTile("Latin", true, format),
       GenreTile("Non-Music", false, format),
