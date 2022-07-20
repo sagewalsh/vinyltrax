@@ -90,7 +90,7 @@ class _SearchPageState extends State<SearchPage> {
         backgroundColor: Color(0xFFFFFEF9),
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          titleSpacing: 0,
+          titleSpacing: 10,
           toolbarHeight: toolbarHeight,
           backgroundColor: Color(0xFFFFFEF9),
           title: Column(
@@ -151,7 +151,7 @@ class _SearchPageState extends State<SearchPage> {
                               },
                             ),
                           )),
-                      width: MediaQuery.of(context).size.width * 0.75,
+                      width: MediaQuery.of(context).size.width * 0.70,
                       height: MediaQuery.of(context).size.height * 0.09,
                     ),
                     IconButton(
