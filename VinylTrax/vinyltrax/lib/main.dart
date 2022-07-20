@@ -4,7 +4,6 @@ import 'package:vinyltrax/pages/homePage.dart';
 import 'package:vinyltrax/show_data/camera.dart';
 import 'buttons/tabs.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'test.dart';
 
 Future<void> main() async {
@@ -28,7 +27,7 @@ class VinylTrax extends StatelessWidget {
     Test.fillDatabase();
     Test.database();
     Test.discogs();
-    Test.spotify();
+    //Test.spotify();
 
     FutureBuilder(
         future: _fbApp,

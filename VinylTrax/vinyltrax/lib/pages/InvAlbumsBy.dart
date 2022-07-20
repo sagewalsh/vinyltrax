@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:marquee/marquee.dart';
 import 'package:vinyltrax/show_data/iconList.dart';
 import '../database.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/show_data/iconList.dart';
-import '../show_data/icon.dart';
 import '../discogs.dart';
 
 class DisArtist extends StatelessWidget {
@@ -40,7 +39,7 @@ class DisArtist extends StatelessWidget {
                     List<Widget> children;
                     if (snapshot.hasData) {
                       children = <Widget>[];
-                      var data = snapshot.data! as List<dynamic>;
+                      var data = snapshot.data!;
                       if (data.length == 3) {
                         children.add(Text(data[0].toString()));
                         children.add(Text(data[1].toString()));
