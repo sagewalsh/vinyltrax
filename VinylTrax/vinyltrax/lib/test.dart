@@ -15,6 +15,11 @@ class Test {
 
   static void discogs() {
     // Collection.barcode("656605321318");
+    // Collection.barcode("634457649019");
+    // Collection.barcode("888837168618");
+    // Collection.barcode("656605560915");
+    // Collection.barcode("4250795602507");
+
     // Collection.getAlbums("Ring Ring");
 
     // Collection.getArtists("Halsey");

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/pages/invAlbumsBy.dart';
+import '../pages/nextPage.dart';
 
 class ListEntry extends StatelessWidget {
   String name = "";
@@ -43,27 +44,9 @@ class ListEntry extends StatelessWidget {
       onTap: () {
         var route = new MaterialPageRoute(
             builder: (BuildContext context) =>
-                new NextPageArtist(name, artistID));
+                new NextPageArtist(artistID, name));
         Navigator.of(context).push(route);
       },
     );
-  }
-}
-
-class NextPageArtist extends StatefulWidget {
-  //const NextPageArtist({Key? key}) : super(key: key);
-  String artistName;
-  String artistID;
-
-  NextPageArtist(this.artistName, this.artistID);
-
-  @override
-  State<NextPageArtist> createState() => _NextPageArtistState();
-}
-
-class _NextPageArtistState extends State<NextPageArtist> {
-  @override
-  Widget build(BuildContext context) {
-    return InvAlbumsBy(["${widget.artistID}", "${widget.artistName}"]);
   }
 }

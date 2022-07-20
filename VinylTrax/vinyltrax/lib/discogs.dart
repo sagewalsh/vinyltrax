@@ -249,7 +249,7 @@ Returns a list of album details:
   static Future<List<dynamic>> barcode(String barcode) async {
     // add checks to albumID
     List<dynamic> details = [];
-    String query = "/database/search?q={$barcode}";
+    String query = "/database/search?q={$barcode}&type=release&per_page=1";
     final url = "https://api.discogs.com$query";
     late String content;
 
@@ -277,25 +277,48 @@ Returns a list of album details:
       _log.severe('Failed to read the chached file', e);
     }
 
-    var results = ((json.decode(content) as Map<Object?, Object?>)["results"]
-            as List<Object?>)
-        .forEach((element) {
-      print(element);
+    var uri = ((json.decode(content) as Map<Object?, Object?>)["results"]
+        as List<Object?>)[0] as Map<Object?, Object?>;
+
+    try {
+      content = (await DefaultCacheManager()
+              .getSingleFile(uri["resource_url"].toString(), headers: _headers))
+          .readAsStringSync();
+    } catch (e) {
+      print(e);
+    }
+    var results = json.decode(content);
+
+    List<dynamic> list = [];
+    (results["artists"] as List<dynamic>).forEach((element) {
+      list.add([element["name"], element["id"]]);
     });
+    details.add(list);
+    list = [];
+    details.add(results["title"]);
+    details.add(results["genres"]);
+    details.add(results["year"]);
+    (results["tracklist"] as List<dynamic>).forEach((element) {
+      list.add([element["title"], element["duration"]]);
+    });
+    details.add(list);
+    list = [];
+    (results["extraartists"] as List<dynamic>).forEach((element) {
+      list.add([element["name"], element["role"], element["id"]]);
+    });
+    details.add(list);
+    list = [];
+    results["thumb"] == ""
+        ? details.add(
+            "https://images.pexels.com/photos/12509854/pexels-photo-12509854.jpeg?cs=srgb&dl=pexels-mati-mango-12509854.jpg&fm=jpg")
+        : details.add(results["thumb"]);
 
-    // print(results);
-
-    // try {
-    //   content = (await DefaultCacheManager().getSingleFile(
-    //           'https://api.discogs.com/database/search?q=${results["master_id"]}&type=master',
-    //           headers: _headers))
-    //       .readAsStringSync();
-    // } catch (e) {
-    //   print(e);
-    // }
-
-    // var album = json.decode(content);
-    // print(album);
+    // print(" ");
+    // print(uri);
+    // details.forEach((element) {
+    //   print(element);
+    // });
+    // print(results["master_id"]);
     return details;
   }
 
