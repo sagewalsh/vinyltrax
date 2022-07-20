@@ -34,12 +34,12 @@ class GetInvGenre extends StatelessWidget {
                 }
 
                 children.add(ShowIcon(
-                    artist,
-                    snapshot.data![i + 1].toString(),
-                    snapshot.data![i + 3].toString(),
-                    false,
-                    true,
-                    snapshot.data![i].toString()));
+                    artistName: artist,
+                    albumName: snapshot.data![i + 1].toString(),
+                    coverArt: snapshot.data![i + 3].toString(),
+                    isArtist: false,
+                    isInv: true,
+                    id: snapshot.data![i].toString()));
               }
             } else if (snapshot.hasError) {
               children = <Widget>[

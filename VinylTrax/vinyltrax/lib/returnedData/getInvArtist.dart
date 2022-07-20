@@ -32,11 +32,11 @@ class GetInvArtist extends StatelessWidget {
             if (snapshot.hasData) {
               for (int i = 0; i < snapshot.data!.length; i += 3) {
                 ListEntry temp = ListEntry(
-                  snapshot.data![i].toString(),
-                  snapshot.data![i + 2].toString(),
-                  false,
+                  name: snapshot.data![i].toString(),
+                  image: snapshot.data![i + 2].toString(),
+                  isAlbum: false,
+                  artistID: snapshot.data![i + 1].toString(),
                 );
-                temp.artistID = snapshot.data![i + 1].toString();
                 if (children.length % 2 != 0) temp.color = Color(0x20FF5A5A);
                 children.add(temp);
               }

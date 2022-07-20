@@ -9,9 +9,16 @@ class ShowIcon extends StatelessWidget {
   final bool isArtist;
   final bool isInv;
   final String id;
+
   //const AlbumIcon({Key? key}) : super(key: key);
-  ShowIcon(this.artistName, this.albumName, this.coverArt, this.isArtist,
-      this.isInv, this.id);
+  ShowIcon({
+    this.artistName = "",
+    this.albumName = "",
+    required this.coverArt,
+    required this.isArtist,
+    required this.isInv,
+    required this.id,
+  });
 
   Widget buildAnimatedText(String text, BuildContext context) => Container(
         height: MediaQuery.of(context).size.height * .0262, //18

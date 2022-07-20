@@ -29,12 +29,11 @@ class GetDisArtist extends StatelessWidget {
                 ];
 
                 children.add(ShowIcon(
-                  data[0],
-                  "",
-                  data[2],
-                  true,
-                  false,
-                  data[1],
+                  artistName: data[0],
+                  coverArt: data[2],
+                  isArtist: true,
+                  isInv: false,
+                  id: data[1],
                 ));
               }
               children.add(SizedBox(

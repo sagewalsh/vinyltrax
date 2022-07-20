@@ -71,12 +71,11 @@ class InvAlbumsBy extends StatelessWidget {
                         }
                       }
                       children.add(ShowIcon(
-                          "",
-                          snapshot.data![i + 1].toString(),
-                          snapshot.data![i + 3].toString(),
-                          false,
-                          true,
-                          snapshot.data![i].toString()));
+                          albumName: snapshot.data![i + 1].toString(),
+                          coverArt: snapshot.data![i + 3].toString(),
+                          isArtist: false,
+                          isInv: true,
+                          id: snapshot.data![i].toString()));
                     }
                     children.add(SizedBox(
                       width: double.infinity,

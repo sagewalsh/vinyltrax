@@ -48,12 +48,12 @@ class InvResults extends StatelessWidget {
                         // Artist Data
                         if (data.length == 3) {
                           children.add(ShowIcon(
-                              data[0].toString(),
-                              "",
-                              data[2].toString(),
-                              true,
-                              true,
-                              data[1].toString()));
+                            artistName: data[0].toString(),
+                            coverArt: data[2].toString(),
+                            isArtist: true,
+                            isInv: true,
+                            id: data[1].toString(),
+                          ));
                         }
 
                         // Album Data
@@ -67,12 +67,12 @@ class InvResults extends StatelessWidget {
                             }
                           }
                           children.add(ShowIcon(
-                              artists,
-                              data[1].toString(),
-                              data[3].toString(),
-                              false,
-                              true,
-                              data[0].toString()));
+                              artistName: artists,
+                              albumName: data[1].toString(),
+                              coverArt: data[3].toString(),
+                              isArtist: false,
+                              isInv: true,
+                              id: data[0].toString()));
                         }
                       }
                       children.add(SizedBox(

@@ -63,12 +63,11 @@ class DisAlbumsBy extends StatelessWidget {
                       snapshot.data!.forEach((key, value) {
                         // print(key.toString() + ": " + value.toString());
                         children.add(ShowIcon(
-                          "",
-                          value[0],
-                          value[3],
-                          false,
-                          false,
-                          value[1],
+                          albumName: value[0],
+                          coverArt: value[3],
+                          isArtist: false,
+                          isInv: false,
+                          id: value[1],
                         ));
                       });
 

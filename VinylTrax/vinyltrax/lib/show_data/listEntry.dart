@@ -3,24 +3,18 @@ import 'package:vinyltrax/pages/invAlbumsBy.dart';
 import '../pages/nextPage.dart';
 
 class ListEntry extends StatelessWidget {
-  String name = "";
-  String image = "";
-  bool isAlbum = false;
+  final String name;
+  final String image;
+  final bool isAlbum;
+  final String artistID;
   Color? color = null;
-  String artistID = "";
   //const ShowListEntry({Key? key}) : super(key: key);
 
-  ListEntry(String name, String image, bool isAlbum) {
-    this.name = name;
-    this.image = image;
-    this.isAlbum = isAlbum;
-  }
-
-  ListEntryArtist(String name, String image, String artistID) {
-    this.name = name;
-    this.image = image;
-    this.artistID = artistID;
-  }
+  ListEntry(
+      {required this.name,
+      required this.image,
+      required this.isAlbum,
+      this.artistID = ""});
 
   @override
   Widget build(BuildContext context) {

@@ -30,12 +30,12 @@ class GetDisAlbum extends StatelessWidget {
                 ];
                 var artist_album = data[0].split(" - ");
                 children.add(ShowIcon(
-                  artist_album[0],
-                  artist_album[1],
-                  data[3],
-                  false,
-                  false,
-                  data[1],
+                  artistName: artist_album[0],
+                  albumName: artist_album[1],
+                  coverArt: data[3],
+                  isArtist: false,
+                  isInv: false,
+                  id: data[1],
                 ));
               }
               children.add(SizedBox(
