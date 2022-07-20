@@ -28,7 +28,12 @@ class _CameraState extends State<Camera> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Take a picture')),
+      backgroundColor: Color(0xFFFFFEF9),
+      appBar: AppBar(
+          title: const Text('Take a picture', style: TextStyle(color: Colors.black)),
+          backgroundColor: Color(0xFFFFFEF9),
+          leading: BackButton(color: Colors.black),
+      ),
       // You must wait until the controller is initialized before displaying the
       // camera preview. Use a FutureBuilder to display a loading spinner until the
       // controller has finished initializing.
@@ -45,6 +50,7 @@ class _CameraState extends State<Camera> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFFFF5A5A),
         // Provide an onPressed callback.
         onPressed: () async {
           // Take the Picture in a try / catch block. If anything goes wrong,
