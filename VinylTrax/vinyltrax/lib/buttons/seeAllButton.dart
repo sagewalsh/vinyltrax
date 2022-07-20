@@ -67,6 +67,7 @@ class _SeeAllButtonState extends State<SeeAllButton> {
           onPressed: () {
             //kinda broken rn
             Navigator.pushNamed(context, 'search');
+            //gonna figure this out
           },
         ),
       ),
