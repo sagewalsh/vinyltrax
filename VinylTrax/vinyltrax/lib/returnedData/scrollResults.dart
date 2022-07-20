@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:vinyltrax/buttons/seeAllButton.dart';
 
 class ScrollResults extends StatefulWidget {
   //const ScrollResults({Key? key}) : super(key: key);
   List<Widget> children = [];
   String title = "";
-  ScrollResults(this.children, this.title);
+  final AsyncSnapshot<List<String>> snapshot;
+
+  ScrollResults(this.children, this.title, this.snapshot);
 
   @override
   State<ScrollResults> createState() => _ScrollResultsState();
@@ -33,6 +36,9 @@ class _ScrollResultsState extends State<ScrollResults> {
               TextButton(
                   onPressed: () {
                     //go to a larger list of results
+                    var route = new MaterialPageRoute(builder: (BuildContext context) =>
+                      SeeAllButton(widget.snapshot, widget.title));
+                    Navigator.of(context).push(route);
                   },
                   child: Text("See all")
               ),

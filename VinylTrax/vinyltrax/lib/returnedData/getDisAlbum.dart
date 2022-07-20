@@ -6,6 +6,7 @@ import '../discogs.dart';
 class GetDisAlbum extends StatelessWidget {
   final String input;
   GetDisAlbum(this.input);
+  int max = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -18,18 +19,18 @@ class GetDisAlbum extends StatelessWidget {
           future: _results,
           builder:
               (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
-            List<Widget> children = <Widget>[];
-            int max = 1;
-            if (max != 10) {
-              if (snapshot.hasData) {
-                for (int i = 0; i < snapshot.data!.length; i += 4) {
-                  var data = [
-                    snapshot.data![i],
-                    snapshot.data![i + 1],
-                    snapshot.data![i + 2],
-                    snapshot.data![i + 3],
-                  ];
-                  var artist_album = data[0].split(" - ");
+            List<Widget> children;
+            if (snapshot.hasData) {
+              children = <Widget>[];
+              for (int i = 0; i < snapshot.data!.length; i += 4) {
+                var data = [
+                  snapshot.data![i],
+                  snapshot.data![i + 1],
+                  snapshot.data![i + 2],
+                  snapshot.data![i + 3],
+                ];
+                var artist_album = data[0].split(" - ");
+                if (max <= 10) {
                   children.add(ShowIcon(
                     artistName: artist_album[0],
                     albumName: artist_album[1],
@@ -38,35 +39,30 @@ class GetDisAlbum extends StatelessWidget {
                     isInv: false,
                     id: data[1],
                   ));
+                  max++;
                 }
-                children.add(SizedBox(
-                  width: double.infinity,
-                  height: 30,
-                  child: const Text(""),
-                ));
-              } else if (snapshot.hasError) {
-                children = <Widget>[
-                  Icon(Icons.error),
-                  Text("Snapshot has error"),
-                ];
-              } else {
-                children = <Widget>[
-                  SizedBox(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width * 0.1275, //50
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.062, //50
-                    child: CircularProgressIndicator(),
-                  )
-                ];
               }
+              children.add(SizedBox(
+                width: double.infinity,
+                height: 30,
+                child: const Text(""),
+              ));
+            } else if (snapshot.hasError) {
+              children = <Widget>[
+                Icon(Icons.error),
+                Text("Snapshot has error"),
+              ];
+            } else {
+              children = <Widget>[
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.1275, //50
+                  height: MediaQuery.of(context).size.height * 0.062, //50
+                  child: CircularProgressIndicator(),
+                )
+              ];
             }
             if (children.length > 1) // sizedbox is added after data
-              return ScrollResults(children, "Albums");
+              return ScrollResults(children, "Albums", snapshot);
             else
               return SizedBox();
           },
