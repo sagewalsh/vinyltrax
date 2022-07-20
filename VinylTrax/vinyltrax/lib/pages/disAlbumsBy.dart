@@ -17,7 +17,7 @@ class DisAlbumsBy extends StatelessWidget {
     String name = input[1];
 
     Widget title = Text(
-      name,
+      name.replaceAll(RegExp(r'\([0-9]+\)'), ""),
       style: TextStyle(
         color: Colors.black,
       ),

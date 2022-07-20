@@ -154,7 +154,9 @@ class _InvDetails extends State<InvDetails> {
                       for (int i = 0; i < size; i++) {
                         artists.add(
                           TextSpan(
-                            text: data[0][i][0].toString(),
+                            text: data[0][i][0]
+                                .toString()
+                                .replaceAll(RegExp(r'\([0-9]+\)'), ""),
                             // recognizer: TapGestureRecognizer()
                             //   ..onTap = (() {
                             //     var route = new MaterialPageRoute(
@@ -257,10 +259,14 @@ class _InvDetails extends State<InvDetails> {
                           j++) {
                         contributors.add(ListTile(
                           visualDensity: VisualDensity(vertical: -4),
+                          // Contributor name
                           title: Text(
-                            data[5][j][0].toString(),
+                            data[5][j][0]
+                                .toString()
+                                .replaceAll(RegExp(r'\([0-9]+\)'), ""),
                             style: TextStyle(fontSize: 13),
                           ),
+                          // Contributor Role
                           subtitle: Text(
                             data[5][j][1].toString(),
                             style: TextStyle(fontSize: 13),

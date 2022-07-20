@@ -38,7 +38,7 @@ class ListEntry extends StatelessWidget {
     return ListTile(
       tileColor: color,
       leading: avatar,
-      title: Text(name),
+      title: Text(name.replaceAll(RegExp(r'\([0-9]+\)'), "")),
       onTap: () {
         var route = new MaterialPageRoute(
             builder: (BuildContext context) =>

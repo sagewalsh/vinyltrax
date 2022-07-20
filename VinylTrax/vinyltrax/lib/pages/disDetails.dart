@@ -97,7 +97,8 @@ class DisDetails extends StatelessWidget {
                       // COVER ART
                       children.add(Center(
                         child: Container(
-                          height: MediaQuery.of(context).size.width * .38, //150 square
+                          height: MediaQuery.of(context).size.width *
+                              .38, //150 square
                           width: MediaQuery.of(context).size.width * .38,
                           child: Image(
                             image: NetworkImage(data[6].toString()),
@@ -121,7 +122,9 @@ class DisDetails extends StatelessWidget {
                       for (int i = 0; i < size; i++) {
                         artists.add(
                           TextSpan(
-                            text: data[0][i][0].toString(),
+                            text: data[0][i][0]
+                                .toString()
+                                .replaceAll(RegExp(r'[ (0-9)]'), ""),
                             recognizer: TapGestureRecognizer()
                               ..onTap = (() {
                                 var route = new MaterialPageRoute(
@@ -161,15 +164,11 @@ class DisDetails extends StatelessWidget {
                       if (data[3].toString().length == 4) {
                         children.add(Center(
                             child: Text(
-                              data[2][0].toString() + "  •  " +
-                                  data[3].toString(),
-                            )));
-                      }
-                      else {
-                        children.add(Center(
-                            child: Text(
-                              data[2][0].toString()
-                            )));
+                          data[2][0].toString() + "  •  " + data[3].toString(),
+                        )));
+                      } else {
+                        children
+                            .add(Center(child: Text(data[2][0].toString())));
                       }
 
                       children.add(SizedBox(height: 30));
@@ -177,11 +176,14 @@ class DisDetails extends StatelessWidget {
                       // TRACKLIST
                       children.add(Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: Text("Tracklist", style: TextStyle(fontSize: 17)),
+                        child:
+                            Text("Tracklist", style: TextStyle(fontSize: 17)),
                       ));
                       children.add(addBlackLine());
                       List<ListTile> tracklist = <ListTile>[];
-                      for (int i = 0; i < (data[4] as List<dynamic>).length; i++) {
+                      for (int i = 0;
+                          i < (data[4] as List<dynamic>).length;
+                          i++) {
                         tracklist.add(ListTile(
                           visualDensity: VisualDensity(vertical: -4),
                           leading: Text(
@@ -207,13 +209,14 @@ class DisDetails extends StatelessWidget {
                       if ((data[5] as List<dynamic>).length > 0) {
                         children.add(Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Text(
-                              "Contributors", style: TextStyle(fontSize: 17)),
+                          child: Text("Contributors",
+                              style: TextStyle(fontSize: 17)),
                         ));
                         children.add(addBlackLine());
                         List<ListTile> contributors = <ListTile>[];
-                        for (int j = 0; j < (data[5] as List<dynamic>)
-                            .length; j++) {
+                        for (int j = 0;
+                            j < (data[5] as List<dynamic>).length;
+                            j++) {
                           contributors.add(ListTile(
                             visualDensity: VisualDensity(vertical: -4),
                             title: Text(
@@ -224,8 +227,8 @@ class DisDetails extends StatelessWidget {
                               data[5][j][1].toString(),
                               style: TextStyle(fontSize: 13),
                             ),
-                            tileColor: j.isOdd ? Color(0x20FF5A5A) : Colors
-                                .white,
+                            tileColor:
+                                j.isOdd ? Color(0x20FF5A5A) : Colors.white,
                           ));
                         }
 

@@ -16,7 +16,7 @@ class InvAlbumsBy extends StatelessWidget {
     String name = input[1];
 
     Widget title = Text(
-      name,
+      name.replaceAll(RegExp(r'\([0-9]+\)'), ""),
       style: TextStyle(
         color: Colors.black,
       ),
@@ -64,7 +64,9 @@ class InvAlbumsBy extends StatelessWidget {
                       String artist = "";
                       var data = snapshot.data![i + 2] as List<dynamic>;
                       for (int j = 0; j < data.length; j++) {
-                        artist += data[j][0].toString();
+                        artist += data[j][0]
+                            .toString()
+                            .replaceAll(RegExp(r'\([0-9]+\)'), "");
                         if (j + 1 < data.length) {
                           artist += " & ";
                         }

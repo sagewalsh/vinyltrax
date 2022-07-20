@@ -48,13 +48,14 @@ class ShowIcon extends StatelessWidget {
           ));
 
     if (artistName.length > 18)
-      outputArt = buildAnimatedText(artistName, context);
+      outputArt = buildAnimatedText(
+          artistName.replaceAll(RegExp(r'\([0-9]+\)'), ""), context);
     else
       outputArt = SizedBox(
           width: MediaQuery.of(context).size.width * .38,
           height: MediaQuery.of(context).size.height * .0262,
           child: Text(
-            artistName,
+            artistName.replaceAll(RegExp(r'\([0-9]+\)'), ""),
             textAlign: TextAlign.center,
           ));
 
