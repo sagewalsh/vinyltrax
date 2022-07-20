@@ -19,9 +19,6 @@ class GetInvArtist extends StatelessWidget {
     // Get artists from the database
     final Future<List<dynamic>> _results = Database.artists(input);
 
-    //Widgets to be displayed
-    List<Widget> children = <Widget>[];
-
     return SizedBox(
       width: double.infinity,
       child: FutureBuilder<List<dynamic>>(
@@ -36,6 +33,8 @@ class GetInvArtist extends StatelessWidget {
                   image: snapshot.data![i + 2].toString(),
                   isAlbum: false,
                   artistID: snapshot.data![i + 1].toString(),
+                  isInv: true,
+                  format: input,
                 );
                 if (children.length % 2 != 0) temp.color = Color(0x20FF5A5A);
                 children.add(temp);

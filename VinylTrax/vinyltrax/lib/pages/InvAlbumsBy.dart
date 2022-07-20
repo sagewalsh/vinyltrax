@@ -10,7 +10,8 @@ class InvAlbumsBy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<List<dynamic>> _results = Database.albumsBy(input[0]);
+    Future<List<dynamic>> _results =
+        Database.albumsBy(artistid: input[0], format: input[2]);
     // late String name = "Artist not found";
     String name = input[1];
 

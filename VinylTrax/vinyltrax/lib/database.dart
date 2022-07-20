@@ -88,32 +88,6 @@ class Database {
   }
 
   /*
-  Helper Function.
-  Given a list of map entries containing album data:
-  Returns a list of text widgets of album data used when 
-  displaying albums.
-
-  Converts a list of map entries filled with album data into 
-  a list of text widgets
-
-  [0]: Album Name
-  [1]: Artist Name
-  [2]: Cover Art
-  [3]: Album ID
-  */
-  static List<Text> _displayAlbums(List<MapEntry<Object?, Object?>> list) {
-    List<Text> results = [];
-    list.forEach((element) {
-      var albumdata = element.value as Map<Object?, Object?>;
-      results.add(Text(albumdata["Name"].toString()));
-      results.add(Text(albumdata["Artist"].toString()));
-      results.add(Text(albumdata["Cover"].toString()));
-      results.add(Text(albumdata["UniqueID"].toString()));
-    });
-    return results;
-  }
-
-  /*
   _albumDisplay
   Helper Function  
   Given a list of map entries containing album data:
@@ -218,7 +192,8 @@ Data is returned as a list of text widgets:
 [2]: Cover Art
 [4]: format
 */
-  static Future<List<dynamic>> albumsBy(String artistid) async {
+  static Future<List<dynamic>> albumsBy(
+      {required String artistid, String format = "All"}) async {
     // Get a snapshot from the ARTIST database
     final snapArtist = await ref.child("Artists").get();
     // Get a snapshot from the ALBUM database
@@ -240,12 +215,14 @@ Data is returned as a list of text widgets:
         // AlbumIDs of the albums the given artist has created
         var albumids = artist["Albums"] as Map<Object?, Object?>;
 
-        albumids.forEach((key, value) {
-          if (albumValues.containsKey(value.toString())) {
+        albumids.forEach((key, id) {
+          if (albumValues.containsKey(id.toString()) &&
+              ((id.toString().endsWith("1") && format == "Vinyl") ||
+                  (id.toString().endsWith("2") && format == "CD") ||
+                  format == "All")) {
             // Add album data to returned list
-            albums += {value.toString(): albumValues[value.toString()]}
-                .entries
-                .toList();
+            albums +=
+                {id.toString(): albumValues[id.toString()]}.entries.toList();
           }
         });
 

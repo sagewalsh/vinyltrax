@@ -4,7 +4,6 @@ import 'invAlbumsBy.dart';
 import 'disAlbumsBy.dart';
 import 'disDetails.dart';
 
-
 /*
 ##########################################################################
 Clicked an Album in Inventory
@@ -31,9 +30,9 @@ Clicked an Artist in Invetory
 ##########################################################################
 */
 class NextPageArtist extends StatefulWidget {
-  final String id, name;
+  final String id, name, format;
 
-  NextPageArtist(this.id, this.name);
+  NextPageArtist({required this.id, required this.name, this.format = ""});
   @override
   State<NextPageArtist> createState() => _NextPageArtistState();
 }
@@ -41,7 +40,7 @@ class NextPageArtist extends StatefulWidget {
 class _NextPageArtistState extends State<NextPageArtist> {
   @override
   Widget build(BuildContext context) {
-    return InvAlbumsBy(["${widget.id}", "${widget.name}"]);
+    return InvAlbumsBy(["${widget.id}", "${widget.name}", "${widget.format}"]);
   }
 }
 

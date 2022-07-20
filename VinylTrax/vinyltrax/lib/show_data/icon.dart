@@ -87,7 +87,7 @@ class ShowIcon extends StatelessWidget {
         var route = new MaterialPageRoute(builder: (BuildContext context) {
           if (isInv) {
             if (isArtist)
-              return new NextPageArtist(id, artistName);
+              return new NextPageArtist(id: id, name: artistName);
             else
               return new NextPageAlbum(id, albumName);
           } else {
