@@ -677,11 +677,82 @@ Return data to view wishlist items
       return [];
     }
   }
+
 /*
 #############################################################################
+pressingData
+
 Add pressing data to an album
 #############################################################################
 */
+  static void pressingData({
+    required String albumID,
+    String numLP = "",
+    String colorLP = "",
+    String rpmSize = "",
+    String year = "",
+    String manufacturer = "",
+  }) async {
+    var snapshot = await ref.child("Albums/$albumID").get();
+    if (snapshot.exists) {
+      await ref.update({
+        "Albums/$albumID/Pressing": {
+          "numLP": numLP,
+          "colorLP": colorLP,
+          "rpmSize": rpmSize,
+          "year": year,
+          "manufacturer": manufacturer,
+        }
+      });
+    }
+  }
+
+/*
+#############################################################################
+addNotes
+
+Add notes to an album
+This function overwrites any existing notes on an album.
+If you wish to modify notes that already exist, I suggested getting the
+text, updating it and sending it back.
+#############################################################################
+*/
+  static void addNotes({required String albumID, required String note}) async {
+    var snapshot = await ref.child("Albums/$albumID").get();
+    if (snapshot.exists) {
+      await ref.update({
+        "Albums/$albumID/Notes": note,
+      });
+    }
+  }
+
+/*
+#############################################################################
+getNotes
+
+Get notes to an album
+#############################################################################
+*/
+  static Future<String> getNotes(String albumID) async {
+    String note = "";
+    var snapshot = await ref.child("Albums/$albumID/Notes").get();
+    if (snapshot.exists) {
+      note = snapshot.value as String;
+    }
+    return note;
+  }
+
+/*
+#############################################################################
+deleteNotes
+
+Deletes the notes on a given album
+#############################################################################
+*/
+  static void deleteNotes(String albumID) async {
+    var snapref = await ref.child("Albums/$albumID/Notes");
+    snapref.remove();
+  }
 
   static void fillartists() async {
     var list = [

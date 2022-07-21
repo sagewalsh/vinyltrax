@@ -14,6 +14,8 @@ class Test {
   }
 
   static void discogs() {
+    // Collection.getTracks("girls");
+
     // Collection.barcode("656605321318");
     // Collection.barcode("634457649019");
     // Collection.barcode("888837168618");
@@ -113,6 +115,19 @@ class Test {
   }
 
   static void database() {
+    // Database.pressingData(albumID: "139512361", numLP: "2", colorLP: "Colored");
+    Database.addNotes(
+        albumID: "139512361",
+        note:
+            "This is Clairo's second album, but she released several EPs before her first.");
+
+    // Database.getNotes("139512361").then((value) {
+    //   value += " I really like this album.";
+    //   Database.addNotes(albumID: "139512361", note: value);
+    // });
+
+    // Database.deleteNotes("139512361");
+
     // print("--------------------------------------------" +
     //     "--------------------------------------------" +
     //     "\nGetting Album Data Given Valid ID: 1217\n" +

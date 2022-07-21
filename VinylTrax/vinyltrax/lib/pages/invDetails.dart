@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import '../database.dart';
+import '../returnedData/getInvNotes.dart';
 
 class InvDetails extends StatefulWidget {
   final List<String> input;
@@ -17,10 +18,8 @@ class _InvDetails extends State<InvDetails> {
 
   @override
   Widget build(BuildContext context) {
-    Future<List<dynamic>> _results =
-        Database.albumDetails(widget.input[0]); //replace this with discogs info
+    Future<List<dynamic>> _results = Database.albumDetails(widget.input[0]);
     String album = widget.input[1];
-    var _controller = TextEditingController();
 
     Widget addBlackLine() {
       return Padding(
@@ -67,18 +66,17 @@ class _InvDetails extends State<InvDetails> {
     if (album.length > 45) {
       extendedName = Center(
           child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: 20,
-            child: Marquee(
-              velocity: 10,
-              blankSpace: 100,
-              text: album,
-              style: TextStyle(
-                color: Colors.black,
-              ),
-            ),
-          )
-      );
+        width: MediaQuery.of(context).size.width,
+        height: 20,
+        child: Marquee(
+          velocity: 10,
+          blankSpace: 100,
+          text: album,
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      ));
     }
 
     return SafeArea(
@@ -312,27 +310,17 @@ class _InvDetails extends State<InvDetails> {
                     ));
 
                     //Notes section
-                    children.add(Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: TextField(
-                        controller: _controller,
-                        keyboardType: TextInputType.text,
-                        maxLines: null,
-                        maxLength: 500,
-                        onSubmitted: (value) {
-                          //value here is the text after enter is pressed
-                          //within here you can add it to the database
-                          // print(value);
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Notes',
-                          border: const OutlineInputBorder(),
-                          suffixIcon: IconButton(
-                            onPressed: _controller.clear,
-                            icon: Icon(Icons.clear),
-                          ),
-                        ),
-                      ),
+                    children.add(GetInvNotes(widget.input));
+
+                    children.add(Divider(
+                      color: Colors.black,
+                      thickness: 1,
+                      height: 0,
+                    ));
+                    children.add(SizedBox(
+                      width: double.infinity,
+                      height: 30,
+                      child: const Text(""),
                     ));
                   } else if (snapshot.hasError) {
                     children = <Widget>[
