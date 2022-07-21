@@ -9,7 +9,7 @@ import 'test.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  WidgetsFlutterBinding.ensureInitialized();
+  // WidgetsFlutterBinding.ensureInitialized();
   final cameras = await availableCameras();
   final firstCamera = cameras.first;
 
@@ -45,7 +45,8 @@ class VinylTrax extends StatelessWidget {
         });
     return MaterialApp(
       darkTheme: ThemeData.dark(),
-      initialRoute: 'inven', //switch to 'inven' for our sake, but for testing I'll leave as is
+      initialRoute:
+          'inven', //switch to 'inven' for our sake, but for testing I'll leave as is
       routes: {
         'home': (context) => const HomePage(),
         'inven': (context) => Tabs(0),

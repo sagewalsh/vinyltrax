@@ -333,8 +333,8 @@ getArtists
 */
   static Future<List<String>> getArtists(String input) async {
     List<String> artists = [];
-    String query = "/database/search?q={$input}";
-    final url = 'https://api.discogs.com$query&type=artist&per_page=500';
+    String query = "search?q={$input}&type=artist&per_page=500";
+    final url = 'https://api.discogs.com/database/$query';
     late String content;
 
     try {
@@ -402,8 +402,8 @@ getAlbums
 */
   static Future<List<String>> getAlbums(String input) async {
     List<String> albums = [];
-    String query = "/database/search?q={$input}";
-    final url = 'https://api.discogs.com$query&type=release&per_page=500';
+    String query = "search?q={$input}&type=release&per_page=500";
+    final url = 'https://api.discogs.com/database/$query';
     late String content;
 
     try {
@@ -468,5 +468,46 @@ getAlbums
     // print(albums.toString());
     // print(albums.length);
     return albums;
+  }
+
+  /*
+##########################################################################
+getTracks
+
+
+##########################################################################
+*/
+  static Future<List<String>> getTracks(String input) async {
+    List<String> tracks = [];
+    String query = "search?track={$input}&per_page=500";
+    final url = 'https://api.discogs.com/database/$query';
+    late String content;
+
+    try {
+      content =
+          (await DefaultCacheManager().getSingleFile(url, headers: _headers))
+              .readAsStringSync();
+    } catch (e) {
+      print("Whoops something went wrong.");
+    }
+
+    var temp = {};
+    var results = json.decode(content) as Map<Object?, Object?>;
+    (results["results"] as List<dynamic>).forEach((element) {
+      if (!temp.containsKey(element["master_id"]) &&
+          element["master_id"] != 0) {
+        temp[element["master_id"]] = element;
+      }
+    });
+
+    print(temp.keys.length);
+    temp.forEach((key, value) {
+      tracks += [
+        value["title"].toString(),
+        value["id"].toString(),
+        value["thumb"].toString(),
+      ];
+    });
+    return tracks;
   }
 }
