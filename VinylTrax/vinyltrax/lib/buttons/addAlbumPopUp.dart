@@ -49,7 +49,7 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
                                 0.186; //150
                             visible = true;
                           } else {
-                            height = MediaQuery.of(context).size.height * 0.124;
+                            height = MediaQuery.of(context).size.height * 0.13;
                             visible = false;
                           }
                         });
