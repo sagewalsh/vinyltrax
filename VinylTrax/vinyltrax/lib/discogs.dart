@@ -386,7 +386,7 @@ getArtists
       }
     }
     // print(artists.toString());
-    print(artists.length / 3);
+    // print(artists.length / 3);
     return artists;
   }
 
@@ -466,7 +466,7 @@ getAlbums
       }
     }
     // print(albums.toString());
-    print(albums.length);
+    // print(albums.length);
     return albums;
   }
 }

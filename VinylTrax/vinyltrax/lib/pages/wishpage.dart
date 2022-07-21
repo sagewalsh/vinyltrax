@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../returnedData/getWishAlbum.dart';
 
 enum _Order { artist, albums }
 
@@ -12,6 +13,7 @@ class WishPage extends StatefulWidget {
 
 class _WishPageState extends State<WishPage> {
   _Order _selectedOrder = _Order.artist;
+  String order = "Artist";
 
   Future createAlertDialog(BuildContext context) {
     TextEditingController _customController = TextEditingController();
@@ -39,6 +41,10 @@ class _WishPageState extends State<WishPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (_selectedOrder == _Order.albums)
+      order = "Albums";
+    else if (_selectedOrder == _Order.artist) order = "Artists";
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFFFFFEF9),
@@ -97,6 +103,7 @@ class _WishPageState extends State<WishPage> {
         body: Column(
           children: [
             //Listview for inventory
+            GetWishAlbum(order),
           ],
         ),
         floatingActionButton: FloatingActionButton(

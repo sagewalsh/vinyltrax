@@ -443,6 +443,13 @@ Search the user's inventory for given text
     return results;
   }
 
+/*
+#############################################################################
+removeAlbum
+
+remove album from inventory
+#############################################################################
+*/
   static void removeAlbum(String albumID) async {
     // Get album data
     var snapshot = await ref.child("Albums/$albumID").get();
@@ -498,61 +505,178 @@ Given Album Data from Discogs in the form:
 [8]: CoverArt
 #############################################################################
 */
-  static void addAlbumToInv(List<dynamic> albumdata) async {
+  static Future<String> addAlbumToInv(List<dynamic> albumdata) async {
+    // If album was in wishlist: delete it
+    var wishshot = await ref.child("Wishlist/${albumdata[0]}").get();
+    if (wishshot.exists) {
+      await ref.child("Wishlist/${albumdata[0]}").remove();
+    }
+
     // Vinyl Copies of records get a 1 added to the end
     // CD Copies of records get a 2 added to the end
     if (albumdata[1] == "Vinyl")
       albumdata[0] += "1";
     else if (albumdata[1] == "CD") albumdata[0] += "2";
 
-    // Add album data to database
-    await ref.update({
-      "Albums/${albumdata[0]}": {
-        "UniqueID": albumdata[0],
-        "Name": albumdata[3],
-        "Artist": albumdata[2],
-        "Year": albumdata[5],
-        "Genre": albumdata[4],
-        "Cover": albumdata[8],
-        "Tracklist": albumdata[6],
-        "Contributors": albumdata[7],
-        "Format": albumdata[1],
-      }
-    });
-    // Add album to each artist's data
-    (albumdata[2] as List<dynamic>).forEach((element) async {
-      var snapshot = await ref.child("Artists/${element[1]}").get();
-      // If the artist exitst
-      if (snapshot.exists) {
-        var snapalbum = await ref.child("Artists/${element[1]}/Albums");
-        var newAlbum = snapalbum.push();
-        newAlbum.set(albumdata[0]);
-      }
-      // If the artist doesn't exist
-      else {
-        print("snapshot does not exist");
-        // Create new artist
-        await ref.update({
-          "Artists/${element[1]}": {
-            "UniqueID": element[1],
-            "Name": element[0],
-            "Image":
-                "https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg",
-          }
-        });
-        var snapalbum = await ref.child("Artists/${element[1]}/Albums");
-        var newAlbum = snapalbum.push();
-        newAlbum.set(albumdata[0]);
-      }
-    });
+    var snapshot = await ref.child("Albums/${albumdata[0]}").get();
+    if (!snapshot.exists) {
+      // Add album data to database
+      await ref.update({
+        "Albums/${albumdata[0]}": {
+          "UniqueID": albumdata[0],
+          "Name": albumdata[3],
+          "Artist": albumdata[2],
+          "Year": albumdata[5],
+          "Genre": albumdata[4],
+          "Cover": albumdata[8],
+          "Tracklist": albumdata[6],
+          "Contributors": albumdata[7],
+          "Format": albumdata[1],
+        }
+      });
+      // Add album to each artist's data
+      (albumdata[2] as List<dynamic>).forEach((element) async {
+        var snapshot = await ref.child("Artists/${element[1]}").get();
+        // If the artist exitst
+        if (snapshot.exists) {
+          var snapalbum = await ref.child("Artists/${element[1]}/Albums");
+          var newAlbum = snapalbum.push();
+          newAlbum.set(albumdata[0]);
+        }
+        // If the artist doesn't exist
+        else {
+          print("snapshot does not exist");
+          // Create new artist
+          await ref.update({
+            "Artists/${element[1]}": {
+              "UniqueID": element[1],
+              "Name": element[0],
+              "Image":
+                  "https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg",
+            }
+          });
+          var snapalbum = await ref.child("Artists/${element[1]}/Albums");
+          var newAlbum = snapalbum.push();
+          newAlbum.set(albumdata[0]);
+        }
+      });
+      return "Album Added!";
+    } else {
+      return "You already own this album.";
+    }
   }
 
 /*
 #############################################################################
+addToWish
+
 Add an album to your wishlist
+
+Given Album Data from Discogs in the form:
+[0]: albumID
+[1]: [ [ artistName, artistID ], ... ]
+[2]: albumName
+[3]: [ genre, ... ]
+[4]: year
+[5]: [ [ trackName, duration ], ... ]
+[6]: [ [ contributorName, role, id ], ... ]
+[7]: CoverArt
 #############################################################################
 */
+  static void addToWish(List<dynamic> albumdata) async {
+    var snapshot = await ref.child("Wishlist/${albumdata[0]}").get();
+    if (!snapshot.exists) {
+      await ref.update({
+        "Wishlist/${albumdata[0]}": {
+          "UniqueID": albumdata[0],
+          "Name": albumdata[2],
+          "Artist": albumdata[1],
+          "Year": albumdata[4],
+          "Genre": albumdata[3],
+          "Cover": albumdata[7],
+          "Tracklist": albumdata[5],
+          "Contributors": albumdata[6],
+          "Format": "Wishlist",
+        }
+      });
+    }
+  }
 
+/*
+#############################################################################
+displayWish
+
+Return data to view wishlist items
+  Data is returned as a list of text widgets
+  [
+    [0]: albumID
+    [1]: albumName
+    [2]: [ [ artistName, artistID ], ... ]
+    [3]: coverArt
+    [4]: format
+    [5]: year
+  ,
+  ...
+  ]
+#############################################################################
+*/
+  static Future<List<List<dynamic>>> displayWish(String order) async {
+    // Get a snapshot from the album database
+    final snapshot = await ref.child("Wishlist").get();
+
+    if (snapshot.exists) {
+      // Map{ AlbumID: {Album data} }
+      var values = snapshot.value as Map<Object?, Object?>;
+      // List[ Map{ "Artist": name, "Name": album name, ... }, Map {...}, ]
+      var list = values.entries.toList();
+
+      // Order by album name
+      if (order == "Albums") {
+        // Sort the list of album data based on the album name
+        list.sort(((a, b) {
+          var albumA = a.value as Map<Object?, Object?>;
+          var albumB = b.value as Map<Object?, Object?>;
+          return albumA["Name"]
+              .toString()
+              .toLowerCase()
+              .compareTo(albumB["Name"].toString().toLowerCase());
+        }));
+      }
+      // Order by artist name
+      else if (order == "Artist") {
+        list.sort(((a, b) {
+          // Order by Artist name:
+          String aart = "";
+          var data =
+              (a.value as Map<Object?, Object?>)["Artist"] as List<dynamic>;
+          for (int i = 0; i < data.length; i++) {
+            aart += data[i][0].toString();
+            if (i + 1 < data.length) {
+              aart += " & ";
+            }
+          }
+
+          String bart = "";
+          data = (b.value as Map<Object?, Object?>)["Artist"] as List<dynamic>;
+          for (int j = 0; j < data.length; j++) {
+            bart += data[j][0].toString();
+            if (j + 1 < data.length) {
+              bart += " & ";
+            }
+          }
+
+          return aart.compareTo(bart);
+        }));
+      }
+
+      //Convert list of maps into list of widgets
+      return _displayAlbum(list);
+    } else {
+      // Something went wrong when getting a snapshot from the database
+      print("No data available");
+      return [];
+    }
+  }
 /*
 #############################################################################
 Add pressing data to an album
@@ -836,7 +960,7 @@ Add pressing data to an album
     fill("3492331", "Vinyl");
 
     // Boys and Girls
-    fill("3529250", "Vinyl");
+    fill("20240365", "Vinyl");
 
     // Fleetwood Mac
     fill("3586233", "Vinyl");
@@ -932,7 +1056,7 @@ Add pressing data to an album
     fill("6621531", "Vinyl");
 
     // Sound and Color
-    fill("6764040", "Vinyl");
+    fill("10021212", "Vinyl");
 
     // Turn on the Bright Lights
     fill("6799508", "Vinyl");

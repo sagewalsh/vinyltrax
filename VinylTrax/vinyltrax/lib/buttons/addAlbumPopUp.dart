@@ -88,10 +88,16 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
                       children: [
                         TextButton(
                             onPressed: () {
-                              // Add album to inventory
-                              List<dynamic> album = [albumID, format];
-                              album += snapshot.data!;
-                              Database.addAlbumToInv(album);
+                              if (locationValue == "Inventory") {
+                                // Add album to inventory
+                                List<dynamic> album = [albumID, format];
+                                album += snapshot.data!;
+                                Database.addAlbumToInv(album);
+                              } else if (locationValue == "Wishlist") {
+                                List<dynamic> album = [albumID];
+                                album += snapshot.data!;
+                                Database.addToWish(album);
+                              }
 
                               //lets us go back to the album page
                               Navigator.of(context).pop();

@@ -50,22 +50,19 @@ class DisDetails extends StatelessWidget {
 
     if (name.length > 45) {
       extendedName = Center(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: 20,
-          child: Marquee(
-            velocity: 10,
-            blankSpace: 100,
-            text: name,
-            style: TextStyle(
-              color: Colors.black,
-            ),
+          child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 20,
+        child: Marquee(
+          velocity: 10,
+          blankSpace: 100,
+          text: name,
+          style: TextStyle(
+            color: Colors.black,
           ),
-        )
-      );
+        ),
+      ));
     }
-
-
 
     Widget addBlackLine() {
       return Padding(
@@ -147,7 +144,7 @@ class DisDetails extends StatelessWidget {
                           TextSpan(
                             text: data[0][i][0]
                                 .toString()
-                                .replaceAll(RegExp(r'[ (0-9)]'), ""),
+                                .replaceAll(RegExp(r'\([0-9]+\)'), ""),
                             recognizer: TapGestureRecognizer()
                               ..onTap = (() {
                                 var route = new MaterialPageRoute(
