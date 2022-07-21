@@ -73,6 +73,7 @@ class _InvNotes extends State<GetInvNotes> {
                                 "Notes",
                                 style: TextStyle(
                                   color: Colors.black,
+                                  fontStyle: FontStyle.italic,
                                 ),
                               ),
                               SizedBox(
@@ -84,7 +85,6 @@ class _InvNotes extends State<GetInvNotes> {
                                 snapshot.data!,
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontStyle: FontStyle.italic,
                                 ),
                               ),
                             ],

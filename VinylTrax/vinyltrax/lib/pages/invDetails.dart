@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import '../database.dart';
 import '../returnedData/getInvNotes.dart';
+import '../returnedData/getInvPressing.dart';
 
 class InvDetails extends StatefulWidget {
   final List<String> input;
@@ -309,8 +310,22 @@ class _InvDetails extends State<InvDetails> {
                       child: const Text(""),
                     ));
 
-                    //Notes section
+                    // NOTES SECTION
                     children.add(GetInvNotes(widget.input));
+
+                    children.add(Divider(
+                      color: Colors.black,
+                      thickness: 1,
+                      height: 0,
+                    ));
+                    children.add(SizedBox(
+                      width: double.infinity,
+                      height: 30,
+                      child: const Text(""),
+                    ));
+
+                    // PRESSING DATA
+                    children.add(GetInvPressing(widget.input));
 
                     children.add(Divider(
                       color: Colors.black,

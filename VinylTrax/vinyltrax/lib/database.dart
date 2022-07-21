@@ -680,12 +680,12 @@ Return data to view wishlist items
 
 /*
 #############################################################################
-pressingData
+updatePressData
 
 Add pressing data to an album
 #############################################################################
 */
-  static void pressingData({
+  static void updatePressData({
     required String albumID,
     String numLP = "",
     String colorLP = "",
@@ -705,6 +705,35 @@ Add pressing data to an album
         }
       });
     }
+  }
+
+/*
+#############################################################################
+getPressData
+
+Get pressing data to an album
+[
+  0: numLP
+  1: colorLP
+  2: rpmSize
+  3: year
+  4: manufacturer
+]
+#############################################################################
+*/
+  static Future<List<String>> getPressData(String albumID) async {
+    List<String> data = [];
+    var snapshot = await ref.child("Albums/$albumID/Pressing").get();
+    if (snapshot.exists) {
+      data = [
+        (snapshot.value as Map<Object?, Object?>)["numLP"].toString(),
+        (snapshot.value as Map<Object?, Object?>)["colorLP"].toString(),
+        (snapshot.value as Map<Object?, Object?>)["rpmSize"].toString(),
+        (snapshot.value as Map<Object?, Object?>)["year"].toString(),
+        (snapshot.value as Map<Object?, Object?>)["manufacturer"].toString(),
+      ];
+    }
+    return data;
   }
 
 /*
