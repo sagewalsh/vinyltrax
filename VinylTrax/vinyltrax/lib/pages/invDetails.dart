@@ -339,16 +339,6 @@ class _InvDetails extends State<InvDetails> {
                             });
                             Navigator.of(context).push(route);
                           },
-
-                          // Leading Space
-                          // leading: Container(
-                          //     child: Text(
-                          //   "",
-                          //   style: TextStyle(
-                          //     fontSize: 13,
-                          //   ),
-                          // )),
-
                           // Contributor name
                           title: Container(
                             padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
