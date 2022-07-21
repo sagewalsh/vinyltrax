@@ -61,6 +61,7 @@ class GetDisAlbum extends StatelessWidget {
                 )
               ];
             }
+            max = 1;
             if (children.length > 1) // sizedbox is added after data
               return ScrollResults(children, "Albums", snapshot);
             else
