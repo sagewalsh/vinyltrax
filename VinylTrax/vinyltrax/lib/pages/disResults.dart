@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../returnedData/getDisArtist.dart';
 import '../returnedData/getDisAlbum.dart';
+import '../returnedData/getDisTracks.dart';
 import 'settingspage.dart' as settings;
 
 class DisResults extends StatelessWidget {
@@ -21,6 +22,7 @@ class DisResults extends StatelessWidget {
     else {
       children.add(GetDisArtist(input));
       children.add(GetDisAlbum(input));
+      children.add(GetDisTracks(input));
     }
 
     return SingleChildScrollView(
