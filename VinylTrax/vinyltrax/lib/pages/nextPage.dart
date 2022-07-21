@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vinyltrax/pages/invCon.dart';
 import 'invDetails.dart';
 import 'invAlbumsBy.dart';
 import 'disAlbumsBy.dart';
@@ -41,6 +42,26 @@ class _NextPageArtistState extends State<NextPageArtist> {
   @override
   Widget build(BuildContext context) {
     return InvAlbumsBy(["${widget.id}", "${widget.name}", "${widget.format}"]);
+  }
+}
+
+/*
+##########################################################################
+Clicked a Contributor in Invetory
+##########################################################################
+*/
+class NextPageCon extends StatefulWidget {
+  final String id, name, format;
+
+  NextPageCon({required this.id, required this.name, this.format = "All"});
+  @override
+  State<NextPageCon> createState() => _NextPageConState();
+}
+
+class _NextPageConState extends State<NextPageCon> {
+  @override
+  Widget build(BuildContext context) {
+    return InvCon(["${widget.id}", "${widget.name}"]);
   }
 }
 

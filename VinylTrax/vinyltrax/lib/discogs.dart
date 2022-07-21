@@ -510,4 +510,40 @@ getTracks
     });
     return tracks;
   }
+
+/*
+getCredits
+
+*/
+  static Future<List<String>> getCredits(String input) async {
+    List<String> credits = [];
+    String query = "search?q=$input&credits=$input&per_page=500";
+    final url = "https://api.discogs.com/database/$query";
+    late String content;
+
+    try {
+      content =
+          (await DefaultCacheManager().getSingleFile(url, headers: _headers))
+              .readAsStringSync();
+    } catch (e) {
+      print("Whoops you suck");
+    }
+
+    var temp = {};
+    var results = json.decode(content) as Map<Object?, Object?>;
+    (results["results"] as List<dynamic>).forEach((element) {
+      if (!temp.containsKey(element["master_id"]) &&
+          element["master_id"] != 0) {
+        temp[element["master_id"]] = element;
+      }
+    });
+    temp.forEach((key, value) {
+      credits += [
+        value["title"].toString(),
+        value["id"].toString(),
+        value["thumb"].toString(),
+      ];
+    });
+    return credits;
+  }
 }

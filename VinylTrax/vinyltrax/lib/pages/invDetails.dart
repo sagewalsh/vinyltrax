@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
+import 'package:vinyltrax/pages/nextPage.dart';
 import '../database.dart';
 import '../returnedData/getInvNotes.dart';
 import '../returnedData/getInvPressing.dart';
@@ -241,17 +242,67 @@ class _InvDetails extends State<InvDetails> {
                       for (int i = 0;
                           i < (data[4] as List<dynamic>).length;
                           i++) {
-                        tracklist.add(ListTile(
+                        tracklist.add(
+                            // Track list item
+                            ListTile(
+                          // contentPadding: EdgeInsets.only(bottom: 5),
                           visualDensity: VisualDensity(vertical: -4),
-                          leading: Text(
-                            data[4][i][0].toString(),
-                            style: TextStyle(fontSize: 13),
+
+                          // Track Number
+                          leading: Container(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              // "\t" + i.toString() + "\t",
+                              i.toString(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color.fromARGB(122, 0, 0, 0),
+                                fontSize: 13,
+                              ),
+                            ),
                           ),
-                          trailing: Text(
-                            data[4][i][1],
-                            style: TextStyle(fontSize: 13),
+
+                          // Track Title
+                          title: Container(
+                            // padding: EdgeInsets.only(bottom: 5),
+                            padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                            child: Text(
+                              data[4][i][0].toString(),
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
                           ),
-                          tileColor: i.isOdd ? Color(0x20FF5A5A) : Colors.white,
+
+                          subtitle: Container(
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  width: 1,
+                                  color: Color.fromARGB(86, 255, 90, 90),
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              " ",
+                              style: TextStyle(fontSize: 5),
+                            ),
+                          ),
+
+                          // Track Duration
+                          trailing: Container(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              data[4][i][1],
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontStyle: FontStyle.italic,
+                                color: Color.fromARGB(122, 0, 0, 0),
+                              ),
+                            ),
+                          ),
+                          tileColor: Color(0xFFFFFEF9),
                         ));
                       }
                       children.add(ListView(
@@ -277,19 +328,59 @@ class _InvDetails extends State<InvDetails> {
                           j++) {
                         contributors.add(ListTile(
                           visualDensity: VisualDensity(vertical: -4),
+                          contentPadding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                          onTap: () {
+                            var route = new MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return new NextPageCon(
+                                id: data[5][j][2].toString(),
+                                name: data[5][j][0],
+                              );
+                            });
+                            Navigator.of(context).push(route);
+                          },
+
+                          // Leading Space
+                          // leading: Container(
+                          //     child: Text(
+                          //   "",
+                          //   style: TextStyle(
+                          //     fontSize: 13,
+                          //   ),
+                          // )),
+
                           // Contributor name
-                          title: Text(
-                            data[5][j][0]
-                                .toString()
-                                .replaceAll(RegExp(r'\([0-9]+\)'), ""),
-                            style: TextStyle(fontSize: 13),
+                          title: Container(
+                            padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            child: Text(
+                              data[5][j][0]
+                                  .toString()
+                                  .replaceAll(RegExp(r'\([0-9]+\)'), ""),
+                              style: TextStyle(fontSize: 13),
+                            ),
                           ),
+
                           // Contributor Role
-                          subtitle: Text(
-                            data[5][j][1].toString(),
-                            style: TextStyle(fontSize: 13),
+                          subtitle: Container(
+                            padding: EdgeInsets.fromLTRB(15, 0, 0, 5),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  width: 1,
+                                  color: Color.fromARGB(86, 255, 90, 90),
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              data[5][j][1].toString(),
+                              // textAlign: TextAlign.right,
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
                           ),
-                          tileColor: j.isOdd ? Color(0x20FF5A5A) : Colors.white,
+                          tileColor: Color(0xFFFFFEF9),
                         ));
                       }
                       children.add(ListView(
@@ -299,11 +390,6 @@ class _InvDetails extends State<InvDetails> {
                       ));
                     }
 
-                    children.add(Divider(
-                      color: Colors.black,
-                      thickness: 1,
-                      height: 0,
-                    ));
                     children.add(SizedBox(
                       width: double.infinity,
                       height: 30,
@@ -312,17 +398,6 @@ class _InvDetails extends State<InvDetails> {
 
                     // NOTES SECTION
                     children.add(GetInvNotes(widget.input));
-
-                    children.add(Divider(
-                      color: Colors.black,
-                      thickness: 1,
-                      height: 0,
-                    ));
-                    children.add(SizedBox(
-                      width: double.infinity,
-                      height: 30,
-                      child: const Text(""),
-                    ));
 
                     // PRESSING DATA
                     children.add(GetInvPressing(widget.input));
