@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:vinyltrax/returnedData/scrollResults.dart';
 import '../show_data/icon.dart';
 import '../discogs.dart';
+import '../pages/settingspage.dart' as settings;
+import '../show_data/listEntry.dart';
+import '../show_data/listEntryList.dart';
 
 class GetDisArtist extends StatelessWidget {
   final String input;
@@ -28,15 +31,25 @@ class GetDisArtist extends StatelessWidget {
                   snapshot.data![i + 1],
                   snapshot.data![i + 2],
                 ];
-                if (max <= 10) {
-                  children.add(ShowIcon(
-                    artistName: data[0],
-                    coverArt: data[2],
-                    isArtist: true,
+                if (settings.listBool) {
+                  children.add(ListEntry(
+                    name: data[0],
+                    image: data[2],
+                    isAlbum: false,
                     isInv: false,
-                    id: data[1],
                   ));
-                  max++;
+                }
+                else {
+                  if (max <= 10) {
+                    children.add(ShowIcon(
+                      artistName: data[0],
+                      coverArt: data[2],
+                      isArtist: true,
+                      isInv: false,
+                      id: data[1],
+                    ));
+                    max++;
+                  }
                 }
               }
               children.add(SizedBox(
@@ -60,7 +73,10 @@ class GetDisArtist extends StatelessWidget {
             }
             max = 1;
             if (children.length > 1) // sizedbox is added after data
-              return ScrollResults(children, "Artists", snapshot);
+              if (!settings.listBool)
+                return ScrollResults(children, "Artists", snapshot);
+              else
+                return ListEntryList(children);
             else
               return SizedBox();
           },

@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
 import '../returnedData/getDisArtist.dart';
 import '../returnedData/getDisAlbum.dart';
+import 'settingspage.dart' as settings;
 
 class DisResults extends StatelessWidget {
   final String input;
-  DisResults(this.input);
+  final String tab;
+  DisResults(this.input, this.tab);
 
   @override
   Widget build(BuildContext context) {
-    // late String name = "Artist not found";
+    List<Widget> children = [];
+
+    if (settings.listBool) {
+      if (tab == 'one')
+          children.add(GetDisArtist(input));
+      else if (tab == 'two')
+        children.add(GetDisAlbum(input));
+    }
+    else {
+      children.add(GetDisArtist(input));
+      children.add(GetDisAlbum(input));
+    }
 
     return SingleChildScrollView(
         physics: ClampingScrollPhysics(),
         child: Column(
-          children: [
-            GetDisArtist(input),
-            GetDisAlbum(input),
-          ],
+          children: children
         ),
       );
   }

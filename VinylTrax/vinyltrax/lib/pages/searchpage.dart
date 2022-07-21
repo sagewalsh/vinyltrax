@@ -14,7 +14,7 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
-enum _Tab { one, two, three, four }
+enum _Tab { one, two, three }
 
 class _SearchPageState extends State<SearchPage> {
   String? scanResult; //use this to get the barcode number of an album
@@ -23,14 +23,11 @@ class _SearchPageState extends State<SearchPage> {
   Widget output = SizedBox();
   final TextEditingController textController = TextEditingController();
   FocusNode focus = FocusNode();
+  String searchText = "";
 
-  @override
-  Widget build(BuildContext context) {
-    double toolbarHeight = 130;
-    Widget addFilterButtons = SizedBox();
+  Widget AddFilterButtons(String text) {
     if (settings.listBool) {
-      toolbarHeight = 170;
-      addFilterButtons = Container(
+      return Container(
         //Icon/List buttons and Top/Artist/Album/Song buttons
         color: Color(0xFFFFFEF9),
         child: SizedBox(
@@ -43,28 +40,28 @@ class _SearchPageState extends State<SearchPage> {
               borderColor: Color(0xFFFF5A5A),
               pressedColor: Color(0x64FF5A5A),
               children: {
+                // _Tab.one: Container(
+                //   height: 30,
+                //   width: 85,
+                //   child: Center(
+                //     child: Text("Top", style: TextStyle(fontSize: 14)),
+                //   ),
+                // ),
                 _Tab.one: Container(
-                  height: 30,
-                  width: 85,
-                  child: Center(
-                    child: Text("Top", style: TextStyle(fontSize: 14)),
-                  ),
-                ),
-                _Tab.two: Container(
                   height: 30,
                   width: 85,
                   child: Center(
                     child: Text("Artist", style: TextStyle(fontSize: 14)),
                   ),
                 ),
-                _Tab.three: Container(
+                _Tab.two: Container(
                   height: 30,
                   width: 85,
                   child: Center(
                     child: Text("Album", style: TextStyle(fontSize: 14)),
                   ),
                 ),
-                _Tab.four: Container(
+                _Tab.three: Container(
                   height: 30,
                   width: 85,
                   child: Center(
@@ -75,6 +72,7 @@ class _SearchPageState extends State<SearchPage> {
               onValueChanged: (value) {
                 setState(() {
                   _selectedTab = value as _Tab;
+                  output = DisResults(text, _selectedTab.name);
                 });
               },
               groupValue: _selectedTab,
@@ -82,7 +80,17 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
       );
-    } else
+    }
+    else
+      return SizedBox();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double toolbarHeight = 130;
+    if (settings.listBool)
+      toolbarHeight = 170;
+    else
       toolbarHeight = 130;
 
     return SafeArea(
@@ -146,7 +154,8 @@ class _SearchPageState extends State<SearchPage> {
                               ),
                               onSubmitted: (text) {
                                 setState(() {
-                                  output = DisResults(text);
+                                  this.searchText = text;
+                                  output = DisResults(text, _selectedTab.name);
                                 });
                               },
                             ),
@@ -175,7 +184,7 @@ class _SearchPageState extends State<SearchPage> {
                   ],
                 ),
               ),
-              addFilterButtons,
+              AddFilterButtons(searchText),
             ],
           ),
         ),

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:vinyltrax/returnedData/scrollResults.dart';
 import '../show_data/icon.dart';
 import '../discogs.dart';
+import '../pages/settingspage.dart' as settings;
+import '../show_data/listEntry.dart';
+import '../show_data/listEntryList.dart';
 
 class GetDisAlbum extends StatelessWidget {
   final String input;
@@ -30,16 +33,26 @@ class GetDisAlbum extends StatelessWidget {
                   snapshot.data![i + 3],
                 ];
                 var artist_album = data[0].split(" - ");
-                if (max <= 10) {
-                  children.add(ShowIcon(
-                    artistName: artist_album[0],
-                    albumName: artist_album[1],
-                    coverArt: data[3],
-                    isArtist: false,
+                if (settings.listBool) {
+                  children.add(ListEntry(
+                    name: artist_album[1],
+                    image: data[3],
+                    isAlbum: true,
                     isInv: false,
-                    id: data[1],
                   ));
-                  max++;
+                }
+                else {
+                  if (max <= 10) {
+                    children.add(ShowIcon(
+                      artistName: artist_album[0],
+                      albumName: artist_album[1],
+                      coverArt: data[3],
+                      isArtist: false,
+                      isInv: false,
+                      id: data[1],
+                    ));
+                    max++;
+                  }
                 }
               }
               children.add(SizedBox(
@@ -63,7 +76,10 @@ class GetDisAlbum extends StatelessWidget {
             }
             max = 1;
             if (children.length > 1) // sizedbox is added after data
-              return ScrollResults(children, "Albums", snapshot);
+              if (!settings.listBool)
+                return ScrollResults(children, "Albums", snapshot);
+              else
+                return ListEntryList(children);
             else
               return SizedBox();
           },
