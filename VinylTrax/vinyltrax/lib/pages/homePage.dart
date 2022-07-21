@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                 //left: MediaQuery.of(context).size.width * .27,
                 top: MediaQuery.of(context).size.height * .35,
                 child: AnimatedOpacity(
-                  duration: Duration(seconds: 3),
+                  duration: Duration(seconds: 2),
                   opacity: visible,
                   child: Column(
                     children: [
@@ -144,6 +144,21 @@ class _HomePageState extends State<HomePage> {
                                     print("new account!");
                                   }
                               ),
+                            ]
+                          )
+                      ),
+                      SizedBox(height: 15),
+                      RichText(
+                          text: TextSpan(
+                            style: TextStyle(color: Colors.blue, fontSize: 14.0),
+                            children: [
+                              TextSpan(
+                                text: "Click here for testers",
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.pushNamed(context, 'inven');
+                                  }
+                              )
                             ]
                           )
                       ),

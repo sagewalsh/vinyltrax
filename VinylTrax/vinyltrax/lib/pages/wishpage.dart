@@ -106,19 +106,19 @@ class _WishPageState extends State<WishPage> {
             GetWishAlbum(order),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            //lets me see with no issue what the sizes are
-            // print(MediaQuery.of(context).size.width);
-            // print(MediaQuery.of(context).size.height);
-            createAlertDialog(context).then((value) {
-              //when value is returned (a string) store it in the wishlist db
-              // print(value);
-            });
-          },
-          backgroundColor: Color(0xFFFF5A5A),
-          child: const Icon(Icons.add, color: Colors.white),
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     //lets me see with no issue what the sizes are
+        //     // print(MediaQuery.of(context).size.width);
+        //     // print(MediaQuery.of(context).size.height);
+        //     createAlertDialog(context).then((value) {
+        //       //when value is returned (a string) store it in the wishlist db
+        //       // print(value);
+        //     });
+        //   },
+        //   backgroundColor: Color(0xFFFF5A5A),
+        //   child: const Icon(Icons.add, color: Colors.white),
+        // ),
       ),
     );
   }

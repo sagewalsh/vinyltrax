@@ -48,6 +48,7 @@ class _InvNotes extends State<GetInvNotes> {
                               onSubmitted: (value) {
                                 Database.addNotes(
                                     albumID: widget.input[0], note: value);
+                                Navigator.pop(context);
                               },
                               decoration: InputDecoration(
                                 labelText: 'Notes',
