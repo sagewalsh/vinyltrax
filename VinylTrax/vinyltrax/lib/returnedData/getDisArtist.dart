@@ -38,8 +38,6 @@ class GetDisArtist extends StatelessWidget {
                   ));
                   max++;
                 }
-                else
-                  break;
               }
               children.add(SizedBox(
                 width: double.infinity,
@@ -60,6 +58,7 @@ class GetDisArtist extends StatelessWidget {
                 )
               ];
             }
+            max = 1;
             if (children.length > 1) // sizedbox is added after data
               return ScrollResults(children, "Artists", snapshot);
             else

@@ -66,7 +66,7 @@ class _SeeAllButtonState extends State<SeeAllButton> {
           color: Colors.black,
           onPressed: () {
             //kinda broken rn
-            Navigator.pushNamed(context, 'search');
+            Navigator.of(context).pop();
             //gonna figure this out
           },
         ),

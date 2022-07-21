@@ -36,7 +36,7 @@ class ShowIcon extends StatelessWidget {
     Widget outputAlb = SizedBox();
     Widget outputArt = SizedBox();
 
-    if (albumName.length > 18)
+    if (albumName.length > 19)
       outputAlb = buildAnimatedText(albumName, context);
     else
       outputAlb = SizedBox(
@@ -47,7 +47,7 @@ class ShowIcon extends StatelessWidget {
             textAlign: TextAlign.center,
           ));
 
-    if (artistName.length > 18)
+    if (artistName.length > 19)
       outputArt = buildAnimatedText(
           artistName.replaceAll(RegExp(r'\([0-9]+\)'), ""), context);
     else

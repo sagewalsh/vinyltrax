@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vinyltrax/returnedData/getDisTracks.dart';
 import '../returnedData/getDisArtist.dart';
 import '../returnedData/getDisAlbum.dart';
 
@@ -12,14 +11,13 @@ class DisResults extends StatelessWidget {
     // late String name = "Artist not found";
 
     return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
-      child: Column(
-        children: [
-          GetDisArtist(input),
-          GetDisAlbum(input),
-          GetDisTracks(input),
-        ],
-      ),
-    );
+        physics: ClampingScrollPhysics(),
+        child: Column(
+          children: [
+            GetDisArtist(input),
+            GetDisAlbum(input),
+          ],
+        ),
+      );
   }
 }
