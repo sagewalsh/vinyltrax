@@ -63,7 +63,7 @@ class GetDisTracks extends StatelessWidget {
             if (children.length > 1) // sizedbox is added after data
               return ScrollResults(children, "Tracks", snapshot);
             else
-              return SizedBox();
+              return Text("No tracks found!");
           },
         ));
   }

@@ -16,8 +16,11 @@ class DisResults extends StatelessWidget {
     if (settings.listBool) {
       if (tab == 'one')
         children.add(GetDisArtist(input));
-      else if (tab == 'two') children.add(GetDisAlbum(input));
-    } else {
+
+      else if (tab == 'two')
+        children.add(GetDisAlbum(input));
+    }
+    else {
       children.add(GetDisArtist(input));
       children.add(GetDisAlbum(input));
       children.add(GetDisTracks(input));

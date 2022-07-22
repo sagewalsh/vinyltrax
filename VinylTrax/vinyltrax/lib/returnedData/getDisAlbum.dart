@@ -81,7 +81,7 @@ class GetDisAlbum extends StatelessWidget {
               else
                 return ListEntryList(children);
             else
-              return SizedBox();
+              return Text("None");
           },
         ));
   }
