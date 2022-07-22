@@ -26,6 +26,11 @@ Authentication Data
 artistData
 
 Collect data about the artist including name, profile, and bandmembers
+[0]: ID
+[1]: Name
+[2]: Profile
+[3]: [ Images ]
+
 ##########################################################################
 */
   static Future<List<dynamic>> artistData(String artistID) async {
@@ -59,10 +64,16 @@ Collect data about the artist including name, profile, and bandmembers
     }
 
     var results = json.decode(content) as Map<Object?, Object?>;
+    // (results["images"] as List<dynamic>).forEach((element) {
+    //   (element as Map<Object?, Object?>).forEach((key, value) {
+    //     print(key.toString() + ": " + value.toString());
+    //   });
+    // });
     data = [
       results["id"].toString(),
       results["name"].toString(),
       results["profile"].toString(),
+      results["images"],
     ];
     if (results["members"] != null) data.add(results["members"]);
     return data;

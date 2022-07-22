@@ -14,6 +14,7 @@ class Test {
   }
 
   static void discogs() {
+    // Collection.artistData("4298621");
     // Collection.getTracks("girls");
 
     // Collection.barcode("656605321318");

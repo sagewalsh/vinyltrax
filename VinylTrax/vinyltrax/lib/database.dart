@@ -546,18 +546,26 @@ Given Album Data from Discogs in the form:
         // If the artist doesn't exist
         else {
           print("snapshot does not exist");
-          // Create new artist
-          await ref.update({
-            "Artists/${element[1]}": {
-              "UniqueID": element[1],
-              "Name": element[0],
-              "Image":
-                  "https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg",
+          String image =
+              "https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg";
+          Collection.artistData(element[1].toString()).then((value) async {
+            if (value[3] != null) {
+              image = value[3][0]["resource_url"];
             }
+
+            // Create new artist
+            await ref.update({
+              "Artists/${element[1]}": {
+                "UniqueID": element[1],
+                "Name": element[0],
+                "Image": image,
+              }
+            });
+            var snapalbum = await ref.child("Artists/${element[1]}/Albums");
+            var newAlbum = snapalbum.push();
+            newAlbum.set(albumdata[0]);
+            ;
           });
-          var snapalbum = await ref.child("Artists/${element[1]}/Albums");
-          var newAlbum = snapalbum.push();
-          newAlbum.set(albumdata[0]);
         }
       });
       return "Album Added!";
