@@ -9,60 +9,45 @@ import '../pages/nextPage.dart';
 
 class DisDetails extends StatelessWidget {
   final List<String> input;
-  DisDetails(this.input);
+  final bool isBarcode;
+  DisDetails(this.input, this.isBarcode);
 
   @override
   Widget build(BuildContext context) {
-    Future<List<dynamic>> _results = Collection.album(input[0]);
-    // late String name = "Artist not found";
-    String name = input[1];
+    Future<List<dynamic>> _results;
+    String name = "";
+    Widget title = Text("Barcode Results", style: TextStyle(color: Colors.black));
 
-    Widget title = Text(
-      name,
-      style: TextStyle(
-        color: Colors.black,
-      ),
-    );
-
-    if (name.length > 22) {
-      title = Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Marquee(
-          velocity: 20,
-          blankSpace: 30,
-          text: name,
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-      );
-    }
-
-    Widget extendedName = Center(
-      child: Text(
+    if (!isBarcode) {
+      _results = Collection.album(input[0]);
+      name = input[1];
+      title = Text(
         name,
         style: TextStyle(
-          color: Colors.grey[700],
+          color: Colors.black,
         ),
-      ),
-    );
+      );
 
-    if (name.length > 45) {
-      extendedName = Center(
-          child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 20,
-        child: Marquee(
-          velocity: 10,
-          blankSpace: 100,
-          text: name,
-          style: TextStyle(
-            color: Colors.black,
+      if (name.length > 22) {
+        title = Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Marquee(
+            velocity: 20,
+            blankSpace: 30,
+            text: name,
+            style: TextStyle(
+              color: Colors.black,
+            ),
           ),
-        ),
-      ));
+        );
+      }
+
     }
+    else
+      _results = Collection.barcode(input[0]);
+
+    // late String name = "Artist not found";
 
     Widget addBlackLine() {
       return Padding(
@@ -114,6 +99,31 @@ class DisDetails extends StatelessWidget {
                     if (snapshot.hasData) {
                       children = <Widget>[];
                       var data = snapshot.data!;
+
+                      Widget extendedName = Center(
+                        child: Text(
+                          data[1].toString(),
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                      );
+
+                      if (name.length > 45) {
+                        extendedName = Center(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 20,
+                              child: Marquee(
+                                velocity: 10,
+                                blankSpace: 100,
+                                text: data[1].toString(),
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ));
+                      }
 
                       children.add(SizedBox(
                         width: double.infinity,

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:vinyltrax/button_icons/barcode.dart';
-import 'disDetailsBarcode.dart';
+import 'disDetails.dart';
 import 'disResults.dart';
 import 'settingspage.dart' as settings;
 //import 'package:camera/camera.dart';
@@ -225,7 +225,7 @@ class _SearchPageState extends State<SearchPage> {
       this.scanResult = scanResult;
       // Under here is where you use the scan results information to do whatever you need
       var route = new MaterialPageRoute(builder: (BuildContext context) {
-        return new DisDetailsBarcode(scanResult);
+        return new DisDetails(["888837168618", ""], true);
       });
       Navigator.of(context).push(route);
       // print(scanResult);

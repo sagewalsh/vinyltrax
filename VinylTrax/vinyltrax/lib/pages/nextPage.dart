@@ -101,6 +101,6 @@ class NextPageDisAlb extends StatefulWidget {
 class _NextDisAlbState extends State<NextPageDisAlb> {
   @override
   Widget build(BuildContext context) {
-    return DisDetails(["${widget.id}", "${widget.name}"]);
+    return DisDetails(["${widget.id}", "${widget.name}"], false);
   }
 }
