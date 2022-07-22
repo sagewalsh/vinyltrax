@@ -50,11 +50,12 @@ class _WishPageState extends State<WishPage> {
         backgroundColor: Color(0xFFFFFEF9),
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: MediaQuery.of(context).size.height * 0.11, //75
+          toolbarHeight: MediaQuery.of(context).size.height * 0.14, //75
           backgroundColor: Color(0xFFFFFEF9),
           title: Column(
             children: [
               Container(
+                padding: EdgeInsets.fromLTRB(0, 15, 0, 5),
                 width: double.infinity,
                 alignment: Alignment.center,
                 child: const Text("Wishlist",

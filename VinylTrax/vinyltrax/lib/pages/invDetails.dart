@@ -274,6 +274,7 @@ class _InvDetails extends State<InvDetails> {
                             ),
                           ),
 
+                          // Underline
                           subtitle: Container(
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                             decoration: BoxDecoration(

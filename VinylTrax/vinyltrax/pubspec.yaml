@@ -102,6 +102,21 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/vinyl-record.png
+    - assets/genres/Blues.png
+    - assets/genres/Children.png
+    - assets/genres/Classical.png
+    - assets/genres/Country.png
+    - assets/genres/Electronic.png
+    - assets/genres/Funk.png
+    - assets/genres/Hip-Hop.png
+    - assets/genres/Jazz.png
+    - assets/genres/Latin.png
+    - assets/genres/Military.png
+    - assets/genres/Non-music.png
+    - assets/genres/Pop.png
+    - assets/genres/Reggae.png
+    - assets/genres/Rock.png
+    - assets/genres/StageScreen.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

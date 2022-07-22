@@ -31,11 +31,13 @@ class _StaxPageState extends State<StaxPage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           titleSpacing: 10,
-          toolbarHeight: MediaQuery.of(context).size.height * 0.24, //180
+          // toolbarHeight: MediaQuery.of(context).size.height * 0.24, //180
+          toolbarHeight: MediaQuery.of(context).size.height * 0.28, //180
           title: Column(
             children: [
               Container(
                 // Name of Page
+                padding: EdgeInsets.fromLTRB(0, 15, 0, 5),
                 width: double.infinity,
                 alignment: Alignment.center,
                 child: const Text("Stax of Trax",
