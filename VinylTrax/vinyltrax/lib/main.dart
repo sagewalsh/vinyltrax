@@ -46,7 +46,7 @@ class VinylTrax extends StatelessWidget {
     return MaterialApp(
       darkTheme: ThemeData.dark(),
       initialRoute:
-          'home', //switch to 'inven' for our sake, but for testing I'll leave as is
+          'inven', //switch to 'inven' for our sake, but for testing I'll leave as is
       routes: {
         'home': (context) => const HomePage(),
         'inven': (context) => Tabs(0),
