@@ -72,11 +72,6 @@ class InvResults extends StatelessWidget {
                               id: result[0].toString()));
                         }
                       });
-                      // for (int i = 0; i < snapshot.data!.length; i++) {
-                      //   var data = snapshot.data![i];
-
-                      //   }
-                      // }
                       children.add(SizedBox(
                         width: double.infinity,
                         height: 30,

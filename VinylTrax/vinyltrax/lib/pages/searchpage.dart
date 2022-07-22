@@ -41,13 +41,6 @@ class _SearchPageState extends State<SearchPage> {
               borderColor: Color(0xFFFF5A5A),
               pressedColor: Color(0x64FF5A5A),
               children: {
-                // _Tab.one: Container(
-                //   height: 30,
-                //   width: 85,
-                //   child: Center(
-                //     child: Text("Top", style: TextStyle(fontSize: 14)),
-                //   ),
-                // ),
                 _Tab.one: Container(
                   height: 30,
                   width: 85,

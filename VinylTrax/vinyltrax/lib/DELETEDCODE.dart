@@ -1143,3 +1143,53 @@ DATABASE.DART
 //     }
 //     return [Text("")];
 //   }
+
+// NEXT PART IS FROM WISHLIST
+// floatingActionButton: FloatingActionButton(
+//   onPressed: () {
+//     //lets me see with no issue what the sizes are
+//     // print(MediaQuery.of(context).size.width);
+//     // print(MediaQuery.of(context).size.height);
+//     createAlertDialog(context).then((value) {
+//       //when value is returned (a string) store it in the wishlist db
+//       // print(value);
+//     });
+//   },
+//   backgroundColor: Color(0xFFFF5A5A),
+//   child: const Icon(Icons.add, color: Colors.white),
+// ),
+
+// FROM SEARCHPAGE
+// _Tab.one: Container(
+//   height: 30,
+//   width: 85,
+//   child: Center(
+//     child: Text("Top", style: TextStyle(fontSize: 14)),
+//   ),
+// ),
+
+//FROM INV DETAILS
+// recognizer: TapGestureRecognizer()
+//   ..onTap = (() {
+//     var route = new MaterialPageRoute(
+//         builder: (BuildContext context) {
+//       return new NextPageDisArt(
+//           data[0][i][1].toString(),
+//           data[0][i][0].toString());
+//     });
+//     Navigator.of(context).push(route);
+//   }),
+
+//FROM HOME PAGE
+// ElevatedButton(
+//     onPressed: () {
+//       Navigator.pushNamed(context, 'inven');
+//     },
+//     child: Text("See Inventory")
+// ),
+// ElevatedButton(
+//     onPressed: () {
+//       Navigator.pushNamed(context, 'search');
+//     },
+//     child: Text("Start Search")
+// ),

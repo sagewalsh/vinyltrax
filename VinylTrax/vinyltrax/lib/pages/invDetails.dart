@@ -176,16 +176,6 @@ class _InvDetails extends State<InvDetails> {
                             text: data[0][i][0]
                                 .toString()
                                 .replaceAll(RegExp(r'\([0-9]+\)'), ""),
-                            // recognizer: TapGestureRecognizer()
-                            //   ..onTap = (() {
-                            //     var route = new MaterialPageRoute(
-                            //         builder: (BuildContext context) {
-                            //       return new NextPageDisArt(
-                            //           data[0][i][1].toString(),
-                            //           data[0][i][0].toString());
-                            //     });
-                            //     Navigator.of(context).push(route);
-                            //   }),
                             style: TextStyle(
                               color: Colors.black,
                               // decoration: TextDecoration.underline,

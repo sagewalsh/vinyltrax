@@ -60,18 +60,6 @@ class _HomePageState extends State<HomePage> {
                   opacity: visible,
                   child: Column(
                     children: [
-                      // ElevatedButton(
-                      //     onPressed: () {
-                      //       Navigator.pushNamed(context, 'inven');
-                      //     },
-                      //     child: Text("See Inventory")
-                      // ),
-                      // ElevatedButton(
-                      //     onPressed: () {
-                      //       Navigator.pushNamed(context, 'search');
-                      //     },
-                      //     child: Text("Start Search")
-                      // ),
                       Container(
                         width: width * .63,
                         height: height * .063,
