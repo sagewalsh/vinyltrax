@@ -36,7 +36,6 @@ class GetInvArtist extends StatelessWidget {
                   isInv: true,
                   format: input,
                 );
-                if (children.length % 2 != 0) temp.color = Color(0x20FF5A5A);
                 children.add(temp);
               }
             } else if (snapshot.hasError) {

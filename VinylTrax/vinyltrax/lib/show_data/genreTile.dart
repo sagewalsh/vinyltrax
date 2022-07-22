@@ -3,16 +3,17 @@ import '../returnedData/getInvGenre.dart';
 
 class GenreTile extends StatelessWidget {
   final String genreName;
-  final bool isEven;
+  // final bool isEven;
   final String format;
   final String icon;
   //const GenreTile({Key? key}) : super(key: key);
 
-  GenreTile(this.genreName, this.isEven, this.format, this.icon);
+  GenreTile(this.genreName, this.format, this.icon);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      tileColor: Color(0xFFFFFEF9),
       // Genre Icon
       leading: Container(
         padding: EdgeInsets.all(10),
@@ -60,6 +61,7 @@ class GenreTile extends StatelessWidget {
           color: Color.fromARGB(0, 0, 0, 0),
         ),
       ),
+
       visualDensity: VisualDensity(vertical: -3),
       onTap: () {
         var route = new MaterialPageRoute(

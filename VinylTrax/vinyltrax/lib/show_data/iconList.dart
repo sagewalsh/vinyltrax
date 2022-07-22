@@ -10,15 +10,19 @@ class IconList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.0765,
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.0765,
           vertical: MediaQuery.of(context).size.height * 0.0062),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Wrap(
-            direction: Axis.horizontal,
-            spacing: MediaQuery.of(context).size.width * 0.0765,
-            runSpacing: MediaQuery.of(context).size.width * 0.051,
-            children: children),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Wrap(
+              direction: Axis.horizontal,
+              spacing: MediaQuery.of(context).size.width * 0.0765,
+              runSpacing: MediaQuery.of(context).size.width * 0.051,
+              children: children),
+        ),
       ),
     );
   }

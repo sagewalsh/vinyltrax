@@ -8,7 +8,6 @@ class ListEntry extends StatelessWidget {
   final String artistID;
   final bool isInv;
   final String format;
-  Color? color = null;
   //const ShowListEntry({Key? key}) : super(key: key);
 
   ListEntry({
@@ -36,9 +35,62 @@ class ListEntry extends StatelessWidget {
     }
 
     return ListTile(
-      tileColor: color,
-      leading: avatar,
-      title: Text(name.replaceAll(RegExp(r'\([0-9]+\)'), "")),
+      tileColor: Color(0xFFFFFEF9),
+
+      // Artist Image
+      leading: Container(
+        padding: EdgeInsets.only(right: 10),
+        child: avatar,
+      ),
+
+      // Artist Name
+      title: Container(
+        padding: EdgeInsets.all(0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              name.replaceAll(RegExp(r'\([0-9]+\)'), ""),
+              textAlign: TextAlign.left,
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    width: 1,
+                    color: Color.fromARGB(86, 255, 90, 90),
+                    // color: Color.fromARGB(0, 255, 90, 90),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+
+      // Underline
+      subtitle: Container(
+        // padding: EdgeInsets.fromLTRB(100, 0, 0, 0),
+        child: Text(
+          " ",
+          style: TextStyle(fontSize: 0),
+        ),
+      ),
+
+      // Ending Space
+      trailing: Container(
+        child: SizedBox(
+          width: 30,
+        ),
+      ),
+
       onTap: () {
         var route = new MaterialPageRoute(
             builder: (BuildContext context) =>

@@ -1,4 +1,5 @@
 library my_prj.globals;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -6,13 +7,11 @@ bool listBool = false;
 bool darkTheme = false;
 
 class SettingsPage extends StatefulWidget {
-
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-
   bool valNotify3 = true;
 
   changeTheme(bool newVal) {
@@ -39,9 +38,11 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Scaffold(
         backgroundColor: Color(0xFFFFFDF6),
         appBar: AppBar(
+          toolbarHeight: MediaQuery.of(context).size.height * 0.1, //180
           automaticallyImplyLeading: false,
           backgroundColor: Color(0xFFFFFDF6),
           title: Container(
+            padding: EdgeInsets.fromLTRB(0, 20, 0, 5),
             width: double.infinity,
             alignment: Alignment.center,
             child: const Text(
@@ -65,8 +66,11 @@ class _SettingsPageState extends State<SettingsPage> {
                 SizedBox(width: MediaQuery.of(context).size.width * 0.025),
                 Text("Account", style: TextStyle(fontSize: 22))
               ]),
-              Divider(height: MediaQuery.of(context).size.height * 0.0124, thickness: 1), //10
-              SizedBox(height: MediaQuery.of(context).size.height * 0.0124), //10
+              Divider(
+                  height: MediaQuery.of(context).size.height * 0.0124,
+                  thickness: 1), //10
+              SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.0124), //10
               accountOptions(context, "Account Details"),
               accountOptions(context, "Delete Account"),
               accountOptions(context, "Log Out"),
@@ -79,8 +83,11 @@ class _SettingsPageState extends State<SettingsPage> {
                 SizedBox(width: MediaQuery.of(context).size.width * 0.025), //10
                 Text("Others", style: TextStyle(fontSize: 22))
               ]),
-              Divider(height: MediaQuery.of(context).size.height * 0.0124, thickness: 1), //10
-              SizedBox(height: MediaQuery.of(context).size.height * 0.0124), //10
+              Divider(
+                  height: MediaQuery.of(context).size.height * 0.0124,
+                  thickness: 1), //10
+              SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.0124), //10
               otherOptions("Dark Theme", darkTheme, changeTheme),
               otherOptions("List Mode", listBool, listMode),
               otherOptions("Test3", valNotify3, changeFunct3),
