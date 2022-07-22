@@ -171,7 +171,7 @@ class _SearchPageState extends State<SearchPage> {
                       onPressed: () {
                         Navigator.pushNamed(context, 'camera');
                       },
-                      icon: Icon(Icons.camera_alt_sharp),
+                      icon: Icon(Icons.photo_camera),
                       iconSize: MediaQuery.of(context).size.width * 0.1,
                     ),
                     IconButton(
@@ -180,7 +180,7 @@ class _SearchPageState extends State<SearchPage> {
                       constraints: BoxConstraints(),
                       onPressed: scanBarcode,
                       icon: Icon(BarcodeIcon.barcode),
-                      iconSize: MediaQuery.of(context).size.width * 0.094,
+                      iconSize: MediaQuery.of(context).size.width * 0.085,
                     ),
                   ],
                 ),
@@ -223,11 +223,15 @@ class _SearchPageState extends State<SearchPage> {
     if (!mounted) return;
     setState(() {
       this.scanResult = scanResult;
-      // Under here is where you use the scan results information to do whatever you need
-      var route = new MaterialPageRoute(builder: (BuildContext context) {
-        return new DisDetails(["888837168618", ""], true);
-      });
-      Navigator.of(context).push(route);
+      if (scanResult == "-1")
+        Navigator.pushNamed(context, 'search');
+      else {
+        // Under here is where you use the scan results information to do whatever you need
+        var route = new MaterialPageRoute(builder: (BuildContext context) {
+          return new DisDetails([scanResult, ""], true);
+        });
+        Navigator.of(context).push(route);
+      }
       // print(scanResult);
     });
   }

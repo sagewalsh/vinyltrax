@@ -32,6 +32,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     FocusNode focus = FocusNode();
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
 
     return SafeArea(
       child: Scaffold(
@@ -40,8 +42,8 @@ class _HomePageState extends State<HomePage> {
           alignment: AlignmentDirectional.centerStart,
           children: [
             AnimatedPositioned(
-              left: MediaQuery.of(context).size.width * .27,
-              top: move ? MediaQuery.of(context).size.height * .25 : MediaQuery.of(context).size.height * .45,
+              left: width * .25,
+              top: move ? height * .25 : height * .45,
               duration: Duration(seconds: 1),
               child: AnimatedOpacity(
                 opacity: opacity,
@@ -50,9 +52,9 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Positioned(
-                left: MediaQuery.of(context).size.width * .19,
+                left: width * .19,
                 //left: MediaQuery.of(context).size.width * .27,
-                top: MediaQuery.of(context).size.height * .35,
+                top: height * .35,
                 child: AnimatedOpacity(
                   duration: Duration(seconds: 2),
                   opacity: visible,
@@ -71,8 +73,8 @@ class _HomePageState extends State<HomePage> {
                       //     child: Text("Start Search")
                       // ),
                       Container(
-                        width: 250,
-                        height: 50,
+                        width: width * .63,
+                        height: height * .063,
                         child: TextField(
                           decoration: InputDecoration(
                             labelText: "Username",
@@ -101,8 +103,8 @@ class _HomePageState extends State<HomePage> {
                       ),
                       SizedBox(height: 10),
                       Container(
-                        width: 250,
-                        height: 50,
+                        width: width * .63,
+                        height: height * .063,
                         child: TextField(
                           obscureText: true,
                           decoration: InputDecoration(
@@ -167,10 +169,10 @@ class _HomePageState extends State<HomePage> {
                 )
             ),
             Positioned(
-              top: 600,
+              top: height * .745,
                 child: Image.asset(
                   "assets/vinyl-record.png",
-                  width: MediaQuery.of(context).size.width,
+                  width: width,
                 )
             ),
           ]
