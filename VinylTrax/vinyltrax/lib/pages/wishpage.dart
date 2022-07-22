@@ -101,11 +101,14 @@ class _WishPageState extends State<WishPage> {
             ],
           ),
         ),
-        body: Column(
-          children: [
-            //Listview for inventory
-            GetWishAlbum(order),
-          ],
+        body: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              //Listview for inventory
+              GetWishAlbum(order),
+            ],
+          ),
         ),
         // floatingActionButton: FloatingActionButton(
         //   onPressed: () {

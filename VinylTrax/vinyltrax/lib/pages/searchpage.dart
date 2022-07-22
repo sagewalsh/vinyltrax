@@ -162,7 +162,7 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                           )),
                       width: MediaQuery.of(context).size.width * 0.70,
-                      height: MediaQuery.of(context).size.height * 0.09,
+                      height: MediaQuery.of(context).size.height * 0.1,
                     ),
                     IconButton(
                       color: Colors.black,
