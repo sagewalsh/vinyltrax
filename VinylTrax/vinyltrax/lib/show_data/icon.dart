@@ -20,10 +20,12 @@ class ShowIcon extends StatelessWidget {
     required this.id,
   });
 
-  Widget buildAnimatedText(String text, BuildContext context) => Container(
+
+  Widget buildAnimatedText(String text, double fontSize, BuildContext context) => Container(
         height: MediaQuery.of(context).size.height * .0262, //18
         width: MediaQuery.of(context).size.width * .38, //150
         child: Marquee(
+          style: TextStyle(fontSize: fontSize),
           pauseAfterRound: Duration(seconds: 1),
           text: text,
           blankSpace: MediaQuery.of(context).size.width * .0765,
@@ -33,29 +35,32 @@ class ShowIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double fontSize = MediaQuery.of(context).size.width * 0.036;
     Widget outputAlb = SizedBox();
     Widget outputArt = SizedBox();
 
     if (albumName.length > 19)
-      outputAlb = buildAnimatedText(albumName, context);
+      outputAlb = buildAnimatedText(albumName, fontSize, context);
     else
       outputAlb = SizedBox(
           width: MediaQuery.of(context).size.width * .38,
           height: MediaQuery.of(context).size.height * .0262,
           child: Text(
             albumName,
+            style: TextStyle(fontSize: fontSize),
             textAlign: TextAlign.center,
           ));
 
     if (artistName.length > 19)
       outputArt = buildAnimatedText(
-          artistName.replaceAll(RegExp(r'\([0-9]+\)'), ""), context);
+          artistName.replaceAll(RegExp(r'\([0-9]+\)'), ""), fontSize, context);
     else
       outputArt = SizedBox(
           width: MediaQuery.of(context).size.width * .38,
           height: MediaQuery.of(context).size.height * .0262,
           child: Text(
             artistName.replaceAll(RegExp(r'\([0-9]+\)'), ""),
+            style: TextStyle(fontSize: fontSize),
             textAlign: TextAlign.center,
           ));
 
@@ -82,8 +87,8 @@ class ShowIcon extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        // print(MediaQuery.of(context).size.width);
-        // print(MediaQuery.of(context).size.height);
+        print(MediaQuery.of(context).size.width);
+        print(MediaQuery.of(context).size.height);
         // print(albumName);
         var route = new MaterialPageRoute(builder: (BuildContext context) {
           if (isInv) {

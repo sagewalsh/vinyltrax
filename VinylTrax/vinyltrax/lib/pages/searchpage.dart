@@ -81,11 +81,11 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    double toolbarHeight = 130;
+    double toolbarHeight = 110;
     if (settings.listBool)
-      toolbarHeight = 170;
+      toolbarHeight = 160;
     else
-      toolbarHeight = 130;
+      toolbarHeight = 110;
 
     return SafeArea(
       child: Scaffold(
@@ -98,6 +98,7 @@ class _SearchPageState extends State<SearchPage> {
           title: Column(
             children: [
               Container(
+                padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.014),
                 width: double.infinity,
                 alignment: Alignment.center,
                 child: const Text("Search Page",
@@ -107,10 +108,13 @@ class _SearchPageState extends State<SearchPage> {
                 color: Color(0xFFFFFEF9),
                 //Search bar, Camera button, and barcode scanning button
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
+                      width: MediaQuery.of(context).size.width * 0.70,
+                      height: MediaQuery.of(context).size.height * 0.1,
                       child: Padding(
-                          padding: EdgeInsets.all(8.0),
+                          padding: EdgeInsets.only(left: 8, right: 8),
                           child: Container(
                             // color: Color.fromARGB(255, 244, 244, 244),
                             decoration: BoxDecoration(
@@ -118,11 +122,14 @@ class _SearchPageState extends State<SearchPage> {
                               color: Color(0xFFFFFEF9),
                             ),
                             child: TextField(
+                              textAlignVertical: TextAlignVertical.center,
                               controller: textController,
                               focusNode: focus,
                               onTap: () =>
                                   FocusScope.of(context).requestFocus(focus),
                               decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(left: 15),
+                                isCollapsed: true,
                                 labelText: "Search",
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.never,
@@ -131,6 +138,7 @@ class _SearchPageState extends State<SearchPage> {
                                   color: Color(0xFFFF5A5A),
                                 ),
                                 border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 focusedBorder: OutlineInputBorder(
@@ -154,12 +162,10 @@ class _SearchPageState extends State<SearchPage> {
                               },
                             ),
                           )),
-                      width: MediaQuery.of(context).size.width * 0.70,
-                      height: MediaQuery.of(context).size.height * 0.1,
                     ),
                     IconButton(
                       color: Colors.black,
-                      padding: EdgeInsets.all(5),
+                      padding: EdgeInsets.fromLTRB(5, 0, 5, MediaQuery.of(context).size.height * 0.032),
                       constraints: BoxConstraints(),
                       onPressed: () {
                         Navigator.pushNamed(context, 'camera');
@@ -169,7 +175,7 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                     IconButton(
                       color: Colors.black,
-                      padding: EdgeInsets.all(5),
+                      padding: EdgeInsets.fromLTRB(5, 0, 5, MediaQuery.of(context).size.height * 0.032),
                       constraints: BoxConstraints(),
                       onPressed: scanBarcode,
                       icon: Icon(BarcodeIcon.barcode),

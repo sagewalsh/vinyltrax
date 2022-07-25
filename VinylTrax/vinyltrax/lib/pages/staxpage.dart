@@ -55,10 +55,13 @@ class _StaxPageState extends State<StaxPage> {
                         color: Color(0xFFFFFEF9),
                       ),
                       child: TextField(
+                        textAlignVertical: TextAlignVertical.center,
                         controller: textController,
                         focusNode: focus,
                         onTap: () => FocusScope.of(context).requestFocus(focus),
                         decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(left: 15),
+                          isCollapsed: true,
                           labelText: "Search Inventory",
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           hintText: "Artist, Album, Song",
