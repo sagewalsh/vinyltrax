@@ -39,6 +39,7 @@ class GetDisAlbum extends StatelessWidget {
                     image: data[3],
                     isAlbum: true,
                     isInv: false,
+                    id: data[1],
                   ));
                 }
                 else {
