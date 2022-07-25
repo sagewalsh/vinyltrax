@@ -10,7 +10,8 @@ class Test {
   }
 
   static void spotify() {
-    // Spotify.search("Halsey");
+    // Spotify.authenticate();
+    Spotify.search("Halsey");
   }
 
   static void discogs() {
@@ -117,10 +118,10 @@ class Test {
 
   static void database() {
     // Database.pressingData(albumID: "139512361", numLP: "2", colorLP: "Colored");
-    Database.addNotes(
-        albumID: "139512361",
-        note:
-            "This is Clairo's second album, but she released several EPs before her first.");
+    // Database.addNotes(
+    //     albumID: "139512361",
+    //     note:
+    //         "This is Clairo's second album, but she released several EPs before her first.");
 
     // Database.getNotes("139512361").then((value) {
     //   value += " I really like this album.";

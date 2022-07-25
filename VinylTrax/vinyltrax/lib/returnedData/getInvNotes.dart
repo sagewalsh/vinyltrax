@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vinyltrax/pages/invDetails.dart';
 import '../database.dart';
 
 class GetInvNotes extends StatefulWidget {
@@ -40,25 +41,51 @@ class _InvNotes extends State<GetInvNotes> {
                                 fontSize: 16,
                               ),
                             ),
-                            content: TextField(
+                            content: EditableText(
                               controller: _controller,
-                              keyboardType: TextInputType.text,
-                              maxLines: null,
-                              maxLength: 500,
+                              focusNode: FocusNode(),
+                              cursorColor: Colors.black,
+                              backgroundCursorColor: Colors.green,
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
                               onSubmitted: (value) {
                                 Database.addNotes(
                                     albumID: widget.input[0], note: value);
                                 Navigator.pop(context);
+                                Navigator.pop(context);
+                                var route = new MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return InvDetails(widget.input);
+                                });
+                                Navigator.of(context).push(route);
                               },
-                              decoration: InputDecoration(
-                                labelText: 'Notes',
-                                border: const OutlineInputBorder(),
-                                suffixIcon: IconButton(
-                                  onPressed: _controller.clear,
-                                  icon: Icon(Icons.clear),
-                                ),
-                              ),
                             ),
+                            // TextField(
+                            //   controller: _controller,
+                            //   keyboardType: TextInputType.text,
+                            //   maxLines: null,
+                            //   maxLength: 500,
+                            //   onSubmitted: (value) {
+                            //     Database.addNotes(
+                            //         albumID: widget.input[0], note: value);
+                            //     Navigator.pop(context);
+                            //     Navigator.pop(context);
+                            //     var route = new MaterialPageRoute(
+                            //         builder: (BuildContext context) {
+                            //       return InvDetails(widget.input);
+                            //     });
+                            //     Navigator.of(context).push(route);
+                            //   },
+                            //   decoration: InputDecoration(
+                            //     labelText: 'Notes',
+                            //     border: const OutlineInputBorder(),
+                            //     suffixIcon: IconButton(
+                            //       onPressed: _controller.clear,
+                            //       icon: Icon(Icons.clear),
+                            //     ),
+                            //   ),
+                            // ),
                           );
                         });
                   },

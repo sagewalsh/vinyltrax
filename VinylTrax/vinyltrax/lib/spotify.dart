@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import './const.dart';
 
@@ -10,70 +11,219 @@ import 'package:http/http.dart' as http;
 
 class Spotify extends ChangeNotifier {
   static final Logger _log = Logger('Spotify');
+  static final Codec<String, String> stringToBase64 = utf8.fuse(base64);
 
 /*
 ##########################################################################
-Authentication Data
+Spotify Client Credentials
 ##########################################################################
 */
-  static Map<String, String> get _headers => <String, String>{
-        'Authorization': 'Basic ' +
-            '${Const.SPOTIFY_CLIENT_ID}' +
-            ':' +
-            '${Const.SPOTIFY_CLIENT_SECRET}'
-      };
+  static Future<String> authenticate() async {
+    // cURL
+    var url = 'https://accounts.spotify.com/api/token';
+    var headers = {
+      'Authorization': 'Basic ' +
+          stringToBase64.encode(
+              '${Const.SPOTIFY_CLIENT_ID}:${Const.SPOTIFY_CLIENT_SECRET}'),
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+    var form = {'grant_type': 'client_credentials'};
 
-  static void search(String query) async {
-    final authenticate =
-        'https://accounts.spotify.com/authorize?client_id=${Const.SPOTIFY_CLIENT_ID}&redirect_uri=https://sagewalsh.github.io/vinyltrax/&response_type=code&status=s';
+    // POST
     late var content;
-
     try {
       content = await http.post(
-        Uri.parse(authenticate),
-        // headers: _headers,
-        // body: _headers,
+        Uri.parse(url),
+        headers: headers,
+        body: form,
       );
-    } catch (error) {
-      print(error);
-      return;
+    } catch (e) {
+      log(e.toString());
     }
 
-    print(content.body);
-    // final code = Uri.parse(content).queryParameters['code'];
-    // print(Uri.parse(content));
-    // print(code);
-    // Randomize given state and check that the state remains the same when returned for security purposes
-    // var code =
-    //     'AQCpj79CqK6FjPrh0EptTreHgFm56ZtUCtY8tAhUSjBzQPhYjoy1jmbdYikLI_D3FNVVSOyBmJaEqeVHiCOblSRud9QSV86nXU_cYP1eBXFoQGj2yHNczfQidTMa2Dm_-rgqNdCBR2kGv-V8YXUpfo6Zi_mRtjWncajnTJMq-aDYX55Rv8942_Fr';
-    // final tokens = getAuthTokens(code, "https://sagewalsh.github.io/vinyltrax");
-    print("authorization complete");
+    // Token
+    return json.decode(content.body)["access_token"];
   }
 
 /*
 ##########################################################################
-getAuthTokens
+Search
 
-get authentication tokens from spotify using client_id credentials
+given a search query returns artists, albums, and tracks related
+to the query.
+
+{
+  albums: [
+    [0]: id
+    [1]: album name
+    [2]: [artist name, artist id]
+    [3]: coverart
+  , ... ]
+
+  singles: [
+    [0]: id
+    [1]: single / EP name
+    [2]: [artist name, artist id]
+    [3]: coverart
+  ]
+
+  artists: [
+    [0]: id
+    [1]: name
+    [2]: image
+  , ... ]
+
+  tracks: [
+    [0]: id
+    [1]: name
+    [2]: [artist name, artist id]
+    [3]: album id
+    [4]: album coverart
+  ]
+}
 ##########################################################################
 */
-  static Future<JsonCodec> getAuthTokens(
-      String code, String redirectUri) async {
-    final response = await http.post(
-      Uri.parse('https://accounts.spotify.com/api/token'),
-      body: {
-        'grant_type': 'authorization_code',
-        'code': code,
-        'redirect_uri': redirectUri,
-      },
-      headers: _headers,
-    );
+  static Future<Map<String, dynamic>> search(String query) async {
+    Map<String, dynamic> results = {};
 
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else {
-      throw Exception(
-          'Failed to load token with status code ${response.statusCode}');
-    }
+    // ###################################################################
+    // authenticate
+    // ###################################################################
+    authenticate().then((token) async {
+      var _headers = {
+        "Authorization": "Bearer $token",
+        "Content-Type": 'application/json',
+      };
+      late var content;
+
+      // ###################################################################
+      // GET Spotify search query
+      // ###################################################################
+      try {
+        content = await http.get(
+          Uri.parse(
+              'https://api.spotify.com/v1/search?q=$query&type=artist,album,track&limit=50'),
+          headers: _headers,
+        );
+      } catch (e) {
+        print(e);
+      }
+
+      // ###################################################################
+      // Break down json results
+      // ###################################################################
+      var body = json.decode(content.body);
+      var albums = body["albums"]["items"] as List<dynamic>;
+      var artists = body["artists"]["items"] as List<dynamic>;
+      var tracks = body["tracks"]["items"] as List<dynamic>;
+
+      // ###################################################################
+      // Collect Albums, Singles and EPs
+      // ###################################################################
+      List<dynamic> list = [];
+      List<dynamic> singles = [];
+      albums.forEach((element) {
+        var data = element as Map<String, dynamic>;
+
+        // Default image value if no image provided
+        String image;
+        (data["images"] as List<dynamic>).isEmpty
+            ? image =
+                'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
+            : image = data["images"][0]["url"];
+
+        // Compiled artists
+        var art = [];
+        (data["artists"] as List<dynamic>).forEach((element) {
+          var temp = element as Map<String, dynamic>;
+          art.add([
+            temp["name"],
+            temp["id"],
+          ]);
+        });
+
+        // Full Album
+        if (data["album_type"] == "single") {
+          singles.add([
+            data["id"],
+            data["name"],
+            art,
+            image,
+          ]);
+        }
+        // Single or EP
+        else if (data["album_type"] == "album") {
+          list.add([
+            data["id"],
+            data["name"],
+            art,
+            image,
+          ]);
+        }
+      });
+
+      results["albums"] = list;
+      results["singles"] = singles;
+
+      // ###################################################################
+      // Collect Artists
+      // ###################################################################
+      list = [];
+      artists.forEach((element) {
+        var data = element as Map<String, dynamic>;
+
+        // Default image value if no image provided
+        String image;
+        (data["images"] as List<dynamic>).isEmpty
+            ? image =
+                'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
+            : image = data["images"][0]["url"];
+
+        // Artist data
+        list.add([
+          data["id"],
+          data["name"],
+          image,
+        ]);
+      });
+
+      results["artists"] = list;
+
+      // ###################################################################
+      // Collect Tracks
+      // ###################################################################
+      list = [];
+      tracks.forEach((element) {
+        var data = element as Map<String, dynamic>;
+
+        // Default image value if no image provided
+        String image;
+        (data["album"]["images"] as List<dynamic>).isEmpty
+            ? image =
+                'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
+            : image = data["album"]["images"][0]["url"];
+
+        // Compiled artists
+        var art = [];
+        (data["artists"] as List<dynamic>).forEach((element) {
+          var temp = element as Map<String, dynamic>;
+          art.add([
+            temp["name"],
+            temp["id"],
+          ]);
+        });
+
+        list.add([
+          data["id"],
+          data["name"],
+          art,
+          data["album"]["id"],
+          image,
+        ]);
+      });
+
+      results["tracks"] = list;
+    });
+    return results;
   }
 }
