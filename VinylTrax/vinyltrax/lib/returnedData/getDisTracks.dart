@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:vinyltrax/returnedData/scrollResults.dart';
 import '../show_data/icon.dart';
 import '../discogs.dart';
+import '../pages/settingspage.dart' as settings;
+import '../show_data/listEntry.dart';
+import '../show_data/listEntryList.dart';
 
 class GetDisTracks extends StatelessWidget {
   final String input;
@@ -29,16 +32,27 @@ class GetDisTracks extends StatelessWidget {
                   snapshot.data![i + 2],
                 ];
                 var artist_album = data[0].split(" - ");
-                if (max <= 10) {
-                  children.add(ShowIcon(
-                    artistName: artist_album[0],
-                    albumName: artist_album[1],
-                    coverArt: data[2],
-                    isArtist: false,
+                if (settings.listBool) {
+                  children.add(ListEntry(
+                    name: artist_album[1],
+                    image: data[2],
+                    isAlbum: true,
                     isInv: false,
                     id: data[1],
                   ));
-                  max++;
+                }
+                else {
+                  if (max <= 10) {
+                    children.add(ShowIcon(
+                      artistName: artist_album[0],
+                      albumName: artist_album[1],
+                      coverArt: data[2],
+                      isArtist: false,
+                      isInv: false,
+                      id: data[1],
+                    ));
+                    max++;
+                  }
                 }
               }
               children.add(SizedBox(
@@ -60,8 +74,12 @@ class GetDisTracks extends StatelessWidget {
                 )
               ];
             }
-            if (children.length > 1) // sizedbox is added after data
-              return ScrollResults(children, "Tracks", snapshot);
+            if (children.length > 1) { // sizedbox is added after data
+              if (!settings.listBool)
+                return ScrollResults(children, "Tracks", snapshot);
+              else
+                return ListEntryList(children);
+            }
             else
               return Text("No tracks found!");
           },
