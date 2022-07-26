@@ -45,6 +45,9 @@ class SpotifyResults extends StatelessWidget {
 
                       var map = snapshot.data!;
 
+                      // #######################################################
+                      // Collect Albums
+                      // #######################################################
                       var data = map["albums"];
                       (data as List<dynamic>).forEach((element) {
                         element = element as List<dynamic>;
@@ -69,6 +72,9 @@ class SpotifyResults extends StatelessWidget {
                         ));
                       });
 
+                      // #######################################################
+                      // Collect Singles and EPs
+                      // #######################################################
                       data = map["singles"];
                       (data as List<dynamic>).forEach((element) {
                         element = element as List<dynamic>;
@@ -93,6 +99,9 @@ class SpotifyResults extends StatelessWidget {
                         ));
                       });
 
+                      // #######################################################
+                      // Collect Tracks
+                      // #######################################################
                       data = map["tracks"];
                       (data as List<dynamic>).forEach((element) {
                         element = element as List<dynamic>;
@@ -117,6 +126,9 @@ class SpotifyResults extends StatelessWidget {
                         ));
                       });
 
+                      // #######################################################
+                      // Collect Artists
+                      // #######################################################
                       data = map["artists"];
                       (data as List<dynamic>).forEach((element) {
                         artists.add(ShowIcon(
@@ -128,22 +140,38 @@ class SpotifyResults extends StatelessWidget {
                         ));
                       });
 
+                      // #######################################################
+                      // Output each collection in its own horizontal section
+                      // #######################################################
                       children.add(SpotScroll(artists, "Artists", snapshot));
                       children.add(SpotScroll(albums, "Albums", snapshot));
                       children
                           .add(SpotScroll(singles, "Singles & EPs", snapshot));
                       children.add(SpotScroll(tracks, "Tracks", snapshot));
 
+                      // #######################################################
+                      // Space
+                      // #######################################################
                       children.add(SizedBox(
                         width: double.infinity,
                         height: 30,
                         child: const Text(""),
                       ));
-                    } else if (snapshot.hasError) {
+                    }
+
+                    // #######################################################
+                    // Error
+                    // #######################################################
+                    else if (snapshot.hasError) {
                       children = <Widget>[
                         Icon(Icons.error),
                       ];
-                    } else {
+                    }
+
+                    // #######################################################
+                    // In progress
+                    // #######################################################
+                    else {
                       children = <Widget>[
                         SizedBox(
                           width:

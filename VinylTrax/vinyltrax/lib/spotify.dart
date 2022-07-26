@@ -47,6 +47,111 @@ Spotify Client Credentials
 
 /*
 ##########################################################################
+albumsBy
+
+given an artistID, returns a list of albums from that
+artist.
+{
+  "album name": [
+    0: id
+    1: name
+    2: artists
+    3: coverart
+  ]
+}
+##########################################################################
+*/
+  static Future<Map<String, List<dynamic>>> albumsBy(String artistid) async {
+    Map<String, List<dynamic>> albums = {};
+    // ###################################################################
+    // authenticate
+    // ###################################################################
+    var url = 'https://accounts.spotify.com/api/token';
+    var headers = {
+      'Authorization': 'Basic ' +
+          stringToBase64.encode(
+              '${Const.SPOTIFY_CLIENT_ID}:${Const.SPOTIFY_CLIENT_SECRET}'),
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+    var form = {'grant_type': 'client_credentials'};
+
+    // POST
+    late var content;
+    try {
+      content = await http.post(
+        Uri.parse(url),
+        headers: headers,
+        body: form,
+      );
+    } catch (e) {
+      log(e.toString());
+    }
+
+    // Token
+    var token = json.decode(content.body)["access_token"];
+
+    var _headers = {
+      "Authorization": "Bearer $token",
+      "Content-Type": 'application/json',
+    };
+    // ###################################################################
+    // GET Spotify search query
+    // ###################################################################
+    try {
+      content = await http.get(
+        Uri.parse(
+            'https://api.spotify.com/v1/artists/$artistid/albums?limit=50&include_groups=album'),
+        headers: _headers,
+      );
+    } catch (e) {
+      print(e);
+    }
+
+    // ###################################################################
+    // Break down json results
+    // ###################################################################
+    var body = json.decode(content.body);
+    var data = body["items"] as List<dynamic>;
+
+    // ###################################################################
+    // Collect Album data
+    // ###################################################################
+    data.forEach((record) {
+      // Don't repeat albums
+      if (!albums.containsKey(record["name"])) {
+        // Default image if one is not provided
+        String image;
+        (record["images"] as List<dynamic>).isEmpty
+            ? image =
+                'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
+            : image = record["images"][0]["url"];
+
+        // Compiled artists
+        var art = [];
+        (record["artists"] as List<dynamic>).forEach((element) {
+          var temp = element as Map<String, dynamic>;
+          art.add([
+            temp["name"],
+            temp["id"],
+          ]);
+        });
+        // [0]: id
+        // [1]: album name
+        // [2]: [artist name, artist id]
+        // [3]: coverart
+        albums[record["name"].toString()] = [
+          record["id"],
+          record["name"],
+          art,
+          image,
+        ];
+      }
+    });
+    return albums;
+  }
+
+/*
+##########################################################################
 Search
 
 given a search query returns artists, albums, and tracks related
@@ -209,6 +314,7 @@ to the query.
       ]);
     });
 
+    print(list[0][0]);
     results["artists"] = list;
 
     // ###################################################################
@@ -218,7 +324,7 @@ to the query.
     tracks.forEach((element) {
       var data = element as Map<String, dynamic>;
 
-      if (data["album"]["album_type"] == "album") {
+      if (data["album"]["album_type"] != "single") {
         // Default image value if no image provided
         String image;
         (data["album"]["images"] as List<dynamic>).isEmpty

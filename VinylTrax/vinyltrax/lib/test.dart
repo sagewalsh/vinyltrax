@@ -11,7 +11,10 @@ class Test {
 
   static void spotify() {
     // Spotify.authenticate();
-    Spotify.search("Halsey");
+    // Spotify.search("Halsey");
+    Spotify.albumsBy("26VFTg2z8YR0cCuwLzESi2");
+
+    // Halsey: 26VFTg2z8YR0cCuwLzESi2
   }
 
   static void discogs() {
