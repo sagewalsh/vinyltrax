@@ -120,9 +120,9 @@ artist.
       }
     });
 
-    albums.forEach((key, value) {
-      print(value.toString());
-    });
+    // albums.forEach((key, value) {
+    //   print(value.toString());
+    // });
 
     return albums;
   }
@@ -255,9 +255,9 @@ given an albumID, returns a list of album details:
       image,
     ];
 
-    details.forEach((element) {
-      print(element);
-    });
+    // details.forEach((element) {
+    //   print(element);
+    // });
 
     return details;
   }
@@ -471,9 +471,9 @@ to the query.
     });
     results["tracks"] = list;
 
-    results.forEach((key, value) {
-      print(key.toString() + ": " + value.toString());
-    });
+    // results.forEach((key, value) {
+    //   print(key.toString() + ": " + value.toString());
+    // });
     return results;
   }
 }
