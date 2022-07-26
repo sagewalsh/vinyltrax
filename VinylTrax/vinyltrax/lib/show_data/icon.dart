@@ -20,8 +20,9 @@ class ShowIcon extends StatelessWidget {
     required this.id,
   });
 
-
-  Widget buildAnimatedText(String text, double fontSize, BuildContext context) => Container(
+  Widget buildAnimatedText(
+          String text, double fontSize, BuildContext context) =>
+      Container(
         height: MediaQuery.of(context).size.height * .0262, //18
         width: MediaQuery.of(context).size.width * .38, //150
         child: Marquee(
@@ -98,9 +99,9 @@ class ShowIcon extends StatelessWidget {
               return new NextPageAlbum(id, albumName);
           } else {
             if (isArtist)
-              return new NextPageDisArt(id, artistName);
+              return new NextPageSpotArt(id, artistName);
             else
-              return new NextPageDisAlb(id, albumName);
+              return new NextPageSpotAlb(id, albumName);
           }
         });
         Navigator.of(context).push(route);

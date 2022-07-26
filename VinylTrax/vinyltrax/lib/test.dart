@@ -24,6 +24,10 @@ class Test {
     // Collection.artistData("4298621");
     // Collection.getTracks("girls");
 
+    // Collection.barcode("602547866813").then((value) => Spotify.barcode(
+    //     value[0][0][0].toString().replaceAll(RegExp(r'\([0-9]+\)'), ""),
+    //     value[1].toString()));
+    // Spotify.search("untitled");
     // Collection.barcode("656605321318");
     // Collection.barcode("634457649019");
     // Collection.barcode("888837168618");

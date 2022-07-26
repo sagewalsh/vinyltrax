@@ -267,6 +267,58 @@ given an albumID, returns a list of album details:
 barcode 
 ##########################################################################
 */
+  static void barcode(String artist, String album) async {
+    // ###################################################################
+    // authenticate
+    // ###################################################################
+    var url = 'https://accounts.spotify.com/api/token';
+    var headers = {
+      'Authorization': 'Basic ' +
+          stringToBase64.encode(
+              '${Const.SPOTIFY_CLIENT_ID}:${Const.SPOTIFY_CLIENT_SECRET}'),
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+    var form = {'grant_type': 'client_credentials'};
+
+    // POST
+    late var content;
+    try {
+      content = await http.post(
+        Uri.parse(url),
+        headers: headers,
+        body: form,
+      );
+    } catch (e) {
+      log(e.toString());
+    }
+
+    // Token
+    var token = json.decode(content.body)["access_token"];
+
+    var _headers = {
+      "Authorization": "Bearer $token",
+      "Content-Type": 'application/json',
+    };
+
+    // ###################################################################
+    // GET Spotify search query
+    // ###################################################################
+    try {
+      content = await http.get(
+        Uri.parse(
+            'https://api.spotify.com/v1/search?q=$album+artist:$artist&type=album&limit=1'),
+        headers: _headers,
+      );
+    } catch (e) {
+      print(e);
+    }
+    // print(json.decode(content.body));
+    var body =
+        json.decode(content.body)["albums"]["items"][0] as Map<String, dynamic>;
+    body.forEach((key, value) {
+      print(key.toString() + ": " + value.toString());
+    });
+  }
 
 /*
 ##########################################################################

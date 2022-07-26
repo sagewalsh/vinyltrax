@@ -326,9 +326,9 @@ Returns a list of album details:
 
     // print(" ");
     // print(uri);
-    // details.forEach((element) {
-    //   print(element);
-    // });
+    details.forEach((element) {
+      print(element);
+    });
     // print(results["master_id"]);
     return details;
   }
