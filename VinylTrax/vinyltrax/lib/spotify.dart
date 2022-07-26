@@ -15,38 +15,6 @@ class Spotify extends ChangeNotifier {
 
 /*
 ##########################################################################
-Spotify Client Credentials
-##########################################################################
-*/
-  static Future<String> authenticate() async {
-    // cURL
-    var url = 'https://accounts.spotify.com/api/token';
-    var headers = {
-      'Authorization': 'Basic ' +
-          stringToBase64.encode(
-              '${Const.SPOTIFY_CLIENT_ID}:${Const.SPOTIFY_CLIENT_SECRET}'),
-      'Content-Type': 'application/x-www-form-urlencoded',
-    };
-    var form = {'grant_type': 'client_credentials'};
-
-    // POST
-    late var content;
-    try {
-      content = await http.post(
-        Uri.parse(url),
-        headers: headers,
-        body: form,
-      );
-    } catch (e) {
-      log(e.toString());
-    }
-
-    // Token
-    return json.decode(content.body)["access_token"];
-  }
-
-/*
-##########################################################################
 albumsBy
 
 given an artistID, returns a list of albums from that
@@ -100,7 +68,7 @@ artist.
     try {
       content = await http.get(
         Uri.parse(
-            'https://api.spotify.com/v1/artists/$artistid/albums?limit=50&include_groups=album'),
+            'https://api.spotify.com/v1/artists/$artistid/albums?limit=50&include_groups=album,compilation'),
         headers: _headers,
       );
     } catch (e) {
@@ -112,6 +80,10 @@ artist.
     // ###################################################################
     var body = json.decode(content.body);
     var data = body["items"] as List<dynamic>;
+
+    // (data[0] as Map<String, dynamic>).forEach((key, value) {
+    //   print(key.toString() + ": " + value.toString());
+    // });
 
     // ###################################################################
     // Collect Album data
@@ -147,8 +119,154 @@ artist.
         ];
       }
     });
+
+    albums.forEach((key, value) {
+      print(value.toString());
+    });
+
     return albums;
   }
+
+/*
+##########################################################################
+album
+
+given an albumID, returns a list of album details:
+[0]: [ [ artist name, artist id ] ]
+[1]: album name
+[2]: [ genres ]
+[3]: year
+[4]: [ [ track name, duration, [ feat. artist name, feat. artist id ] ] ]
+[5]: coverart
+##########################################################################
+*/
+  static Future<List<dynamic>> album(String albumid) async {
+    List<dynamic> details = [];
+
+    // ###################################################################
+    // authenticate
+    // ###################################################################
+    var url = 'https://accounts.spotify.com/api/token';
+    var headers = {
+      'Authorization': 'Basic ' +
+          stringToBase64.encode(
+              '${Const.SPOTIFY_CLIENT_ID}:${Const.SPOTIFY_CLIENT_SECRET}'),
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+    var form = {'grant_type': 'client_credentials'};
+
+    // POST
+    late var content;
+    try {
+      content = await http.post(
+        Uri.parse(url),
+        headers: headers,
+        body: form,
+      );
+    } catch (e) {
+      log(e.toString());
+    }
+
+    // Token
+    var token = json.decode(content.body)["access_token"];
+
+    var _headers = {
+      "Authorization": "Bearer $token",
+      "Content-Type": 'application/json',
+    };
+
+    // ###################################################################
+    // GET Spotify search query
+    // ###################################################################
+    try {
+      content = await http.get(
+        Uri.parse('https://api.spotify.com/v1/albums/$albumid?'),
+        headers: _headers,
+      );
+    } catch (e) {
+      print(e);
+    }
+    var body = json.decode(content.body);
+
+    // PRINT DATA
+    // (body as Map<String, dynamic>).forEach((key, value) {
+    //   print(key.toString() + ": " + value.toString());
+    // });
+
+    // Compiled artists
+    var art = [];
+    var id = [];
+    (body["artists"] as List<dynamic>).forEach((element) {
+      art.add([
+        element["name"],
+        element["id"],
+      ]);
+      id.add(element["id"]);
+    });
+
+    // Compiled tracks
+    var tracks = [];
+    (body["tracks"]["items"] as List<dynamic>).forEach((element) {
+      // calculate track duration
+      var time = "";
+      if (element["duration_ms"] != null) {
+        element["duration_ms"] > 3599999
+            ? time = Duration(milliseconds: element["duration_ms"])
+                .toString()
+                .split(".")[0]
+            : time = new Duration(milliseconds: element["duration_ms"])
+                .toString()
+                .substring(2, 7);
+      }
+
+      // compile track details
+      var data = [
+        element["name"],
+        time,
+        [],
+      ];
+
+      // compile featured artists
+      (element["artists"] as List<dynamic>).forEach((artist) {
+        if (!id.contains(artist["id"])) {
+          (data[2] as List<dynamic>).add([
+            artist["name"],
+            artist["id"],
+          ]);
+        }
+      });
+
+      tracks.add(data);
+    });
+
+    // Default image value if no image provided
+    String image;
+    (body["images"] as List<dynamic>).isEmpty
+        ? image =
+            'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
+        : image = body["images"][0]["url"];
+
+    details = [
+      art,
+      body["name"],
+      body["genres"],
+      body["release_date"].toString().split("-")[0],
+      tracks,
+      image,
+    ];
+
+    details.forEach((element) {
+      print(element);
+    });
+
+    return details;
+  }
+
+/*
+##########################################################################
+barcode 
+##########################################################################
+*/
 
 /*
 ##########################################################################
@@ -314,7 +432,7 @@ to the query.
       ]);
     });
 
-    print(list[0][0]);
+    // print(list[0][0]);
     results["artists"] = list;
 
     // ###################################################################
@@ -353,10 +471,9 @@ to the query.
     });
     results["tracks"] = list;
 
-    // results.forEach((key, value) {
-    //   print(key.toString() + ": " + value.toString());
-    // });
-    // print(results.length);
+    results.forEach((key, value) {
+      print(key.toString() + ": " + value.toString());
+    });
     return results;
   }
 }

@@ -172,7 +172,7 @@ Returns a list of album details:
 [3]: year
 [4]: [ [ trackName, duration ], ... ]
 [5]: [ [ contributorName, role, id ], ... ]
-[6]: coverArt
+[6]: coverart
 ##########################################################################
 */
   static Future<List<dynamic>> album(String albumID) async {

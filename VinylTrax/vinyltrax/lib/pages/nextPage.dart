@@ -4,6 +4,8 @@ import 'invDetails.dart';
 import 'invAlbumsBy.dart';
 import 'disAlbumsBy.dart';
 import 'disDetails.dart';
+import 'spotAlbumsBy.dart';
+import 'spotDetails.dart';
 
 /*
 ##########################################################################
@@ -102,5 +104,45 @@ class _NextDisAlbState extends State<NextPageDisAlb> {
   @override
   Widget build(BuildContext context) {
     return DisDetails(["${widget.id}", "${widget.name}"], false);
+  }
+}
+
+/*
+##########################################################################
+Clicked an Artist in Spotify
+##########################################################################
+*/
+class NextPageSpotArt extends StatefulWidget {
+  final String id, name;
+
+  NextPageSpotArt(this.id, this.name);
+  @override
+  State<NextPageSpotArt> createState() => _NextSpotArtState();
+}
+
+class _NextSpotArtState extends State<NextPageSpotArt> {
+  @override
+  Widget build(BuildContext context) {
+    return SpotAlbumsBy(["${widget.id}", "${widget.name}"]);
+  }
+}
+
+/*
+##########################################################################
+Clicked an Album in Spotify
+##########################################################################
+*/
+class NextPageSpotAlb extends StatefulWidget {
+  final String id, name;
+
+  NextPageSpotAlb(this.id, this.name);
+  @override
+  State<NextPageSpotAlb> createState() => _NextSpotAlbState();
+}
+
+class _NextSpotAlbState extends State<NextPageSpotAlb> {
+  @override
+  Widget build(BuildContext context) {
+    return SpotDetails(["${widget.id}", "${widget.name}"]);
   }
 }

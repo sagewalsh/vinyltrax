@@ -11,8 +11,11 @@ class Test {
 
   static void spotify() {
     // Spotify.authenticate();
-    // Spotify.search("Halsey");
-    Spotify.albumsBy("26VFTg2z8YR0cCuwLzESi2");
+    // Spotify.search("closer");
+    // Spotify.albumsBy("26VFTg2z8YR0cCuwLzESi2");
+    // Spotify.album("1hlapolkCnQLMgKcKNVCuc"); // Manic
+    // Spotify.album("2XWgddMTqKo8YGj02MK4X2"); // For My Parents
+    // Spotify.album("5IZ3qMtXKXAleWBxB7vWen"); // Closer
 
     // Halsey: 26VFTg2z8YR0cCuwLzESi2
   }
