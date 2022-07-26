@@ -40,7 +40,7 @@ class GetWishAlbum extends StatelessWidget {
                   albumName: element[1].toString(),
                   coverArt: element[3].toString(),
                   isArtist: false,
-                  isInv: false,
+                  location: 'wish',
                   id: element[0].toString(),
                 ));
               });

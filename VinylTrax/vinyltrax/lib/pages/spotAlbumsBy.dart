@@ -65,7 +65,7 @@ class SpotAlbumsBy extends StatelessWidget {
                           albumName: value[1],
                           coverArt: value[3],
                           isArtist: false,
-                          isInv: false,
+                          location: 'spotify',
                           id: value[0],
                         ));
                       });

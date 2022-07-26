@@ -65,7 +65,7 @@ class SpotifyResults extends StatelessWidget {
                         albums.add(ShowIcon(
                           coverArt: element[3],
                           isArtist: false,
-                          isInv: false,
+                          location: 'spotify',
                           id: element[0],
                           albumName: element[1],
                           artistName: artName,
@@ -92,7 +92,7 @@ class SpotifyResults extends StatelessWidget {
                         singles.add(ShowIcon(
                           coverArt: element[3],
                           isArtist: false,
-                          isInv: false,
+                          location: 'spotify',
                           id: element[0],
                           albumName: element[1],
                           artistName: artName,
@@ -119,7 +119,7 @@ class SpotifyResults extends StatelessWidget {
                         tracks.add(ShowIcon(
                           coverArt: element[4],
                           isArtist: false,
-                          isInv: false,
+                          location: 'spotify',
                           id: element[3],
                           albumName: element[1],
                           artistName: artName,
@@ -134,7 +134,7 @@ class SpotifyResults extends StatelessWidget {
                         artists.add(ShowIcon(
                           coverArt: element[2],
                           isArtist: true,
-                          isInv: false,
+                          location: 'spotify',
                           id: element[0],
                           artistName: element[1],
                         ));

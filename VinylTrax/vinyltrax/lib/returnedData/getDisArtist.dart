@@ -46,7 +46,7 @@ class GetDisArtist extends StatelessWidget {
                       artistName: data[0],
                       coverArt: data[2],
                       isArtist: true,
-                      isInv: false,
+                      location: 'discogs',
                       id: data[1],
                     ));
                     max++;

@@ -66,7 +66,7 @@ class DisAlbumsBy extends StatelessWidget {
                           albumName: value[0],
                           coverArt: value[3],
                           isArtist: false,
-                          isInv: false,
+                          location: 'discogs',
                           id: value[1],
                         ));
                       });

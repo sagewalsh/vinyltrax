@@ -64,7 +64,7 @@ class InvAlbumsBy extends StatelessWidget {
                         albumName: element[1].toString(),
                         coverArt: element[3].toString(),
                         isArtist: false,
-                        isInv: true,
+                        location: 'inv',
                         id: element[0].toString(),
                       ));
                     });

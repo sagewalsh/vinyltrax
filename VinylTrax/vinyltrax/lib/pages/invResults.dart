@@ -48,7 +48,7 @@ class InvResults extends StatelessWidget {
                             artistName: result[0].toString(),
                             coverArt: result[2].toString(),
                             isArtist: true,
-                            isInv: true,
+                            location: 'inv',
                             id: result[1].toString(),
                           ));
                         }
@@ -68,7 +68,7 @@ class InvResults extends StatelessWidget {
                               albumName: result[1].toString(),
                               coverArt: result[3].toString(),
                               isArtist: false,
-                              isInv: true,
+                              location: 'inv',
                               id: result[0].toString()));
                         }
                       });

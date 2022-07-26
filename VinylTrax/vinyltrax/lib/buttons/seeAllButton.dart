@@ -34,7 +34,7 @@ class _SeeAllButtonState extends State<SeeAllButton> {
             albumName: artist_album[1],
             coverArt: data[3],
             isArtist: false,
-            isInv: false,
+            location: 'discogs',
             id: data[1],
           ));
         }
@@ -51,7 +51,7 @@ class _SeeAllButtonState extends State<SeeAllButton> {
           artistName: data[0],
           coverArt: data[2],
           isArtist: true,
-          isInv: false,
+          location: 'discogs',
           id: data[1],
         ));
       }

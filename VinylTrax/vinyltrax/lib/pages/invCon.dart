@@ -70,7 +70,7 @@ class InvCon extends StatelessWidget {
                           albumName: artist_album[1],
                           coverArt: data[2],
                           isArtist: false,
-                          isInv: false,
+                          location: 'inv',
                           id: data[1],
                         ));
                         max++;

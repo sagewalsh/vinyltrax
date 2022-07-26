@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import '../pages/nextPage.dart';
 import 'package:marquee/marquee.dart';
 
+// For location:
+// 'inv' - Inventory
+// 'wish' - Wishlist
+// 'discogs' - Discogs
+// 'spotify' - Spotify
 class ShowIcon extends StatelessWidget {
   final String coverArt;
   final String artistName;
   final String albumName;
   final bool isArtist;
-  final bool isInv;
+  final String location;
   final String id;
 
   //const AlbumIcon({Key? key}) : super(key: key);
@@ -16,7 +21,7 @@ class ShowIcon extends StatelessWidget {
     this.albumName = "",
     required this.coverArt,
     required this.isArtist,
-    required this.isInv,
+    required this.location,
     required this.id,
   });
 
@@ -92,12 +97,12 @@ class ShowIcon extends StatelessWidget {
         print(MediaQuery.of(context).size.height);
         // print(albumName);
         var route = new MaterialPageRoute(builder: (BuildContext context) {
-          if (isInv) {
+          if (location == 'inv') {
             if (isArtist)
               return new NextPageArtist(id: id, name: artistName);
             else
               return new NextPageAlbum(id, albumName);
-          } else {
+          } else { //(location == 'discogs')
             if (isArtist)
               return new NextPageDisArt(id, artistName);
             else
