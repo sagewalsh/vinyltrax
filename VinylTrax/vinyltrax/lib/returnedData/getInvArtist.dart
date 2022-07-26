@@ -33,7 +33,7 @@ class GetInvArtist extends StatelessWidget {
                   image: snapshot.data![i + 2].toString(),
                   isAlbum: false,
                   id: snapshot.data![i + 1].toString(),
-                  isInv: true,
+                  location: 'inv',
                   format: input,
                 );
                 children.add(temp);

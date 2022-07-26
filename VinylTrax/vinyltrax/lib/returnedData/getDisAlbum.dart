@@ -38,7 +38,7 @@ class GetDisAlbum extends StatelessWidget {
                     name: artist_album[1],
                     image: data[3],
                     isAlbum: true,
-                    isInv: false,
+                    location: 'discogs',
                     id: data[1],
                   ));
                 }

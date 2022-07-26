@@ -37,7 +37,7 @@ class GetDisTracks extends StatelessWidget {
                     name: artist_album[1],
                     image: data[2],
                     isAlbum: true,
-                    isInv: false,
+                    location: 'discogs',
                     id: data[1],
                   ));
                 }
