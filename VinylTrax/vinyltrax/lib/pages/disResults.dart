@@ -19,6 +19,9 @@ class DisResults extends StatelessWidget {
 
       else if (tab == 'two')
         children.add(GetDisAlbum(input));
+
+      else
+        children.add(GetDisTracks(input));
     }
     else {
       children.add(GetDisArtist(input));

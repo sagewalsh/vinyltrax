@@ -5,7 +5,7 @@ class ListEntry extends StatelessWidget {
   final String name;
   final String image;
   final bool isAlbum;
-  final String artistID;
+  final String id;
   final bool isInv;
   final String format;
   //const ShowListEntry({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class ListEntry extends StatelessWidget {
     required this.name,
     required this.image,
     required this.isAlbum,
-    this.artistID = "",
+    this.id = "",
     required this.isInv,
     this.format = "",
   });
@@ -92,9 +92,19 @@ class ListEntry extends StatelessWidget {
       ),
 
       onTap: () {
-        var route = new MaterialPageRoute(
-            builder: (BuildContext context) =>
-                new NextPageArtist(id: artistID, name: name, format: format));
+        var route = new MaterialPageRoute(builder: (BuildContext context) {
+          if (isInv) {
+            if (!isAlbum)
+              return new NextPageArtist(id: id, name: name);
+            else
+              return new NextPageAlbum(id, name);
+          } else {
+            if (!isAlbum)
+              return new NextPageDisArt(id, name);
+            else
+              return new NextPageDisAlb(id, name);
+          }
+        });
         Navigator.of(context).push(route);
       },
     );

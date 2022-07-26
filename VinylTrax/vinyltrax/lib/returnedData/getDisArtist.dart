@@ -37,6 +37,7 @@ class GetDisArtist extends StatelessWidget {
                     image: data[2],
                     isAlbum: false,
                     isInv: false,
+                    id: data[1],
                   ));
                 }
                 else {
