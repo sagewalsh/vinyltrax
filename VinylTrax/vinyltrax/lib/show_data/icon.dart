@@ -99,9 +99,9 @@ class ShowIcon extends StatelessWidget {
               return new NextPageAlbum(id, albumName);
           } else {
             if (isArtist)
-              return new NextPageSpotArt(id, artistName);
+              return new NextPageDisArt(id, artistName);
             else
-              return new NextPageSpotAlb(id, albumName);
+              return new NextPageDisAlb(id, albumName);
           }
         });
         Navigator.of(context).push(route);
