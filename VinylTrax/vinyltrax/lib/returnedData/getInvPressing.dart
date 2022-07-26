@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../buttons/pressDataPopUp.dart';
 import '../database.dart';
 
 class GetInvPressing extends StatefulWidget {
@@ -73,37 +74,48 @@ class _InvPress extends State<GetInvPressing> {
               child: const Text(""),
             ));
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        width: 1,
-                        color: Color(0xFFFF5A5A),
-                      )),
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: children,
+          return GestureDetector(
+            onTap: () {
+              print("this works");
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return PressDataPopUp();
+                  }
+              );
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          width: 1,
+                          color: Color(0xFFFF5A5A),
+                        )),
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: children,
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              // Spacing after the Pressing Data
-              SizedBox(
-                width: double.infinity,
-                height: 30,
-                child: const Text(""),
-              ),
-            ],
+                // Spacing after the Pressing Data
+                SizedBox(
+                  width: double.infinity,
+                  height: 30,
+                  child: const Text(""),
+                ),
+              ],
+            ),
           );
         },
       ),
