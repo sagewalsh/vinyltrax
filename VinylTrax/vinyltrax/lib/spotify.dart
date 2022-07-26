@@ -89,113 +89,136 @@ to the query.
     // ###################################################################
     // authenticate
     // ###################################################################
-    authenticate().then((token) async {
-      var _headers = {
-        "Authorization": "Bearer $token",
-        "Content-Type": 'application/json',
-      };
-      late var content;
+    var url = 'https://accounts.spotify.com/api/token';
+    var headers = {
+      'Authorization': 'Basic ' +
+          stringToBase64.encode(
+              '${Const.SPOTIFY_CLIENT_ID}:${Const.SPOTIFY_CLIENT_SECRET}'),
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+    var form = {'grant_type': 'client_credentials'};
 
-      // ###################################################################
-      // GET Spotify search query
-      // ###################################################################
-      try {
-        content = await http.get(
-          Uri.parse(
-              'https://api.spotify.com/v1/search?q=$query&type=artist,album,track&limit=50'),
-          headers: _headers,
-        );
-      } catch (e) {
-        print(e);
-      }
+    // POST
+    late var content;
+    try {
+      content = await http.post(
+        Uri.parse(url),
+        headers: headers,
+        body: form,
+      );
+    } catch (e) {
+      log(e.toString());
+    }
 
-      // ###################################################################
-      // Break down json results
-      // ###################################################################
-      var body = json.decode(content.body);
-      var albums = body["albums"]["items"] as List<dynamic>;
-      var artists = body["artists"]["items"] as List<dynamic>;
-      var tracks = body["tracks"]["items"] as List<dynamic>;
+    // Token
+    var token = json.decode(content.body)["access_token"];
 
-      // ###################################################################
-      // Collect Albums, Singles and EPs
-      // ###################################################################
-      List<dynamic> list = [];
-      List<dynamic> singles = [];
-      albums.forEach((element) {
-        var data = element as Map<String, dynamic>;
+    var _headers = {
+      "Authorization": "Bearer $token",
+      "Content-Type": 'application/json',
+    };
 
-        // Default image value if no image provided
-        String image;
-        (data["images"] as List<dynamic>).isEmpty
-            ? image =
-                'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
-            : image = data["images"][0]["url"];
+    // ###################################################################
+    // GET Spotify search query
+    // ###################################################################
+    try {
+      content = await http.get(
+        Uri.parse(
+            'https://api.spotify.com/v1/search?q=$query&type=artist,album,track&limit=50'),
+        headers: _headers,
+      );
+    } catch (e) {
+      print(e);
+    }
 
-        // Compiled artists
-        var art = [];
-        (data["artists"] as List<dynamic>).forEach((element) {
-          var temp = element as Map<String, dynamic>;
-          art.add([
-            temp["name"],
-            temp["id"],
-          ]);
-        });
+    // ###################################################################
+    // Break down json results
+    // ###################################################################
+    var body = json.decode(content.body);
+    var albums = body["albums"]["items"] as List<dynamic>;
+    var artists = body["artists"]["items"] as List<dynamic>;
+    var tracks = body["tracks"]["items"] as List<dynamic>;
 
-        // Full Album
-        if (data["album_type"] == "single") {
-          singles.add([
-            data["id"],
-            data["name"],
-            art,
-            image,
-          ]);
-        }
-        // Single or EP
-        else if (data["album_type"] == "album") {
-          list.add([
-            data["id"],
-            data["name"],
-            art,
-            image,
-          ]);
-        }
-      });
+    // ###################################################################
+    // Collect Albums, Singles and EPs
+    // ###################################################################
+    List<dynamic> list = [];
+    List<dynamic> singles = [];
+    albums.forEach((element) {
+      var data = element as Map<String, dynamic>;
 
-      results["albums"] = list;
-      results["singles"] = singles;
+      // Default image value if no image provided
+      String image;
+      (data["images"] as List<dynamic>).isEmpty
+          ? image =
+              'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
+          : image = data["images"][0]["url"];
 
-      // ###################################################################
-      // Collect Artists
-      // ###################################################################
-      list = [];
-      artists.forEach((element) {
-        var data = element as Map<String, dynamic>;
-
-        // Default image value if no image provided
-        String image;
-        (data["images"] as List<dynamic>).isEmpty
-            ? image =
-                'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
-            : image = data["images"][0]["url"];
-
-        // Artist data
-        list.add([
-          data["id"],
-          data["name"],
-          image,
+      // Compiled artists
+      var art = [];
+      (data["artists"] as List<dynamic>).forEach((element) {
+        var temp = element as Map<String, dynamic>;
+        art.add([
+          temp["name"],
+          temp["id"],
         ]);
       });
 
-      results["artists"] = list;
+      // Full Album
+      if (data["album_type"] == "single") {
+        singles.add([
+          data["id"],
+          data["name"],
+          art,
+          image,
+        ]);
+      }
+      // Single or EP
+      else if (data["album_type"] == "album") {
+        list.add([
+          data["id"],
+          data["name"],
+          art,
+          image,
+        ]);
+      }
+    });
 
-      // ###################################################################
-      // Collect Tracks
-      // ###################################################################
-      list = [];
-      tracks.forEach((element) {
-        var data = element as Map<String, dynamic>;
+    results["albums"] = list;
+    results["singles"] = singles;
 
+    // ###################################################################
+    // Collect Artists
+    // ###################################################################
+    list = [];
+    artists.forEach((element) {
+      var data = element as Map<String, dynamic>;
+
+      // Default image value if no image provided
+      String image;
+      (data["images"] as List<dynamic>).isEmpty
+          ? image =
+              'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
+          : image = data["images"][0]["url"];
+
+      // Artist data
+      list.add([
+        data["id"],
+        data["name"],
+        image,
+      ]);
+    });
+
+    results["artists"] = list;
+
+    // ###################################################################
+    // Collect Tracks
+    // ###################################################################
+    list = [];
+    tracks.forEach((element) {
+      var data = element as Map<String, dynamic>;
+
+      if (data["album"]["album_type"] == "album") {
         // Default image value if no image provided
         String image;
         (data["album"]["images"] as List<dynamic>).isEmpty
@@ -220,10 +243,14 @@ to the query.
           data["album"]["id"],
           image,
         ]);
-      });
-
-      results["tracks"] = list;
+      }
     });
+    results["tracks"] = list;
+
+    // results.forEach((key, value) {
+    //   print(key.toString() + ": " + value.toString());
+    // });
+    // print(results.length);
     return results;
   }
 }

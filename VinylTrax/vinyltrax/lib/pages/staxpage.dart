@@ -4,6 +4,7 @@ import 'package:vinyltrax/show_data/genreList.dart';
 import 'package:vinyltrax/returnedData/getInvAlbum.dart';
 import '../returnedData/getInvArtist.dart';
 import 'invResults.dart';
+import 'spotifyResults.dart';
 
 enum _Order { artist, albums, genre }
 
@@ -87,7 +88,8 @@ class _StaxPageState extends State<StaxPage> {
                         onSubmitted: (text) {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            return InvResults(text);
+                            // return InvResults(text);
+                            return SpotifyResults(text);
                           }));
                         },
                       ),
