@@ -121,6 +121,7 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
             ),
             TextButton(
                 onPressed: () {
+                  if (year == "Pick a year") year = "";
                   Database.updatePressData(
                     albumID: widget.albumid,
                     numLP: numLP,
