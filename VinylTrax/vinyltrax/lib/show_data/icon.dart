@@ -102,11 +102,16 @@ class ShowIcon extends StatelessWidget {
               return new NextPageArtist(id: id, name: artistName);
             else
               return new NextPageAlbum(id, albumName);
-          } else { //(location == 'discogs')
+          } else if (location == 'discogs') {
             if (isArtist)
               return new NextPageDisArt(id, artistName);
             else
               return new NextPageDisAlb(id, albumName);
+          } else {
+            if (isArtist)
+              return new NextPageSpotArt(id, artistName);
+            else
+              return new NextPageSpotAlb(id, albumName);
           }
         });
         Navigator.of(context).push(route);

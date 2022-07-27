@@ -17,20 +17,17 @@ class Spotify extends ChangeNotifier {
 ##########################################################################
 albumsBy
 
-given an artistID, returns a list of albums from that
-artist.
-{
-  "album name": [
-    0: id
-    1: name
-    2: artists
-    3: coverart
-  ]
-}
+returns:
+[0]: id
+[1]: name
+[2]: artists
+[3]: coverart
+[4]: year
 ##########################################################################
 */
   static Future<Map<String, List<dynamic>>> albumsBy(String artistid) async {
-    Map<String, List<dynamic>> albums = {};
+    Map<String, List<dynamic>> returning = {};
+    Map<String, List<dynamic>> albums;
     // ###################################################################
     // authenticate
     // ###################################################################
@@ -62,8 +59,9 @@ artist.
       "Authorization": "Bearer $token",
       "Content-Type": 'application/json',
     };
+
     // ###################################################################
-    // GET Spotify search query
+    // GET albums and compilations
     // ###################################################################
     try {
       content = await http.get(
@@ -81,13 +79,14 @@ artist.
     var body = json.decode(content.body);
     var data = body["items"] as List<dynamic>;
 
-    // (data[0] as Map<String, dynamic>).forEach((key, value) {
-    //   print(key.toString() + ": " + value.toString());
-    // });
+    (data[0] as Map<String, dynamic>).forEach((key, value) {
+      print(key.toString() + ": " + value.toString());
+    });
 
     // ###################################################################
     // Collect Album data
     // ###################################################################
+    albums = {};
     data.forEach((record) {
       // Don't repeat albums
       if (!albums.containsKey(record["name"])) {
@@ -107,24 +106,151 @@ artist.
             temp["id"],
           ]);
         });
-        // [0]: id
-        // [1]: album name
-        // [2]: [artist name, artist id]
-        // [3]: coverart
+
+        // album data
         albums[record["name"].toString()] = [
           record["id"],
           record["name"],
           art,
           image,
+          record["release_date"].toString().split("-")[0],
         ];
       }
     });
 
-    // albums.forEach((key, value) {
-    //   print(value.toString());
-    // });
+    var val = albums.values.toList();
+    val.sort(((a, b) => a[4].toString().compareTo(b[4].toString())));
+    returning["albums"] = val;
 
-    return albums;
+    // ###################################################################
+    // GET singles
+    // ###################################################################
+    try {
+      content = await http.get(
+        Uri.parse(
+            'https://api.spotify.com/v1/artists/$artistid/albums?limit=50&include_groups=single'),
+        headers: _headers,
+      );
+    } catch (e) {
+      print(e);
+    }
+
+    // ###################################################################
+    // Break down json results
+    // ###################################################################
+    body = json.decode(content.body);
+    data = body["items"] as List<dynamic>;
+
+    (data[0] as Map<String, dynamic>).forEach((key, value) {
+      print(key.toString() + ": " + value.toString());
+    });
+
+    // ###################################################################
+    // Collect Album data
+    // ###################################################################
+    albums = {};
+    data.forEach((record) {
+      // Don't repeat albums
+      if (!albums.containsKey(record["name"])) {
+        // Default image if one is not provided
+        String image;
+        (record["images"] as List<dynamic>).isEmpty
+            ? image =
+                'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
+            : image = record["images"][0]["url"];
+
+        // Compiled artists
+        var art = [];
+        (record["artists"] as List<dynamic>).forEach((element) {
+          var temp = element as Map<String, dynamic>;
+          art.add([
+            temp["name"],
+            temp["id"],
+          ]);
+        });
+
+        // album data
+        albums[record["name"].toString()] = [
+          record["id"],
+          record["name"],
+          art,
+          image,
+          record["release_date"].toString().split("-")[0],
+        ];
+      }
+    });
+
+    val = albums.values.toList();
+    val.sort(((a, b) => a[4].toString().compareTo(b[4].toString())));
+    returning["singles"] = val;
+
+    // ###################################################################
+    // GET albums artist appears on
+    // ###################################################################
+    try {
+      content = await http.get(
+        Uri.parse(
+            'https://api.spotify.com/v1/artists/$artistid/albums?limit=50&include_groups=appears_on'),
+        headers: _headers,
+      );
+    } catch (e) {
+      print(e);
+    }
+
+    // ###################################################################
+    // Break down json results
+    // ###################################################################
+    body = json.decode(content.body);
+    data = body["items"] as List<dynamic>;
+
+    (data[0] as Map<String, dynamic>).forEach((key, value) {
+      print(key.toString() + ": " + value.toString());
+    });
+
+    // ###################################################################
+    // Collect Album data
+    // ###################################################################
+    albums = {};
+    data.forEach((record) {
+      // Don't repeat albums
+      if (!albums.containsKey(record["name"])) {
+        // Default image if one is not provided
+        String image;
+        (record["images"] as List<dynamic>).isEmpty
+            ? image =
+                'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
+            : image = record["images"][0]["url"];
+
+        // Compiled artists
+        var art = [];
+        (record["artists"] as List<dynamic>).forEach((element) {
+          var temp = element as Map<String, dynamic>;
+          art.add([
+            temp["name"],
+            temp["id"],
+          ]);
+        });
+
+        // album data
+        albums[record["name"].toString()] = [
+          record["id"],
+          record["name"],
+          art,
+          image,
+          record["release_date"].toString().split("-")[0],
+        ];
+      }
+    });
+
+    val = albums.values.toList();
+    val.sort(((a, b) => a[4].toString().compareTo(b[4].toString())));
+    returning["appears"] = val;
+
+    returning.forEach((key, value) {
+      print(key.toString() + ": " + value.toString());
+    });
+
+    return returning;
   }
 
 /*

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/show_data/iconList.dart';
+import 'package:vinyltrax/show_data/listEntry.dart';
 import '../show_data/icon.dart';
 import 'dart:developer';
 import '../spotify.dart';
 import '../returnedData/spotScroll.dart';
+import '../pages/settingspage.dart' as settings;
 
 class SpotifyResults extends StatelessWidget {
   final String input;
@@ -19,6 +21,7 @@ class SpotifyResults extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Color(0xFFFFFEF9),
         appBar: AppBar(
+          toolbarHeight: MediaQuery.of(context).size.height * 0.10, //180
           backgroundColor: Color(0xFFFFFEF9),
           leading: BackButton(color: Colors.black),
           title: Text(
@@ -44,110 +47,175 @@ class SpotifyResults extends StatelessWidget {
                       List<Widget> tracks = [];
 
                       var map = snapshot.data!;
+                      int max = 1;
+
+                      // #######################################################
+                      // Collect Artists
+                      // #######################################################
+                      var data = map["artists"];
+                      var list = data as List<dynamic>;
+                      if (settings.listBool)
+                        list.forEach((element) {
+                          children.add(ListEntry(
+                            name: element[1],
+                            image: element[2],
+                            isAlbum: false,
+                            location: "spotify",
+                            id: element[0],
+                          ));
+                        });
+                      // icon view
+                      else
+                        for (int i = 0; i < list.length && i <= 10; i++) {
+                          var element = list[i];
+
+                          artists.add(ShowIcon(
+                            coverArt: element[2],
+                            isArtist: true,
+                            location: 'spotify',
+                            id: element[0],
+                            artistName: element[1],
+                          ));
+                        }
 
                       // #######################################################
                       // Collect Albums
                       // #######################################################
-                      var data = map["albums"];
-                      (data as List<dynamic>).forEach((element) {
-                        element = element as List<dynamic>;
+                      data = map["albums"];
+                      list = data as List<dynamic>;
 
-                        String artName = "";
-                        for (int i = 0;
-                            i < (element[2] as List<dynamic>).length;
-                            i++) {
-                          artName += element[2][i][0].toString();
-                          if (i + 1 < (element[2] as List<dynamic>).length) {
-                            artName += " & ";
+                      // list view
+                      if (settings.listBool)
+                        list.forEach((element) {
+                          children.add(
+                            ListEntry(
+                              name: element[1],
+                              image: element[3],
+                              isAlbum: true,
+                              location: "spotify",
+                              id: element[0],
+                            ),
+                          );
+                        });
+
+                      // icon view
+                      else
+                        for (int i = 0; i < list.length && i <= 10; i++) {
+                          var element = list[i];
+
+                          // Compile artist names
+                          String artName = "";
+                          for (int i = 0;
+                              i < (element[2] as List<dynamic>).length;
+                              i++) {
+                            artName += element[2][i][0].toString();
+                            if (i + 1 < (element[2] as List<dynamic>).length) {
+                              artName += " & ";
+                            }
+                          }
+                          if (max <= 10) {
+                            albums.add(ShowIcon(
+                              coverArt: element[3],
+                              isArtist: false,
+                              location: 'spotify',
+                              id: element[0],
+                              albumName: element[1],
+                              artistName: artName,
+                            ));
+                            max++;
                           }
                         }
-
-                        albums.add(ShowIcon(
-                          coverArt: element[3],
-                          isArtist: false,
-                          location: 'spotify',
-                          id: element[0],
-                          albumName: element[1],
-                          artistName: artName,
-                        ));
-                      });
-
                       // #######################################################
                       // Collect Singles and EPs
                       // #######################################################
                       data = map["singles"];
-                      (data as List<dynamic>).forEach((element) {
-                        element = element as List<dynamic>;
+                      list = data as List<dynamic>;
 
-                        String artName = "";
-                        for (int i = 0;
-                            i < (element[2] as List<dynamic>).length;
-                            i++) {
-                          artName += element[2][i][0].toString();
-                          if (i + 1 < (element[2] as List<dynamic>).length) {
-                            artName += " & ";
+                      if (settings.listBool)
+                        list.forEach((element) {
+                          children.add(ListEntry(
+                            name: element[1],
+                            image: element[3],
+                            isAlbum: true,
+                            location: "spotify",
+                            id: element[0],
+                          ));
+                        });
+
+                      // icon view
+                      else
+                        for (int i = 0; i < list.length && i <= 10; i++) {
+                          var element = list[i];
+                          String artName = "";
+                          for (int i = 0;
+                              i < (element[2] as List<dynamic>).length;
+                              i++) {
+                            artName += element[2][i][0].toString();
+                            if (i + 1 < (element[2] as List<dynamic>).length) {
+                              artName += " & ";
+                            }
                           }
+                          singles.add(ShowIcon(
+                            coverArt: element[3],
+                            isArtist: false,
+                            location: 'spotify',
+                            id: element[0],
+                            albumName: element[1],
+                            artistName: artName,
+                          ));
                         }
-
-                        singles.add(ShowIcon(
-                          coverArt: element[3],
-                          isArtist: false,
-                          location: 'spotify',
-                          id: element[0],
-                          albumName: element[1],
-                          artistName: artName,
-                        ));
-                      });
 
                       // #######################################################
                       // Collect Tracks
                       // #######################################################
                       data = map["tracks"];
-                      (data as List<dynamic>).forEach((element) {
-                        element = element as List<dynamic>;
+                      list = data as List<dynamic>;
 
-                        String artName = "";
-                        for (int i = 0;
-                            i < (element[2] as List<dynamic>).length;
-                            i++) {
-                          artName += element[2][i][0].toString();
-                          if (i + 1 < (element[2] as List<dynamic>).length) {
-                            artName += " & ";
+                      if (settings.listBool)
+                        list.forEach((element) {
+                          children.add(ListEntry(
+                            name: element[1],
+                            image: element[4],
+                            isAlbum: true,
+                            location: "spotify",
+                            id: element[3],
+                          ));
+                        });
+
+                      // icon view
+                      else
+                        for (int i = 0; i < list.length && i <= 10; i++) {
+                          var element = list[i];
+                          String artName = "";
+                          for (int i = 0;
+                              i < (element[2] as List<dynamic>).length;
+                              i++) {
+                            artName += element[2][i][0].toString();
+                            if (i + 1 < (element[2] as List<dynamic>).length) {
+                              artName += " & ";
+                            }
                           }
+
+                          tracks.add(ShowIcon(
+                            coverArt: element[4],
+                            isArtist: false,
+                            location: 'spotify',
+                            id: element[3],
+                            albumName: element[1],
+                            artistName: artName,
+                          ));
                         }
-
-                        tracks.add(ShowIcon(
-                          coverArt: element[4],
-                          isArtist: false,
-                          location: 'spotify',
-                          id: element[3],
-                          albumName: element[1],
-                          artistName: artName,
-                        ));
-                      });
-
-                      // #######################################################
-                      // Collect Artists
-                      // #######################################################
-                      data = map["artists"];
-                      (data as List<dynamic>).forEach((element) {
-                        artists.add(ShowIcon(
-                          coverArt: element[2],
-                          isArtist: true,
-                          location: 'spotify',
-                          id: element[0],
-                          artistName: element[1],
-                        ));
-                      });
 
                       // #######################################################
                       // Output each collection in its own horizontal section
                       // #######################################################
-                      children.add(SpotScroll(artists, "Artists", snapshot));
-                      children.add(SpotScroll(albums, "Albums", snapshot));
-                      children
-                          .add(SpotScroll(singles, "Singles & EPs", snapshot));
-                      children.add(SpotScroll(tracks, "Tracks", snapshot));
+                      if (!settings.listBool) {
+                        children.add(SpotScroll(artists, "Artists", snapshot));
+                        children.add(SpotScroll(albums, "Albums", snapshot));
+                        children.add(
+                            SpotScroll(singles, "Singles & EPs", snapshot));
+                        children.add(SpotScroll(tracks, "Tracks", snapshot));
+                      }
 
                       // #######################################################
                       // Space
@@ -184,7 +252,7 @@ class SpotifyResults extends StatelessWidget {
                     }
                     return Column(
                       children: [
-                        SizedBox(height: 20),
+                        // SizedBox(height: 10),
                         IconList(children),
                       ],
                     );

@@ -3,6 +3,9 @@ import 'package:marquee/marquee.dart';
 import 'package:vinyltrax/show_data/iconList.dart';
 import '../show_data/icon.dart';
 import '../spotify.dart';
+import '../pages/settingspage.dart' as settings;
+import '../show_data/listEntry.dart';
+import '../returnedData/spotScroll.dart';
 
 class SpotAlbumsBy extends StatelessWidget {
   final List<String> input;
@@ -41,6 +44,7 @@ class SpotAlbumsBy extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Color(0xFFFFFEF9),
         appBar: AppBar(
+          toolbarHeight: MediaQuery.of(context).size.height * 0.10, //180
           backgroundColor: Color(0xFFFFFEF9),
           leading: BackButton(
             color: Colors.black,
@@ -59,16 +63,117 @@ class SpotAlbumsBy extends StatelessWidget {
                     List<Widget> children;
                     if (snapshot.hasData) {
                       children = <Widget>[];
-                      snapshot.data!.forEach((key, value) {
-                        // print(key.toString() + ": " + value.toString());
-                        children.add(ShowIcon(
-                          albumName: value[1],
-                          coverArt: value[3],
-                          isArtist: false,
-                          location: 'spotify',
-                          id: value[0],
-                        ));
-                      });
+                      List<Widget> albums = [];
+                      List<Widget> singles = [];
+                      List<Widget> appears = [];
+
+                      var map = snapshot.data!;
+                      List<dynamic> list;
+
+                      // #######################################################
+                      // Collect Albums
+                      // #######################################################
+                      list = map["albums"] as List<dynamic>;
+
+                      // list view
+                      if (settings.listBool)
+                        list.forEach((element) {
+                          children.add(
+                            ListEntry(
+                              name: element[1],
+                              image: element[3],
+                              isAlbum: true,
+                              location: "spotify",
+                              id: element[0],
+                            ),
+                          );
+                        });
+
+                      // icon view
+                      else
+                        for (int i = 0; i < list.length && i <= 10; i++) {
+                          var element = list[i];
+                          albums.add(ShowIcon(
+                            coverArt: element[3],
+                            isArtist: false,
+                            location: 'spotify',
+                            id: element[0],
+                            albumName: element[1],
+                          ));
+                        }
+
+                      // #######################################################
+                      // Collect Singles and EPs
+                      // #######################################################
+                      list = map["singles"] as List<dynamic>;
+
+                      // list view
+                      if (settings.listBool)
+                        list.forEach((element) {
+                          children.add(
+                            ListEntry(
+                              name: element[1],
+                              image: element[3],
+                              isAlbum: true,
+                              location: "spotify",
+                              id: element[0],
+                            ),
+                          );
+                        });
+
+                      // icon view
+                      else
+                        for (int i = 0; i < list.length && i <= 10; i++) {
+                          var element = list[i];
+                          singles.add(ShowIcon(
+                            coverArt: element[3],
+                            isArtist: false,
+                            location: 'spotify',
+                            id: element[0],
+                            albumName: element[1],
+                          ));
+                        }
+                      // #######################################################
+                      // Collect Albums the Artist Appears On
+                      // #######################################################
+                      list = map["appears"] as List<dynamic>;
+
+                      // list view
+                      if (settings.listBool)
+                        list.forEach((element) {
+                          children.add(
+                            ListEntry(
+                              name: element[1],
+                              image: element[3],
+                              isAlbum: true,
+                              location: "spotify",
+                              id: element[0],
+                            ),
+                          );
+                        });
+
+                      // icon view
+                      else
+                        for (int i = 0; i < list.length && i <= 10; i++) {
+                          var element = list[i];
+                          appears.add(ShowIcon(
+                            coverArt: element[3],
+                            isArtist: false,
+                            location: 'spotify',
+                            id: element[0],
+                            albumName: element[1],
+                          ));
+                        }
+                      // #######################################################
+                      // Output each collection in its own horizontal section
+                      // #######################################################
+                      if (!settings.listBool) {
+                        children.add(SpotScroll(albums, "Albums", snapshot));
+                        children.add(
+                            SpotScroll(singles, "Singles & EPs", snapshot));
+                        children
+                            .add(SpotScroll(appears, "Appears On", snapshot));
+                      }
 
                       children.add(SizedBox(
                         width: double.infinity,
@@ -90,7 +195,6 @@ class SpotAlbumsBy extends StatelessWidget {
                     }
                     return Column(
                       children: [
-                        SizedBox(height: 20),
                         IconList(children),
                       ],
                     );
