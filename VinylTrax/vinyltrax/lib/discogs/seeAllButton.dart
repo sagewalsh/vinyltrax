@@ -14,7 +14,6 @@ class SeeAllButton extends StatefulWidget {
 }
 
 class _SeeAllButtonState extends State<SeeAllButton> {
-
   @override
   Widget build(BuildContext context) {
     List<Widget> children = <Widget>[];
@@ -39,8 +38,7 @@ class _SeeAllButtonState extends State<SeeAllButton> {
           ));
         }
       }
-    }
-    else if (widget.type == "Artists") {
+    } else if (widget.type == "Artists") {
       for (int i = 0; i < widget.snapshot.data!.length; i += 3) {
         var data = [
           widget.snapshot.data![i],
@@ -57,21 +55,19 @@ class _SeeAllButtonState extends State<SeeAllButton> {
       }
     }
 
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text("See more", style: TextStyle(color: Colors.black)),
-        backgroundColor: Color(0xFFFFFEF9),
-        leading: BackButton(
-          color: Colors.black,
-          onPressed: () {
-            //kinda broken rn
-            Navigator.of(context).pop();
-            //gonna figure this out
-          },
+        appBar: AppBar(
+          title: Text("See more", style: TextStyle(color: Colors.black)),
+          backgroundColor: Color(0xFFFFFEF9),
+          leading: BackButton(
+            color: Colors.black,
+            onPressed: () {
+              //kinda broken rn
+              Navigator.of(context).pop();
+              //gonna figure this out
+            },
+          ),
         ),
-      ),
-      body: IconList(children)
-    );
+        body: IconList(children));
   }
 }

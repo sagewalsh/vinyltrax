@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/show_data/genreList.dart';
-import 'package:vinyltrax/returnedData/getInvAlbum.dart';
-import '../returnedData/getInvArtist.dart';
-import 'invResults.dart';
-import 'spotifyResults.dart';
+import 'package:vinyltrax/inventory/getAlbums.dart';
+import '../inventory/getInvArtist.dart';
+import '../inventory/invResults.dart';
+import '../spotify/spotifyResults.dart';
 
 enum _Order { artist, albums, genre }
 

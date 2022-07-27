@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'package:vinyltrax/show_data/iconList.dart';
-import '../discogs.dart';
+import '../discogs/discogs.dart';
 import '../show_data/icon.dart';
 
 class InvCon extends StatelessWidget {

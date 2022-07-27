@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import './const.dart';
+import '../const.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -79,9 +79,9 @@ returns:
     var body = json.decode(content.body);
     var data = body["items"] as List<dynamic>;
 
-    (data[0] as Map<String, dynamic>).forEach((key, value) {
-      print(key.toString() + ": " + value.toString());
-    });
+    // (data[0] as Map<String, dynamic>).forEach((key, value) {
+    //   print(key.toString() + ": " + value.toString());
+    // });
 
     // ###################################################################
     // Collect Album data
@@ -141,9 +141,9 @@ returns:
     body = json.decode(content.body);
     data = body["items"] as List<dynamic>;
 
-    (data[0] as Map<String, dynamic>).forEach((key, value) {
-      print(key.toString() + ": " + value.toString());
-    });
+    // (data[0] as Map<String, dynamic>).forEach((key, value) {
+    //   print(key.toString() + ": " + value.toString());
+    // });
 
     // ###################################################################
     // Collect Album data
@@ -203,9 +203,9 @@ returns:
     body = json.decode(content.body);
     data = body["items"] as List<dynamic>;
 
-    (data[0] as Map<String, dynamic>).forEach((key, value) {
-      print(key.toString() + ": " + value.toString());
-    });
+    // (data[0] as Map<String, dynamic>).forEach((key, value) {
+    //   print(key.toString() + ": " + value.toString());
+    // });
 
     // ###################################################################
     // Collect Album data
@@ -246,9 +246,9 @@ returns:
     val.sort(((a, b) => a[4].toString().compareTo(b[4].toString())));
     returning["appears"] = val;
 
-    returning.forEach((key, value) {
-      print(key.toString() + ": " + value.toString());
-    });
+    // returning.forEach((key, value) {
+    //   print(key.toString() + ": " + value.toString());
+    // });
 
     return returning;
   }
@@ -441,9 +441,9 @@ barcode
     // print(json.decode(content.body));
     var body =
         json.decode(content.body)["albums"]["items"][0] as Map<String, dynamic>;
-    body.forEach((key, value) {
-      print(key.toString() + ": " + value.toString());
-    });
+    // body.forEach((key, value) {
+    //   print(key.toString() + ": " + value.toString());
+    // });
   }
 
 /*
@@ -475,17 +475,17 @@ to the query.
   , ... ]
 
   tracks: [
-    [0]: id
+    [0]: album id
     [1]: name
     [2]: [artist name, artist id]
-    [3]: album id
-    [4]: album coverart
+    [3]: album coverart
+    [4]: track id
   ]
 }
 ##########################################################################
 */
-  static Future<Map<String, dynamic>> search(String query) async {
-    Map<String, dynamic> results = {};
+  static Future<Map<String, List<dynamic>>> search(String query) async {
+    Map<String, List<dynamic>> results = {};
 
     // ###################################################################
     // authenticate
@@ -639,11 +639,11 @@ to the query.
         });
 
         list.add([
-          data["id"],
+          data["album"]["id"],
           data["name"],
           art,
-          data["album"]["id"],
           image,
+          data["id"],
         ]);
       }
     });

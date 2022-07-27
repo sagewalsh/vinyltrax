@@ -3,8 +3,8 @@ import 'package:vinyltrax/show_data/iconList.dart';
 import 'package:vinyltrax/show_data/listEntry.dart';
 import '../show_data/icon.dart';
 import 'dart:developer';
-import '../spotify.dart';
-import '../returnedData/spotScroll.dart';
+import 'spotify.dart';
+import 'spotScroll.dart';
 import '../pages/settingspage.dart' as settings;
 
 class SpotifyResults extends StatelessWidget {
@@ -13,7 +13,7 @@ class SpotifyResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<Map<String, dynamic>> _results = Spotify.search(input);
+    Future<Map<String, List<dynamic>>> _results = Spotify.search(input);
     // late String name = "Artist not found";
     String name = input;
 
@@ -34,10 +34,10 @@ class SpotifyResults extends StatelessWidget {
             physics: AlwaysScrollableScrollPhysics(),
             child: SizedBox(
                 width: double.infinity,
-                child: FutureBuilder<Map<String, dynamic>>(
+                child: FutureBuilder<Map<String, List<dynamic>>>(
                   future: _results,
                   builder: (BuildContext context,
-                      AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                      AsyncSnapshot<Map<String, List<dynamic>>> snapshot) {
                     List<Widget> children;
                     if (snapshot.hasData) {
                       children = <Widget>[];
@@ -47,13 +47,12 @@ class SpotifyResults extends StatelessWidget {
                       List<Widget> tracks = [];
 
                       var map = snapshot.data!;
-                      int max = 1;
 
                       // #######################################################
                       // Collect Artists
                       // #######################################################
-                      var data = map["artists"];
-                      var list = data as List<dynamic>;
+                      var list = map["artists"]!;
+
                       if (settings.listBool)
                         list.forEach((element) {
                           children.add(ListEntry(
@@ -66,7 +65,7 @@ class SpotifyResults extends StatelessWidget {
                         });
                       // icon view
                       else
-                        for (int i = 0; i < list.length && i <= 10; i++) {
+                        for (int i = 0; i < list.length && i < 10; i++) {
                           var element = list[i];
 
                           artists.add(ShowIcon(
@@ -81,8 +80,7 @@ class SpotifyResults extends StatelessWidget {
                       // #######################################################
                       // Collect Albums
                       // #######################################################
-                      data = map["albums"];
-                      list = data as List<dynamic>;
+                      list = map["albums"]!;
 
                       // list view
                       if (settings.listBool)
@@ -100,7 +98,7 @@ class SpotifyResults extends StatelessWidget {
 
                       // icon view
                       else
-                        for (int i = 0; i < list.length && i <= 10; i++) {
+                        for (int i = 0; i < list.length && i < 10; i++) {
                           var element = list[i];
 
                           // Compile artist names
@@ -113,23 +111,19 @@ class SpotifyResults extends StatelessWidget {
                               artName += " & ";
                             }
                           }
-                          if (max <= 10) {
-                            albums.add(ShowIcon(
-                              coverArt: element[3],
-                              isArtist: false,
-                              location: 'spotify',
-                              id: element[0],
-                              albumName: element[1],
-                              artistName: artName,
-                            ));
-                            max++;
-                          }
+                          albums.add(ShowIcon(
+                            coverArt: element[3],
+                            isArtist: false,
+                            location: 'spotify',
+                            id: element[0],
+                            albumName: element[1],
+                            artistName: artName,
+                          ));
                         }
                       // #######################################################
                       // Collect Singles and EPs
                       // #######################################################
-                      data = map["singles"];
-                      list = data as List<dynamic>;
+                      list = map["singles"]!;
 
                       if (settings.listBool)
                         list.forEach((element) {
@@ -144,7 +138,7 @@ class SpotifyResults extends StatelessWidget {
 
                       // icon view
                       else
-                        for (int i = 0; i < list.length && i <= 10; i++) {
+                        for (int i = 0; i < list.length && i < 10; i++) {
                           var element = list[i];
                           String artName = "";
                           for (int i = 0;
@@ -168,8 +162,7 @@ class SpotifyResults extends StatelessWidget {
                       // #######################################################
                       // Collect Tracks
                       // #######################################################
-                      data = map["tracks"];
-                      list = data as List<dynamic>;
+                      list = map["tracks"]!;
 
                       if (settings.listBool)
                         list.forEach((element) {
@@ -184,7 +177,7 @@ class SpotifyResults extends StatelessWidget {
 
                       // icon view
                       else
-                        for (int i = 0; i < list.length && i <= 10; i++) {
+                        for (int i = 0; i < list.length && i < 10; i++) {
                           var element = list[i];
                           String artName = "";
                           for (int i = 0;
@@ -197,10 +190,10 @@ class SpotifyResults extends StatelessWidget {
                           }
 
                           tracks.add(ShowIcon(
-                            coverArt: element[4],
+                            coverArt: element[3],
                             isArtist: false,
                             location: 'spotify',
-                            id: element[3],
+                            id: element[0],
                             albumName: element[1],
                             artistName: artName,
                           ));
@@ -210,11 +203,23 @@ class SpotifyResults extends StatelessWidget {
                       // Output each collection in its own horizontal section
                       // #######################################################
                       if (!settings.listBool) {
-                        children.add(SpotScroll(artists, "Artists", snapshot));
-                        children.add(SpotScroll(albums, "Albums", snapshot));
-                        children.add(
-                            SpotScroll(singles, "Singles & EPs", snapshot));
-                        children.add(SpotScroll(tracks, "Tracks", snapshot));
+                        if (artists.length > 0)
+                          children
+                              .add(SpotScroll(artists, "Artists", snapshot));
+                        if (albums.length > 0)
+                          children.add(SpotScroll(albums, "Albums", snapshot));
+                        if (singles.length > 0)
+                          children.add(
+                              SpotScroll(singles, "Singles & EPs", snapshot));
+                        if (tracks.length > 0)
+                          children.add(SpotScroll(tracks, "Tracks", snapshot));
+                        if (children.length == 0)
+                          children.add(Text(
+                            "No results found for ${input}",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ));
                       }
 
                       // #######################################################

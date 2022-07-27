@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:vinyltrax/pages/invCon.dart';
-import 'invDetails.dart';
-import 'invAlbumsBy.dart';
-import 'disAlbumsBy.dart';
-import 'disDetails.dart';
-import 'spotAlbumsBy.dart';
-import 'spotDetails.dart';
+import 'package:vinyltrax/inventory/invCon.dart';
+import '../inventory/invDetails.dart';
+import '../inventory/InvAlbumsBy.dart';
+import '../discogs/disAlbumsBy.dart';
+import '../discogs/disDetails.dart';
+import '../spotify/spotAlbumsBy.dart';
+import '../spotify/spotDetails.dart';
 
 /*
 ##########################################################################

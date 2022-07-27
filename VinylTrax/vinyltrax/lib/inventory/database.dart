@@ -1,6 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'discogs.dart';
+import '../discogs/discogs.dart';
 import 'dart:developer';
 
 class Database {
@@ -505,7 +505,7 @@ Given Album Data from Discogs in the form:
 [8]: CoverArt
 #############################################################################
 */
-  static Future<String> addAlbumToInv(List<dynamic> albumdata) async {
+  static Future<String> addDisToInv(List<dynamic> albumdata) async {
     // If album was in wishlist: delete it
     var wishshot = await ref.child("Wishlist/${albumdata[0]}").get();
     if (wishshot.exists) {
@@ -695,11 +695,11 @@ Add pressing data to an album
 */
   static void updatePressData({
     required String albumID,
-    String numLP = "",
-    String colorLP = "",
-    String rpmSize = "",
-    String year = "",
-    String manufacturer = "",
+    required String numLP,
+    required String colorLP,
+    required String rpmSize,
+    required String year,
+    required String manufacturer,
   }) async {
     var snapshot = await ref.child("Albums/$albumID").get();
     if (snapshot.exists) {
@@ -791,58 +791,13 @@ Deletes the notes on a given album
     snapref.remove();
   }
 
-  static void fillartists() async {
-    var list = [
-      3853178,
-      47333,
-      69866,
-      318185,
-      293333,
-      445868,
-      141549,
-      159169,
-      2218596,
-      21731,
-      163505,
-      132066,
-      63332,
-      29735,
-      1031,
-      461584,
-      2635770,
-      140140,
-      2165577,
-      84752,
-      1500084,
-      36158,
-      994835,
-      80395,
-      810616,
-      71725,
-      234647
-    ];
-    list.forEach((element) {
-      Collection.artistData(element.toString()).then((value) {
-        ref.update({
-          "Artists/${value[0]}": {
-            "UniqueID": value[0],
-            "Name": value[1],
-            "Albums": [],
-            "Image":
-                "https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg",
-          }
-        });
-      });
-    });
-  }
-
   static Future<bool> fill(String id, String format) async {
     Collection.album(id).then((result) {
       var album = [];
       album.add(id);
       album.add(format);
       album.addAll(result);
-      Database.addAlbumToInv(album);
+      Database.addDisToInv(album);
     });
     return true;
   }
@@ -850,7 +805,7 @@ Deletes the notes on a given album
   /*
   Fills the firebase realtime database with dummy data
   */
-  static void startingData() {
+  static void startingDiscogs() {
     // Arular
     fill("424354", "CD");
 

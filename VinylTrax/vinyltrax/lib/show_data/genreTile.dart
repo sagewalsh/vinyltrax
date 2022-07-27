@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../returnedData/getInvGenre.dart';
+import '../inventory/getInvGenre.dart';
 
 class GenreTile extends StatelessWidget {
   final String genreName;

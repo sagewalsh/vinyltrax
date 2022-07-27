@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:vinyltrax/returnedData/scrollResults.dart';
+import 'package:vinyltrax/discogs/scrollResults.dart';
 import '../show_data/icon.dart';
-import '../discogs.dart';
+import 'discogs.dart';
 import '../pages/settingspage.dart' as settings;
 import '../show_data/listEntry.dart';
 import '../show_data/listEntryList.dart';
 
-class GetDisAlbum extends StatelessWidget {
+class GetDisTracks extends StatelessWidget {
   final String input;
-  GetDisAlbum(this.input);
+  GetDisTracks(this.input);
   int max = 1;
 
   @override
   Widget build(BuildContext context) {
-    Future<List<String>> _results = Collection.getAlbums(input);
+    Future<List<String>> _results = Collection.getTracks(input);
     // late String name = "Artist not found";
 
     return SizedBox(
@@ -25,29 +25,27 @@ class GetDisAlbum extends StatelessWidget {
             List<Widget> children;
             if (snapshot.hasData) {
               children = <Widget>[];
-              for (int i = 0; i < snapshot.data!.length; i += 4) {
+              for (int i = 0; i < snapshot.data!.length; i += 3) {
                 var data = [
                   snapshot.data![i],
                   snapshot.data![i + 1],
                   snapshot.data![i + 2],
-                  snapshot.data![i + 3],
                 ];
                 var artist_album = data[0].split(" - ");
                 if (settings.listBool) {
                   children.add(ListEntry(
                     name: artist_album[1],
-                    image: data[3],
+                    image: data[2],
                     isAlbum: true,
                     location: 'discogs',
                     id: data[1],
                   ));
-                }
-                else {
+                } else {
                   if (max <= 10) {
                     children.add(ShowIcon(
                       artistName: artist_album[0],
                       albumName: artist_album[1],
-                      coverArt: data[3],
+                      coverArt: data[2],
                       isArtist: false,
                       location: 'discogs',
                       id: data[1],
@@ -75,14 +73,14 @@ class GetDisAlbum extends StatelessWidget {
                 )
               ];
             }
-            max = 1;
-            if (children.length > 1) // sizedbox is added after data
+            if (children.length > 1) {
+              // sizedbox is added after data
               if (!settings.listBool)
-                return ScrollResults(children, "Albums", snapshot);
+                return ScrollResults(children, "Tracks", snapshot);
               else
                 return ListEntryList(children);
-            else
-              return Text("None");
+            } else
+              return Text("No tracks found!");
           },
         ));
   }

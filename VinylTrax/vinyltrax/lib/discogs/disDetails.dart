@@ -4,12 +4,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import '../buttons/addAlbumPopUp.dart';
-import '../spotify.dart';
+import 'discogs.dart';
 import '../pages/nextPage.dart';
 
-class SpotDetails extends StatelessWidget {
+class DisDetails extends StatelessWidget {
   final List<String> input;
-  SpotDetails(this.input);
+  final bool isBarcode;
+  DisDetails(this.input, this.isBarcode);
 
   @override
   Widget build(BuildContext context) {
@@ -18,29 +19,32 @@ class SpotDetails extends StatelessWidget {
     Widget title =
         Text("Barcode Results", style: TextStyle(color: Colors.black));
 
-    _results = Spotify.album(input[0]);
-    name = input[1];
-    title = Text(
-      name,
-      style: TextStyle(
-        color: Colors.black,
-      ),
-    );
-
-    if (name.length > 22) {
-      title = Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Marquee(
-          velocity: 20,
-          blankSpace: 30,
-          text: name,
-          style: TextStyle(
-            color: Colors.black,
-          ),
+    if (!isBarcode) {
+      _results = Collection.album(input[0]);
+      name = input[1];
+      title = Text(
+        name,
+        style: TextStyle(
+          color: Colors.black,
         ),
       );
-    }
+
+      if (name.length > 22) {
+        title = Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Marquee(
+            velocity: 20,
+            blankSpace: 30,
+            text: name,
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+        );
+      }
+    } else
+      _results = Collection.barcode(input[0]);
 
     // late String name = "Artist not found";
 
@@ -133,7 +137,7 @@ class SpotDetails extends StatelessWidget {
                               .38, //150 square
                           width: MediaQuery.of(context).size.width * .38,
                           child: Image(
-                            image: NetworkImage(data[5].toString()),
+                            image: NetworkImage(data[6].toString()),
                           ),
                         ),
                       ));
@@ -154,10 +158,9 @@ class SpotDetails extends StatelessWidget {
                               ..onTap = (() {
                                 var route = new MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                  return new NextPageSpotArt(
-                                    data[0][i][1].toString(),
-                                    data[0][i][0].toString(),
-                                  );
+                                  return new NextPageDisArt(
+                                      data[0][i][1].toString(),
+                                      data[0][i][0].toString());
                                 });
                                 Navigator.of(context).push(route);
                               }),
@@ -187,25 +190,14 @@ class SpotDetails extends StatelessWidget {
                       );
 
                       // GENRE AND YEAR
-                      if ((data[2] as List<dynamic>).isNotEmpty) {
-                        if (data[3].toString().length == 4) {
-                          // has genre and year
-                          children.add(Center(
-                              child: Text(
-                            data[2][0].toString() +
-                                "  •  " +
-                                data[3].toString(),
-                          )));
-                        } else {
-                          // has genre
-                          children
-                              .add(Center(child: Text(data[2][0].toString())));
-                        }
+                      if (data[3].toString().length == 4) {
+                        children.add(Center(
+                            child: Text(
+                          data[2][0].toString() + "  •  " + data[3].toString(),
+                        )));
                       } else {
-                        if (data[3].toString().length == 4) {
-                          // has year
-                          children.add(Center(child: Text(data[3].toString())));
-                        }
+                        children
+                            .add(Center(child: Text(data[2][0].toString())));
                       }
 
                       children.add(SizedBox(height: 30));
@@ -222,34 +214,17 @@ class SpotDetails extends StatelessWidget {
                         for (int i = 0;
                             i < (data[4] as List<dynamic>).length;
                             i++) {
-                          // Cycle through the tracks
-
-                          // Compile Track Contributors
-                          String artist = "";
-                          double size = 5;
-                          double pad = 10;
-                          var cont = (data[4][i][2] as List<dynamic>);
-                          if (cont.isNotEmpty) {
-                            size = 10;
-                            pad = 5;
-                            for (int j = 0; j < cont.length; j++) {
-                              artist += cont[j][0].toString();
-
-                              if (j + 1 < cont.length) {
-                                artist += " & ";
-                              }
-                            }
-                          }
-
                           tracklist.add(
                               // Track list item
                               ListTile(
+                            // contentPadding: EdgeInsets.only(bottom: 5),
                             visualDensity: VisualDensity(vertical: -4),
 
                             // Track Number
                             leading: Container(
                               padding: EdgeInsets.all(10),
                               child: Text(
+                                // "\t" + i.toString() + "\t",
                                 i.toString(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -262,7 +237,7 @@ class SpotDetails extends StatelessWidget {
                             // Track Title
                             title: Container(
                               // padding: EdgeInsets.only(bottom: 5),
-                              padding: EdgeInsets.fromLTRB(0, pad, 0, 5),
+                              padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                               child: Text(
                                 data[4][i][0].toString(),
                                 style: TextStyle(
@@ -271,7 +246,6 @@ class SpotDetails extends StatelessWidget {
                               ),
                             ),
 
-                            // Track Contributors + bar
                             subtitle: Container(
                               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                               decoration: BoxDecoration(
@@ -282,14 +256,9 @@ class SpotDetails extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(0),
-                                child: Text(
-                                  artist,
-                                  style: TextStyle(
-                                    fontSize: size,
-                                  ),
-                                ),
+                              child: Text(
+                                " ",
+                                style: TextStyle(fontSize: 5),
                               ),
                             ),
 
@@ -315,6 +284,72 @@ class SpotDetails extends StatelessWidget {
                         ));
 
                         children.add(SizedBox(height: 30));
+                      }
+
+                      // CONTRIBUTORS
+                      if (data[5] != null) {
+                        children.add(Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Text("Contributors",
+                              style: TextStyle(fontSize: 17)),
+                        ));
+                        children.add(addBlackLine());
+                        List<ListTile> contributors = <ListTile>[];
+                        for (int j = 0;
+                            j < (data[5] as List<dynamic>).length;
+                            j++) {
+                          contributors.add(ListTile(
+                            visualDensity: VisualDensity(vertical: -4),
+                            contentPadding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                            onTap: () {
+                              var route = new MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return new NextPageCon(
+                                  id: data[5][j][2].toString(),
+                                  name: data[5][j][0],
+                                );
+                              });
+                              Navigator.of(context).push(route);
+                            },
+                            // Contributor name
+                            title: Container(
+                              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                              child: Text(
+                                data[5][j][0]
+                                    .toString()
+                                    .replaceAll(RegExp(r'\([0-9]+\)'), ""),
+                                style: TextStyle(fontSize: 13),
+                              ),
+                            ),
+
+                            // Contributor Role
+                            subtitle: Container(
+                              padding: EdgeInsets.fromLTRB(15, 0, 0, 5),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    width: 1,
+                                    color: Color.fromARGB(86, 255, 90, 90),
+                                  ),
+                                ),
+                              ),
+                              child: Text(
+                                data[5][j][1].toString(),
+                                // textAlign: TextAlign.right,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ),
+                            tileColor: Color(0xFFFFFEF9),
+                          ));
+                        }
+                        children.add(ListView(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          children: contributors,
+                        ));
                       }
 
                       children.add(SizedBox(

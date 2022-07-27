@@ -1,22 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../database.dart';
+import '../inventory/database.dart';
 
 class PressDataPopUp extends StatefulWidget {
-  const PressDataPopUp({Key? key}) : super(key: key);
+  final String albumid;
+  // const PressDataPopUp({Key? key}) : super(key: key);
+  PressDataPopUp(this.albumid);
 
   @override
   State<PressDataPopUp> createState() => _PressDataPopUpState();
 }
 
-
 class _PressDataPopUpState extends State<PressDataPopUp> {
-  int numLP = 1;
-  String colorLP = 'Black';
-  int rpmSize = 30;
-  String year = 'Pick a year';
+  // int numLP = 1;
+  // String colorLP = 'Black';
+  // int rpmSize = 30;
+  // String year = 'Pick a year';
+  // DateTime current = DateTime.now();
+  // String manufacturer = "Enter a Manufacturer";
+  String numLP = "";
+  String colorLP = "";
+  String rpmSize = "";
+  String year = "Pick a year";
+  String manufacturer = "";
   DateTime current = DateTime.now();
-  String manufacturer = "Enter a Manufacturer";
 
   @override
   Widget build(BuildContext context) {
@@ -32,18 +39,15 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
                 Text("Number of LPs: "),
                 DropdownButton(
                     value: numLP,
-                    items: [1, 2, 3, 4].map((int value) {
+                    items: ["", "1", "2", "3", "4+"].map((String value) {
                       return DropdownMenuItem(
-                        value: value,
-                        child: Text(value.toString())
-                      );
+                          value: value, child: Text(value.toString()));
                     }).toList(),
-                    onChanged: (int? value) {
-                      setState((){
+                    onChanged: (String? value) {
+                      setState(() {
                         numLP = value!;
                       });
-                    }
-                ),
+                    }),
               ],
             ),
             Row(
@@ -52,18 +56,14 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
                 Text("Color of LPs: "),
                 DropdownButton(
                     value: colorLP,
-                    items: ["Black", "Colored"].map((String value) {
-                      return DropdownMenuItem(
-                          value: value,
-                          child: Text(value)
-                      );
+                    items: ["", "Black", "Colored"].map((String value) {
+                      return DropdownMenuItem(value: value, child: Text(value));
                     }).toList(),
                     onChanged: (String? value) {
-                      setState((){
+                      setState(() {
                         colorLP = value!;
                       });
-                    }
-                ),
+                    }),
               ],
             ),
             Row(
@@ -72,18 +72,15 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
                 Text("RPM Size: "),
                 DropdownButton(
                     value: rpmSize,
-                    items: [30, 45, 78].map((int value) {
+                    items: ["", "30", "45", "78"].map((String value) {
                       return DropdownMenuItem(
-                          value: value,
-                          child: Text(value.toString())
-                      );
+                          value: value, child: Text(value.toString()));
                     }).toList(),
-                    onChanged: (int? value) {
-                      setState((){
+                    onChanged: (String? value) {
+                      setState(() {
                         rpmSize = value!;
                       });
-                    }
-                ),
+                    }),
               ],
             ),
             Row(
@@ -97,39 +94,44 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
                           builder: (BuildContext context) {
                             return YearPicker(
                               onChanged: (DateTime val) {
-                                  setState((){
-                                    year = val.year.toString();
-                                    current = val;
-                                    Navigator.of(context).pop();
-                                  });
-                                },
+                                setState(() {
+                                  year = val.year.toString();
+                                  current = val;
+                                  Navigator.of(context).pop();
+                                });
+                              },
                               firstDate: DateTime(1300),
                               lastDate: DateTime.now(),
                               selectedDate: current,
                             );
-                          }
-                      );
+                          });
                     },
-                    child: Text(year)
-                ),
+                    child: Text(year)),
               ],
             ),
             TextField(
               decoration: InputDecoration(
-                hintText: manufacturer,
+                hintText: "Enter a Manufacturer",
               ),
               onSubmitted: (String text) {
-                setState((){
+                setState(() {
                   manufacturer = text;
                 });
               },
             ),
             TextButton(
                 onPressed: () {
+                  Database.updatePressData(
+                    albumID: widget.albumid,
+                    numLP: numLP,
+                    colorLP: colorLP,
+                    rpmSize: rpmSize,
+                    year: year,
+                    manufacturer: manufacturer,
+                  );
                   Navigator.of(context).pop();
                 },
-                child: Text("Done")
-            )
+                child: Text("Done"))
           ],
         ),
       ),

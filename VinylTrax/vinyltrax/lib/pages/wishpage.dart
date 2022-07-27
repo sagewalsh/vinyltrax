@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../returnedData/getWishAlbum.dart';
+import 'wishAlbums.dart';
 
 enum _Order { artist, albums }
 

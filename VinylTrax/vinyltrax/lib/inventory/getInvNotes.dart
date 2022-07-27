@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vinyltrax/pages/invDetails.dart';
-import '../database.dart';
+import 'package:vinyltrax/inventory/invDetails.dart';
+import 'database.dart';
 
 class GetInvNotes extends StatefulWidget {
   final List<String> input;

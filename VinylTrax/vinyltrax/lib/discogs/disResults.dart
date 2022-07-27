@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../returnedData/getDisArtist.dart';
-import '../returnedData/getDisAlbum.dart';
-import '../returnedData/getDisTracks.dart';
-import 'settingspage.dart' as settings;
+import 'getDisArtist.dart';
+import 'getDisAlbum.dart';
+import 'getDisTracks.dart';
+import '../pages/settingspage.dart' as settings;
 
 class DisResults extends StatelessWidget {
   final String input;
@@ -16,14 +16,11 @@ class DisResults extends StatelessWidget {
     if (settings.listBool) {
       if (tab == 'one')
         children.add(GetDisArtist(input));
-
       else if (tab == 'two')
         children.add(GetDisAlbum(input));
-
       else
         children.add(GetDisTracks(input));
-    }
-    else {
+    } else {
       children.add(GetDisArtist(input));
       children.add(GetDisAlbum(input));
       children.add(GetDisTracks(input));

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:vinyltrax/button_icons/barcode.dart';
-import 'disDetails.dart';
-import 'disResults.dart';
+import '../discogs/disDetails.dart';
+import '../discogs/disResults.dart';
 import 'settingspage.dart' as settings;
 //import 'package:camera/camera.dart';
 
@@ -74,8 +74,7 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
       );
-    }
-    else
+    } else
       return SizedBox();
   }
 
@@ -98,7 +97,8 @@ class _SearchPageState extends State<SearchPage> {
           title: Column(
             children: [
               Container(
-                padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.014),
+                padding: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.height * 0.014),
                 width: double.infinity,
                 alignment: Alignment.center,
                 child: const Text("Search Page",
@@ -165,7 +165,8 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                     IconButton(
                       color: Colors.black,
-                      padding: EdgeInsets.fromLTRB(5, 0, 5, MediaQuery.of(context).size.height * 0.032),
+                      padding: EdgeInsets.fromLTRB(
+                          5, 0, 5, MediaQuery.of(context).size.height * 0.032),
                       constraints: BoxConstraints(),
                       onPressed: () {
                         Navigator.pushNamed(context, 'camera');
@@ -175,7 +176,8 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                     IconButton(
                       color: Colors.black,
-                      padding: EdgeInsets.fromLTRB(5, 0, 5, MediaQuery.of(context).size.height * 0.032),
+                      padding: EdgeInsets.fromLTRB(
+                          5, 0, 5, MediaQuery.of(context).size.height * 0.032),
                       constraints: BoxConstraints(),
                       onPressed: scanBarcode,
                       icon: Icon(BarcodeIcon.barcode),

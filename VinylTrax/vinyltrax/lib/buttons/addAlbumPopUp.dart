@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../database.dart';
+import '../inventory/database.dart';
 
 class AddAlbumPopUp extends StatefulWidget {
   Future<List<dynamic>> input;
@@ -45,8 +45,8 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
                         locationValue = newVal!;
                         setState(() {
                           if (newVal == 'Inventory') {
-                            height = MediaQuery.of(context).size.height *
-                                0.24; //150
+                            height =
+                                MediaQuery.of(context).size.height * 0.24; //150
                             visible = true;
                           } else {
                             height = MediaQuery.of(context).size.height * 0.15;
@@ -90,12 +90,15 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
                         children: [
                           TextButton(
                               onPressed: () {
+                                // Add album to inventory
                                 if (locationValue == "Inventory") {
-                                  // Add album to inventory
                                   List<dynamic> album = [albumID, format];
                                   album += snapshot.data!;
-                                  Database.addAlbumToInv(album);
-                                } else if (locationValue == "Wishlist") {
+                                  Database.addDisToInv(album);
+                                }
+
+                                // Add album to wishlist
+                                else if (locationValue == "Wishlist") {
                                   List<dynamic> album = [albumID];
                                   album += snapshot.data!;
                                   Database.addToWish(album);

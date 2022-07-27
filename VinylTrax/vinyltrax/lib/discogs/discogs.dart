@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:logging/logging.dart';
 import 'package:flutter/material.dart';
-import './const.dart';
+import '../const.dart';
 
 class Collection extends ChangeNotifier {
   static final Logger _log = Logger('Collection');

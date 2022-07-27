@@ -1,12 +1,11 @@
-import 'database.dart';
-import 'discogs.dart';
-import 'spotify.dart';
+import 'inventory/database.dart';
+import 'discogs/discogs.dart';
+import 'spotify/spotify.dart';
 
 class Test {
   static void fillDatabase() {
     // Database.clear();
-    // Database.fillartists();
-    // Database.startingData();
+    // Database.startingDiscogs();
   }
 
   static void spotify() {

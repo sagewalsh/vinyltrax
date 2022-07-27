@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../buttons/pressDataPopUp.dart';
-import '../database.dart';
+import 'database.dart';
 
 class GetInvPressing extends StatefulWidget {
   final List<String> input;
@@ -80,9 +80,8 @@ class _InvPress extends State<GetInvPressing> {
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return PressDataPopUp();
-                  }
-              );
+                    return PressDataPopUp(widget.input[0]);
+                  });
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

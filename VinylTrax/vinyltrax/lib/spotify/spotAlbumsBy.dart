@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'package:vinyltrax/show_data/iconList.dart';
 import '../show_data/icon.dart';
-import '../spotify.dart';
+import 'spotify.dart';
 import '../pages/settingspage.dart' as settings;
 import '../show_data/listEntry.dart';
-import '../returnedData/spotScroll.dart';
+import 'spotScroll.dart';
+
+import 'dart:developer';
 
 class SpotAlbumsBy extends StatelessWidget {
   final List<String> input;
@@ -91,7 +93,7 @@ class SpotAlbumsBy extends StatelessWidget {
 
                       // icon view
                       else
-                        for (int i = 0; i < list.length && i <= 10; i++) {
+                        for (int i = 0; i < list.length && i < 10; i++) {
                           var element = list[i];
                           albums.add(ShowIcon(
                             coverArt: element[3],
@@ -123,8 +125,10 @@ class SpotAlbumsBy extends StatelessWidget {
 
                       // icon view
                       else
-                        for (int i = 0; i < list.length && i <= 10; i++) {
+                        for (int i = 0; i < list.length && i < 10; i++) {
                           var element = list[i];
+
+                          log(element[1]);
                           singles.add(ShowIcon(
                             coverArt: element[3],
                             isArtist: false,
@@ -154,7 +158,7 @@ class SpotAlbumsBy extends StatelessWidget {
 
                       // icon view
                       else
-                        for (int i = 0; i < list.length && i <= 10; i++) {
+                        for (int i = 0; i < list.length && i < 10; i++) {
                           var element = list[i];
                           appears.add(ShowIcon(
                             coverArt: element[3],
@@ -168,11 +172,21 @@ class SpotAlbumsBy extends StatelessWidget {
                       // Output each collection in its own horizontal section
                       // #######################################################
                       if (!settings.listBool) {
-                        children.add(SpotScroll(albums, "Albums", snapshot));
-                        children.add(
-                            SpotScroll(singles, "Singles & EPs", snapshot));
-                        children
-                            .add(SpotScroll(appears, "Appears On", snapshot));
+                        if (albums.length > 0)
+                          children.add(SpotScroll(albums, "Albums", snapshot));
+                        if (singles.length > 0)
+                          children.add(
+                              SpotScroll(singles, "Singles & EPs", snapshot));
+                        if (appears.length > 0)
+                          children
+                              .add(SpotScroll(appears, "Appears On", snapshot));
+                        if (children.length == 0)
+                          children.add(Text(
+                            "No results for ${input[1]}",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ));
                       }
 
                       children.add(SizedBox(

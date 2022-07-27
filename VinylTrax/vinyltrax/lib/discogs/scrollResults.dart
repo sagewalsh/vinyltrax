@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:vinyltrax/buttons/seeAllButton.dart';
+import 'package:vinyltrax/discogs/seeAllButton.dart';
 
-class SpotScroll extends StatefulWidget {
+class ScrollResults extends StatefulWidget {
   //const ScrollResults({Key? key}) : super(key: key);
   List<Widget> children = [];
   String title = "";
-  final AsyncSnapshot<Map<String, dynamic>> snapshot;
+  final AsyncSnapshot<List<String>> snapshot;
 
-  SpotScroll(this.children, this.title, this.snapshot);
+  ScrollResults(this.children, this.title, this.snapshot);
 
   @override
-  State<SpotScroll> createState() => _SpotScrollState();
+  State<ScrollResults> createState() => _ScrollResultsState();
 }
 
-class _SpotScrollState extends State<SpotScroll> {
+class _ScrollResultsState extends State<ScrollResults> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -35,9 +35,10 @@ class _SpotScrollState extends State<SpotScroll> {
               TextButton(
                   onPressed: () {
                     //go to a larger list of results
-                    // var route = new MaterialPageRoute(builder: (BuildContext context) =>
-                    //   SeeAllButton(widget.snapshot, widget.title));
-                    // Navigator.of(context).push(route);
+                    var route = new MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            SeeAllButton(widget.snapshot, widget.title));
+                    Navigator.of(context).push(route);
                   },
                   child: Text("See all")),
             ],

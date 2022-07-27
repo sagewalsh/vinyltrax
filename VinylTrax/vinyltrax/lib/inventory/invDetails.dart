@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'package:vinyltrax/pages/nextPage.dart';
-import '../database.dart';
-import '../returnedData/getInvNotes.dart';
-import '../returnedData/getInvPressing.dart';
+import 'database.dart';
+import 'getInvNotes.dart';
+import 'getInvPressing.dart';
 
 class InvDetails extends StatefulWidget {
   final List<String> input;

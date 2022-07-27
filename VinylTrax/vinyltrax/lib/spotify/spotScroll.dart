@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:vinyltrax/buttons/seeAllButton.dart';
+import 'package:vinyltrax/spotify/spotAllButton.dart';
 
-class ScrollResults extends StatefulWidget {
+class SpotScroll extends StatefulWidget {
   //const ScrollResults({Key? key}) : super(key: key);
   List<Widget> children = [];
-  String title = "";
-  final AsyncSnapshot<List<String>> snapshot;
+  final String title;
+  final AsyncSnapshot<Map<String, List<dynamic>>> snapshot;
 
-  ScrollResults(this.children, this.title, this.snapshot);
+  SpotScroll(this.children, this.title, this.snapshot);
 
   @override
-  State<ScrollResults> createState() => _ScrollResultsState();
+  State<SpotScroll> createState() => _SpotScrollState();
 }
 
-class _ScrollResultsState extends State<ScrollResults> {
+class _SpotScrollState extends State<SpotScroll> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -30,18 +30,19 @@ class _ScrollResultsState extends State<ScrollResults> {
             children: [
               FittedBox(
                   fit: BoxFit.fitWidth,
-                  child: Text(widget.title, style: TextStyle(fontSize: 18))
-              ),
+                  child: Text(widget.title, style: TextStyle(fontSize: 18))),
               Spacer(),
               TextButton(
                   onPressed: () {
                     //go to a larger list of results
-                    var route = new MaterialPageRoute(builder: (BuildContext context) =>
-                      SeeAllButton(widget.snapshot, widget.title));
+                    var route = new MaterialPageRoute(
+                        builder: (BuildContext context) => SpotAllButton(
+                              widget.snapshot,
+                              widget.title,
+                            ));
                     Navigator.of(context).push(route);
                   },
-                  child: Text("See all")
-              ),
+                  child: Text("See all")),
             ],
           ),
           Divider(),
@@ -51,17 +52,20 @@ class _ScrollResultsState extends State<ScrollResults> {
             // height: 190,
             child: ListView.separated(
               key: ObjectKey(widget.children[0]),
-              itemCount: widget.children.length - 1,
+              itemCount: widget.children.length,
               scrollDirection: Axis.horizontal,
               physics: ClampingScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
-                  height: MediaQuery.of(context).size.height * 0.26,
-                  width: MediaQuery.of(context).size.height * 0.26,
-                  decoration: BoxDecoration(color: Color(0x20FF5A5A), borderRadius: BorderRadius.circular(20)),
-                  child: Padding(padding: EdgeInsets.only(top: 6), child: widget.children[index])
-                );
+                    height: MediaQuery.of(context).size.height * 0.26,
+                    width: MediaQuery.of(context).size.height * 0.26,
+                    decoration: BoxDecoration(
+                        color: Color(0x20FF5A5A),
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Padding(
+                        padding: EdgeInsets.only(top: 6),
+                        child: widget.children[index]));
               },
               separatorBuilder: (BuildContext context, int index) {
                 return SizedBox(

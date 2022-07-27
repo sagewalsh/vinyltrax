@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../database.dart';
 import '../show_data/icon.dart';
 import '../show_data/iconList.dart';
-import '../pages/staxpage.dart';
+import 'staxpage.dart';
+import '../inventory/database.dart';
 
 class GetWishAlbum extends StatelessWidget {
   String order;
