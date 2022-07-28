@@ -3,7 +3,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
-import '../buttons/addAlbumPopUp.dart';
+import 'package:vinyltrax/spotify/spotAddButton.dart';
 import 'spotify.dart';
 import '../pages/nextPage.dart';
 
@@ -70,7 +70,7 @@ class SpotDetails extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return AddAlbumPopUp(_results, input[0]);
+                      return SpotAddButton(_results, input[0]);
                     },
                   );
                   // addToButton(context);
@@ -96,42 +96,52 @@ class SpotDetails extends StatelessWidget {
                       var data = snapshot.data!;
 
                       Widget extendedName = Center(
-                        child: Text(
-                          data[1].toString(),
-                          style: TextStyle(
-                            color: Colors.grey[700],
+                        child: Container(
+
+                          width: MediaQuery.of(context).size.width,
+                          height: 30,
+                          child: Text(
+                            data[1].toString(),
+                            style: TextStyle(
+                              color: Colors.grey[700],
+                              fontSize: 20,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       );
 
-                      if (name.length > 45) {
+                      if (name.length > 35) {
                         extendedName = Center(
                             child: Container(
                           width: MediaQuery.of(context).size.width,
-                          height: 20,
+                          height: 30,
                           child: Marquee(
+                            startPadding: 20,
+                            startAfter: Duration(seconds: 5),
                             velocity: 10,
                             blankSpace: 100,
                             text: data[1].toString(),
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Colors.grey[700],
+                              fontSize: 20,
+
                             ),
                           ),
                         ));
                       }
 
-                      children.add(SizedBox(
-                        width: double.infinity,
-                        height: 20,
-                        child: const Text(""),
-                      ));
+                      // children.add(SizedBox(
+                      //   width: double.infinity,
+                      //   height: 20,
+                      //   child: const Text(""),
+                      // ));
 
                       // COVER ART
                       children.add(Center(
                         child: Container(
-                          height: MediaQuery.of(context).size.width *
-                              .38, //150 square
-                          width: MediaQuery.of(context).size.width * .38,
+                          height: MediaQuery.of(context).size.width, //150 square
+                          width: MediaQuery.of(context).size.width,
                           child: Image(
                             image: NetworkImage(data[5].toString()),
                           ),
@@ -164,6 +174,7 @@ class SpotDetails extends StatelessWidget {
                             style: TextStyle(
                               color: Colors.black,
                               decoration: TextDecoration.underline,
+                              fontSize: 18,
                             ),
                           ),
                         );
@@ -178,35 +189,44 @@ class SpotDetails extends StatelessWidget {
                       }
                       children.add(
                         Center(
-                          child: RichText(
-                            text: TextSpan(
-                              children: artists,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 24,
+                            child: RichText(
+                              text: TextSpan(
+                                children: artists,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),
                       );
 
                       // GENRE AND YEAR
+                      String gy = "";
                       if ((data[2] as List<dynamic>).isNotEmpty) {
                         if (data[3].toString().length == 4) {
                           // has genre and year
-                          children.add(Center(
-                              child: Text(
+                          gy = 
                             data[2][0].toString() +
                                 "  •  " +
-                                data[3].toString(),
-                          )));
+                                data[3].toString();
                         } else {
                           // has genre
-                          children
-                              .add(Center(child: Text(data[2][0].toString())));
+                          gy = data[2][0].toString();
                         }
                       } else {
                         if (data[3].toString().length == 4) {
                           // has year
-                          children.add(Center(child: Text(data[3].toString())));
+                          gy = data[3].toString();
                         }
                       }
+                      children.add(Center(child: Text(
+                        gy,
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),));
 
                       children.add(SizedBox(height: 30));
 

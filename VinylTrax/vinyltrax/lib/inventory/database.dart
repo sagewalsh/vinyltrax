@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../discogs/discogs.dart';
 import 'dart:developer';
+import '../spotify/spotify.dart';
 
 class Database {
   static final fb = FirebaseDatabase.instance;
@@ -608,6 +609,99 @@ Given Album Data from Discogs in the form:
         }
       });
     }
+  }
+
+  /*
+  addSpotToInv
+  [0]: albumID
+  [1]: format
+  [2]: [ [ artist name, artist id ] ]
+  [3]: album name
+  [4]: [ genres ]
+  [5]: year
+  [6]: [ [ track name, duration, [ feat. artist name, feat. artist id ] ] ]
+  [7]: coverart
+  */
+  static void addSpotToInv(List<dynamic> albumdata) async{
+    // If album was in wishlist: delete it
+    var wishshot = await ref.child("Wishlist/${albumdata[0]}").get();
+    if(wishshot.exists){
+      await ref.child("Wishlist/${albumdata[0]}").remove();
+    }
+
+    // Add album to each artist's data
+    var genre = [];
+      (albumdata[2] as List<dynamic>).forEach((element) async {
+        var snapshot = await ref.child("Artists/${element[1]}").get();
+        // If the artist exists
+        if(snapshot.exists){
+          var snapalbum = await ref.child("Artists/${element[1]}/Albums");
+          var newAlbum = snapalbum.push();
+          newAlbum.set(albumdata[0]);
+          var snap = await ref.child("Artists/${element[1]}/Genres").get();
+          genre = snap.value as List<dynamic>;
+        }
+
+        // If the artist doesn't exist
+        else{
+          print("snapshot does not exist");
+          String image = "https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg";
+          Spotify.artist(element[1].toString()).then((value) async {
+            if(value[0] != null){
+              image = value[0];
+            }
+            genre = value[1];
+
+            // Create new artist
+            await ref.update({
+              "Artists/${element[1]}": {
+                "UniqueID": element[1],
+                "Name": element[0],
+                "Image": image,
+                "Genres": genre,
+              }
+            });
+
+            var snapAlbum = await ref.child("Artists/${element[1]}/Albums");
+            var newAlbum = snapAlbum.push();
+            newAlbum.set(albumdata[0]);
+          });
+        }
+      });
+
+    // Vinyl Copies of records get a 1 added to the end
+    // CD copies of records get a 2 added to the end
+    if(albumdata[1] == "Vinyl")
+      albumdata[0] += "1";
+    else if(albumdata[1] == "CD")
+      albumdata[0] += "2";
+    
+    var snapshot = await ref.child("Albums/${albumdata[0]}").get();
+    if(!snapshot.exists){
+      // Add album data to database
+      await ref.update({
+        "Albums/${albumdata[0]}":{
+          "UniqueID": albumdata[0],
+          "Name": albumdata[3],
+          "Artist": albumdata[2],
+          "Year": albumdata[5],
+          "Cover": albumdata[7],
+          "Genres": genre,
+          "Tracklist": albumdata[6],
+          "Format": albumdata[2],
+        }
+      });
+
+      
+    }
+    }
+  
+
+  /*
+  addSpotToWish
+  */
+  static void addSpotToWish(List<dynamic> albumdata) async{
+    
   }
 
 /*

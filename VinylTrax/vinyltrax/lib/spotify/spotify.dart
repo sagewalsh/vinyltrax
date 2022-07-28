@@ -15,6 +15,74 @@ class Spotify extends ChangeNotifier {
 
 /*
 ##########################################################################
+artist
+##########################################################################
+*/
+  static Future<List<dynamic>> artist(String artistid) async{
+    List<dynamic> data = [];
+    // ###################################################################
+    // authenticate
+    // ###################################################################
+    var url = 'https://accounts.spotify.com/api/token';
+    var headers = {
+      'Authorization': 'Basic ' +
+          stringToBase64.encode(
+              '${Const.SPOTIFY_CLIENT_ID}:${Const.SPOTIFY_CLIENT_SECRET}'),
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+    var form = {'grant_type': 'client_credentials'};
+
+    // POST
+    late var content;
+    try {
+      content = await http.post(
+        Uri.parse(url),
+        headers: headers,
+        body: form,
+      );
+    } catch (e) {
+      log(e.toString());
+    }
+
+    // Token
+    var token = json.decode(content.body)["access_token"];
+
+    var _headers = {
+      "Authorization": "Bearer $token",
+      "Content-Type": 'application/json',
+    };
+
+    // ###################################################################
+    // GET albums and compilations
+    // ###################################################################
+    try {
+      content = await http.get(
+        Uri.parse(
+            'https://api.spotify.com/v1/artists/$artistid'),
+        headers: _headers,
+      );
+    } catch (e) {
+      print(e);
+    }
+
+    // ###################################################################
+    // Break down json results
+    // ###################################################################
+    var body = json.decode(content.body);
+    // body.forEach((key, value){
+    //   print(key.toString() + ": " + value.toString());
+    // });
+
+    data = [
+      body["images"][0]["url"],
+      body["genres"],
+    ];
+
+    return data;
+  }
+
+/*
+##########################################################################
 albumsBy
 
 returns:
@@ -322,6 +390,7 @@ given an albumID, returns a list of album details:
     // Compiled artists
     var art = [];
     var id = [];
+    var gen = [];
     (body["artists"] as List<dynamic>).forEach((element) {
       art.add([
         element["name"],
@@ -594,6 +663,9 @@ to the query.
     list = [];
     artists.forEach((element) {
       var data = element as Map<String, dynamic>;
+
+      // print("");
+      // data.forEach((key, value) {print(key.toString() + ": " + value.toString());});
 
       // Default image value if no image provided
       String image;

@@ -63,7 +63,7 @@ class _StaxPageState extends State<StaxPage> {
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(left: 15),
                           isCollapsed: true,
-                          labelText: "Search Inventory",
+                          labelText: "Search Spotify",
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           hintText: "Artist, Album, Song",
                           hintStyle: TextStyle(

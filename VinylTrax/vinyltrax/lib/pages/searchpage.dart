@@ -130,7 +130,7 @@ class _SearchPageState extends State<SearchPage> {
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(left: 15),
                                 isCollapsed: true,
-                                labelText: "Search",
+                                labelText: "Search Discogs",
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.never,
                                 hintText: "Artist, Album, Song",

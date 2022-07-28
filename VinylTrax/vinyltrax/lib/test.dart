@@ -16,6 +16,9 @@ class Test {
     // Spotify.album("2XWgddMTqKo8YGj02MK4X2"); // For My Parents
     // Spotify.album("5IZ3qMtXKXAleWBxB7vWen"); // Closer
 
+    Spotify.artist("26VFTg2z8YR0cCuwLzESi2");
+    print("HERE");
+
     // Halsey: 26VFTg2z8YR0cCuwLzESi2
   }
 
