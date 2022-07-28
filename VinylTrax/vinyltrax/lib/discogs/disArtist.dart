@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/show_data/iconList.dart';
 import 'discogs.dart';
+import '../pages/settingspage.dart' as settings;
 
 class DisArtist extends StatelessWidget {
   final List<String> input;
@@ -14,16 +15,16 @@ class DisArtist extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFFFFFEF9),
+        backgroundColor: settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
         appBar: AppBar(
-          backgroundColor: Color(0xFFFFFEF9),
+          backgroundColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
           leading: BackButton(
-            color: Colors.black,
+            color: settings.darkTheme ? Colors.white : Colors.black,
           ),
           title: Text(
             name,
             style: TextStyle(
-              color: Colors.black,
+              color: settings.darkTheme ? Colors.white : Colors.black,
             ),
           ),
         ),

@@ -31,7 +31,8 @@ class _SpotScrollState extends State<SpotScroll> {
             children: [
               FittedBox(
                   fit: BoxFit.fitWidth,
-                  child: Text(widget.title, style: TextStyle(fontSize: 18))),
+                  child: Text(widget.title, style: TextStyle(fontSize: 18,
+                      color: settings.darkTheme ? Colors.white : Colors.black))),
               Spacer(),
               TextButton(
                   onPressed: () {
@@ -62,7 +63,7 @@ class _SpotScrollState extends State<SpotScroll> {
                     height: MediaQuery.of(context).size.height * 0.26,
                     width: MediaQuery.of(context).size.height * 0.26,
                     decoration: BoxDecoration(
-                        color: settings.darkTheme ? Color(0x20BB86FC) : Color(0x20FF5A5A),
+                        color: settings.darkTheme ? Color(0x20C9C9C9) : Color(0x20FF5A5A),
                         borderRadius: BorderRadius.circular(20)),
                     child: Padding(
                         padding: EdgeInsets.only(top: 6),

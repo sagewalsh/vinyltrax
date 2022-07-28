@@ -1,11 +1,10 @@
-//import 'dart:html';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import '../buttons/addAlbumPopUp.dart';
 import 'discogs.dart';
 import '../pages/nextPage.dart';
+import '../pages/settingspage.dart' as settings;
 
 class DisDetails extends StatelessWidget {
   final List<String> input;
@@ -17,7 +16,7 @@ class DisDetails extends StatelessWidget {
     Future<List<dynamic>> _results;
     String name = "";
     Widget title =
-        Text("Barcode Results", style: TextStyle(color: Colors.black));
+        Text("Barcode Results", style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black));
 
     if (!isBarcode) {
       _results = Collection.album(input[0]);
@@ -25,7 +24,7 @@ class DisDetails extends StatelessWidget {
       title = Text(
         name,
         style: TextStyle(
-          color: Colors.black,
+          color: settings.darkTheme ? Colors.white : Colors.black,
         ),
       );
 
@@ -38,7 +37,7 @@ class DisDetails extends StatelessWidget {
             blankSpace: 30,
             text: name,
             style: TextStyle(
-              color: Colors.black,
+              color: settings.darkTheme ? Colors.white : Colors.black,
             ),
           ),
         );
@@ -52,7 +51,7 @@ class DisDetails extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.only(top: 8, left: 5, right: 5),
         child: Divider(
-          color: Colors.black,
+          color: settings.darkTheme ? Colors.white : Colors.black,
           thickness: 1,
           height: 0,
         ),
@@ -61,11 +60,11 @@ class DisDetails extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFFFFFEF9),
+        backgroundColor: settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
         appBar: AppBar(
-          backgroundColor: Color(0xFFFFFEF9),
+          backgroundColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
           leading: BackButton(
-            color: Colors.black,
+            color: settings.darkTheme ? Colors.white : Colors.black,
           ),
           title: title,
           actions: [
@@ -81,7 +80,7 @@ class DisDetails extends StatelessWidget {
                 },
                 child: Text(
                   "Add",
-                  style: TextStyle(color: Colors.black, fontSize: 18),
+                  style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black, fontSize: 18),
                 ))
           ],
         ),
@@ -118,7 +117,7 @@ class DisDetails extends StatelessWidget {
                             blankSpace: 100,
                             text: data[1].toString(),
                             style: TextStyle(
-                              color: Colors.black,
+                              color: settings.darkTheme ? Colors.white : Colors.black,
                             ),
                           ),
                         ));
@@ -165,7 +164,7 @@ class DisDetails extends StatelessWidget {
                                 Navigator.of(context).push(route);
                               }),
                             style: TextStyle(
-                              color: Colors.black,
+                              color: settings.darkTheme ? Colors.white : Colors.black,
                               decoration: TextDecoration.underline,
                             ),
                           ),
@@ -174,7 +173,7 @@ class DisDetails extends StatelessWidget {
                           artists.add(TextSpan(
                             text: " & ",
                             style: TextStyle(
-                              color: Colors.black,
+                              color: settings.darkTheme ? Colors.white : Colors.black,
                             ),
                           ));
                         }
@@ -194,10 +193,15 @@ class DisDetails extends StatelessWidget {
                         children.add(Center(
                             child: Text(
                           data[2][0].toString() + "  •  " + data[3].toString(),
+                              style: TextStyle(
+                                color: settings.darkTheme ? Colors.white : Colors.black
+                              ),
                         )));
                       } else {
                         children
-                            .add(Center(child: Text(data[2][0].toString())));
+                            .add(Center(child: Text(data[2][0].toString(),
+                            style: TextStyle(color: settings.darkTheme ?
+                            Colors.white : Colors.black))));
                       }
 
                       children.add(SizedBox(height: 30));
@@ -207,7 +211,7 @@ class DisDetails extends StatelessWidget {
                         children.add(Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5),
                           child:
-                              Text("Tracklist", style: TextStyle(fontSize: 17)),
+                              Text("Tracklist", style: TextStyle(fontSize: 17, color: settings.darkTheme ? Colors.white : Colors.black)),
                         ));
                         children.add(addBlackLine());
                         List<ListTile> tracklist = <ListTile>[];
@@ -228,7 +232,7 @@ class DisDetails extends StatelessWidget {
                                 i.toString(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: Color.fromARGB(122, 0, 0, 0),
+                                  color: settings.darkTheme ? Colors.white : Colors.black,
                                   fontSize: 13,
                                 ),
                               ),
@@ -242,6 +246,7 @@ class DisDetails extends StatelessWidget {
                                 data[4][i][0].toString(),
                                 style: TextStyle(
                                   fontSize: 13,
+                                  color: settings.darkTheme ? Colors.white : Colors.black,
                                 ),
                               ),
                             ),
@@ -252,7 +257,7 @@ class DisDetails extends StatelessWidget {
                                 border: Border(
                                   bottom: BorderSide(
                                     width: 1,
-                                    color: Color.fromARGB(86, 255, 90, 90),
+                                    color: settings.darkTheme ? Color(0x64BB86FC) : Color(0x64FF5A5A),
                                   ),
                                 ),
                               ),
@@ -270,11 +275,11 @@ class DisDetails extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontStyle: FontStyle.italic,
-                                  color: Color.fromARGB(122, 0, 0, 0),
+                                  color: settings.darkTheme ? Colors.white : Colors.black,
                                 ),
                               ),
                             ),
-                            tileColor: Color(0xFFFFFEF9),
+                            tileColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
                           ));
                         }
                         children.add(ListView(
@@ -291,7 +296,8 @@ class DisDetails extends StatelessWidget {
                         children.add(Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5),
                           child: Text("Contributors",
-                              style: TextStyle(fontSize: 17)),
+                              style: TextStyle(fontSize: 17,
+                                color: settings.darkTheme ? Colors.white : Colors.black,)),
                         ));
                         children.add(addBlackLine());
                         List<ListTile> contributors = <ListTile>[];
@@ -318,7 +324,8 @@ class DisDetails extends StatelessWidget {
                                 data[5][j][0]
                                     .toString()
                                     .replaceAll(RegExp(r'\([0-9]+\)'), ""),
-                                style: TextStyle(fontSize: 13),
+                                style: TextStyle(fontSize: 13,
+                                  color: settings.darkTheme ? Colors.white : Colors.black,),
                               ),
                             ),
 
@@ -329,7 +336,7 @@ class DisDetails extends StatelessWidget {
                                 border: Border(
                                   bottom: BorderSide(
                                     width: 1,
-                                    color: Color.fromARGB(86, 255, 90, 90),
+                                    color: settings.darkTheme ? Color(0x64BB86FC) : Color(0x64FF5A5A),
                                   ),
                                 ),
                               ),
@@ -339,10 +346,11 @@ class DisDetails extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontStyle: FontStyle.italic,
+                                  color: settings.darkTheme ? Colors.white : Colors.black
                                 ),
                               ),
                             ),
-                            tileColor: Color(0xFFFFFEF9),
+                            tileColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
                           ));
                         }
                         children.add(ListView(

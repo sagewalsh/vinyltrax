@@ -3,6 +3,7 @@ import 'package:marquee/marquee.dart';
 import 'package:vinyltrax/show_data/iconList.dart';
 import '../show_data/icon.dart';
 import 'discogs.dart';
+import '../pages/settingspage.dart' as settings;
 
 class DisAlbumsBy extends StatelessWidget {
   final List<String> input;
@@ -19,7 +20,7 @@ class DisAlbumsBy extends StatelessWidget {
     Widget title = Text(
       name.replaceAll(RegExp(r'\([0-9]+\)'), ""),
       style: TextStyle(
-        color: Colors.black,
+        color: settings.darkTheme ? Colors.white : Colors.black,
       ),
     );
 
@@ -32,7 +33,7 @@ class DisAlbumsBy extends StatelessWidget {
           blankSpace: 30,
           text: name,
           style: TextStyle(
-            color: Colors.black,
+            color: settings.darkTheme ? Colors.white : Colors.black,
           ),
         ),
       );
@@ -40,11 +41,11 @@ class DisAlbumsBy extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFFFFFEF9),
+        backgroundColor: settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
         appBar: AppBar(
-          backgroundColor: Color(0xFFFFFEF9),
+          backgroundColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
           leading: BackButton(
-            color: Colors.black,
+            color: settings.darkTheme ? Colors.white : Colors.black,
           ),
           title: title,
         ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/show_data/iconList.dart';
-
+import '../pages/settingspage.dart' as settings;
 import '../show_data/icon.dart';
 
 class SeeAllButton extends StatefulWidget {
@@ -57,10 +57,10 @@ class _SeeAllButtonState extends State<SeeAllButton> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("See more", style: TextStyle(color: Colors.black)),
-          backgroundColor: Color(0xFFFFFEF9),
+          title: Text("See more", style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black)),
+          backgroundColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
           leading: BackButton(
-            color: Colors.black,
+            color: settings.darkTheme ? Colors.white : Colors.black,
             onPressed: () {
               //kinda broken rn
               Navigator.of(context).pop();

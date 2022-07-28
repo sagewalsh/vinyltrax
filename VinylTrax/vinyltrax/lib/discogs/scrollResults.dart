@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/discogs/seeAllButton.dart';
+import '../pages/settingspage.dart' as settings;
 
 class ScrollResults extends StatefulWidget {
   //const ScrollResults({Key? key}) : super(key: key);
@@ -59,7 +60,7 @@ class _ScrollResultsState extends State<ScrollResults> {
                     height: MediaQuery.of(context).size.height * 0.26,
                     width: MediaQuery.of(context).size.height * 0.26,
                     decoration: BoxDecoration(
-                        color: Color(0x20FF5A5A),
+                        color: settings.darkTheme ? Color(0x20C9C9C9) : Color(0x20FF5A5A),
                         borderRadius: BorderRadius.circular(20)),
                     child: Padding(
                         padding: EdgeInsets.only(top: 6),

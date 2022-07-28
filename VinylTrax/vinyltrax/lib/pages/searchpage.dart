@@ -133,7 +133,7 @@ class _SearchPageState extends State<SearchPage> {
                                 ),
                                 contentPadding: EdgeInsets.only(left: 15),
                                 isCollapsed: true,
-                                labelText: "Search",
+                                labelText: "Search Discogs",
                                 labelStyle: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.never,

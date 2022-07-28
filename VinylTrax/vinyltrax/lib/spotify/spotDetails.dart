@@ -195,16 +195,22 @@ class SpotDetails extends StatelessWidget {
                             data[2][0].toString() +
                                 "  •  " +
                                 data[3].toString(),
+                                style: TextStyle(color:
+                                settings.darkTheme ? Colors.white : Colors.black)
                           )));
                         } else {
                           // has genre
                           children
-                              .add(Center(child: Text(data[2][0].toString())));
+                              .add(Center(child: Text(data[2][0].toString(),
+                              style: TextStyle(color:
+                              settings.darkTheme ? Colors.white : Colors.black))));
                         }
                       } else {
                         if (data[3].toString().length == 4) {
                           // has year
-                          children.add(Center(child: Text(data[3].toString())));
+                          children.add(Center(child: Text(data[3].toString(),
+                              style: TextStyle(color:
+                              settings.darkTheme ? Colors.white : Colors.black))));
                         }
                       }
 
@@ -215,7 +221,8 @@ class SpotDetails extends StatelessWidget {
                         children.add(Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5),
                           child:
-                              Text("Tracklist", style: TextStyle(fontSize: 17)),
+                              Text("Tracklist", style: TextStyle(fontSize: 17,
+                              color: settings.darkTheme ? Colors.white : Colors.black)),
                         ));
                         children.add(addBlackLine());
                         List<ListTile> tracklist = <ListTile>[];
@@ -253,7 +260,7 @@ class SpotDetails extends StatelessWidget {
                                 i.toString(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: Color.fromARGB(122, 0, 0, 0),
+                                  color: settings.darkTheme ? Colors.white : Colors.black,
                                   fontSize: 13,
                                 ),
                               ),
@@ -267,6 +274,7 @@ class SpotDetails extends StatelessWidget {
                                 data[4][i][0].toString(),
                                 style: TextStyle(
                                   fontSize: 13,
+                                  color: settings.darkTheme ? Colors.white : Colors.black
                                 ),
                               ),
                             ),
@@ -301,7 +309,7 @@ class SpotDetails extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontStyle: FontStyle.italic,
-                                  color: Color.fromARGB(122, 0, 0, 0),
+                                  color: settings.darkTheme ? Colors.white : Colors.black,
                                 ),
                               ),
                             ),

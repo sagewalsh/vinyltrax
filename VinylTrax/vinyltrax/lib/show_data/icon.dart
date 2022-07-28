@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../pages/nextPage.dart';
 import 'package:marquee/marquee.dart';
+import '../pages/settingspage.dart' as settings;
 
 // For location:
 // 'inv' - Inventory
@@ -31,7 +32,7 @@ class ShowIcon extends StatelessWidget {
         height: MediaQuery.of(context).size.height * .0262, //18
         width: MediaQuery.of(context).size.width * .38, //150
         child: Marquee(
-          style: TextStyle(fontSize: fontSize),
+          style: TextStyle(fontSize: fontSize, color: settings.darkTheme ? Colors.white : Colors.black),
           pauseAfterRound: Duration(seconds: 1),
           text: text,
           blankSpace: MediaQuery.of(context).size.width * .0765,
@@ -53,7 +54,7 @@ class ShowIcon extends StatelessWidget {
           height: MediaQuery.of(context).size.height * .0262,
           child: Text(
             albumName,
-            style: TextStyle(fontSize: fontSize),
+            style: TextStyle(fontSize: fontSize, color: settings.darkTheme ? Colors.white : Colors.black),
             textAlign: TextAlign.center,
           ));
 
@@ -66,7 +67,7 @@ class ShowIcon extends StatelessWidget {
           height: MediaQuery.of(context).size.height * .0262,
           child: Text(
             artistName.replaceAll(RegExp(r'\([0-9]+\)'), ""),
-            style: TextStyle(fontSize: fontSize),
+            style: TextStyle(fontSize: fontSize, color: settings.darkTheme ? Colors.white : Colors.black),
             textAlign: TextAlign.center,
           ));
 
