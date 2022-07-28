@@ -95,7 +95,7 @@ class _StaxPageState extends State<StaxPage> {
                       ),
                     )),
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.093,
+                height: MediaQuery.of(context).size.height * 0.085,
               ),
               Container(
                 // Artist / Albums / Genre Buttons

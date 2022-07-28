@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import '../pages/nextPage.dart';
 
+// For location:
+// 'inv' - Inventory
+// 'wish' - Wishlist
+// 'discogs' - Discogs
+// 'spotify' - Spotify
 class ListEntry extends StatelessWidget {
   final String name;
   final String image;

@@ -31,11 +31,10 @@ class _SearchPageState extends State<SearchPage> {
       return Container(
         //Icon/List buttons and Top/Artist/Album/Song buttons
         color: Color(0xFFFFFEF9),
+        padding: EdgeInsets.only(bottom: 5, top: 10),
         child: SizedBox(
           height: 30,
-          child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: CupertinoSegmentedControl(
+          child: CupertinoSegmentedControl(
               padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
               selectedColor: Color(0xFFFF5A5A),
               borderColor: Color(0xFFFF5A5A),
@@ -72,7 +71,6 @@ class _SearchPageState extends State<SearchPage> {
               groupValue: _selectedTab,
             ),
           ),
-        ),
       );
     } else
       return SizedBox();
@@ -98,7 +96,7 @@ class _SearchPageState extends State<SearchPage> {
             children: [
               Container(
                 padding: EdgeInsets.symmetric(
-                    vertical: MediaQuery.of(context).size.height * 0.014),
+                    vertical: MediaQuery.of(context).size.height * 0.01),
                 width: double.infinity,
                 alignment: Alignment.center,
                 child: const Text("Search Page",
@@ -108,11 +106,11 @@ class _SearchPageState extends State<SearchPage> {
                 color: Color(0xFFFFFEF9),
                 //Search bar, Camera button, and barcode scanning button
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.70,
-                      height: MediaQuery.of(context).size.height * 0.1,
+                      width: MediaQuery.of(context).size.width * 0.68,
+                      height: MediaQuery.of(context).size.height * 0.06,
                       child: Padding(
                           padding: EdgeInsets.only(left: 8, right: 8),
                           child: Container(
@@ -166,7 +164,7 @@ class _SearchPageState extends State<SearchPage> {
                     IconButton(
                       color: Colors.black,
                       padding: EdgeInsets.fromLTRB(
-                          5, 0, 5, MediaQuery.of(context).size.height * 0.032),
+                          5, 0, 5, 0),
                       constraints: BoxConstraints(),
                       onPressed: () {
                         Navigator.pushNamed(context, 'camera');
@@ -177,7 +175,7 @@ class _SearchPageState extends State<SearchPage> {
                     IconButton(
                       color: Colors.black,
                       padding: EdgeInsets.fromLTRB(
-                          5, 0, 5, MediaQuery.of(context).size.height * 0.032),
+                          5, 0, 5, 0),
                       constraints: BoxConstraints(),
                       onPressed: scanBarcode,
                       icon: Icon(BarcodeIcon.barcode),
