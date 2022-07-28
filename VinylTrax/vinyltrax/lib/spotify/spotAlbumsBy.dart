@@ -128,7 +128,7 @@ class SpotAlbumsBy extends StatelessWidget {
                         for (int i = 0; i < list.length && i < 10; i++) {
                           var element = list[i];
 
-                          log(element[1]);
+                          // log(element[1]);
                           singles.add(ShowIcon(
                             coverArt: element[3],
                             isArtist: false,

@@ -1,11 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 import '../const.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:logging/logging.dart';
 import 'package:http/http.dart' as http;
 
@@ -18,7 +15,7 @@ class Spotify extends ChangeNotifier {
 artist
 ##########################################################################
 */
-  static Future<List<dynamic>> artist(String artistid) async{
+  static Future<List<dynamic>> artist(String artistid) async {
     List<dynamic> data = [];
     // ###################################################################
     // authenticate
@@ -57,8 +54,7 @@ artist
     // ###################################################################
     try {
       content = await http.get(
-        Uri.parse(
-            'https://api.spotify.com/v1/artists/$artistid'),
+        Uri.parse('https://api.spotify.com/v1/artists/$artistid'),
         headers: _headers,
       );
     } catch (e) {
@@ -128,129 +124,156 @@ returns:
       "Content-Type": 'application/json',
     };
 
-    // ###################################################################
-    // GET albums and compilations
-    // ###################################################################
-    try {
-      content = await http.get(
-        Uri.parse(
-            'https://api.spotify.com/v1/artists/$artistid/albums?limit=50&include_groups=album,compilation'),
-        headers: _headers,
-      );
-    } catch (e) {
-      print(e);
+    int offset = 0;
+    var body;
+    List<dynamic> data;
+
+    List<dynamic> val = [];
+
+    while (true) {
+      // ###################################################################
+      // GET albums and compilations
+      // ###################################################################
+      try {
+        content = await http.get(
+          Uri.parse(
+              'https://api.spotify.com/v1/artists/$artistid/albums?offset=$offset&limit=50&include_groups=album,compilation'),
+          headers: _headers,
+        );
+      } catch (e) {
+        print(e);
+      }
+
+      // ###################################################################
+      // Break down json results
+      // ###################################################################
+      body = json.decode(content.body);
+
+      body.forEach((key, value) {
+        print(key.toString() + ": " + value.toString());
+      });
+
+      data = body["items"] as List<dynamic>;
+
+      // (data[0] as Map<String, dynamic>).forEach((key, value) {
+      //   print(key.toString() + ": " + value.toString());
+      // });
+
+      // ###################################################################
+      // Collect Album data
+      // ###################################################################
+      albums = {};
+      data.forEach((record) {
+        // Don't repeat albums
+        if (!albums.containsKey(record["name"])) {
+          // Default image if one is not provided
+          String image;
+          (record["images"] as List<dynamic>).isEmpty
+              ? image =
+                  'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
+              : image = record["images"][0]["url"];
+
+          // Compiled artists
+          var art = [];
+          (record["artists"] as List<dynamic>).forEach((element) {
+            var temp = element as Map<String, dynamic>;
+            art.add([
+              temp["name"],
+              temp["id"],
+            ]);
+          });
+
+          // album data
+          albums[record["name"].toString()] = [
+            record["id"],
+            record["name"],
+            art,
+            image,
+            record["release_date"].toString().split("-")[0],
+          ];
+        }
+      });
+
+      val += albums.values.toList();
+      val.sort(((a, b) => a[4].toString().compareTo(b[4].toString())));
+      returning["albums"] = val;
+
+      offset += 50;
+      if (offset > body["total"]) break;
     }
 
-    // ###################################################################
-    // Break down json results
-    // ###################################################################
-    var body = json.decode(content.body);
-    var data = body["items"] as List<dynamic>;
-
-    // (data[0] as Map<String, dynamic>).forEach((key, value) {
-    //   print(key.toString() + ": " + value.toString());
-    // });
-
-    // ###################################################################
-    // Collect Album data
-    // ###################################################################
-    albums = {};
-    data.forEach((record) {
-      // Don't repeat albums
-      if (!albums.containsKey(record["name"])) {
-        // Default image if one is not provided
-        String image;
-        (record["images"] as List<dynamic>).isEmpty
-            ? image =
-                'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
-            : image = record["images"][0]["url"];
-
-        // Compiled artists
-        var art = [];
-        (record["artists"] as List<dynamic>).forEach((element) {
-          var temp = element as Map<String, dynamic>;
-          art.add([
-            temp["name"],
-            temp["id"],
-          ]);
-        });
-
-        // album data
-        albums[record["name"].toString()] = [
-          record["id"],
-          record["name"],
-          art,
-          image,
-          record["release_date"].toString().split("-")[0],
-        ];
+    offset = 0;
+    val = [];
+    while (true) {
+      // ###################################################################
+      // GET singles
+      // ###################################################################
+      try {
+        content = await http.get(
+          Uri.parse(
+              'https://api.spotify.com/v1/artists/$artistid/albums?offset=$offset&limit=50&include_groups=single'),
+          headers: _headers,
+        );
+      } catch (e) {
+        print(e);
       }
-    });
 
-    var val = albums.values.toList();
-    val.sort(((a, b) => a[4].toString().compareTo(b[4].toString())));
-    returning["albums"] = val;
+      // ###################################################################
+      // Break down json results
+      // ###################################################################
+      body = json.decode(content.body);
+      data = body["items"] as List<dynamic>;
 
-    // ###################################################################
-    // GET singles
-    // ###################################################################
-    try {
-      content = await http.get(
-        Uri.parse(
-            'https://api.spotify.com/v1/artists/$artistid/albums?limit=50&include_groups=single'),
-        headers: _headers,
-      );
-    } catch (e) {
-      print(e);
+      // body.forEach((key, value) {
+      //   print(key.toString() + ": " + value.toString());
+      // });
+
+      // (data[0] as Map<String, dynamic>).forEach((key, value) {
+      //   print(key.toString() + ": " + value.toString());
+      // });
+
+      // ###################################################################
+      // Collect Album data
+      // ###################################################################
+      albums = {};
+      data.forEach((record) {
+        // Don't repeat albums
+        if (!albums.containsKey(record["name"])) {
+          // Default image if one is not provided
+          String image;
+          (record["images"] as List<dynamic>).isEmpty
+              ? image =
+                  'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
+              : image = record["images"][0]["url"];
+
+          // Compiled artists
+          var art = [];
+          (record["artists"] as List<dynamic>).forEach((element) {
+            var temp = element as Map<String, dynamic>;
+            art.add([
+              temp["name"],
+              temp["id"],
+            ]);
+          });
+
+          // album data
+          albums[record["name"].toString()] = [
+            record["id"],
+            record["name"],
+            art,
+            image,
+            record["release_date"].toString().split("-")[0],
+          ];
+        }
+      });
+
+      val += albums.values.toList();
+      val.sort(((a, b) => a[4].toString().compareTo(b[4].toString())));
+      returning["singles"] = val;
+
+      offset += 50;
+      if (offset > body["total"]) break;
     }
-
-    // ###################################################################
-    // Break down json results
-    // ###################################################################
-    body = json.decode(content.body);
-    data = body["items"] as List<dynamic>;
-
-    // (data[0] as Map<String, dynamic>).forEach((key, value) {
-    //   print(key.toString() + ": " + value.toString());
-    // });
-
-    // ###################################################################
-    // Collect Album data
-    // ###################################################################
-    albums = {};
-    data.forEach((record) {
-      // Don't repeat albums
-      if (!albums.containsKey(record["name"])) {
-        // Default image if one is not provided
-        String image;
-        (record["images"] as List<dynamic>).isEmpty
-            ? image =
-                'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
-            : image = record["images"][0]["url"];
-
-        // Compiled artists
-        var art = [];
-        (record["artists"] as List<dynamic>).forEach((element) {
-          var temp = element as Map<String, dynamic>;
-          art.add([
-            temp["name"],
-            temp["id"],
-          ]);
-        });
-
-        // album data
-        albums[record["name"].toString()] = [
-          record["id"],
-          record["name"],
-          art,
-          image,
-          record["release_date"].toString().split("-")[0],
-        ];
-      }
-    });
-
-    val = albums.values.toList();
-    val.sort(((a, b) => a[4].toString().compareTo(b[4].toString())));
-    returning["singles"] = val;
 
     // ###################################################################
     // GET albums artist appears on

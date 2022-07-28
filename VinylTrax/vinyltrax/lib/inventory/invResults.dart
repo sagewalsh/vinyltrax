@@ -54,7 +54,7 @@ class InvResults extends StatelessWidget {
                         }
                         // Album Data
                         if (result.length == 6) {
-                          log("length 6");
+                          // log("length 6");
                           String artists = "";
                           var list = result[2] as List<dynamic>;
                           for (int i = 0; i < list.length; i++) {

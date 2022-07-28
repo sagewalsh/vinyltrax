@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'package:vinyltrax/pages/nextPage.dart';
@@ -180,6 +181,17 @@ class _InvDetails extends State<InvDetails> {
                               color: Colors.black,
                               // decoration: TextDecoration.underline,
                             ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = (() {
+                                var route = new MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return new NextPageSpotArt(
+                                    data[0][i][1].toString(),
+                                    data[0][i][0].toString(),
+                                  );
+                                });
+                                Navigator.of(context).push(route);
+                              }),
                           ),
                         );
                         if (i + 1 < size) {

@@ -3,7 +3,7 @@ import 'discogs/discogs.dart';
 import 'spotify/spotify.dart';
 
 class Test {
-  static void fillDatabase() {
+  static void fillDatabase() async {
     // Database.clear();
     // Database.startingDiscogs();
   }
@@ -17,7 +17,6 @@ class Test {
     // Spotify.album("5IZ3qMtXKXAleWBxB7vWen"); // Closer
 
     Spotify.artist("26VFTg2z8YR0cCuwLzESi2");
-    print("HERE");
 
     // Halsey: 26VFTg2z8YR0cCuwLzESi2
   }

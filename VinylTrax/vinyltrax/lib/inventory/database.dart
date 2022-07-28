@@ -1,12 +1,13 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
 import '../discogs/discogs.dart';
 import 'dart:developer';
 import '../spotify/spotify.dart';
+// import 'package:uuid/uuid.dart';
 
 class Database {
   static final fb = FirebaseDatabase.instance;
   static final ref = fb.ref();
+  // static final uuid = Uuid();
 
   static void clear() async {
     await ref.remove();
@@ -35,12 +36,15 @@ class Database {
 
       // Sort the list of album data based on the album name
       list.sort(((a, b) {
-        var albumA = a.value as Map<Object?, Object?>;
-        var albumB = b.value as Map<Object?, Object?>;
-        return albumA["Name"]
-            .toString()
-            .toLowerCase()
-            .compareTo(albumB["Name"].toString().toLowerCase());
+        var albumA = (a.value as Map<Object?, Object?>)["Name"] as String;
+        var albumB = (b.value as Map<Object?, Object?>)["Name"] as String;
+        if (albumA.startsWith("(")) {
+          albumA = albumA.substring(1);
+        }
+        if (albumB.startsWith("(")) {
+          albumB = albumB.substring(1);
+        }
+        return albumA.toLowerCase().compareTo(albumB.toLowerCase());
       }));
 
       //Convert list of maps into list of widgets
@@ -461,6 +465,7 @@ remove album from inventory
       List<String> artistIDs = [];
       (values["Artist"] as List<dynamic>).forEach((element) {
         artistIDs.add(element[1].toString());
+        print(element[1]);
       });
 
       // Delete the album from album database
@@ -471,9 +476,9 @@ remove album from inventory
         var artsnap = await ref.child("Artists/$element").get();
         if (artsnap.exists) {
           var data = artsnap.value as Map<Object?, Object?>;
-          List<dynamic> albums = [];
-          albums.addAll(data["Albums"] as List<dynamic>);
-          albums.remove(albumID);
+          Map<Object?, Object?> albums = {};
+          albums.addAll(data["Albums"] as Map<Object?, Object?>);
+          albums.removeWhere((key, value) => value == albumID);
 
           // If the artist has no more albums: delete the artist
           if (albums.isEmpty) {
@@ -512,6 +517,8 @@ Given Album Data from Discogs in the form:
     if (wishshot.exists) {
       await ref.child("Wishlist/${albumdata[0]}").remove();
     }
+
+    // var id = uuid.v4();
 
     // Vinyl Copies of records get a 1 added to the end
     // CD Copies of records get a 2 added to the end
@@ -622,65 +629,67 @@ Given Album Data from Discogs in the form:
   [6]: [ [ track name, duration, [ feat. artist name, feat. artist id ] ] ]
   [7]: coverart
   */
-  static void addSpotToInv(List<dynamic> albumdata) async{
+  static void addSpotToInv(List<dynamic> albumdata) async {
     // If album was in wishlist: delete it
     var wishshot = await ref.child("Wishlist/${albumdata[0]}").get();
-    if(wishshot.exists){
+    if (wishshot.exists) {
       await ref.child("Wishlist/${albumdata[0]}").remove();
     }
 
+    // var id = uuid.v4();
+
     // Add album to each artist's data
     var genre = [];
-      (albumdata[2] as List<dynamic>).forEach((element) async {
-        var snapshot = await ref.child("Artists/${element[1]}").get();
-        // If the artist exists
-        if(snapshot.exists){
-          var snapalbum = await ref.child("Artists/${element[1]}/Albums");
-          var newAlbum = snapalbum.push();
-          newAlbum.set(albumdata[0]);
-          var snap = await ref.child("Artists/${element[1]}/Genres").get();
-          genre = snap.value as List<dynamic>;
-        }
+    (albumdata[2] as List<dynamic>).forEach((element) async {
+      var snapshot = await ref.child("Artists/${element[1]}").get();
+      // If the artist exists
+      if (snapshot.exists) {
+        var snapalbum = await ref.child("Artists/${element[1]}/Albums");
+        var newAlbum = snapalbum.push();
+        newAlbum.set(albumdata[0]);
+        var snap = await ref.child("Artists/${element[1]}/Genres").get();
+        genre = snap.value as List<dynamic>;
+      }
 
-        // If the artist doesn't exist
-        else{
-          print("snapshot does not exist");
-          String image = "https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg";
-          Spotify.artist(element[1].toString()).then((value) async {
-            if(value[0] != null){
-              image = value[0];
+      // If the artist doesn't exist
+      else {
+        print("snapshot does not exist");
+        String image =
+            "https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg";
+        Spotify.artist(element[1].toString()).then((value) async {
+          if (value[0] != null) {
+            image = value[0];
+          }
+          genre = value[1];
+
+          // Create new artist
+          await ref.update({
+            "Artists/${element[1]}": {
+              "UniqueID": element[1],
+              "Name": element[0],
+              "Image": image,
+              "Genres": genre,
             }
-            genre = value[1];
-
-            // Create new artist
-            await ref.update({
-              "Artists/${element[1]}": {
-                "UniqueID": element[1],
-                "Name": element[0],
-                "Image": image,
-                "Genres": genre,
-              }
-            });
-
-            var snapAlbum = await ref.child("Artists/${element[1]}/Albums");
-            var newAlbum = snapAlbum.push();
-            newAlbum.set(albumdata[0]);
           });
-        }
-      });
+
+          var snapAlbum = await ref.child("Artists/${element[1]}/Albums");
+          var newAlbum = snapAlbum.push();
+          newAlbum.set(albumdata[0]);
+        });
+      }
+    });
 
     // Vinyl Copies of records get a 1 added to the end
     // CD copies of records get a 2 added to the end
-    if(albumdata[1] == "Vinyl")
+    if (albumdata[1] == "Vinyl")
       albumdata[0] += "1";
-    else if(albumdata[1] == "CD")
-      albumdata[0] += "2";
-    
+    else if (albumdata[1] == "CD") albumdata[0] += "2";
+
     var snapshot = await ref.child("Albums/${albumdata[0]}").get();
-    if(!snapshot.exists){
+    if (!snapshot.exists) {
       // Add album data to database
       await ref.update({
-        "Albums/${albumdata[0]}":{
+        "Albums/${albumdata[0]}": {
           "UniqueID": albumdata[0],
           "Name": albumdata[3],
           "Artist": albumdata[2],
@@ -688,21 +697,16 @@ Given Album Data from Discogs in the form:
           "Cover": albumdata[7],
           "Genres": genre,
           "Tracklist": albumdata[6],
-          "Format": albumdata[2],
+          "Format": albumdata[1],
         }
       });
-
-      
     }
-    }
-  
+  }
 
   /*
   addSpotToWish
   */
-  static void addSpotToWish(List<dynamic> albumdata) async{
-    
-  }
+  static void addSpotToWish(List<dynamic> albumdata) async {}
 
 /*
 #############################################################################
