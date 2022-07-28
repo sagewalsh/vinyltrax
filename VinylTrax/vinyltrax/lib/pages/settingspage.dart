@@ -48,7 +48,7 @@ class _SettingsPageState extends State<SettingsPage> {
             width: double.infinity,
             alignment: Alignment.center,
             child: Text(
-              "Settings Page",
+              "Settings",
               style: TextStyle(
                 color: darkTheme ? Colors.white : Colors.black,
               ),

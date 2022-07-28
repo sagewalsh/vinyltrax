@@ -112,7 +112,7 @@ class _SearchPageState extends State<SearchPage> {
                     vertical: MediaQuery.of(context).size.height * 0.01),
                 width: double.infinity,
                 alignment: Alignment.center,
-                child: Text("Search Page",
+                child: Text("Search",
                     style: TextStyle(
                         color:
                             settings.darkTheme ? Colors.white : Colors.black)),
