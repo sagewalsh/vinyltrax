@@ -30,15 +30,15 @@ class _SearchPageState extends State<SearchPage> {
     if (settings.listBool) {
       return Container(
         //Icon/List buttons and Top/Artist/Album/Song buttons
-        color: Color(0xFFFFFEF9),
+        color: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
         padding: EdgeInsets.only(bottom: 5, top: 10),
         child: SizedBox(
           height: 30,
           child: CupertinoSegmentedControl(
               padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-              selectedColor: Color(0xFFFF5A5A),
-              borderColor: Color(0xFFFF5A5A),
-              pressedColor: Color(0x64FF5A5A),
+              selectedColor: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+              borderColor: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+              pressedColor: settings.darkTheme ? Color(0x64BB86FC) : Color(0x64FF5A5A),
               children: {
                 _Tab.one: Container(
                   height: 30,
@@ -86,12 +86,12 @@ class _SearchPageState extends State<SearchPage> {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFFFFFEF9),
+        backgroundColor: settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           titleSpacing: 10,
           toolbarHeight: toolbarHeight,
-          backgroundColor: Color(0xFFFFFEF9),
+          backgroundColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
           title: Column(
             children: [
               Container(
@@ -99,11 +99,11 @@ class _SearchPageState extends State<SearchPage> {
                     vertical: MediaQuery.of(context).size.height * 0.01),
                 width: double.infinity,
                 alignment: Alignment.center,
-                child: const Text("Search Page",
-                    style: TextStyle(color: Colors.black)),
+                child: Text("Search Page",
+                    style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black)),
               ),
               Container(
-                color: Color(0xFFFFFEF9),
+                color: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
                 //Search bar, Camera button, and barcode scanning button
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -117,39 +117,45 @@ class _SearchPageState extends State<SearchPage> {
                             // color: Color.fromARGB(255, 244, 244, 244),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
-                              color: Color(0xFFFFFEF9),
+                              color: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
                             ),
                             child: TextField(
+                              style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black),
                               textAlignVertical: TextAlignVertical.center,
                               controller: textController,
                               focusNode: focus,
                               onTap: () =>
                                   FocusScope.of(context).requestFocus(focus),
                               decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: settings.darkTheme ? Colors.white : Colors.black, width: 1),
+                                  borderRadius: BorderRadius.circular(15)
+                                ),
                                 contentPadding: EdgeInsets.only(left: 15),
                                 isCollapsed: true,
-                                labelText: "Search Discogs",
+                                labelText: "Search",
+                                labelStyle: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.never,
                                 hintText: "Artist, Album, Song",
                                 hintStyle: TextStyle(
-                                  color: Color(0xFFFF5A5A),
+                                  color: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
                                 ),
                                 border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black),
+                                  borderSide: BorderSide(color: settings.darkTheme ? Colors.white : Colors.black),
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15),
                                   borderSide: BorderSide(
-                                    color: Color(0xFFFF5A5A),
+                                    color: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
                                   ),
                                 ),
                                 suffixIcon: Icon(
                                   Icons.search,
                                   color: focus.hasFocus
-                                      ? Color(0xFFFF5A5A)
-                                      : Colors.black,
+                                      ? settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A)
+                                      : settings.darkTheme ? Colors.white : Colors.black,
                                 ),
                               ),
                               onSubmitted: (text) {
@@ -162,7 +168,7 @@ class _SearchPageState extends State<SearchPage> {
                           )),
                     ),
                     IconButton(
-                      color: Colors.black,
+                      color: settings.darkTheme ? Colors.white : Colors.black,
                       padding: EdgeInsets.fromLTRB(
                           5, 0, 5, 0),
                       constraints: BoxConstraints(),
@@ -173,7 +179,7 @@ class _SearchPageState extends State<SearchPage> {
                       iconSize: MediaQuery.of(context).size.width * 0.1,
                     ),
                     IconButton(
-                      color: Colors.black,
+                      color: settings.darkTheme ? Colors.white : Colors.black,
                       padding: EdgeInsets.fromLTRB(
                           5, 0, 5, 0),
                       constraints: BoxConstraints(),
@@ -188,18 +194,27 @@ class _SearchPageState extends State<SearchPage> {
             ],
           ),
         ),
-        body: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //Divider between UI and output
-              Container(
-                color: Color(0xFFFFFEF9),
-                height: 5,
-              ),
-              output
-            ],
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: settings.darkTheme ? [Color(0xFF181818), Color(0xFF222222)] : [Color(0xFFFFFDF6), Color(0xFFFFFDF6)]
+            ),
+          ),
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //Divider between UI and output
+                Container(
+                  color: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+                  height: 5,
+                ),
+                output
+              ],
+            ),
           ),
         ),
       ),

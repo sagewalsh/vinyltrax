@@ -3,6 +3,7 @@ import 'package:vinyltrax/show_data/iconList.dart';
 import 'database.dart';
 import '../show_data/icon.dart';
 import 'dart:developer';
+import '../pages/settingspage.dart' as settings;
 
 class InvResults extends StatelessWidget {
   final String input;
@@ -16,13 +17,13 @@ class InvResults extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFFFFFEF9),
+        backgroundColor: settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
         appBar: AppBar(
-          backgroundColor: Color(0xFFFFFEF9),
-          leading: BackButton(color: Colors.black),
+          backgroundColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+          leading: BackButton(color: settings.darkTheme ? Colors.white : Colors.black),
           title: Text(
             name,
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black),
           ),
         ),
         body: Scrollbar(

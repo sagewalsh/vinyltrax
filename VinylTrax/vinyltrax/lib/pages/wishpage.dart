@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'wishAlbums.dart';
+import 'settingspage.dart' as settings;
 
 enum _Order { artist, albums }
 
@@ -15,30 +16,6 @@ class _WishPageState extends State<WishPage> {
   _Order _selectedOrder = _Order.artist;
   String order = "Artist";
 
-  Future createAlertDialog(BuildContext context) {
-    TextEditingController _customController = TextEditingController();
-
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text("What do you wish for?"),
-            content: TextField(
-              controller: _customController,
-            ),
-            actions: [
-              MaterialButton(
-                elevation: 5.0,
-                child: Text("Submit"),
-                onPressed: () {
-                  Navigator.of(context).pop(_customController.text.toString());
-                },
-              ),
-            ],
-          );
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     if (_selectedOrder == _Order.albums)
@@ -47,22 +24,22 @@ class _WishPageState extends State<WishPage> {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFFFFFEF9),
+        backgroundColor: settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           toolbarHeight: MediaQuery.of(context).size.height * 0.14, //75
-          backgroundColor: Color(0xFFFFFEF9),
+          backgroundColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
           title: Column(
             children: [
               Container(
                 padding: EdgeInsets.fromLTRB(0, 15, 0, 5),
                 width: double.infinity,
                 alignment: Alignment.center,
-                child: const Text("Wishlist",
-                    style: TextStyle(color: Colors.black)),
+                child: Text("Wishlist",
+                    style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black)),
               ),
               Container(
-                color: Color(0xFFFFFEF9),
+                color: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.0099), // 8
                 child: CupertinoSegmentedControl(
@@ -71,9 +48,9 @@ class _WishPageState extends State<WishPage> {
                       0.0,
                       MediaQuery.of(context).size.width * 0.02, //8
                       MediaQuery.of(context).size.height * 0.015), //6
-                  selectedColor: Color(0xFFFF5A5A),
-                  borderColor: Color(0xFFFF5A5A),
-                  pressedColor: Color(0x64FF5A5A),
+                  selectedColor: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+                  borderColor: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+                  pressedColor: settings.darkTheme ? Color(0x64BB86FC) : Color(0x64FF5A5A),
                   children: {
                     _Order.artist: Container(
                       height: MediaQuery.of(context).size.height * 0.037, //30

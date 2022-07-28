@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../buttons/pressDataPopUp.dart';
 import 'database.dart';
+import '../pages/settingspage.dart' as settings;
 
 class GetInvPressing extends StatefulWidget {
   final List<String> input;
@@ -26,7 +27,7 @@ class _InvPress extends State<GetInvPressing> {
           children.add(Text(
             "Pressing Data",
             style: TextStyle(
-              color: Colors.black,
+              color: settings.darkTheme ? Colors.white : Colors.black,
               fontStyle: FontStyle.italic,
             ),
           ));
@@ -91,11 +92,11 @@ class _InvPress extends State<GetInvPressing> {
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: settings.darkTheme ? Colors.black : Colors.white,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
                           width: 1,
-                          color: Color(0xFFFF5A5A),
+                          color: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
                         )),
                     child: Padding(
                       padding: EdgeInsets.all(10),

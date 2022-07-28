@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/inventory/invDetails.dart';
 import 'database.dart';
+import '../pages/settingspage.dart' as settings;
 
 class GetInvNotes extends StatefulWidget {
   final List<String> input;
@@ -44,10 +45,10 @@ class _InvNotes extends State<GetInvNotes> {
                             content: EditableText(
                               controller: _controller,
                               focusNode: FocusNode(),
-                              cursorColor: Colors.black,
+                              cursorColor: settings.darkTheme ? Colors.white : Colors.black,
                               backgroundCursorColor: Colors.green,
                               style: TextStyle(
-                                color: Colors.black,
+                                color: settings.darkTheme ? Colors.white : Colors.black,
                               ),
                               onSubmitted: (value) {
                                 Database.addNotes(
@@ -100,7 +101,7 @@ class _InvNotes extends State<GetInvNotes> {
                               Text(
                                 "Notes",
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: settings.darkTheme ? Colors.white : Colors.black,
                                   fontStyle: FontStyle.italic,
                                 ),
                               ),
@@ -112,16 +113,16 @@ class _InvNotes extends State<GetInvNotes> {
                               Text(
                                 snapshot.data!,
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: settings.darkTheme ? Colors.white : Colors.black,
                                 ),
                               ),
                             ],
                           ),
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: settings.darkTheme ? Colors.black : Colors.white,
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(width: 1, color: Colors.black),
+                          border: Border.all(width: 1, color: settings.darkTheme ? Colors.white : Colors.black),
                         ),
                       )),
                 ));

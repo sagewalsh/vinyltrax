@@ -1,11 +1,11 @@
-//import 'dart:html';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
-import 'package:vinyltrax/spotify/spotAddButton.dart';
+import '../buttons/addAlbumPopUp.dart';
 import 'spotify.dart';
 import '../pages/nextPage.dart';
+import '../pages/settingspage.dart' as settings;
 
 class SpotDetails extends StatelessWidget {
   final List<String> input;
@@ -16,14 +16,14 @@ class SpotDetails extends StatelessWidget {
     Future<List<dynamic>> _results;
     String name = "";
     Widget title =
-        Text("Barcode Results", style: TextStyle(color: Colors.black));
+        Text("Barcode Results", style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black));
 
     _results = Spotify.album(input[0]);
     name = input[1];
     title = Text(
       name,
       style: TextStyle(
-        color: Colors.black,
+        color: settings.darkTheme ? Colors.white : Colors.black,
       ),
     );
 
@@ -36,7 +36,7 @@ class SpotDetails extends StatelessWidget {
           blankSpace: 30,
           text: name,
           style: TextStyle(
-            color: Colors.black,
+            color: settings.darkTheme ? Colors.white : Colors.black,
           ),
         ),
       );
@@ -48,7 +48,7 @@ class SpotDetails extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.only(top: 8, left: 5, right: 5),
         child: Divider(
-          color: Colors.black,
+          color: settings.darkTheme ? Colors.white : Colors.black,
           thickness: 1,
           height: 0,
         ),
@@ -57,11 +57,11 @@ class SpotDetails extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFFFFFEF9),
+        backgroundColor: settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
         appBar: AppBar(
-          backgroundColor: Color(0xFFFFFEF9),
+          backgroundColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
           leading: BackButton(
-            color: Colors.black,
+            color: settings.darkTheme ? Colors.white : Colors.black,
           ),
           title: title,
           actions: [
@@ -70,14 +70,14 @@ class SpotDetails extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return SpotAddButton(_results, input[0]);
+                      return AddAlbumPopUp(_results, input[0]);
                     },
                   );
                   // addToButton(context);
                 },
                 child: Text(
                   "Add",
-                  style: TextStyle(color: Colors.black, fontSize: 18),
+                  style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black, fontSize: 18),
                 ))
           ],
         ),
@@ -96,52 +96,42 @@ class SpotDetails extends StatelessWidget {
                       var data = snapshot.data!;
 
                       Widget extendedName = Center(
-                        child: Container(
-
-                          width: MediaQuery.of(context).size.width,
-                          height: 30,
-                          child: Text(
-                            data[1].toString(),
-                            style: TextStyle(
-                              color: Colors.grey[700],
-                              fontSize: 20,
-                            ),
-                            textAlign: TextAlign.center,
+                        child: Text(
+                          data[1].toString(),
+                          style: TextStyle(
+                            color: Colors.grey[700],
                           ),
                         ),
                       );
 
-                      if (name.length > 35) {
+                      if (name.length > 45) {
                         extendedName = Center(
                             child: Container(
                           width: MediaQuery.of(context).size.width,
-                          height: 30,
+                          height: 20,
                           child: Marquee(
-                            startPadding: 20,
-                            startAfter: Duration(seconds: 5),
                             velocity: 10,
                             blankSpace: 100,
                             text: data[1].toString(),
                             style: TextStyle(
-                              color: Colors.grey[700],
-                              fontSize: 20,
-
+                              color: settings.darkTheme ? Colors.white : Colors.black,
                             ),
                           ),
                         ));
                       }
 
-                      // children.add(SizedBox(
-                      //   width: double.infinity,
-                      //   height: 20,
-                      //   child: const Text(""),
-                      // ));
+                      children.add(SizedBox(
+                        width: double.infinity,
+                        height: 20,
+                        child: const Text(""),
+                      ));
 
                       // COVER ART
                       children.add(Center(
                         child: Container(
-                          height: MediaQuery.of(context).size.width, //150 square
-                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.width *
+                              .38, //150 square
+                          width: MediaQuery.of(context).size.width * .38,
                           child: Image(
                             image: NetworkImage(data[5].toString()),
                           ),
@@ -172,9 +162,8 @@ class SpotDetails extends StatelessWidget {
                                 Navigator.of(context).push(route);
                               }),
                             style: TextStyle(
-                              color: Colors.black,
+                              color: settings.darkTheme ? Colors.white : Colors.black,
                               decoration: TextDecoration.underline,
-                              fontSize: 18,
                             ),
                           ),
                         );
@@ -182,51 +171,42 @@ class SpotDetails extends StatelessWidget {
                           artists.add(TextSpan(
                             text: " & ",
                             style: TextStyle(
-                              color: Colors.black,
+                              color: settings.darkTheme ? Colors.white : Colors.black,
                             ),
                           ));
                         }
                       }
                       children.add(
                         Center(
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 24,
-                            child: RichText(
-                              text: TextSpan(
-                                children: artists,
-                              ),
-                              textAlign: TextAlign.center,
+                          child: RichText(
+                            text: TextSpan(
+                              children: artists,
                             ),
                           ),
                         ),
                       );
 
                       // GENRE AND YEAR
-                      String gy = "";
                       if ((data[2] as List<dynamic>).isNotEmpty) {
                         if (data[3].toString().length == 4) {
                           // has genre and year
-                          gy = 
+                          children.add(Center(
+                              child: Text(
                             data[2][0].toString() +
                                 "  •  " +
-                                data[3].toString();
+                                data[3].toString(),
+                          )));
                         } else {
                           // has genre
-                          gy = data[2][0].toString();
+                          children
+                              .add(Center(child: Text(data[2][0].toString())));
                         }
                       } else {
                         if (data[3].toString().length == 4) {
                           // has year
-                          gy = data[3].toString();
+                          children.add(Center(child: Text(data[3].toString())));
                         }
                       }
-                      children.add(Center(child: Text(
-                        gy,
-                        style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),));
 
                       children.add(SizedBox(height: 30));
 
@@ -298,7 +278,7 @@ class SpotDetails extends StatelessWidget {
                                 border: Border(
                                   bottom: BorderSide(
                                     width: 1,
-                                    color: Color.fromARGB(86, 255, 90, 90),
+                                    color: settings.darkTheme ? Color(0x64BB86FC) : Color(0x64FF5A5A),
                                   ),
                                 ),
                               ),
@@ -325,7 +305,7 @@ class SpotDetails extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            tileColor: Color(0xFFFFFEF9),
+                            tileColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
                           ));
                         }
                         children.add(ListView(

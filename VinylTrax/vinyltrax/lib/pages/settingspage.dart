@@ -17,6 +17,8 @@ class _SettingsPageState extends State<SettingsPage> {
   changeTheme(bool newVal) {
     setState(() {
       darkTheme = newVal;
+      Navigator.pop(context);
+      Navigator.pushNamed(context, 'setting');
     });
   }
 
@@ -36,19 +38,19 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFFFFFDF6),
+        backgroundColor: darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
         appBar: AppBar(
           toolbarHeight: MediaQuery.of(context).size.height * 0.1, //180
           automaticallyImplyLeading: false,
-          backgroundColor: Color(0xFFFFFDF6),
+          backgroundColor: darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
           title: Container(
             padding: EdgeInsets.fromLTRB(0, 20, 0, 5),
             width: double.infinity,
             alignment: Alignment.center,
-            child: const Text(
+            child: Text(
               "Settings Page",
               style: TextStyle(
-                color: Colors.black,
+                color: darkTheme ? Colors.white : Colors.black,
               ),
             ),
           ),
@@ -61,10 +63,10 @@ class _SettingsPageState extends State<SettingsPage> {
               Row(children: [
                 Icon(
                   Icons.person,
-                  color: Color(0xFFFF5A5A),
+                  color: darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
                 ),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.025),
-                Text("Account", style: TextStyle(fontSize: 22))
+                Text("Account", style: TextStyle(fontSize: 22, color: darkTheme ? Colors.white : Colors.black))
               ]),
               Divider(
                   height: MediaQuery.of(context).size.height * 0.0124,
@@ -78,10 +80,10 @@ class _SettingsPageState extends State<SettingsPage> {
               Row(children: [
                 Icon(
                   Icons.settings_suggest,
-                  color: Color(0xFFFF5A5A),
+                  color: darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
                 ),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.025), //10
-                Text("Others", style: TextStyle(fontSize: 22))
+                Text("Others", style: TextStyle(fontSize: 22, color: darkTheme ? Colors.white : Colors.black))
               ]),
               Divider(
                   height: MediaQuery.of(context).size.height * 0.0124,
@@ -135,7 +137,7 @@ class _SettingsPageState extends State<SettingsPage> {
           Transform.scale(
             scale: .7,
             child: CupertinoSwitch(
-              activeColor: Color(0xFFFF5A5A),
+              activeColor: darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
               trackColor: Colors.grey,
               value: value,
               onChanged: (bool newValue) {

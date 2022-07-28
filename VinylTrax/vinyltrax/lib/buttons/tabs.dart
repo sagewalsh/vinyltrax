@@ -3,8 +3,9 @@ import '../button_icons/settings.dart';
 import '../button_icons/wishlist.dart';
 import '../button_icons/vinyl.dart';
 import '../pages/searchpage.dart';
-import '../pages/staxpage.dart';
 import '../pages/settingspage.dart';
+import '../pages/staxpage.dart';
+import '../pages/settingspage.dart' as settings;
 import '../pages/wishpage.dart';
 
 class Tabs extends StatelessWidget {
@@ -18,11 +19,12 @@ class Tabs extends StatelessWidget {
       initialIndex: startingPos,
       length: 4,
       child: Scaffold(
-        backgroundColor: Color(0xFFFFFDF6),
+        backgroundColor: settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
         bottomNavigationBar: TabBar(
-          indicatorColor: Color(0xFFFF5A5A),
-          labelColor: Color(0xFFFF5A5A),
-          unselectedLabelColor: Colors.black,
+          onTap: (int pos) {},
+          indicatorColor: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+          labelColor: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+          unselectedLabelColor: settings.darkTheme ? Colors.white : Colors.black,
           tabs: <Widget>[
             Tab(
               icon: Icon(VinylIcon.cd),

@@ -19,14 +19,14 @@ class SpotifyResults extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFFFFFEF9),
+        backgroundColor: settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
         appBar: AppBar(
           toolbarHeight: MediaQuery.of(context).size.height * 0.10, //180
-          backgroundColor: Color(0xFFFFFEF9),
-          leading: BackButton(color: Colors.black),
+          backgroundColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+          leading: BackButton(color: settings.darkTheme ? Colors.white : Colors.black),
           title: Text(
             name,
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black),
           ),
         ),
         body: Scrollbar(

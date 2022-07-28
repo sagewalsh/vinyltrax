@@ -23,7 +23,7 @@ class SpotAlbumsBy extends StatelessWidget {
     Widget title = Text(
       name.replaceAll(RegExp(r'\([0-9]+\)'), ""),
       style: TextStyle(
-        color: Colors.black,
+        color: settings.darkTheme ? Colors.white : Colors.black,
       ),
     );
 
@@ -36,7 +36,7 @@ class SpotAlbumsBy extends StatelessWidget {
           blankSpace: 30,
           text: name,
           style: TextStyle(
-            color: Colors.black,
+            color: settings.darkTheme ? Colors.white : Colors.black,
           ),
         ),
       );
@@ -44,12 +44,12 @@ class SpotAlbumsBy extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFFFFFEF9),
+        backgroundColor: settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
         appBar: AppBar(
           toolbarHeight: MediaQuery.of(context).size.height * 0.10, //180
-          backgroundColor: Color(0xFFFFFEF9),
+          backgroundColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
           leading: BackButton(
-            color: Colors.black,
+            color: settings.darkTheme ? Colors.white : Colors.black,
           ),
           title: title,
         ),

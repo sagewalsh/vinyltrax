@@ -5,6 +5,7 @@ import 'package:vinyltrax/pages/nextPage.dart';
 import 'database.dart';
 import 'getInvNotes.dart';
 import 'getInvPressing.dart';
+import '../pages/settingspage.dart' as settings;
 
 class InvDetails extends StatefulWidget {
   final List<String> input;
@@ -28,7 +29,7 @@ class _InvDetails extends State<InvDetails> {
       return Padding(
         padding: const EdgeInsets.only(top: 8, left: 5, right: 5),
         child: Divider(
-          color: Colors.black,
+          color: settings.darkTheme ? Colors.white : Colors.black,
           thickness: 1,
           height: 0,
         ),
@@ -38,7 +39,7 @@ class _InvDetails extends State<InvDetails> {
     Widget title = Text(
       album,
       style: TextStyle(
-        color: Colors.black,
+        color: settings.darkTheme ? Colors.white : Colors.black,
       ),
     );
 
@@ -51,7 +52,7 @@ class _InvDetails extends State<InvDetails> {
           blankSpace: 30,
           text: album,
           style: TextStyle(
-            color: Colors.black,
+            color: settings.darkTheme ? Colors.white : Colors.black,
           ),
         ),
       );
@@ -76,7 +77,7 @@ class _InvDetails extends State<InvDetails> {
           blankSpace: 100,
           text: album,
           style: TextStyle(
-            color: Colors.black,
+            color: settings.darkTheme ? Colors.white : Colors.black,
           ),
         ),
       ));
@@ -84,11 +85,11 @@ class _InvDetails extends State<InvDetails> {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFFFFFEF9),
+        backgroundColor: settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
         appBar: AppBar(
-          backgroundColor: Color(0xFFFFFEF9),
+          backgroundColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
           leading: BackButton(
-            color: Colors.black,
+            color: settings.darkTheme ? Colors.white : Colors.black,
           ),
           title: title,
           actions: [
@@ -125,7 +126,7 @@ class _InvDetails extends State<InvDetails> {
                       );
                     });
               },
-              child: Text("Remove", style: TextStyle(color: Colors.black)),
+              child: Text("Remove", style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black)),
             )
           ],
         ),
@@ -178,7 +179,7 @@ class _InvDetails extends State<InvDetails> {
                                 .toString()
                                 .replaceAll(RegExp(r'\([0-9]+\)'), ""),
                             style: TextStyle(
-                              color: Colors.black,
+                              color: settings.darkTheme ? Colors.white : Colors.black,
                               // decoration: TextDecoration.underline,
                             ),
                             recognizer: TapGestureRecognizer()
@@ -198,7 +199,7 @@ class _InvDetails extends State<InvDetails> {
                           artists.add(TextSpan(
                             text: " & ",
                             style: TextStyle(
-                              color: Colors.black,
+                              color: settings.darkTheme ? Colors.white : Colors.black,
                             ),
                           ));
                         }
@@ -218,15 +219,21 @@ class _InvDetails extends State<InvDetails> {
                     if (data[2] != null && data[3] != null && data[3] != 0) {
                       children.add(Center(
                           child: Text(
-                        data[2][0].toString() + "  •  " + data[3].toString(),
-                      )));
+                              data[2][0].toString() + "  •  " + data[3].toString(),
+                              style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black)),
+                      ));
                     } else if (data[2] != null) {
                       children.add(Center(
-                        child: Text(data[2][0].toString()),
+                        child: Text(
+                          data[2][0].toString(),
+                          style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black),
+                        ),
                       ));
                     } else if (data[3] != null && data[3] != 0) {
                       children.add(Center(
-                        child: Text(data[3].toString()),
+                        child: Text(data[3].toString(),
+                        style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black),
+                        ),
                       ));
                     }
 
@@ -237,7 +244,7 @@ class _InvDetails extends State<InvDetails> {
                       children.add(Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
                         child:
-                            Text("Tracklist", style: TextStyle(fontSize: 17)),
+                            Text("Tracklist", style: TextStyle(fontSize: 17, color: settings.darkTheme ? Colors.white : Colors.black)),
                       ));
                       children.add(addBlackLine());
                       List<ListTile> tracklist = <ListTile>[];
@@ -258,7 +265,7 @@ class _InvDetails extends State<InvDetails> {
                               i.toString(),
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: Color.fromARGB(122, 0, 0, 0),
+                                color: settings.darkTheme ? Colors.white : Colors.black,
                                 fontSize: 13,
                               ),
                             ),
@@ -271,6 +278,7 @@ class _InvDetails extends State<InvDetails> {
                             child: Text(
                               data[4][i][0].toString(),
                               style: TextStyle(
+                                color: settings.darkTheme ? Colors.white : Colors.black,
                                 fontSize: 13,
                               ),
                             ),
@@ -283,7 +291,7 @@ class _InvDetails extends State<InvDetails> {
                               border: Border(
                                 bottom: BorderSide(
                                   width: 1,
-                                  color: Color.fromARGB(86, 255, 90, 90),
+                                  color: settings.darkTheme ? Color(0x64BB86FC) : Color(0x64FF5A5A)
                                 ),
                               ),
                             ),
@@ -301,11 +309,11 @@ class _InvDetails extends State<InvDetails> {
                               style: TextStyle(
                                 fontSize: 13,
                                 fontStyle: FontStyle.italic,
-                                color: Color.fromARGB(122, 0, 0, 0),
+                                color: settings.darkTheme ? Colors.white : Colors.black,
                               ),
                             ),
                           ),
-                          tileColor: Color(0xFFFFFEF9),
+                          tileColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
                         ));
                       }
                       children.add(ListView(
@@ -360,7 +368,7 @@ class _InvDetails extends State<InvDetails> {
                               border: Border(
                                 bottom: BorderSide(
                                   width: 1,
-                                  color: Color.fromARGB(86, 255, 90, 90),
+                                  color: settings.darkTheme ? Color(0x64BB86FC) : Color(0x64FF5A5A),
                                 ),
                               ),
                             ),
@@ -373,7 +381,7 @@ class _InvDetails extends State<InvDetails> {
                               ),
                             ),
                           ),
-                          tileColor: Color(0xFFFFFEF9),
+                          tileColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
                         ));
                       }
                       children.add(ListView(
@@ -396,7 +404,7 @@ class _InvDetails extends State<InvDetails> {
                     children.add(GetInvPressing(widget.input));
 
                     children.add(Divider(
-                      color: Colors.black,
+                      color: settings.darkTheme ? Colors.white : Colors.black,
                       thickness: 1,
                       height: 0,
                     ));

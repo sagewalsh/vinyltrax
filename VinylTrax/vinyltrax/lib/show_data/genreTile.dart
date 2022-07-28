@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../inventory/getInvGenre.dart';
+import '../pages/settingspage.dart' as settings;
 
 class GenreTile extends StatelessWidget {
   final String genreName;
@@ -41,7 +42,7 @@ class GenreTile extends StatelessWidget {
           border: Border(
             bottom: BorderSide(
               width: 1,
-              color: Color.fromARGB(86, 255, 90, 90),
+              color: settings.darkTheme ? Color(0x64BB86FC) : Color(0x64FF5A5A),
               // color: Color.fromARGB(0, 255, 90, 90),
             ),
           ),
@@ -89,15 +90,15 @@ class _NextPageState extends State<NextPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        backgroundColor: Color(0xFFFFFEF9),
+        backgroundColor: settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
         appBar: new AppBar(
-          backgroundColor: Color(0xFFFFFEF9),
+          backgroundColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
           leading: BackButton(
-            color: Colors.black,
+            color: settings.darkTheme ? Colors.white : Colors.black,
           ),
           title: Text(
             "${widget.genreName}",
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black),
           ),
         ),
         body: SingleChildScrollView(
