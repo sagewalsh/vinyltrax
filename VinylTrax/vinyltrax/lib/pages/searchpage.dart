@@ -109,7 +109,7 @@ class _SearchPageState extends State<SearchPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.70,
+                      width: MediaQuery.of(context).size.width * 0.68,
                       height: MediaQuery.of(context).size.height * 0.06,
                       child: Padding(
                           padding: EdgeInsets.only(left: 8, right: 8),
