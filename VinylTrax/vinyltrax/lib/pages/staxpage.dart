@@ -29,7 +29,8 @@ class _StaxPageState extends State<StaxPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
+        backgroundColor:
+            settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           titleSpacing: 10,
@@ -43,38 +44,55 @@ class _StaxPageState extends State<StaxPage> {
                 width: double.infinity,
                 alignment: Alignment.center,
                 child: Text("Stax of Trax",
-                    style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black)),
-                color: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+                    style: TextStyle(
+                        color:
+                            settings.darkTheme ? Colors.white : Colors.black)),
+                color:
+                    settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
               ),
               Container(
                 // Search Bar
-                color: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+                color:
+                    settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
                 child: Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        color: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+                        color: settings.darkTheme
+                            ? Color(0xFF181818)
+                            : Color(0xFFFFFDF6),
                       ),
                       child: TextField(
-                        style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black),
+                        style: TextStyle(
+                            color: settings.darkTheme
+                                ? Colors.white
+                                : Colors.black),
                         textAlignVertical: TextAlignVertical.center,
                         controller: textController,
                         focusNode: focus,
                         onTap: () => FocusScope.of(context).requestFocus(focus),
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: settings.darkTheme ? Colors.white : Colors.black, width: 1),
-                              borderRadius: BorderRadius.circular(15)
-                          ),
+                              borderSide: BorderSide(
+                                  color: settings.darkTheme
+                                      ? Colors.white
+                                      : Colors.black,
+                                  width: 1),
+                              borderRadius: BorderRadius.circular(15)),
                           contentPadding: EdgeInsets.only(left: 15),
                           isCollapsed: true,
-                          labelText: "Search Spotify",
-                          labelStyle: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black),
+                          labelText: "Search Inventory",
+                          labelStyle: TextStyle(
+                              color: settings.darkTheme
+                                  ? Colors.white
+                                  : Colors.black),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           hintText: "Artist, Album, Song",
                           hintStyle: TextStyle(
-                            color: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+                            color: settings.darkTheme
+                                ? Color(0xFFBB86FC)
+                                : Color(0xFFFF5A5A),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
@@ -82,21 +100,27 @@ class _StaxPageState extends State<StaxPage> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                             borderSide: BorderSide(
-                              color: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+                              color: settings.darkTheme
+                                  ? Color(0xFFBB86FC)
+                                  : Color(0xFFFF5A5A),
                             ),
                           ),
                           suffixIcon: Icon(
                             Icons.search,
                             color: focus.hasFocus
-                                ? settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A)
-                                : settings.darkTheme ? Colors.white : Colors.black,
+                                ? settings.darkTheme
+                                    ? Color(0xFFBB86FC)
+                                    : Color(0xFFFF5A5A)
+                                : settings.darkTheme
+                                    ? Colors.white
+                                    : Colors.black,
                           ),
                         ),
                         onSubmitted: (text) {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            // return InvResults(text);
-                            return SpotifyResults(text);
+                            return InvResults(text);
+                            // return SpotifyResults(text);
                           }));
                         },
                       ),
@@ -106,12 +130,19 @@ class _StaxPageState extends State<StaxPage> {
               ),
               Container(
                 // Artist / Albums / Genre Buttons
-                color: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+                color:
+                    settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
                 child: CupertinoSegmentedControl(
                   padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 6.0),
-                  selectedColor: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
-                  borderColor: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
-                  pressedColor: settings.darkTheme ? Color(0x64BB86FC) : Color(0x64FF5A5A),
+                  selectedColor: settings.darkTheme
+                      ? Color(0xFFBB86FC)
+                      : Color(0xFFFF5A5A),
+                  borderColor: settings.darkTheme
+                      ? Color(0xFFBB86FC)
+                      : Color(0xFFFF5A5A),
+                  pressedColor: settings.darkTheme
+                      ? Color(0x64BB86FC)
+                      : Color(0x64FF5A5A),
                   children: {
                     _Order.artist: Container(
                       height: MediaQuery.of(context).size.height * 0.037, //30
@@ -145,12 +176,19 @@ class _StaxPageState extends State<StaxPage> {
               ),
               Container(
                 // Vinyl / CD / All Buttons
-                color: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+                color:
+                    settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
                 child: CupertinoSegmentedControl(
                   padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-                  selectedColor: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
-                  borderColor: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
-                  pressedColor: settings.darkTheme ? Color(0x64BB86FC) : Color(0x64FF5A5A),
+                  selectedColor: settings.darkTheme
+                      ? Color(0xFFBB86FC)
+                      : Color(0xFFFF5A5A),
+                  borderColor: settings.darkTheme
+                      ? Color(0xFFBB86FC)
+                      : Color(0xFFFF5A5A),
+                  pressedColor: settings.darkTheme
+                      ? Color(0x64BB86FC)
+                      : Color(0x64FF5A5A),
                   children: {
                     Type.vinyl: Container(
                       height: MediaQuery.of(context).size.height * 0.037, //30
@@ -184,7 +222,8 @@ class _StaxPageState extends State<StaxPage> {
               ),
             ],
           ),
-          backgroundColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+          backgroundColor:
+              settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
         ),
         body: SingleChildScrollView(
           // Inventory View Outputs

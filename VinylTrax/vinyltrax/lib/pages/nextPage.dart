@@ -4,7 +4,7 @@ import '../inventory/invDetails.dart';
 import '../inventory/InvAlbumsBy.dart';
 import '../discogs/disAlbumsBy.dart';
 import '../discogs/disDetails.dart';
-import '../spotify/spotAlbumsBy.dart';
+import '../spotify/spotAlByPage.dart';
 import '../spotify/spotDetails.dart';
 
 /*
@@ -123,7 +123,7 @@ class NextPageSpotArt extends StatefulWidget {
 class _NextSpotArtState extends State<NextPageSpotArt> {
   @override
   Widget build(BuildContext context) {
-    return SpotAlbumsBy(["${widget.id}", "${widget.name}"]);
+    return SpotAlByPage(["${widget.id}", "${widget.name}"]);
   }
 }
 

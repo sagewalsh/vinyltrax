@@ -61,7 +61,8 @@ class ListEntry extends StatelessWidget {
             Text(
               name.replaceAll(RegExp(r'\([0-9]+\)'), ""),
               textAlign: TextAlign.left,
-              style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black),
+              style: TextStyle(
+                  color: settings.darkTheme ? Colors.white : Colors.black),
             ),
             SizedBox(
               height: 15,
@@ -71,7 +72,9 @@ class ListEntry extends StatelessWidget {
                 border: Border(
                   bottom: BorderSide(
                     width: 1,
-                    color: settings.darkTheme ? Color(0x64BB86FC) : Color(0x64FF5A5A),
+                    color: settings.darkTheme
+                        ? Color(0x64BB86FC)
+                        : Color(0x64FF5A5A),
                     // color: Color.fromARGB(0, 255, 90, 90),
                   ),
                 ),
@@ -104,11 +107,16 @@ class ListEntry extends StatelessWidget {
               return new NextPageArtist(id: id, name: name);
             else
               return new NextPageAlbum(id, name);
-          } else { //location == 'discogs
+          } else if (location == 'discogs') {
             if (!isAlbum)
               return new NextPageDisArt(id, name);
             else
               return new NextPageDisAlb(id, name);
+          } else {
+            if (!isAlbum)
+              return new NextPageSpotArt(id, name);
+            else
+              return new NextPageSpotAlb(id, name);
           }
         });
         Navigator.of(context).push(route);

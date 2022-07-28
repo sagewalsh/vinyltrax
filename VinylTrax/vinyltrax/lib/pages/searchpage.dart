@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:vinyltrax/button_icons/barcode.dart';
+import 'package:vinyltrax/spotify/spotifyResults.dart';
 import '../discogs/disDetails.dart';
 import '../discogs/disResults.dart';
 import 'settingspage.dart' as settings;
@@ -15,7 +16,7 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
-enum _Tab { one, two, three }
+enum _Tab { one, two, three, four }
 
 class _SearchPageState extends State<SearchPage> {
   String? scanResult; //use this to get the barcode number of an album
@@ -35,42 +36,52 @@ class _SearchPageState extends State<SearchPage> {
         child: SizedBox(
           height: 30,
           child: CupertinoSegmentedControl(
-              padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-              selectedColor: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
-              borderColor: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
-              pressedColor: settings.darkTheme ? Color(0x64BB86FC) : Color(0x64FF5A5A),
-              children: {
-                _Tab.one: Container(
-                  height: 30,
-                  width: 85,
-                  child: Center(
-                    child: Text("Artist", style: TextStyle(fontSize: 14)),
-                  ),
+            padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+            selectedColor:
+                settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+            borderColor:
+                settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+            pressedColor:
+                settings.darkTheme ? Color(0x64BB86FC) : Color(0x64FF5A5A),
+            children: {
+              _Tab.one: Container(
+                height: 30,
+                width: 85,
+                child: Center(
+                  child: Text("Artist", style: TextStyle(fontSize: 14)),
                 ),
-                _Tab.two: Container(
-                  height: 30,
-                  width: 85,
-                  child: Center(
-                    child: Text("Album", style: TextStyle(fontSize: 14)),
-                  ),
+              ),
+              _Tab.two: Container(
+                height: 30,
+                width: 85,
+                child: Center(
+                  child: Text("Album", style: TextStyle(fontSize: 14)),
                 ),
-                _Tab.three: Container(
-                  height: 30,
-                  width: 85,
-                  child: Center(
-                    child: Text("Song", style: TextStyle(fontSize: 14)),
-                  ),
+              ),
+              _Tab.three: Container(
+                height: 30,
+                width: 85,
+                child: Center(
+                  child: Text("EPs", style: TextStyle(fontSize: 14)),
                 ),
-              },
-              onValueChanged: (value) {
-                setState(() {
-                  _selectedTab = value as _Tab;
-                  output = DisResults(text, _selectedTab.name);
-                });
-              },
-              groupValue: _selectedTab,
-            ),
+              ),
+              _Tab.four: Container(
+                height: 30,
+                width: 85,
+                child: Center(
+                  child: Text("Song", style: TextStyle(fontSize: 14)),
+                ),
+              ),
+            },
+            onValueChanged: (value) {
+              setState(() {
+                _selectedTab = value as _Tab;
+                output = SpotifyResults(text, _selectedTab.name);
+              });
+            },
+            groupValue: _selectedTab,
           ),
+        ),
       );
     } else
       return SizedBox();
@@ -86,12 +97,14 @@ class _SearchPageState extends State<SearchPage> {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
+        backgroundColor:
+            settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           titleSpacing: 10,
           toolbarHeight: toolbarHeight,
-          backgroundColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+          backgroundColor:
+              settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
           title: Column(
             children: [
               Container(
@@ -100,10 +113,13 @@ class _SearchPageState extends State<SearchPage> {
                 width: double.infinity,
                 alignment: Alignment.center,
                 child: Text("Search Page",
-                    style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black)),
+                    style: TextStyle(
+                        color:
+                            settings.darkTheme ? Colors.white : Colors.black)),
               ),
               Container(
-                color: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+                color:
+                    settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
                 //Search bar, Camera button, and barcode scanning button
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -117,10 +133,15 @@ class _SearchPageState extends State<SearchPage> {
                             // color: Color.fromARGB(255, 244, 244, 244),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
-                              color: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+                              color: settings.darkTheme
+                                  ? Color(0xFF181818)
+                                  : Color(0xFFFFFDF6),
                             ),
                             child: TextField(
-                              style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black),
+                              style: TextStyle(
+                                  color: settings.darkTheme
+                                      ? Colors.white
+                                      : Colors.black),
                               textAlignVertical: TextAlignVertical.center,
                               controller: textController,
                               focusNode: focus,
@@ -128,40 +149,58 @@ class _SearchPageState extends State<SearchPage> {
                                   FocusScope.of(context).requestFocus(focus),
                               decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: settings.darkTheme ? Colors.white : Colors.black, width: 1),
-                                  borderRadius: BorderRadius.circular(15)
-                                ),
+                                    borderSide: BorderSide(
+                                        color: settings.darkTheme
+                                            ? Colors.white
+                                            : Colors.black,
+                                        width: 1),
+                                    borderRadius: BorderRadius.circular(15)),
                                 contentPadding: EdgeInsets.only(left: 15),
                                 isCollapsed: true,
-                                labelText: "Search Discogs",
-                                labelStyle: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black),
+                                labelText: "Search",
+                                labelStyle: TextStyle(
+                                    color: settings.darkTheme
+                                        ? Colors.white
+                                        : Colors.black),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.never,
                                 hintText: "Artist, Album, Song",
                                 hintStyle: TextStyle(
-                                  color: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+                                  color: settings.darkTheme
+                                      ? Color(0xFFBB86FC)
+                                      : Color(0xFFFF5A5A),
                                 ),
                                 border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: settings.darkTheme ? Colors.white : Colors.black),
+                                  borderSide: BorderSide(
+                                      color: settings.darkTheme
+                                          ? Colors.white
+                                          : Colors.black),
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15),
                                   borderSide: BorderSide(
-                                    color: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+                                    color: settings.darkTheme
+                                        ? Color(0xFFBB86FC)
+                                        : Color(0xFFFF5A5A),
                                   ),
                                 ),
                                 suffixIcon: Icon(
                                   Icons.search,
                                   color: focus.hasFocus
-                                      ? settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A)
-                                      : settings.darkTheme ? Colors.white : Colors.black,
+                                      ? settings.darkTheme
+                                          ? Color(0xFFBB86FC)
+                                          : Color(0xFFFF5A5A)
+                                      : settings.darkTheme
+                                          ? Colors.white
+                                          : Colors.black,
                                 ),
                               ),
                               onSubmitted: (text) {
                                 setState(() {
                                   this.searchText = text;
-                                  output = DisResults(text, _selectedTab.name);
+                                  output =
+                                      SpotifyResults(text, _selectedTab.name);
                                 });
                               },
                             ),
@@ -169,8 +208,7 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                     IconButton(
                       color: settings.darkTheme ? Colors.white : Colors.black,
-                      padding: EdgeInsets.fromLTRB(
-                          5, 0, 5, 0),
+                      padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
                       constraints: BoxConstraints(),
                       onPressed: () {
                         Navigator.pushNamed(context, 'camera');
@@ -180,8 +218,7 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                     IconButton(
                       color: settings.darkTheme ? Colors.white : Colors.black,
-                      padding: EdgeInsets.fromLTRB(
-                          5, 0, 5, 0),
+                      padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
                       constraints: BoxConstraints(),
                       onPressed: scanBarcode,
                       icon: Icon(BarcodeIcon.barcode),
@@ -197,10 +234,11 @@ class _SearchPageState extends State<SearchPage> {
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: settings.darkTheme ? [Color(0xFF181818), Color(0xFF222222)] : [Color(0xFFFFFDF6), Color(0xFFFFFDF6)]
-            ),
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: settings.darkTheme
+                    ? [Color(0xFF181818), Color(0xFF222222)]
+                    : [Color(0xFFFFFDF6), Color(0xFFFFFDF6)]),
           ),
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
@@ -209,7 +247,9 @@ class _SearchPageState extends State<SearchPage> {
               children: [
                 //Divider between UI and output
                 Container(
-                  color: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+                  color: settings.darkTheme
+                      ? Color(0xFF181818)
+                      : Color(0xFFFFFDF6),
                   height: 5,
                 ),
                 output
