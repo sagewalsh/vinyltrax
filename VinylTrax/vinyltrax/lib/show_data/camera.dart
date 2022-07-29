@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
@@ -11,15 +13,19 @@ class Camera extends StatefulWidget {
 
 class _CameraState extends State<Camera> {
   late CameraController _controller;
-  late Future<void> _initlizeControllerFuture;
+  XFile? pictureFile;
 
   @override
   void initState() {
     super.initState();
-    _controller = CameraController(widget.camera, ResolutionPreset.medium);
-    _initlizeControllerFuture = _controller.initialize();
+    _controller = CameraController(widget.camera!, ResolutionPreset.max);
+    _controller.initialize().then((_) {
+      if (!mounted) {return;}
+      setState((){});
+    });
   }
 
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -27,6 +33,22 @@ class _CameraState extends State<Camera> {
 
   @override
   Widget build(BuildContext context) {
+    if (!_controller.value.isInitialized) {
+      return Scaffold(
+        backgroundColor: Color(0xFFFFFEF9),
+        appBar: AppBar(
+          title: const Text('Take a picture', style: TextStyle(color: Colors.black)),
+          backgroundColor: Color(0xFFFFFEF9),
+          leading: BackButton(color: Colors.black),
+        ),
+        body: const SizedBox(
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
+    
     return Scaffold(
       backgroundColor: Color(0xFFFFFEF9),
       appBar: AppBar(
@@ -37,40 +59,37 @@ class _CameraState extends State<Camera> {
       // You must wait until the controller is initialized before displaying the
       // camera preview. Use a FutureBuilder to display a loading spinner until the
       // controller has finished initializing.
-      body: FutureBuilder<void>(
-        future: _initlizeControllerFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            // If the Future is complete, display the preview.
-            return CameraPreview(_controller);
-          } else {
-            // Otherwise, display a loading indicator.
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Center(
+              child: SizedBox(
+                height: 400,
+                width: 400,
+                child: CameraPreview(_controller),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: ElevatedButton(
+              onPressed: () async {
+                pictureFile = await _controller.takePicture();
+                setState(() {});
+              },
+              child: Text("Take Picture"),
+            ),
+          ),
+          //Underneath I have it so the pictureFile!.path will give the correct file path
+          if (pictureFile != null)
+            Image.file(
+              File(pictureFile!.path),
+              height: 300,
+            ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xFFFF5A5A),
-        // Provide an onPressed callback.
-        onPressed: () async {
-          // Take the Picture in a try / catch block. If anything goes wrong,
-          // catch the error.
-          try {
-            // Ensure that the camera is initialized.
-            await _initlizeControllerFuture;
 
-            // Attempt to take a picture and get the file `image`
-            // where it was saved.
-            final image = await _controller.takePicture();
-
-            if (!mounted) return;
-          } catch (e) {
-            // If an error occurs, log the error to the console.
-            print(e);
-          }
-        },
-        child: const Icon(Icons.camera_alt),
-      ),
     );
   }
 }
