@@ -6,6 +6,7 @@ import 'package:vinyltrax/button_icons/barcode.dart';
 import 'package:vinyltrax/spotify/spotifyResults.dart';
 import '../discogs/disDetails.dart';
 import '../discogs/disResults.dart';
+import '../discogs/disBarcode.dart';
 import 'settingspage.dart' as settings;
 //import 'package:camera/camera.dart';
 
@@ -282,7 +283,7 @@ class _SearchPageState extends State<SearchPage> {
       else {
         // Under here is where you use the scan results information to do whatever you need
         var route = new MaterialPageRoute(builder: (BuildContext context) {
-          return new DisDetails([scanResult, ""], true);
+          return new DisBarcode([scanResult, ""], true);
         });
         Navigator.of(context).push(route);
       }

@@ -1,4 +1,3 @@
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
@@ -9,37 +8,49 @@ import '../pages/settingspage.dart' as settings;
 
 class SpotDetails extends StatelessWidget {
   final List<String> input;
-  SpotDetails(this.input);
+  final bool isBarcode;
+  SpotDetails(this.input, this.isBarcode);
 
   @override
   Widget build(BuildContext context) {
     Future<List<dynamic>> _results;
     String name = "";
-    Widget title =
-        Text("Barcode Results", style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black));
+    Widget title = Text("Barcode Results",
+        style:
+            TextStyle(color: settings.darkTheme ? Colors.white : Colors.black));
 
-    _results = Spotify.album(input[0]);
-    name = input[1];
-    title = Text(
-      name,
-      style: TextStyle(
-        color: settings.darkTheme ? Colors.white : Colors.black,
-      ),
-    );
-
-    if (name.length > 22) {
-      title = Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Marquee(
-          velocity: 20,
-          blankSpace: 30,
-          text: name,
-          style: TextStyle(
-            color: settings.darkTheme ? Colors.white : Colors.black,
-          ),
+    if (!isBarcode) {
+      _results = Spotify.album(input[0]);
+      name = input[1];
+      title = Text(
+        name,
+        style: TextStyle(
+          color: settings.darkTheme ? Colors.white : Colors.black,
         ),
       );
+
+      if (name.length > 22) {
+        title = Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Marquee(
+            velocity: 20,
+            blankSpace: 30,
+            text: name,
+            style: TextStyle(
+              color: settings.darkTheme ? Colors.white : Colors.black,
+            ),
+          ),
+        );
+      }
+    } else {
+      if (input.isEmpty) {
+        print("empty");
+        _results = Spotify.empty();
+      } else {
+        print("full");
+        _results = Spotify.barcode(input[0], input[1]);
+      }
     }
 
     // late String name = "Artist not found";
@@ -57,9 +68,12 @@ class SpotDetails extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
+        backgroundColor:
+            settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
         appBar: AppBar(
-          backgroundColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+          toolbarHeight: MediaQuery.of(context).size.height * .10,
+          backgroundColor:
+              settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
           leading: BackButton(
             color: settings.darkTheme ? Colors.white : Colors.black,
           ),
@@ -77,7 +91,9 @@ class SpotDetails extends StatelessWidget {
                 },
                 child: Text(
                   "Add",
-                  style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black, fontSize: 18),
+                  style: TextStyle(
+                      color: settings.darkTheme ? Colors.white : Colors.black,
+                      fontSize: 18),
                 ))
           ],
         ),
@@ -94,6 +110,22 @@ class SpotDetails extends StatelessWidget {
                     if (snapshot.hasData) {
                       children = <Widget>[];
                       var data = snapshot.data!;
+
+                      if (data.isEmpty) {
+                        return Column(
+                          children: [
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "No results found",
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                          ],
+                        );
+                      }
 
                       Widget extendedName = Center(
                         child: Text(
@@ -114,7 +146,9 @@ class SpotDetails extends StatelessWidget {
                             blankSpace: 100,
                             text: data[1].toString(),
                             style: TextStyle(
-                              color: settings.darkTheme ? Colors.white : Colors.black,
+                              color: settings.darkTheme
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
                           ),
                         ));
@@ -162,7 +196,9 @@ class SpotDetails extends StatelessWidget {
                                 Navigator.of(context).push(route);
                               }),
                             style: TextStyle(
-                              color: settings.darkTheme ? Colors.white : Colors.black,
+                              color: settings.darkTheme
+                                  ? Colors.white
+                                  : Colors.black,
                               decoration: TextDecoration.underline,
                             ),
                           ),
@@ -171,7 +207,9 @@ class SpotDetails extends StatelessWidget {
                           artists.add(TextSpan(
                             text: " & ",
                             style: TextStyle(
-                              color: settings.darkTheme ? Colors.white : Colors.black,
+                              color: settings.darkTheme
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
                           ));
                         }
@@ -192,25 +230,31 @@ class SpotDetails extends StatelessWidget {
                           // has genre and year
                           children.add(Center(
                               child: Text(
-                            data[2][0].toString() +
-                                "  •  " +
-                                data[3].toString(),
-                                style: TextStyle(color:
-                                settings.darkTheme ? Colors.white : Colors.black)
-                          )));
+                                  data[2][0].toString() +
+                                      "  •  " +
+                                      data[3].toString(),
+                                  style: TextStyle(
+                                      color: settings.darkTheme
+                                          ? Colors.white
+                                          : Colors.black))));
                         } else {
                           // has genre
-                          children
-                              .add(Center(child: Text(data[2][0].toString(),
-                              style: TextStyle(color:
-                              settings.darkTheme ? Colors.white : Colors.black))));
+                          children.add(Center(
+                              child: Text(data[2][0].toString(),
+                                  style: TextStyle(
+                                      color: settings.darkTheme
+                                          ? Colors.white
+                                          : Colors.black))));
                         }
                       } else {
                         if (data[3].toString().length == 4) {
                           // has year
-                          children.add(Center(child: Text(data[3].toString(),
-                              style: TextStyle(color:
-                              settings.darkTheme ? Colors.white : Colors.black))));
+                          children.add(Center(
+                              child: Text(data[3].toString(),
+                                  style: TextStyle(
+                                      color: settings.darkTheme
+                                          ? Colors.white
+                                          : Colors.black))));
                         }
                       }
 
@@ -220,9 +264,12 @@ class SpotDetails extends StatelessWidget {
                       if (data[4] != null) {
                         children.add(Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child:
-                              Text("Tracklist", style: TextStyle(fontSize: 17,
-                              color: settings.darkTheme ? Colors.white : Colors.black)),
+                          child: Text("Tracklist",
+                              style: TextStyle(
+                                  fontSize: 17,
+                                  color: settings.darkTheme
+                                      ? Colors.white
+                                      : Colors.black)),
                         ));
                         children.add(addBlackLine());
                         List<ListTile> tracklist = <ListTile>[];
@@ -260,7 +307,9 @@ class SpotDetails extends StatelessWidget {
                                 i.toString(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: settings.darkTheme ? Colors.white : Colors.black,
+                                  color: settings.darkTheme
+                                      ? Colors.white
+                                      : Colors.black,
                                   fontSize: 13,
                                 ),
                               ),
@@ -273,9 +322,10 @@ class SpotDetails extends StatelessWidget {
                               child: Text(
                                 data[4][i][0].toString(),
                                 style: TextStyle(
-                                  fontSize: 13,
-                                  color: settings.darkTheme ? Colors.white : Colors.black
-                                ),
+                                    fontSize: 13,
+                                    color: settings.darkTheme
+                                        ? Colors.white
+                                        : Colors.black),
                               ),
                             ),
 
@@ -286,7 +336,9 @@ class SpotDetails extends StatelessWidget {
                                 border: Border(
                                   bottom: BorderSide(
                                     width: 1,
-                                    color: settings.darkTheme ? Color(0x64BB86FC) : Color(0x64FF5A5A),
+                                    color: settings.darkTheme
+                                        ? Color(0x64BB86FC)
+                                        : Color(0x64FF5A5A),
                                   ),
                                 ),
                               ),
@@ -309,11 +361,15 @@ class SpotDetails extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontStyle: FontStyle.italic,
-                                  color: settings.darkTheme ? Colors.white : Colors.black,
+                                  color: settings.darkTheme
+                                      ? Colors.white
+                                      : Colors.black,
                                 ),
                               ),
                             ),
-                            tileColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+                            tileColor: settings.darkTheme
+                                ? Color(0xFF181818)
+                                : Color(0xFFFFFDF6),
                           ));
                         }
                         children.add(ListView(
@@ -337,9 +393,14 @@ class SpotDetails extends StatelessWidget {
                     } else {
                       children = <Widget>[
                         SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: CircularProgressIndicator(),
+                          height: (MediaQuery.of(context).size.height * 0.10),
+                        ),
+                        Center(
+                          child: SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: CircularProgressIndicator(),
+                          ),
                         )
                       ];
                     }

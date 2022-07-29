@@ -81,13 +81,19 @@ class _SpotAlByPage extends State<SpotAlByPage> {
 
   @override
   Widget build(BuildContext context) {
+    double toolbarHeight;
+    if (settings.listBool)
+      toolbarHeight = MediaQuery.of(context).size.height * 0.15;
+    else
+      toolbarHeight = MediaQuery.of(context).size.height * 0.10;
+
     output = SpotAlbumsBy(widget.input, _selectedTab.name);
     return SafeArea(
         child: Scaffold(
       backgroundColor:
           settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
       appBar: AppBar(
-        toolbarHeight: MediaQuery.of(context).size.height * 0.15, //180
+        toolbarHeight: toolbarHeight, //180
         backgroundColor:
             settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
         leading: BackButton(

@@ -546,7 +546,7 @@ returns album details.
     if (results.isNotEmpty) {
       var url = json.decode(content.body)["albums"]["items"][0]["href"];
 
-      print(url);
+      // print(url);
 
       // ###################################################################
       // GET album details
@@ -625,6 +625,15 @@ returns album details.
       ];
     }
     return details;
+  }
+
+  /*
+  empty
+
+  Returns an empty Future array
+  */
+  static Future<List<dynamic>> empty() async {
+    return [];
   }
 
 /*
