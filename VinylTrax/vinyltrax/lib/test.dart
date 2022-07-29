@@ -1,6 +1,7 @@
 import 'inventory/database.dart';
 import 'discogs/discogs.dart';
 import 'spotify/spotify.dart';
+import 'coverscan.dart';
 
 class Test {
   static void fillDatabase() async {
@@ -16,9 +17,11 @@ class Test {
     // Spotify.album("2XWgddMTqKo8YGj02MK4X2"); // For My Parents
     // Spotify.album("5IZ3qMtXKXAleWBxB7vWen"); // Closer
 
-    Spotify.artist("26VFTg2z8YR0cCuwLzESi2");
+    // Spotify.artist("26VFTg2z8YR0cCuwLzESi2");
 
     // Halsey: 26VFTg2z8YR0cCuwLzESi2
+    CoverScan.getOptions(
+        "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png");
   }
 
   static void discogs() {
