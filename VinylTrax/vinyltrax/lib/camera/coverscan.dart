@@ -2,15 +2,15 @@ import 'dart:convert';
 import 'package:googleapis/vision/v1.dart';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
-import 'const.dart';
+import '../const.dart';
 
 class CoverScan {
   static final String url = 'https://vision.googleapis.com/v1/images:annotate?';
   static final Codec<String, String> stringToBase64 = utf8.fuse(base64);
+  String imagePath = "";
 
-  static void getOptions(String imageUrl) async {
-    var image = stringToBase64.encode(imageUrl);
 
+  static Future<String> getOptions(String imageUrl) async {
     late var content;
     try {
       content = await http.post(Uri.parse(url + "key=${Const.GOOGLE_API_KEY}"),
@@ -18,9 +18,7 @@ class CoverScan {
             "requests": [
               {
                 "image": {
-                  "source": {
-                    "imageUri": imageUrl,
-                  }
+                  "content": imageUrl
                 },
                 "features": [
                   {
@@ -36,9 +34,7 @@ class CoverScan {
     }
 
     // print(content);
-    var body = json.decode(content.body);
-    body["error"]?.forEach((key, value) {
-      print(key.toString() + ": " + value.toString());
-    });
+    var body = await json.decode(content.body);
+    return body["responses"][0]["webDetection"]["bestGuessLabels"][0]["label"];
   }
 }

@@ -41,7 +41,7 @@ class SpotifyResults extends StatelessWidget {
                 // #######################################################
                 var list = map["artists"]!;
 
-                if (settings.listBool)
+                if (settings.listBool && this.tab != "None")
                   list.forEach((element) {
                     artists.add(ListEntry(
                       name: element[1],
@@ -71,7 +71,7 @@ class SpotifyResults extends StatelessWidget {
                 list = map["albums"]!;
 
                 // list view
-                if (settings.listBool)
+                if (settings.listBool && this.tab != "None")
                   list.forEach((element) {
                     albums.add(
                       ListEntry(
@@ -113,7 +113,7 @@ class SpotifyResults extends StatelessWidget {
                 // #######################################################
                 list = map["singles"]!;
 
-                if (settings.listBool)
+                if (settings.listBool && this.tab != "None")
                   list.forEach((element) {
                     singles.add(ListEntry(
                       name: element[1],
@@ -152,7 +152,7 @@ class SpotifyResults extends StatelessWidget {
                 // #######################################################
                 list = map["tracks"]!;
 
-                if (settings.listBool)
+                if (settings.listBool && this.tab != "None")
                   list.forEach((element) {
                     tracks.add(ListEntry(
                       name: element[1],
@@ -190,7 +190,7 @@ class SpotifyResults extends StatelessWidget {
                 // #######################################################
                 // Output each collection in its own horizontal section
                 // #######################################################
-                if (!settings.listBool) {
+                if (!settings.listBool || this.tab != "None") {
                   if (artists.length > 0)
                     children.add(SpotScroll(artists, "Artists", snapshot));
                   if (albums.length > 0)
