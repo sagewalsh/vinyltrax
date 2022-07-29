@@ -1,7 +1,7 @@
 import 'inventory/database.dart';
 import 'discogs/discogs.dart';
 import 'spotify/spotify.dart';
-import 'coverscan.dart';
+import 'camera/coverscan.dart';
 import 'package:diacritic/diacritic.dart';
 
 class Test {

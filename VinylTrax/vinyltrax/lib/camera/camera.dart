@@ -1,7 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
-
+import 'dart:typed_data';
+import 'package:googleapis/vision/v1.dart' as vision;
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:vinyltrax/camera/cameraResults.dart';
+import 'package:vinyltrax/spotify/spotifyResults.dart';
+import 'dart:typed_data';
+
+import 'coverscan.dart';
 
 class Camera extends StatefulWidget {
   final CameraDescription camera;
@@ -18,7 +25,7 @@ class _CameraState extends State<Camera> {
   @override
   void initState() {
     super.initState();
-    _controller = CameraController(widget.camera!, ResolutionPreset.max);
+    _controller = CameraController(widget.camera, ResolutionPreset.max);
     _controller.initialize().then((_) {
       if (!mounted) {return;}
       setState((){});
@@ -31,6 +38,29 @@ class _CameraState extends State<Camera> {
     super.dispose();
   }
 
+  void getImageDetails(String filePath) async {
+    final image = vision.Image(content: filePath);
+    print(image);
+  }
+
+  String results = "";
+  List<String> censoredWords = [
+    'album',
+    'cover',
+    'vinyl',
+    '[vinyl]',
+    'usa',
+    'import',
+    'lp',
+    '[lp]',
+    'cd',
+    '[cd]',
+    'soundtrack',
+    '(album)',
+    '[german import]',
+    'art',
+    'poster'
+  ];
   @override
   Widget build(BuildContext context) {
     if (!_controller.value.isInitialized) {
@@ -48,7 +78,7 @@ class _CameraState extends State<Camera> {
         ),
       );
     }
-    
+
     return Scaffold(
       backgroundColor: Color(0xFFFFFEF9),
       appBar: AppBar(
@@ -76,17 +106,33 @@ class _CameraState extends State<Camera> {
             child: ElevatedButton(
               onPressed: () async {
                 pictureFile = await _controller.takePicture();
-                setState(() {});
+                Uint8List byteData = Uint8List.fromList([10, 1]); //placeholder
+
+                await pictureFile!.readAsBytes().then((value) {
+                  setState((){
+                    byteData = value;
+                  });
+                });
+                String base64Image = await base64Encode(byteData);
+                Future<String> test = CoverScan.getOptions(base64Image);
+
+                await test.then((value){
+                  setState((){
+                    results = value;
+                    for (int i = 0; i < censoredWords.length; i++) {
+                      results = results.replaceAll(censoredWords[i], "");
+                    }
+                  });
+                });
+                var route = new MaterialPageRoute(builder: (BuildContext context) {
+                  return new CameraResults(results);
+                });
+                Navigator.of(context).push(route);
               },
               child: Text("Take Picture"),
             ),
           ),
           //Underneath I have it so the pictureFile!.path will give the correct file path
-          if (pictureFile != null)
-            Image.file(
-              File(pictureFile!.path),
-              height: 300,
-            ),
         ],
       ),
 
