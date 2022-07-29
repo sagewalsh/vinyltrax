@@ -8,18 +8,24 @@ import '../pages/settingspage.dart' as settings;
 
 class SpotDetails extends StatelessWidget {
   final List<String> input;
-  final bool isBarcode;
-  SpotDetails(this.input, this.isBarcode);
+  final String inputType;
+  SpotDetails(this.input, this.inputType);
 
   @override
   Widget build(BuildContext context) {
     Future<List<dynamic>> _results;
     String name = "";
-    Widget title = Text("Barcode Results",
+    Widget title;
+    if(inputType == "barcode"){
+     title = Text("Barcode Results",
         style:
-            TextStyle(color: settings.darkTheme ? Colors.white : Colors.black));
+            TextStyle(color: settings.darkTheme ? Colors.white : Colors.black));}
+    else {
+     title = Text("Cover Scan Results",
+        style:
+            TextStyle(color: settings.darkTheme ? Colors.white : Colors.black));}
 
-    if (!isBarcode) {
+    if (inputType == "text") {
       _results = Spotify.album(input[0]);
       name = input[1];
       title = Text(
@@ -43,11 +49,14 @@ class SpotDetails extends StatelessWidget {
           ),
         );
       }
-    } else {
+    } else if(inputType == "barcode") {
       if (input.isEmpty)
         _results = Spotify.empty();
       else
         _results = Spotify.barcode(input[0], input[1]);
+    }
+    else{
+      _results = Spotify.coverScan(input[0]);
     }
 
     // late String name = "Artist not found";

@@ -29,9 +29,9 @@ class DisBarcode extends StatelessWidget {
                       .toString()
                       .replaceAll(RegExp(r'\([0-9]+\)'), ""),
                   data[1].toString()
-                ], true);
+                ], "barcode");
               } else {
-                return SpotDetails([], true);
+                return SpotDetails([], "barcode");
               }
             }
             break;

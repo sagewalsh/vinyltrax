@@ -744,74 +744,92 @@ coverScan
     } catch (e) {
       print(e);
     }
-    var body = json.decode(content.body);
+    var results = json.decode(content.body)["albums"]["items"];
+    if (results.isNotEmpty) {
+      var url = json.decode(content.body)["albums"]["items"][0]["href"];
 
-    // Compiled artists
-    var art = [];
-    var id = [];
-    var gen = [];
-    (body["artists"] as List<dynamic>).forEach((element) {
-      art.add([
-        element["name"],
-        element["id"],
-      ]);
-      id.add(element["id"]);
-    });
+      // print(url);
 
-    // Compiled tracks
-    var tracks = [];
-    (body["tracks"]["items"] as List<dynamic>).forEach((element) {
-      // calculate track duration
-      var time = "";
-      if (element["duration_ms"] != null) {
-        element["duration_ms"] > 3599999
-            ? time = Duration(milliseconds: element["duration_ms"])
-                .toString()
-                .split(".")[0]
-            : time = new Duration(milliseconds: element["duration_ms"])
-                .toString()
-                .substring(2, 7);
+      // ###################################################################
+      // GET album details
+      // ###################################################################
+      try {
+        content = await http.get(
+          Uri.parse(url),
+          headers: _headers,
+        );
+      } catch (e) {
+        print(e);
       }
+      var body = json.decode(content.body);
 
-      // compile track details
-      var data = [
-        element["name"],
-        time,
-        [],
-      ];
-
-      // compile featured artists
-      (element["artists"] as List<dynamic>).forEach((artist) {
-        if (!id.contains(artist["id"])) {
-          (data[2] as List<dynamic>).add([
-            artist["name"],
-            artist["id"],
-          ]);
-        }
+      // Compiled artists
+      var art = [];
+      var id = [];
+      var gen = [];
+      (body["artists"] as List<dynamic>).forEach((element) {
+        art.add([
+          element["name"],
+          element["id"],
+        ]);
+        id.add(element["id"]);
       });
 
-      tracks.add(data);
-    });
+      // Compiled tracks
+      var tracks = [];
+      (body["tracks"]["items"] as List<dynamic>).forEach((element) {
+        // calculate track duration
+        var time = "";
+        if (element["duration_ms"] != null) {
+          element["duration_ms"] > 3599999
+              ? time = Duration(milliseconds: element["duration_ms"])
+                  .toString()
+                  .split(".")[0]
+              : time = new Duration(milliseconds: element["duration_ms"])
+                  .toString()
+                  .substring(2, 7);
+        }
 
-    // Compile genres
-    var data = await Spotify.artist(id[0]);
+        // compile track details
+        var data = [
+          element["name"],
+          time,
+          [],
+        ];
 
-    // Default image value if no image provided
-    String image;
-    (body["images"] as List<dynamic>).isEmpty
-        ? image =
-            'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
-        : image = body["images"][0]["url"];
+        // compile featured artists
+        (element["artists"] as List<dynamic>).forEach((artist) {
+          if (!id.contains(artist["id"])) {
+            (data[2] as List<dynamic>).add([
+              artist["name"],
+              artist["id"],
+            ]);
+          }
+        });
 
-    details = [
-      art,
-      body["name"],
-      data[1],
-      body["release_date"].toString().split("-")[0],
-      tracks,
-      image,
-      body["id"],
-    ];
+        tracks.add(data);
+      });
+
+      // Compile genres
+      var data = await Spotify.artist(id[0]);
+
+      // Default image value if no image provided
+      String image;
+      (body["images"] as List<dynamic>).isEmpty
+          ? image =
+              'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
+          : image = body["images"][0]["url"];
+
+      details = [
+        art,
+        body["name"],
+        data[1],
+        body["release_date"].toString().split("-")[0],
+        tracks,
+        image,
+        body["id"],
+      ];
+    }
     return details;
   }
 

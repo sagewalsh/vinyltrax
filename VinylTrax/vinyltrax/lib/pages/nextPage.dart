@@ -143,6 +143,6 @@ class NextPageSpotAlb extends StatefulWidget {
 class _NextSpotAlbState extends State<NextPageSpotAlb> {
   @override
   Widget build(BuildContext context) {
-    return SpotDetails(["${widget.id}", "${widget.name}"], false);
+    return SpotDetails(["${widget.id}", "${widget.name}"], "text");
   }
 }
