@@ -13,6 +13,9 @@ class Spotify extends ChangeNotifier {
 /*
 ##########################################################################
 artist
+
+[0]: image
+[1]: genres
 ##########################################################################
 */
   static Future<List<dynamic>> artist(String artistid) async {
@@ -69,9 +72,56 @@ artist
     //   print(key.toString() + ": " + value.toString());
     // });
 
+    Set<String> genres = {};
+    if (body["genres"] != null)
+      body["genres"].forEach((type) {
+        if (type.toString().toLowerCase().contains("blue") ||
+            type.toString().toLowerCase().contains("r&b")) genres.add("Blues");
+
+        if (type.toString().toLowerCase().contains("pop")) genres.add("Pop");
+
+        if (type.toString().toLowerCase().contains("military"))
+          genres.add("Brass and Military");
+
+        if (type.toString().toLowerCase().contains("children"))
+          genres.add("Children's");
+
+        if (type.toString().toLowerCase().contains("classical"))
+          genres.add("Classical");
+
+        if (type.toString().toLowerCase().contains("electro") ||
+            type.toString().toLowerCase().contains("dubstep") ||
+            type.toString().toLowerCase().contains("techno"))
+          genres.add("Electronic");
+
+        if (type.toString().toLowerCase().contains("folk") ||
+            type.toString().toLowerCase().contains("country"))
+          genres.add("Folk and Country");
+
+        if (type.toString().toLowerCase().contains("funk") ||
+            type.toString().toLowerCase().contains("soul"))
+          genres.add("Funk / Soul");
+
+        if (type.toString().toLowerCase().contains("hip hop") ||
+            type.toString().toLowerCase().contains("rap"))
+          genres.add("Hip Hop");
+
+        if (type.toString().toLowerCase().contains("jazz")) genres.add("Jazz");
+
+        if (type.toString().toLowerCase().contains("latin"))
+          genres.add("Latin");
+
+        if (type.toString().toLowerCase().contains("reggae"))
+          genres.add("Reggae");
+
+        if (type.toString().toLowerCase().contains("rock") ||
+            type.toString().toLowerCase().contains("punk") ||
+            type.toString().toLowerCase().contains("metal")) genres.add("Rock");
+      });
+
     data = [
       body["images"][0]["url"],
-      body["genres"],
+      genres.toList(),
     ];
 
     return data;
@@ -149,9 +199,9 @@ returns:
       // ###################################################################
       body = json.decode(content.body);
 
-      body.forEach((key, value) {
-        print(key.toString() + ": " + value.toString());
-      });
+      // body.forEach((key, value) {
+      //   print(key.toString() + ": " + value.toString());
+      // });
 
       data = body["items"] as List<dynamic>;
 
@@ -457,6 +507,9 @@ given an albumID, returns a list of album details:
       tracks.add(data);
     });
 
+    // Compile genres
+    var data = await artist(id[0]);
+
     // Default image value if no image provided
     String image;
     (body["images"] as List<dynamic>).isEmpty
@@ -467,7 +520,7 @@ given an albumID, returns a list of album details:
     details = [
       art,
       body["name"],
-      body["genres"],
+      data[1],
       body["release_date"].toString().split("-")[0],
       tracks,
       image,
@@ -494,6 +547,7 @@ returns album details.
 [3]: year
 [4]: [ [ track name, duration, [ feat. artist name, feat. artist id ] ] ]
 [5]: coverart
+[6]: id
 ##########################################################################
 */
   static Future<List<dynamic>> barcode(String artist, String album) async {
@@ -608,6 +662,9 @@ returns album details.
         tracks.add(data);
       });
 
+      // Compile genres
+      var data = await Spotify.artist(id[0]);
+
       // Default image value if no image provided
       String image;
       (body["images"] as List<dynamic>).isEmpty
@@ -618,22 +675,14 @@ returns album details.
       details = [
         art,
         body["name"],
-        body["genres"],
+        data[1],
         body["release_date"].toString().split("-")[0],
         tracks,
         image,
+        body["id"],
       ];
     }
     return details;
-  }
-
-  /*
-  empty
-
-  Returns an empty Future array
-  */
-  static Future<List<dynamic>> empty() async {
-    return [];
   }
 
 /*
@@ -846,5 +895,16 @@ to the query.
     //   print(key.toString() + ": " + value.toString());
     // });
     return results;
+  }
+
+  /*
+  ##########################################################################
+  empty
+
+  Returns an empty Future array
+  ##########################################################################
+  */
+  static Future<List<dynamic>> empty() async {
+    return [];
   }
 }

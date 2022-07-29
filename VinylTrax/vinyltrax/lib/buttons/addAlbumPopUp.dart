@@ -94,7 +94,7 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
                                 if (locationValue == "Inventory") {
                                   List<dynamic> album = [albumID, format];
                                   album += snapshot.data!;
-                                  Database.addDisToInv(album);
+                                  Database.addSpotToInv(album);
                                 }
 
                                 // Add album to wishlist

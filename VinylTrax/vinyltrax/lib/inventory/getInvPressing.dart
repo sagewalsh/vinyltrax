@@ -77,7 +77,7 @@ class _InvPress extends State<GetInvPressing> {
 
           return GestureDetector(
             onTap: () {
-              print("this works");
+              // print("this works");
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -96,7 +96,9 @@ class _InvPress extends State<GetInvPressing> {
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
                           width: 1,
-                          color: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+                          color: settings.darkTheme
+                              ? Color(0xFFBB86FC)
+                              : Color(0xFFFF5A5A),
                         )),
                     child: Padding(
                       padding: EdgeInsets.all(10),

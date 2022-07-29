@@ -44,13 +44,10 @@ class SpotDetails extends StatelessWidget {
         );
       }
     } else {
-      if (input.isEmpty) {
-        print("empty");
+      if (input.isEmpty)
         _results = Spotify.empty();
-      } else {
-        print("full");
+      else
         _results = Spotify.barcode(input[0], input[1]);
-      }
     }
 
     // late String name = "Artist not found";

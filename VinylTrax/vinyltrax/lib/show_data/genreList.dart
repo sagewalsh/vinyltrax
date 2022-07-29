@@ -21,16 +21,14 @@ class GenreList extends StatelessWidget {
       GenreTile("Children's", format, "assets/genres/Children.png"),
       GenreTile("Classical", format, "assets/genres/Classical.png"),
       GenreTile("Electronic", format, "assets/genres/Electronic.png"),
-      GenreTile("Folk, Work, and Country", format, "assets/genres/Country.png"),
+      GenreTile("Folk and Country", format, "assets/genres/Country.png"),
       GenreTile("Funk / Soul", format, "assets/genres/Funk.png"),
       GenreTile("Hip Hop", format, "assets/genres/Hip-Hop.png"),
       GenreTile("Jazz", format, "assets/genres/Jazz.png"),
       GenreTile("Latin", format, "assets/genres/Latin.png"),
-      GenreTile("Non-Music", format, "assets/genres/Non-music.png"),
       GenreTile("Pop", format, "assets/genres/Pop.png"),
       GenreTile("Reggae", format, "assets/genres/Reggae.png"),
       GenreTile("Rock", format, "assets/genres/Rock.png"),
-      GenreTile("Stage and Screen", format, "assets/genres/StageScreen.png"),
     ];
   }
 

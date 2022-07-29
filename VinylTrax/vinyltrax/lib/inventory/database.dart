@@ -1,7 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import '../discogs/discogs.dart';
-import 'dart:developer';
 import '../spotify/spotify.dart';
+import 'package:diacritic/diacritic.dart';
 // import 'package:uuid/uuid.dart';
 
 class Database {
@@ -44,6 +44,8 @@ class Database {
         if (albumB.startsWith("(")) {
           albumB = albumB.substring(1);
         }
+        albumA = removeDiacritics(albumA);
+        albumB = removeDiacritics(albumB);
         return albumA.toLowerCase().compareTo(albumB.toLowerCase());
       }));
 
@@ -86,7 +88,8 @@ class Database {
       // For every album in the database: check if it is the correct genre
       values.forEach((key, value) {
         var album = value as Map<Object?, Object?>;
-        if ((album["Genre"] as List<Object?>).contains(genre) &&
+        if (album["Genres"] != null &&
+            (album["Genres"] as List<Object?>).contains(genre) &&
             (album["Format"] == format || format == "All")) {
           // Add the album to the list
           list += {key: value}.entries.toList();
@@ -104,7 +107,7 @@ class Database {
           String aart = "";
           var data = a[2] as List<dynamic>;
           for (int i = 0; i < data.length; i++) {
-            aart += data[i][0].toString();
+            aart += data[i][0].toString().toLowerCase();
             if (i + 1 < data.length) {
               aart += " & ";
             }
@@ -113,12 +116,14 @@ class Database {
           String bart = "";
           data = b[2] as List<dynamic>;
           for (int j = 0; j < data.length; j++) {
-            bart += data[j][0].toString();
+            bart += data[j][0].toString().toLowerCase();
             if (j + 1 < data.length) {
               bart += " & ";
             }
           }
 
+          aart = removeDiacritics(aart);
+          bart = removeDiacritics(bart);
           return aart.compareTo(bart);
         },
       );
@@ -191,12 +196,11 @@ Data is returned as a list of text widgets
 
       // Sort the list of artists based on their name
       list.sort(((a, b) {
-        var albumA = a.value as Map<Object?, Object?>;
-        var albumB = b.value as Map<Object?, Object?>;
-        return albumA["Name"]
-            .toString()
-            .toLowerCase()
-            .compareTo(albumB["Name"].toString().toLowerCase());
+        var albumA = (a.value as Map<Object?, Object?>)["Name"].toString();
+        var albumB = (b.value as Map<Object?, Object?>)["Name"].toString();
+        albumA = removeDiacritics(albumA);
+        albumB = removeDiacritics(albumB);
+        return albumA.toLowerCase().compareTo(albumB.toLowerCase());
       }));
 
       // Add each artist and their id to the returning list
@@ -289,7 +293,7 @@ Data is returned as a list of text widgets:
         var list = _displayAlbum(albums);
 
         list.sort((a, b) {
-          return a[5].toString().compareTo(b[5].toString());
+          return b[5].toString().compareTo(a[5].toString());
         });
 
         return list;
@@ -356,7 +360,7 @@ Data is returned as a list of strings
       var albumdata = element.value as Map<Object?, Object?>;
       results.add(albumdata["Artist"]);
       results.add(albumdata["Name"]);
-      results.add(albumdata["Genre"]);
+      results.add(albumdata["Genres"]);
       results.add(albumdata["Year"]);
       results.add(albumdata["Tracklist"]);
       results.add(albumdata["Contributors"]);
@@ -465,7 +469,7 @@ remove album from inventory
       List<String> artistIDs = [];
       (values["Artist"] as List<dynamic>).forEach((element) {
         artistIDs.add(element[1].toString());
-        print(element[1]);
+        // print(element[1]);
       });
 
       // Delete the album from album database
@@ -695,7 +699,7 @@ Given Album Data from Discogs in the form:
           "Artist": albumdata[2],
           "Year": albumdata[5],
           "Cover": albumdata[7],
-          "Genres": genre,
+          "Genres": albumdata[4],
           "Tracklist": albumdata[6],
           "Format": albumdata[1],
         }
@@ -740,12 +744,11 @@ Return data to view wishlist items
       if (order == "Albums") {
         // Sort the list of album data based on the album name
         list.sort(((a, b) {
-          var albumA = a.value as Map<Object?, Object?>;
-          var albumB = b.value as Map<Object?, Object?>;
-          return albumA["Name"]
-              .toString()
-              .toLowerCase()
-              .compareTo(albumB["Name"].toString().toLowerCase());
+          var albumA = (a.value as Map<Object?, Object?>)["Name"].toString();
+          var albumB = (b.value as Map<Object?, Object?>)["Name"].toString();
+          albumA = removeDiacritics(albumA);
+          albumB = removeDiacritics(albumB);
+          return albumA.toLowerCase().compareTo(albumB.toLowerCase());
         }));
       }
       // Order by artist name
@@ -771,6 +774,8 @@ Return data to view wishlist items
             }
           }
 
+          aart = removeDiacritics(aart);
+          bart = removeDiacritics(bart);
           return aart.compareTo(bart);
         }));
       }
