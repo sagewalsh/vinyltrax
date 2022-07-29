@@ -245,7 +245,7 @@ returns:
       });
 
       val += albums.values.toList();
-      val.sort(((a, b) => a[4].toString().compareTo(b[4].toString())));
+      val.sort(((a, b) => b[4].toString().compareTo(a[4].toString())));
       returning["albums"] = val;
 
       offset += 50;
@@ -318,7 +318,7 @@ returns:
       });
 
       val += albums.values.toList();
-      val.sort(((a, b) => a[4].toString().compareTo(b[4].toString())));
+      val.sort(((a, b) => b[4].toString().compareTo(a[4].toString())));
       returning["singles"] = val;
 
       offset += 50;
@@ -384,7 +384,7 @@ returns:
     });
 
     val = albums.values.toList();
-    val.sort(((a, b) => a[4].toString().compareTo(b[4].toString())));
+    val.sort(((a, b) => b[4].toString().compareTo(a[4].toString())));
     returning["appears"] = val;
 
     // returning.forEach((key, value) {
@@ -682,6 +682,136 @@ returns album details.
         body["id"],
       ];
     }
+    return details;
+  }
+
+/*
+##########################################################################
+coverScan
+
+[0]: [ [ artist name, artist id ] ]
+[1]: album name
+[2]: [ genres ]
+[3]: year
+[4]: [ [ track name, duration, [ feat. artist name, feat. artist id ] ] ]
+[5]: coverart
+[6]: id
+##########################################################################
+*/
+  static Future<List<dynamic>> coverScan(String query) async {
+    var details = [];
+    // ###################################################################
+    // authenticate
+    // ###################################################################
+    var url = 'https://accounts.spotify.com/api/token';
+    var headers = {
+      'Authorization': 'Basic ' +
+          stringToBase64.encode(
+              '${Const.SPOTIFY_CLIENT_ID}:${Const.SPOTIFY_CLIENT_SECRET}'),
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+    var form = {'grant_type': 'client_credentials'};
+
+    // POST
+    late var content;
+    try {
+      content = await http.post(
+        Uri.parse(url),
+        headers: headers,
+        body: form,
+      );
+    } catch (e) {
+      log(e.toString());
+    }
+
+    // Token
+    var token = json.decode(content.body)["access_token"];
+
+    var _headers = {
+      "Authorization": "Bearer $token",
+      "Content-Type": 'application/json',
+    };
+
+    // ###################################################################
+    // GET Spotify search query
+    // ###################################################################
+    try {
+      content = await http.get(
+        Uri.parse(
+            'https://api.spotify.com/v1/search?q=$query&type=album&limit=1'),
+        headers: _headers,
+      );
+    } catch (e) {
+      print(e);
+    }
+    var body = json.decode(content.body);
+
+    // Compiled artists
+    var art = [];
+    var id = [];
+    var gen = [];
+    (body["artists"] as List<dynamic>).forEach((element) {
+      art.add([
+        element["name"],
+        element["id"],
+      ]);
+      id.add(element["id"]);
+    });
+
+    // Compiled tracks
+    var tracks = [];
+    (body["tracks"]["items"] as List<dynamic>).forEach((element) {
+      // calculate track duration
+      var time = "";
+      if (element["duration_ms"] != null) {
+        element["duration_ms"] > 3599999
+            ? time = Duration(milliseconds: element["duration_ms"])
+                .toString()
+                .split(".")[0]
+            : time = new Duration(milliseconds: element["duration_ms"])
+                .toString()
+                .substring(2, 7);
+      }
+
+      // compile track details
+      var data = [
+        element["name"],
+        time,
+        [],
+      ];
+
+      // compile featured artists
+      (element["artists"] as List<dynamic>).forEach((artist) {
+        if (!id.contains(artist["id"])) {
+          (data[2] as List<dynamic>).add([
+            artist["name"],
+            artist["id"],
+          ]);
+        }
+      });
+
+      tracks.add(data);
+    });
+
+    // Compile genres
+    var data = await Spotify.artist(id[0]);
+
+    // Default image value if no image provided
+    String image;
+    (body["images"] as List<dynamic>).isEmpty
+        ? image =
+            'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
+        : image = body["images"][0]["url"];
+
+    details = [
+      art,
+      body["name"],
+      data[1],
+      body["release_date"].toString().split("-")[0],
+      tracks,
+      image,
+      body["id"],
+    ];
     return details;
   }
 
