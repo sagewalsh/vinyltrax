@@ -124,25 +124,36 @@ class SpotDetails extends StatelessWidget {
                         );
                       }
 
+                      // Set the style of Album Name
                       Widget extendedName = Center(
-                        child: Text(
-                          data[1].toString(),
-                          style: TextStyle(
-                            color: Colors.grey[700],
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 30,
+                          child: Text(
+                            data[1].toString(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              // color: Colors.grey[700],
+                              color: Colors.black,
+                              fontSize: 20,
+                            ),
                           ),
                         ),
                       );
 
-                      if (name.length > 45) {
+                      if (name.length > 35) {
                         extendedName = Center(
                             child: Container(
                           width: MediaQuery.of(context).size.width,
-                          height: 20,
+                          height: 30,
                           child: Marquee(
+                            startPadding: 20,
+                            startAfter: Duration(seconds: 5),
                             velocity: 10,
                             blankSpace: 100,
                             text: data[1].toString(),
                             style: TextStyle(
+                              fontSize: 20,
                               color: settings.darkTheme
                                   ? Colors.white
                                   : Colors.black,
@@ -150,19 +161,13 @@ class SpotDetails extends StatelessWidget {
                           ),
                         ));
                       }
-
-                      children.add(SizedBox(
-                        width: double.infinity,
-                        height: 20,
-                        child: const Text(""),
-                      ));
+                      ;
 
                       // COVER ART
                       children.add(Center(
                         child: Container(
-                          height: MediaQuery.of(context).size.width *
-                              .38, //150 square
-                          width: MediaQuery.of(context).size.width * .38,
+                          height: MediaQuery.of(context).size.width,
+                          width: MediaQuery.of(context).size.width,
                           child: Image(
                             image: NetworkImage(data[5].toString()),
                           ),
@@ -195,8 +200,9 @@ class SpotDetails extends StatelessWidget {
                             style: TextStyle(
                               color: settings.darkTheme
                                   ? Colors.white
-                                  : Colors.black,
-                              decoration: TextDecoration.underline,
+                                  : Color.fromARGB(255, 255, 90, 90),
+                              // decoration: TextDecoration.underline,
+                              fontSize: 18,
                             ),
                           ),
                         );
@@ -213,47 +219,49 @@ class SpotDetails extends StatelessWidget {
                       }
                       children.add(
                         Center(
-                          child: RichText(
-                            text: TextSpan(
-                              children: artists,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 24,
+                            child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                children: artists,
+                              ),
                             ),
                           ),
                         ),
                       );
 
                       // GENRE AND YEAR
+                      String gy = "";
                       if ((data[2] as List<dynamic>).isNotEmpty) {
                         if (data[3].toString().length == 4) {
                           // has genre and year
-                          children.add(Center(
-                              child: Text(
-                                  data[2][0].toString() +
-                                      "  •  " +
-                                      data[3].toString(),
-                                  style: TextStyle(
-                                      color: settings.darkTheme
-                                          ? Colors.white
-                                          : Colors.black))));
+                          gy = data[2][0].toString() +
+                              "  •  " +
+                              data[3].toString();
                         } else {
                           // has genre
-                          children.add(Center(
-                              child: Text(data[2][0].toString(),
-                                  style: TextStyle(
-                                      color: settings.darkTheme
-                                          ? Colors.white
-                                          : Colors.black))));
+                          gy = data[2][0].toString();
                         }
                       } else {
                         if (data[3].toString().length == 4) {
                           // has year
-                          children.add(Center(
-                              child: Text(data[3].toString(),
-                                  style: TextStyle(
-                                      color: settings.darkTheme
-                                          ? Colors.white
-                                          : Colors.black))));
+                          gy = data[3].toString();
                         }
                       }
+                      children.add(Center(
+                        child: Text(
+                          gy,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontStyle: FontStyle.italic,
+                            color: settings.darkTheme
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                      ));
 
                       children.add(SizedBox(height: 30));
 
