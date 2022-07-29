@@ -483,9 +483,21 @@ given an albumID, returns a list of album details:
 /*
 ##########################################################################
 barcode 
+
+This is the helper function for the Discogs Barcode Search.
+Given artist and album names returned by the Discogs Barcode function,
+returns album details.
+
+[0]: [ [ artist name, artist id ] ]
+[1]: album name
+[2]: [ genres ]
+[3]: year
+[4]: [ [ track name, duration, [ feat. artist name, feat. artist id ] ] ]
+[5]: coverart
 ##########################################################################
 */
-  static void barcode(String artist, String album) async {
+  static Future<List<dynamic>> barcode(String artist, String album) async {
+    var details = [];
     // ###################################################################
     // authenticate
     // ###################################################################
@@ -524,18 +536,95 @@ barcode
     try {
       content = await http.get(
         Uri.parse(
-            'https://api.spotify.com/v1/search?q=$album+artist:$artist&type=album&limit=1'),
+            'https://api.spotify.com/v1/search?q=$artist+album:$album&type=album&limit=1'),
         headers: _headers,
       );
     } catch (e) {
       print(e);
     }
-    // print(json.decode(content.body));
-    var body =
-        json.decode(content.body)["albums"]["items"][0] as Map<String, dynamic>;
-    // body.forEach((key, value) {
-    //   print(key.toString() + ": " + value.toString());
-    // });
+    var results = json.decode(content.body)["albums"]["items"];
+    if (results.isNotEmpty) {
+      var url = json.decode(content.body)["albums"]["items"][0]["href"];
+
+      print(url);
+
+      // ###################################################################
+      // GET album details
+      // ###################################################################
+      try {
+        content = await http.get(
+          Uri.parse(url),
+          headers: _headers,
+        );
+      } catch (e) {
+        print(e);
+      }
+      var body = json.decode(content.body);
+
+      // Compiled artists
+      var art = [];
+      var id = [];
+      var gen = [];
+      (body["artists"] as List<dynamic>).forEach((element) {
+        art.add([
+          element["name"],
+          element["id"],
+        ]);
+        id.add(element["id"]);
+      });
+
+      // Compiled tracks
+      var tracks = [];
+      (body["tracks"]["items"] as List<dynamic>).forEach((element) {
+        // calculate track duration
+        var time = "";
+        if (element["duration_ms"] != null) {
+          element["duration_ms"] > 3599999
+              ? time = Duration(milliseconds: element["duration_ms"])
+                  .toString()
+                  .split(".")[0]
+              : time = new Duration(milliseconds: element["duration_ms"])
+                  .toString()
+                  .substring(2, 7);
+        }
+
+        // compile track details
+        var data = [
+          element["name"],
+          time,
+          [],
+        ];
+
+        // compile featured artists
+        (element["artists"] as List<dynamic>).forEach((artist) {
+          if (!id.contains(artist["id"])) {
+            (data[2] as List<dynamic>).add([
+              artist["name"],
+              artist["id"],
+            ]);
+          }
+        });
+
+        tracks.add(data);
+      });
+
+      // Default image value if no image provided
+      String image;
+      (body["images"] as List<dynamic>).isEmpty
+          ? image =
+              'https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg'
+          : image = body["images"][0]["url"];
+
+      details = [
+        art,
+        body["name"],
+        body["genres"],
+        body["release_date"].toString().split("-")[0],
+        tracks,
+        image,
+      ];
+    }
+    return details;
   }
 
 /*
