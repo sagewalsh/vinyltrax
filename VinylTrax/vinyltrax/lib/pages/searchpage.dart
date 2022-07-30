@@ -67,9 +67,6 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               _Tab.four: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                ),
                 height: 30,
                 width: 85,
                 child: Center(

@@ -613,9 +613,9 @@ Given Album Data from Discogs in the form:
           "Artist": albumdata[1],
           "Year": albumdata[4],
           "Genre": albumdata[3],
-          "Cover": albumdata[7],
+          "Cover": albumdata[6],
           "Tracklist": albumdata[5],
-          "Contributors": albumdata[6],
+          // "Contributors": albumdata[6],
           "Format": "Wishlist",
         }
       });

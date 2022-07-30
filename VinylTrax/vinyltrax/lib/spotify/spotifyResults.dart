@@ -190,7 +190,7 @@ class SpotifyResults extends StatelessWidget {
                 // #######################################################
                 // Output each collection in its own horizontal section
                 // #######################################################
-                if (!settings.listBool || this.tab != "None") {
+                if (!settings.listBool) {
                   if (artists.length > 0)
                     children.add(SpotScroll(artists, "Artists", snapshot));
                   if (albums.length > 0)
