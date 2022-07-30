@@ -104,7 +104,7 @@ class _SpotAlByPage extends State<SpotAlByPage> {
             Text(
               widget.input[1],
               style: TextStyle(
-                color: Colors.black,
+                color: settings.darkTheme ? Colors.white : Colors.black,
               ),
             ),
             AddFilterButtons(widget.input),

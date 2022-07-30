@@ -209,7 +209,7 @@ class SpotDetails extends StatelessWidget {
                             style: TextStyle(
                               color: settings.darkTheme
                                   ? Colors.white
-                                  : Color.fromARGB(255, 255, 90, 90),
+                                  : Color(0xFFFF5A5A),
                               // decoration: TextDecoration.underline,
                               fontSize: 18,
                             ),
@@ -219,9 +219,10 @@ class SpotDetails extends StatelessWidget {
                           artists.add(TextSpan(
                             text: " & ",
                             style: TextStyle(
+                              fontSize: 18,
                               color: settings.darkTheme
                                   ? Colors.white
-                                  : Colors.black,
+                                  : Color(0xFFFF5A5A),
                             ),
                           ));
                         }

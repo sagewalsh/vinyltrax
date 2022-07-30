@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../inventory/database.dart';
+import '../inventory/invDetails.dart';
 
 class PressDataPopUp extends StatefulWidget {
   final String albumid;
@@ -72,7 +73,7 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
                 Text("RPM Size: "),
                 DropdownButton(
                     value: rpmSize,
-                    items: ["", "30", "45", "78"].map((String value) {
+                    items: ["", "33", "45", "78"].map((String value) {
                       return DropdownMenuItem(
                           value: value, child: Text(value.toString()));
                     }).toList(),
@@ -130,7 +131,13 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
                     year: year,
                     manufacturer: manufacturer,
                   );
-                  Navigator.of(context).pop();
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                var route = new MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return InvDetails([widget.albumid, ""]);
+                                });
+                                Navigator.of(context).push(route);
                 },
                 child: Text("Done"))
           ],

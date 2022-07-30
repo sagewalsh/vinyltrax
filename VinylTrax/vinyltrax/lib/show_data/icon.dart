@@ -83,18 +83,19 @@ class ShowIcon extends StatelessWidget {
           radius: MediaQuery.of(context).size.height * 0.093,
           foregroundImage: NetworkImage(coverArt));
     } else {
-      avatar = Container(
+      avatar = ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Image(
         height: MediaQuery.of(context).size.height * 0.18,
         width: MediaQuery.of(context).size.height * 0.18,
-        child: Image(
           image: NetworkImage(coverArt),
         ),
       );
     }
 
     List<Widget> children = [];
-    if (artistName == "")
-      children = [avatar, outputAlb];
+    if (albumName == "")
+      children = [avatar, outputArt];
     else
       children = [avatar, outputArt, outputAlb];
 

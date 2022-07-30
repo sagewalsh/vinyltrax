@@ -59,20 +59,28 @@ class _InvDetails extends State<InvDetails> {
     }
 
     Widget extendedName = Center(
-      child: Text(
-        album,
-        style: TextStyle(
-          color: Colors.grey[700],
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 30,
+        child: Text(
+          album,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: settings.darkTheme ? Colors.white : Colors.black,
+            fontSize: 20,
+          ),
         ),
       ),
     );
 
-    if (album.length > 45) {
+    if (album.length > 35) {
       extendedName = Center(
           child: Container(
         width: MediaQuery.of(context).size.width,
-        height: 20,
+        height: 30,
         child: Marquee(
+          startPadding: 20,
+          startAfter: Duration(seconds: 5),
           velocity: 10,
           blankSpace: 100,
           text: album,
@@ -143,19 +151,12 @@ class _InvDetails extends State<InvDetails> {
                     children = <Widget>[];
                     var data = snapshot.data!;
 
-                    children.add(SizedBox(
-                      width: double.infinity,
-                      height: 20,
-                      child: const Text(""),
-                    ));
-
                     // COVER ART
                     if (data[6] != null) {
                       children.add(Center(
                         child: Container(
-                          height: MediaQuery.of(context).size.width *
-                              .38, //150 square
-                          width: MediaQuery.of(context).size.width * .38,
+                          height: MediaQuery.of(context).size.width, 
+                          width: MediaQuery.of(context).size.width,
                           child: Image(
                             image: NetworkImage(data[6].toString()),
                           ),
@@ -179,7 +180,10 @@ class _InvDetails extends State<InvDetails> {
                                 .toString()
                                 .replaceAll(RegExp(r'\([0-9]+\)'), ""),
                             style: TextStyle(
-                              color: settings.darkTheme ? Colors.white : Colors.black,
+                              fontSize: 18,
+                              color: settings.darkTheme
+                                  ? Color.fromARGB(179, 187, 134, 252)
+                                  : Color(0xFFFF5A5A),
                               // decoration: TextDecoration.underline,
                             ),
                             recognizer: TapGestureRecognizer()
@@ -200,15 +204,21 @@ class _InvDetails extends State<InvDetails> {
                             text: " & ",
                             style: TextStyle(
                               color: settings.darkTheme ? Colors.white : Colors.black,
+                              fontSize: 18,
                             ),
                           ));
                         }
                       }
                       children.add(
                         Center(
-                          child: RichText(
-                            text: TextSpan(
-                              children: artists,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 24,
+                            child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                children: artists,
+                              ),
                             ),
                           ),
                         ),
@@ -220,19 +230,28 @@ class _InvDetails extends State<InvDetails> {
                       children.add(Center(
                           child: Text(
                               data[2][0].toString() + "  •  " + data[3].toString(),
-                              style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black)),
+                              style: TextStyle(
+                          fontSize: 14,
+                          fontStyle: FontStyle.italic,
+                          color: settings.darkTheme ? Colors.white : Colors.black)),
                       ));
                     } else if (data[2] != null) {
                       children.add(Center(
                         child: Text(
                           data[2][0].toString(),
-                          style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black),
+                          style: TextStyle(
+                          fontSize: 14,
+                          fontStyle: FontStyle.italic,
+                          color: settings.darkTheme ? Colors.white : Colors.black),
                         ),
                       ));
                     } else if (data[3] != null && data[3] != 0) {
                       children.add(Center(
                         child: Text(data[3].toString(),
-                        style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black),
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontStyle: FontStyle.italic,
+                          color: settings.darkTheme ? Colors.white : Colors.black),
                         ),
                       ));
                     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vinyltrax/show_data/icon.dart';
 import 'package:vinyltrax/spotify/spotAllButton.dart';
 import '../pages/settingspage.dart' as settings;
 
@@ -26,6 +27,7 @@ class _SpotScrollState extends State<SpotScroll> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Divider(color: Color(0x64FF5A5A),),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -44,13 +46,13 @@ class _SpotScrollState extends State<SpotScroll> {
                             ));
                     Navigator.of(context).push(route);
                   },
-                  child: Text("See all")),
+                  child: Text("See all", 
+                  style: TextStyle(color: Color(0xFFFF5A5A)),)),
             ],
           ),
-          Divider(),
           Container(
             // height: MediaQuery.of(context).size.height * 0.24, //190
-            height: MediaQuery.of(context).size.height * 0.25,
+            height: (MediaQuery.of(context).size.height * 0.18 +  MediaQuery.of(context).size.height * .0262 +  MediaQuery.of(context).size.height * .0262 + 24),
             // height: 190,
             child: ListView.separated(
               key: ObjectKey(widget.children[0]),
@@ -59,19 +61,62 @@ class _SpotScrollState extends State<SpotScroll> {
               physics: ClampingScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                    height: MediaQuery.of(context).size.height * 0.26,
-                    width: MediaQuery.of(context).size.height * 0.26,
+                var ic = widget.children[index] as ShowIcon;
+                if(ic.isArtist){
+                  return Container(
+                    height: (MediaQuery.of(context).size.height * 0.18 +  MediaQuery.of(context).size.height * .0262  + 24),
+                      decoration: BoxDecoration(
+                          color: settings.darkTheme ? Color(0x20C9C9C9) : Color(0xFFFFFDF6),
+                          borderRadius: BorderRadius.circular(20),
+                      //     border: Border.all(
+                      //       color: settings.darkTheme
+                      // ? Color(0xFFBB86FC)
+                      // : Color(0xFFFF5A5A),
+                      // width: 1,
+                      //     )
+                          ),
+                      child:
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                    padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
+                                    child: widget.children[index]),
+                            ],
+                          ),
+                      );
+                } else{
+                    return Container(
+                      height: (MediaQuery.of(context).size.height * 0.18 +  MediaQuery.of(context).size.height * .0262 +  MediaQuery.of(context).size.height * .0262 + 24),
                     decoration: BoxDecoration(
-                        color: settings.darkTheme ? Color(0x20C9C9C9) : Color(0x20FF5A5A),
+                        color: settings.darkTheme ? Color(0x20C9C9C9) : Color(0xFFFFFDF6),
                         borderRadius: BorderRadius.circular(20)),
-                    child: Padding(
-                        padding: EdgeInsets.only(top: 6),
-                        child: widget.children[index]));
+                    child:Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                              padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
+                              child: widget.children[index]),
+                      ],
+                    ),
+                    );
+                  }
               },
               separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.038); //15
+                return Row(
+                  children: [
+                    // Container(
+                    //   height: (MediaQuery.of(context).size.height * 0.18 ),
+                    //   decoration: BoxDecoration(
+                    //     border: Border(right: BorderSide(width: 1, color: Color(0xFFFF5A5A)))
+                    //   ),
+                    //   child: SizedBox(
+                    //       width: MediaQuery.of(context).size.width * 0.019),
+                    // ),
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.038),
+                  ],
+                ); //15
               },
             ),
           ),
