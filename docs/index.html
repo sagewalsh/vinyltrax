@@ -27,6 +27,24 @@
                 <p>
                     [Brief project description here]
                 </p>
+                <p>
+                    The project is a mobile application to be deployed on both iOS and 
+                    Android platforms. The application’s purpose is to track users’ 
+                    physical album purchases and wishlist items. The app allows the user 
+                    to differentiate between their vinyl and compact disc (CD) collections 
+                    or view their collection as a whole. The user is provided with three 
+                    distinct search options in order to find an album they want to add to 
+                    their collection. They can search either through text, barcode 
+                    scanning, or cover art scanning. Once in their own inventory they 
+                    will be able to add additional information about an album if they’d 
+                    like. The app has four main pages, accessible through the tab bar at 
+                    the bottom of the screen: user’s inventory, wishlist, search page, 
+                    and settings. The goal of the app is to help people track what they 
+                    already own so they don’t accidentally purchase the same record 
+                    twice. It is also to help remember albums they were interested in 
+                    and yet haven’t purchased, so they don’t have to mindlessly wander 
+                    around record stores.
+                </p>
             </div>
         </div>
 <!------------------------------------------------------------------------------------------->
@@ -36,6 +54,131 @@
                 <h1>
                     Modeling the System
                 </h1>
+
+                <h3>Inventory: Stax of Trax</h3>
+                <p>
+                    The user’s inventory, deemed “Stax of Trax,” can be categorized by 
+                    artist name, by genre, or simply ordered alphabetically by album name. 
+                    When browsing through the inventory, the user selects which collection 
+                    they want to look through (vinyl, CD, or their whole collection), as 
+                    well as how they want their inventory categorized (artist, genre, or 
+                    album). For example, the user is able to see a list of all artists 
+                    who have created albums that the user owns vinyl copies of. When 
+                    selecting a specific artist, the user is able to see all the vinyl 
+                    records the user owns by that artist. The user is also able to search 
+                    their inventory, using a text bar at the top of the inventory page. 
+                    They can search their collection by artist, album name, or song title. 
+                    Selecting an album, navigated to by either searching or browsing the 
+                    user’s inventory, takes the user to a page that provides more detailed 
+                    information about the album. 
+                </p>
+
+                <h3>Inventory: Album Details Page</h3>
+                <p>
+                    At the top of the album details page, the album cover art is clearly 
+                    on display. Followed by the album’s name, the artist’s name, the genre a
+                    nd the year the album was first released. After the basic album 
+                    information is displayed, the app also provides a tracklist with the 
+                    song titles and duration of the songs listed in album order. After the 
+                    tracklisting, a list of album contributors is displayed showing the names 
+                    of the people who have provided something to the album and their role on 
+                    the album. For example, cover art design, album producer, or a featured 
+                    musician. The user will also be provided with space to add record 
+                    pressing data. The pressing section will have various fields where the 
+                    user can enter specific information: who the album manufacturer is, when 
+                    the album was pressed, how many LPs are in the user’s copy, whether 
+                    the LPs are colored, etc. Finally, the album details page ends with a 
+                    section for the user to add additional notes about the album. This will 
+                    be an open ended text field for the user to write whatever thoughts they 
+                    may want to keep.
+                </p>
+
+                <h3>wishlist</h3>
+                <p>
+                    The wishlist will provide a page that will keep track of albums that the 
+                    user wants to add to their inventory in the future. If there is an album 
+                    within the wishlist, and the user later adds it to their inventory, the 
+                    album within the wishlist will automatically get deleted.The wishlist 
+                    can be viewed either ordered by artist name or by album name.  Both will 
+                    be displayed as lists in order to view more results on one page at a 
+                    time. When a user selects an album in their wishlist they are able to 
+                    see basic album information, however there will not be sections on 
+                    pressing information or notes as the user does not own a specific copy 
+                    yet. When on the album details page within the wishlist, there will be 
+                    an option to add the album to their inventory on the top right of the 
+                    screen. 
+                </p>
+
+                <h3>Search Page</h3>
+                <p>
+                    Via the search page on the app, the user is able to access a database with 
+                    hundreds of millions of existing albums spread across millions of artists. 
+                    The user has multiple options for searching this immense record database. 
+                </p>
+
+                <h4>Search Method 1: Text Input</h4>
+                <p>
+                    The first search option, searches using a text input bar. The user then 
+                    types a search query and the results are filtered by artists, albums, and 
+                    songs. These categories are kept in separate horizontally scrollable lists 
+                    that hold at most 10 results. If the user typed in their request correctly, 
+                    the majority of the time they should be able to find what they’re looking 
+                    for within these first 10. If not, there will be a button at the top of 
+                    each categorized list that asks for more results. That button takes the 
+                    user to a page that has the traditional vertical scroll with icon formatting 
+                    and far more results. Whether navigating through artists, songs, or directly 
+                    through the album results, the user will eventually end up on an album details 
+                    page for a record they are interested in.
+                </p>
+
+                <h4>Search Method 2: Barcode Scanning</h4>
+                <p>
+                    Another way the user is able to search the larger database, is via a barcode 
+                    scanner. Once clicking the barcode icon directly next to the text search bar, 
+                    the camera on the user’s phone is opened. They are then able to point their 
+                    camera at the barcode on a physical record. Once recognized, the database is 
+                    searched using that barcode and the user is taken directly to the album details 
+                    page for that record. If the scanner could not read the barcode or the number 
+                    is not recognized by the database, the application informs the user and they 
+                    are prompted to either try again or use a different search method.
+                </p>
+
+                <h4>Search Method 3: Cover Art Scanning</h4>
+                <p>
+                    The final search method available to the user is album cover scanning. Not 
+                    every physical record has a universally recognized barcode. There is also the 
+                    possibility that not all barcodes are readable or stored in the large database. 
+                    Therefore as another easy method of quickly identifying a physical record, 
+                    the user will also be able to scan the cover of the album. Directly next to 
+                    the barcode icon is a camera icon. When clicked, it also opens the user’s camera. 
+                    This time the user will be able to take a picture of the album cover, and the 
+                    artwork will be searched in the database. If recognized, this method will also 
+                    take a user directly to the album details page for the record. 
+                </p>
+                
+                <h3>Search: Album Details Page</h3>
+                <p>
+                    The album details page navigated through any of the three search methods will 
+                    provide basic information about the record; including the cover art, artist, name 
+                    of the album, genre, year, tracklist, and list of contributors. Once the user 
+                    confirms that it is the album they were looking for, they can find an “add” button 
+                    in the top right corner. Once clicked, they are prompted to decide if they want to 
+                    add the record to their inventory or their wishlist. If they want to add it to 
+                    their inventory, they also select which format they purchased the album in. After 
+                    these decisions are made, they click add again and the album is stored in the 
+                    appropriate place. 
+                </p>
+
+                <h3>Setting Page</h3>
+                <p>
+                    Lastly, the settings page. The settings page will allow users to minimally 
+                    customize the app. For example, alternating the color scheme of the app between 
+                    preset options or choosing to view all results as lists instead of icons. The 
+                    settings page will also allow users to sign in and out of their accounts, delete 
+                    their accounts, or look at their account information. It will also have the 
+                    application credits, listing who the developers were, any contributors to the app, 
+                    and the different external applications that support the app.
+                </p>
 
                 <!-- Container for the image gallery -->
                 <div class="container">
@@ -157,7 +300,7 @@
 
         function showSlides(n) {
         var i;
-        var slides = document.getElementsByClassName("mySlides");
+        var slides = document.getElementsByClassName("diagrams");
         var dots = document.getElementsByClassName("dots");
         var captionText = document.getElementById("caption");
         if (n > slides.length) {slideIndex = 1}
