@@ -1,11 +1,16 @@
+import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:vinyltrax/pages/nextPage.dart';
 import 'database.dart';
 import 'getInvNotes.dart';
 import 'getInvPressing.dart';
 import '../pages/settingspage.dart' as settings;
+import 'package:gallery_saver/gallery_saver.dart';
 
 class InvDetails extends StatefulWidget {
   final List<String> input;
@@ -157,8 +162,40 @@ class _InvDetails extends State<InvDetails> {
                         child: Container(
                           height: MediaQuery.of(context).size.width, 
                           width: MediaQuery.of(context).size.width,
-                          child: Image(
-                            image: NetworkImage(data[6].toString()),
+                          child: GestureDetector(
+                            onLongPress: () {
+                              showDialog(
+                                context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text("Save Image?"),
+                                      content: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          TextButton(
+                                              onPressed: () async {
+                                                Navigator.pop(context);
+                                                var response = await http.get(Uri.parse(data[6].toString()));
+                                                Directory documentDirectory = await getApplicationDocumentsDirectory();
+                                                File file = new File(join(documentDirectory.path, '${data[0][0][0].toString()}$album.png'));
+                                                file.writeAsBytesSync(response.bodyBytes);
+                                                await GallerySaver.saveImage(file.path, albumName: "Vinyl Trax");
+                                              },
+                                              child: Text("Yes")
+                                          ),
+                                          TextButton(
+                                              onPressed: () {Navigator.pop(context);},
+                                              child: Text("No")
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  }
+                              );
+                            },
+                            child: Image(
+                              image: NetworkImage(data[6].toString()),
+                            ),
                           ),
                         ),
                       ));
