@@ -358,9 +358,9 @@ class _InvPress extends State<GetInvPressing> {
                         color: settings.darkTheme ? Colors.black : Colors.white,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          width: 0,
+                          width: 1,
                           color:
-                              settings.darkTheme ? Colors.black : Colors.white,
+                              settings.darkTheme ? Colors.white : Colors.black,
                         )),
                     child: Padding(
                       padding: EdgeInsets.all(10),
