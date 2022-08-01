@@ -4,6 +4,30 @@ import '../buttons/pressDataPopUp.dart';
 import 'database.dart';
 import '../pages/settingspage.dart' as settings;
 
+const Map<String, Color> colorOptions = {
+  "Red": Colors.red,
+  "Pink": Colors.pink,
+  "Purple": Colors.purple,
+  "Deep Purple": Colors.deepPurple,
+  "Indigo": Colors.indigo,
+  "Blue": Colors.blue,
+  "Light Blue": Colors.lightBlue,
+  "Cyan": Colors.cyan,
+  "Teal": Colors.teal,
+  "Green": Colors.green,
+  "Light Green": Colors.lightGreen,
+  "Lime": Colors.lime,
+  "Yellow": Colors.yellow,
+  "Amber": Colors.amber,
+  "Orange": Colors.orange,
+  "Deep Orange": Colors.deepOrange,
+  "Brown": Colors.brown,
+  "Grey": Colors.grey,
+  "Blue Grey": Colors.blueGrey,
+  "Black": Colors.black,
+  "Other": Colors.black,
+};
+
 class GetInvPressing extends StatefulWidget {
   final List<String> input;
 
@@ -42,14 +66,15 @@ class _InvPress extends State<GetInvPressing> {
             // Color of LPs
             if (data[1] != "") {
               title += "Color";
-              // Set color based on input
-              if (data[1] == "Other")
-                color = Colors.purple;
-              else if (data[1] == "Blue")
-                color = Colors.blue;
-              else if (data[1] == "Red")
-                color = Colors.red;
-              else if (data[1] == "Yellow") color = Colors.yellow;
+              // // Set color based on input
+              // if (data[1] == "Other")
+              //   color = Colors.purple;
+              // else if (data[1] == "Blue")
+              //   color = Colors.blue;
+              // else if (data[1] == "Red")
+              //   color = Colors.red;
+              // else if (data[1] == "Yellow") color = Colors.yellow;
+              color = colorOptions[data[1]]!;
             }
 
             // Number of LPs

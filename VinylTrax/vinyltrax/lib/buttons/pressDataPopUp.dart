@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vinyltrax/inventory/getInvPressing.dart';
 import '../inventory/database.dart';
 import '../inventory/invDetails.dart';
 
@@ -57,9 +58,39 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
                 Text("Color of LPs: "),
                 DropdownButton(
                     value: colorLP,
-                    items: ["", "Black", "Blue", "Yellow", "Red", "Other"]
-                        .map((String value) {
-                      return DropdownMenuItem(value: value, child: Text(value));
+                    items: [
+                      "",
+                      "Red",
+                      "Pink",
+                      "Purple",
+                      "Deep Purple",
+                      "Indigo",
+                      "Blue",
+                      "Light Blue",
+                      "Cyan",
+                      "Teal",
+                      "Green",
+                      "Light Green",
+                      "Lime",
+                      "Yellow",
+                      "Amber",
+                      "Orange",
+                      "Deep Orange",
+                      "Brown",
+                      "Grey",
+                      "Blue Grey",
+                      "Black",
+                      "Other",
+                    ].map((String value) {
+                      return DropdownMenuItem(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: TextStyle(
+                              color: colorOptions[value],
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ));
                     }).toList(),
                     onChanged: (String? value) {
                       setState(() {
