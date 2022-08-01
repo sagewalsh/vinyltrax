@@ -16,7 +16,7 @@ class _InvNotes extends State<GetInvNotes> {
   @override
   Widget build(BuildContext context) {
     Future<String> _results = Database.getNotes(widget.input[0]);
-    var _controller = TextEditingController();
+    String currentNotes = "";
 
     return SafeArea(
       child: SizedBox(
@@ -27,7 +27,8 @@ class _InvNotes extends State<GetInvNotes> {
               List<Widget> children;
               if (snapshot.hasData) {
                 children = <Widget>[];
-
+                if (snapshot.data != null)
+                  currentNotes = snapshot.data!;
                 // Note Box
                 children.add(GestureDetector(
                   onTap: () {
@@ -42,11 +43,10 @@ class _InvNotes extends State<GetInvNotes> {
                                 fontSize: 16,
                               ),
                             ),
-                            content: EditableText(
-                              controller: _controller,
+                            content: TextField(
+                              controller: TextEditingController()..text = currentNotes,
                               focusNode: FocusNode(),
                               cursorColor: settings.darkTheme ? Colors.white : Colors.black,
-                              backgroundCursorColor: Colors.green,
                               style: TextStyle(
                                 color: settings.darkTheme ? Colors.white : Colors.black,
                               ),
