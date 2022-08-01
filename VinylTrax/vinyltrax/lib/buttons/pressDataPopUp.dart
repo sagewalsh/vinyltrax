@@ -57,7 +57,8 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
                 Text("Color of LPs: "),
                 DropdownButton(
                     value: colorLP,
-                    items: ["", "Black", "Colored"].map((String value) {
+                    items: ["", "Black", "Blue", "Yellow", "Red", "Other"]
+                        .map((String value) {
                       return DropdownMenuItem(value: value, child: Text(value));
                     }).toList(),
                     onChanged: (String? value) {
@@ -131,13 +132,13 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
                     year: year,
                     manufacturer: manufacturer,
                   );
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                                var route = new MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return InvDetails([widget.albumid, ""]);
-                                });
-                                Navigator.of(context).push(route);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  var route =
+                      new MaterialPageRoute(builder: (BuildContext context) {
+                    return InvDetails([widget.albumid, ""]);
+                  });
+                  Navigator.of(context).push(route);
                 },
                 child: Text("Done"))
           ],

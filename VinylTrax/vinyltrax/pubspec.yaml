@@ -30,6 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   firebase_core: ^1.18.0
+  string_to_color: ^1.0.1
   # firebase_database: ^9.0.16
 
 
@@ -50,6 +51,7 @@ dependencies:
   uuid: ^3.0.6
   googleapis: ^9.1.0
   file_picker: ^5.0.0
+  flutter_colorpicker: ^1.0.3
  # spotify_sdk: ^2.3.0
  # flutter_web_auth: ^0.4.1
 
@@ -104,6 +106,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/vinyl-record.png
+    - assets/vinyl-lp.png
+    - assets/vinyl-box.png
     - assets/genres/Blues.png
     - assets/genres/Children.png
     - assets/genres/Classical.png
