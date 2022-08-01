@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/spotify/spotDetails.dart';
 
-import '../spotify/spotifyResults.dart';
-
 class CameraResults extends StatelessWidget {
   final String results;
 
