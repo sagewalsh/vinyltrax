@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.vinyltrax">
+    package="com.capstone2022sy.vinyltrax">
    <application
         android:label="Vinyl Trax"
         android:name="${applicationName}"

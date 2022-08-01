@@ -92,7 +92,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   height: MediaQuery.of(context).size.height * 0.0124), //10
               otherOptions("Dark Theme", darkTheme, changeTheme),
               otherOptions("List Mode", listBool, listMode),
-              otherOptions("Test3", valNotify3, changeFunct3),
+              //otherOptions("Test3", valNotify3, changeFunct3),
             ],
           ),
         ),

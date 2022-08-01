@@ -4,7 +4,7 @@ import 'package:vinyltrax/spotify/spotDetails.dart';
 import '../spotify/spotifyResults.dart';
 
 class CameraResults extends StatelessWidget {
-  String results;
+  final String results;
 
   CameraResults(this.results);
 
