@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.vinyltrax</string>
+	<string>com.capstone2022sy.vinyltrax</string>
 	<key>PROJECT_ID</key>
 	<string>vinyltrax-98e57</string>
 	<key>STORAGE_BUCKET</key>
