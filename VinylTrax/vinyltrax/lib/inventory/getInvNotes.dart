@@ -17,6 +17,7 @@ class _InvNotes extends State<GetInvNotes> {
   Widget build(BuildContext context) {
     Future<String> _results = Database.getNotes(widget.input[0]);
     String currentNotes = "";
+    String textToUpload = "";
 
     return SafeArea(
       child: SizedBox(
@@ -44,49 +45,39 @@ class _InvNotes extends State<GetInvNotes> {
                               ),
                             ),
                             content: TextField(
+                              maxLines: null,
                               controller: TextEditingController()..text = currentNotes,
                               focusNode: FocusNode(),
                               cursorColor: settings.darkTheme ? Colors.white : Colors.black,
                               style: TextStyle(
                                 color: settings.darkTheme ? Colors.white : Colors.black,
                               ),
-                              onSubmitted: (value) {
-                                Database.addNotes(
-                                    albumID: widget.input[0], note: value);
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                                var route = new MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return InvDetails(widget.input);
-                                });
-                                Navigator.of(context).push(route);
+                              onChanged: (String value) {
+                                textToUpload = value;
                               },
                             ),
-                            // TextField(
-                            //   controller: _controller,
-                            //   keyboardType: TextInputType.text,
-                            //   maxLines: null,
-                            //   maxLength: 500,
-                            //   onSubmitted: (value) {
-                            //     Database.addNotes(
-                            //         albumID: widget.input[0], note: value);
-                            //     Navigator.pop(context);
-                            //     Navigator.pop(context);
-                            //     var route = new MaterialPageRoute(
-                            //         builder: (BuildContext context) {
-                            //       return InvDetails(widget.input);
-                            //     });
-                            //     Navigator.of(context).push(route);
-                            //   },
-                            //   decoration: InputDecoration(
-                            //     labelText: 'Notes',
-                            //     border: const OutlineInputBorder(),
-                            //     suffixIcon: IconButton(
-                            //       onPressed: _controller.clear,
-                            //       icon: Icon(Icons.clear),
-                            //     ),
-                            //   ),
-                            // ),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Database.addNotes(
+                                        albumID: widget.input[0], note: textToUpload);
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    var route = new MaterialPageRoute(
+                                        builder: (BuildContext context) {
+                                          return InvDetails(widget.input);
+                                        });
+                                    Navigator.of(context).push(route);
+                                  },
+                                  child: Text("Save")
+                              ),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("Cancel")
+                              ),
+                            ],
                           );
                         });
                   },

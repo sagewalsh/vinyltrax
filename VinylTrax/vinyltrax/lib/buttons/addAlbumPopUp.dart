@@ -24,7 +24,7 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
   @override
   Widget build(BuildContext context) {
     // height = MediaQuery.of(context).size.height * 0.186; //150
-    height = MediaQuery.of(context).size.height * 0.24;
+    height = MediaQuery.of(context).size.height * 0.12;
     return StatefulBuilder(builder: (context, setState) {
       return FutureBuilder<List<dynamic>>(
           future: widget.input,
@@ -32,8 +32,20 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
               (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
             var data = snapshot.data!;
             return AlertDialog(
-              title: Text(
-                  "Add ${data[1].toString()} by ${data[0][0][0].toString()}"),
+              title: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  style: TextStyle(fontSize: 18),
+                  children: [
+                    TextSpan(text: "Add\n", style: TextStyle(color: Colors.black, fontSize: 16)),
+                    TextSpan(text: "${data[1].toString()}\n", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                    TextSpan(text: "by\n", style: TextStyle(color: Colors.black, fontSize: 16)),
+                    TextSpan(text: "${data[0][0][0].toString()}", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                  ]
+                )
+              ),
+              //title: Text(
+               //   "Add ${data[1].toString()} by ${data[0][0][0].toString()}"),
               content: SizedBox(
                 height: height,
                 child: Column(
@@ -46,10 +58,10 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
                         setState(() {
                           if (newVal == 'Inventory') {
                             height =
-                                MediaQuery.of(context).size.height * 0.24; //150
+                                MediaQuery.of(context).size.height * 0.12; //150
                             visible = true;
                           } else {
-                            height = MediaQuery.of(context).size.height * 0.15;
+                            height = MediaQuery.of(context).size.height * 0.06;
                             visible = false;
                           }
                         });
@@ -83,54 +95,49 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
                             });
                           }),
                     ),
-                    Container(
-                      //height: 60,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextButton(
-                              onPressed: () {
-                                // Add album to inventory
-                                if (locationValue == "Inventory") {
-                                  List<dynamic> album = [albumID, format];
-                                  album += snapshot.data!;
-                                  Database.addSpotToInv(album);
-                                }
-
-                                // Add album to wishlist
-                                else if (locationValue == "Wishlist") {
-                                  List<dynamic> album = [albumID];
-                                  album += snapshot.data!;
-                                  Database.addToWish(album);
-                                }
-
-                                //lets us go back to the album page
-                                Navigator.of(context).pop();
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      Future.delayed(Duration(seconds: 1), () {
-                                        Navigator.pushNamed(context, 'search');
-                                      });
-                                      return AlertDialog(
-                                        title: Text('Album Added',
-                                            textAlign: TextAlign.center),
-                                      );
-                                    });
-                              },
-                              child: Text("Add")),
-                          TextButton(
-                              onPressed: () {
-                                //lets us go back to the album page
-                                Navigator.of(context).pop();
-                              },
-                              child: Text("Cancel")),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      // Add album to inventory
+                      if (locationValue == "Inventory") {
+                        List<dynamic> album = [albumID, format];
+                        album += snapshot.data!;
+                        Database.addSpotToInv(album);
+                      }
+
+                      // Add album to wishlist
+                      else if (locationValue == "Wishlist") {
+                        List<dynamic> album = [albumID];
+                        album += snapshot.data!;
+                        Database.addToWish(album);
+                      }
+
+                      //lets us go back to the album page
+                      Navigator.of(context).pop();
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            Future.delayed(Duration(seconds: 1), () {
+                              Navigator.pushNamed(context, 'search');
+                            });
+                            return AlertDialog(
+                              title: Text('Album Added',
+                                  textAlign: TextAlign.center),
+                            );
+                          });
+                    },
+                    child: Text("Add")),
+                TextButton(
+                    onPressed: () {
+                      //lets us go back to the album page
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Cancel")
+                ),
+              ],
             );
           });
     });

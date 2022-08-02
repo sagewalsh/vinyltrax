@@ -153,6 +153,7 @@ class _InvDetails extends State<InvDetails> {
                     AsyncSnapshot<List<dynamic>> snapshot) {
                   List<Widget> children;
                   if (snapshot.hasData) {
+
                     children = <Widget>[];
                     var data = snapshot.data!;
 
