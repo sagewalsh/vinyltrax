@@ -14,6 +14,8 @@ class _HomePageState extends State<HomePage> {
   double opacity = 0.0;
   bool move = false;
   double visible = 0;
+  String username = "";
+  String password = "";
 
   void initState() {
     super.initState();
@@ -87,6 +89,9 @@ class _HomePageState extends State<HomePage> {
                                   : Colors.black,
                            ),
                          ),
+                          onSubmitted: (String value) {
+                            username = value;
+                          },
                         ),
                       ),
                       SizedBox(height: 10),
@@ -118,7 +123,18 @@ class _HomePageState extends State<HomePage> {
                                   : Colors.black,
                             ),
                           ),
+                          onSubmitted: (String value) {
+                            password = value;
+                          },
                         ),
+                      ),
+                      SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          //Sign in code here
+                        },
+                        child: Text("Sign In"),
+                        style: ElevatedButton.styleFrom(primary: Color(0xFFFF5A5A)),
                       ),
                       SizedBox(height: 15),
                       RichText(
