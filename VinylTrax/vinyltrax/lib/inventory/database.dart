@@ -651,6 +651,8 @@ Given Album Data from Discogs in the form:
   */
   static void addSpotToInv(List<dynamic> albumdata) async {
     // If album was in wishlist: delete it
+    print("barcode add");
+    print(albumdata[0]);
     var wishshot = await userRef.child("Wishlist/${albumdata[0]}").get();
     if (wishshot.exists) {
       await userRef.child("Wishlist/${albumdata[0]}").remove();
