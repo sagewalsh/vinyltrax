@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vinyltrax/pages/newAccountPage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -22,12 +23,13 @@ class _HomePageState extends State<HomePage> {
       opacity = 1;
     });
     Future.delayed(Duration(seconds: 3), () {
-      setState(() {
+      setState((){
         move = true;
         visible = 1;
       });
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -154,20 +156,23 @@ class _HomePageState extends State<HomePage> {
                             style:
                                 TextStyle(color: Colors.black, fontSize: 14.0),
                             children: [
-                          TextSpan(text: "Don't have an account? "),
-                          TextSpan(
-                              text: "Sign up here",
-                              style: TextStyle(color: Colors.blue),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  print("new account!");
-                                }),
-                        ])),
-                    SizedBox(height: 15),
-                    RichText(
-                        text: TextSpan(
-                            style:
-                                TextStyle(color: Colors.blue, fontSize: 14.0),
+                              TextSpan(text: "Don't have an account? "),
+                              TextSpan(
+                                text: "Sign up here",
+                                style: TextStyle(color: Colors.blue),
+                                recognizer:   TapGestureRecognizer()..onTap = () {
+                                  var route = new MaterialPageRoute(
+                                    builder: (BuildContext) => NewAccountPage());
+                                  Navigator.of(context).push(route);
+                                }
+                              ),
+                            ]
+                          )
+                      ),
+                      SizedBox(height: 15),
+                      RichText(
+                          text: TextSpan(
+                            style: TextStyle(color: Colors.blue, fontSize: 14.0),
                             children: [
                           TextSpan(
                               text: "Click here for testers",
