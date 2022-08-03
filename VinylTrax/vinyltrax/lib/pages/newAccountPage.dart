@@ -8,15 +8,15 @@ class NewAccountPage extends StatefulWidget {
   State<NewAccountPage> createState() => _NewAccountPageState();
 }
 
+String password = "";
+String username = "";
+bool equalPass = false;
 class _NewAccountPageState extends State<NewAccountPage> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     FocusNode focus = FocusNode();
-    String password = "";
-    String username = "";
-    bool equalPass = false;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -114,15 +114,18 @@ class _NewAccountPageState extends State<NewAccountPage> {
                     color: Color(0xFFFF5A5A),
                   ),
                   enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 1),
-                      borderRadius: BorderRadius.circular(15)),
+                      borderSide: BorderSide(width: 1,
+                          color: equalPass ? Colors.green : Colors.red
+                      ),
+                      borderRadius: BorderRadius.circular(15)
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                     borderSide: BorderSide(
-                      color: equalPass ? Colors.green : Colors.red,
+                      color: Color(0xFFFF5A5A),
                     ),
                   ),
                 ),
