@@ -9,9 +9,15 @@ class NewAccountPage extends StatefulWidget {
 }
 
 String password = "";
+String rePassword = "";
 String username = "";
 bool equalPass = false;
 class _NewAccountPageState extends State<NewAccountPage> {
+
+  void createAccount() {
+    //Here is where you set up the account
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -19,7 +25,6 @@ class _NewAccountPageState extends State<NewAccountPage> {
     FocusNode focus = FocusNode();
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: Text("Create a New Account", style: TextStyle(fontSize: 18)),
       ),
       body: Center(
@@ -54,7 +59,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
                     ),
                   ),
                 ),
-                onSubmitted: (String value) {
+                onChanged: (String value) {
                   setState(() {
                     username = value;
                   });
@@ -90,7 +95,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
                     ),
                   ),
                 ),
-                onSubmitted: (String value) {
+                onChanged: (String value) {
                   setState(() {
                     password = value;
                   });
@@ -115,7 +120,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
                   ),
                   enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(width: 1,
-                          color: equalPass ? Colors.green : Colors.red
+                          color: equalPass ? Colors.green : Colors.black
                       ),
                       borderRadius: BorderRadius.circular(15)
                   ),
@@ -125,11 +130,12 @@ class _NewAccountPageState extends State<NewAccountPage> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                     borderSide: BorderSide(
-                      color: Color(0xFFFF5A5A),
+                      color: equalPass ? Colors.green : Colors.red,
                     ),
                   ),
                 ),
-                onSubmitted: (String value) {
+                onChanged: (String value) {
+                  rePassword = value;
                   if (value == password) {
                     setState(() {
                       equalPass = true;
@@ -142,16 +148,11 @@ class _NewAccountPageState extends State<NewAccountPage> {
                 },
               ),
             ),
+            if (!equalPass && rePassword.length > 0)
+              Text("Passwords do not match", style: TextStyle(color: Colors.red)),
             SizedBox(height: 10),
             ElevatedButton(
-                onPressed: () {
-                  //This is where you create a user and save the ID
-
-                  // print(equalPass);
-
-                  print(username + ": " + password);
-                  // Authentication.createAccount(username, password);
-                },
+                onPressed: equalPass ? createAccount : null,
                 child: Text("Sign up"))
           ],
         ),
