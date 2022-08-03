@@ -29,7 +29,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^1.18.0
+  firebase_core: ^1.20.0
   string_to_color: ^1.0.1
   # firebase_database: ^9.0.16
 
@@ -53,6 +53,7 @@ dependencies:
   file_picker: ^5.0.0
   gallery_saver: ^2.3.2
   flutter_colorpicker: ^1.0.3
+  firebase_auth: ^3.6.2
  # spotify_sdk: ^2.3.0
  # flutter_web_auth: ^0.4.1
 

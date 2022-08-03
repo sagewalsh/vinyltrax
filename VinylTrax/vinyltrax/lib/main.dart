@@ -1,3 +1,4 @@
+import 'auth.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/pages/homePage.dart';
@@ -8,7 +9,10 @@ import 'test.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp().then((value) {
+    // var auth = FirebaseAuth.instance;
+    Authentication();
+  });
   // WidgetsFlutterBinding.ensureInitialized();
   final cameras = await availableCameras();
   final firstCamera = cameras.first;
@@ -46,7 +50,7 @@ class VinylTrax extends StatelessWidget {
     return MaterialApp(
       darkTheme: ThemeData.dark(),
       initialRoute:
-          'inven', //switch to 'inven' for our sake, but for testing I'll leave as is
+          'home', //switch to 'inven' for our sake, but for testing I'll leave as is
       routes: {
         'home': (context) => const HomePage(),
         'inven': (context) => Tabs(0),

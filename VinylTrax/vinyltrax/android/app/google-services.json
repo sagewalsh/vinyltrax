@@ -1,13 +1,14 @@
 {
   "project_info": {
     "project_number": "807912738397",
+    "firebase_url": "https://vinyltrax-98e57-default-rtdb.firebaseio.com",
     "project_id": "vinyltrax-98e57",
     "storage_bucket": "vinyltrax-98e57.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:807912738397:android:5fa623fbac77e076ed87b4",
+        "mobilesdk_app_id": "1:807912738397:android:295dfd7039283544ed87b4",
         "android_client_info": {
           "package_name": "com.capstone2022sy.vinyltrax"
         }
@@ -29,6 +30,49 @@
             {
               "client_id": "807912738397-joo18u1rd2hhostb4hfkhde8bbfdaobq.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "807912738397-ot8qba4kpfpjk2ai2gunqa9rte1bn64b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vinyltrax"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807912738397:android:5fa623fbac77e076ed87b4",
+        "android_client_info": {
+          "package_name": "com.example.vinyltrax"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "807912738397-joo18u1rd2hhostb4hfkhde8bbfdaobq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxte5kYq-ni99XGb2pMe35VinnTVApMiA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "807912738397-joo18u1rd2hhostb4hfkhde8bbfdaobq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "807912738397-ot8qba4kpfpjk2ai2gunqa9rte1bn64b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vinyltrax"
+              }
             }
           ]
         }
