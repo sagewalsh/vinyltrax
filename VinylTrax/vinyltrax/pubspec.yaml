@@ -110,6 +110,8 @@ flutter:
     - assets/vinyl-record.png
     - assets/vinyl-lp.png
     - assets/vinyl-box.png
+    - assets/logo/newLogo.png
+    - assets/logo/newLogo2.png
     - assets/genres/Blues.png
     - assets/genres/Children.png
     - assets/genres/Classical.png

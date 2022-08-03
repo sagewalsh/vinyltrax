@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -23,13 +22,12 @@ class _HomePageState extends State<HomePage> {
       opacity = 1;
     });
     Future.delayed(Duration(seconds: 3), () {
-      setState((){
+      setState(() {
         move = true;
         visible = 1;
       });
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -40,147 +38,148 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFFFFFDF6),
-        body: Stack(
-          alignment: AlignmentDirectional.centerStart,
-          children: [
-            AnimatedPositioned(
-              left: width * .25,
-              top: move ? height * .25 : height * .45,
+        body: Stack(alignment: AlignmentDirectional.centerStart, children: [
+          AnimatedPositioned(
+            left: width * .25,
+            top: move ? height * .25 : height * .45,
+            duration: Duration(seconds: 1),
+            child: AnimatedOpacity(
+              opacity: opacity,
               duration: Duration(seconds: 1),
-              child: AnimatedOpacity(
-                opacity: opacity,
-                duration: Duration(seconds: 1),
-                child: Text("Vinyl Trax", style: GoogleFonts.orbitron(fontSize: 30)),
-              ),
+              child:
+                  Text("Vinyl Trax", style: GoogleFonts.orbitron(fontSize: 30)),
             ),
-            Positioned(
-                left: width * .19,
-                //left: MediaQuery.of(context).size.width * .27,
-                top: height * .35,
-                child: AnimatedOpacity(
-                  duration: Duration(seconds: 2),
-                  opacity: visible,
-                  child: Column(
-                    children: [
-                      Container(
-                        width: width * .63,
-                        height: height * .063,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            labelText: "Username",
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            hintText: "Username",
-                            hintStyle: TextStyle(
+          ),
+          AnimatedPositioned(
+            duration: Duration(seconds: 1),
+            // bottom: move ? 0 : (height - width) / 2,
+            bottom: 0,
+            // left: move ? 0 : (width - (height * 0.4)) / 2,
+            child: Image.asset(
+              "assets/logo/newLogo2.png",
+              color: move
+                  ? Color.fromARGB(30, 255, 90, 90)
+                  : Color.fromARGB(255, 255, 90, 90),
+              // height: move ? width : height * .4,
+              height: width,
+            ),
+          ),
+          Positioned(
+              left: width * .19,
+              //left: MediaQuery.of(context).size.width * .27,
+              top: height * .35,
+              child: AnimatedOpacity(
+                duration: Duration(seconds: 2),
+                opacity: visible,
+                child: Column(
+                  children: [
+                    Container(
+                      width: width * .63,
+                      height: height * .063,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText: "Username",
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          hintText: "Username",
+                          hintStyle: TextStyle(
+                            color: Color(0xFFFF5A5A),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(
                               color: Color(0xFFFF5A5A),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(
-                               color: Color(0xFFFF5A5A),
-                             ),
-                            ),
-                            suffixIcon: Icon(
-                             Icons.account_circle,
-                             color: focus.hasFocus
-                                  ? Color(0xFFFF5A5A)
-                                  : Colors.black,
-                           ),
-                         ),
-                          onSubmitted: (String value) {
-                            username = value;
-                          },
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Container(
-                        width: width * .63,
-                        height: height * .063,
-                        child: TextField(
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: "Password",
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            hintText: "Password",
-                            hintStyle: TextStyle(
-                              color: Color(0xFFFF5A5A),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(
-                                color: Color(0xFFFF5A5A),
-                              ),
-                            ),
-                            suffixIcon: Icon(
-                              Icons.password,
-                              color: focus.hasFocus
-                                  ? Color(0xFFFF5A5A)
-                                  : Colors.black,
                             ),
                           ),
-                          onSubmitted: (String value) {
-                            password = value;
-                          },
+                          suffixIcon: Icon(
+                            Icons.account_circle,
+                            color: focus.hasFocus
+                                ? Color(0xFFFF5A5A)
+                                : Colors.black,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: () {
-                          //Sign in code here
+                        onSubmitted: (String value) {
+                          username = value;
                         },
-                        child: Text("Sign In"),
-                        style: ElevatedButton.styleFrom(primary: Color(0xFFFF5A5A)),
                       ),
-                      SizedBox(height: 15),
-                      RichText(
-                          text: TextSpan(
-                            style: TextStyle(color: Colors.black, fontSize: 14.0),
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      width: width * .63,
+                      height: height * .063,
+                      child: TextField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: "Password",
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          hintText: "Password",
+                          hintStyle: TextStyle(
+                            color: Color(0xFFFF5A5A),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(
+                              color: Color(0xFFFF5A5A),
+                            ),
+                          ),
+                          suffixIcon: Icon(
+                            Icons.password,
+                            color: focus.hasFocus
+                                ? Color(0xFFFF5A5A)
+                                : Colors.black,
+                          ),
+                        ),
+                        onSubmitted: (String value) {
+                          password = value;
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        //Sign in code here
+                      },
+                      child: Text("Sign In"),
+                      style:
+                          ElevatedButton.styleFrom(primary: Color(0xFFFF5A5A)),
+                    ),
+                    SizedBox(height: 15),
+                    RichText(
+                        text: TextSpan(
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 14.0),
                             children: [
-                              TextSpan(text: "Don't have an account? "),
-                              TextSpan(
-                                text: "Sign up here",
-                                style: TextStyle(color: Colors.blue),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    print("new account!");
-                                  }
-                              ),
-                            ]
-                          )
-                      ),
-                      SizedBox(height: 15),
-                      RichText(
-                          text: TextSpan(
-                            style: TextStyle(color: Colors.blue, fontSize: 14.0),
+                          TextSpan(text: "Don't have an account? "),
+                          TextSpan(
+                              text: "Sign up here",
+                              style: TextStyle(color: Colors.blue),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  print("new account!");
+                                }),
+                        ])),
+                    SizedBox(height: 15),
+                    RichText(
+                        text: TextSpan(
+                            style:
+                                TextStyle(color: Colors.blue, fontSize: 14.0),
                             children: [
-                              TextSpan(
-                                text: "Click here for testers",
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.pushNamed(context, 'inven');
-                                  }
-                              )
-                            ]
-                          )
-                      ),
-                    ],
-                   ),
-                )
-            ),
-            Positioned(
-              top: height * .745,
-                child: Image.asset(
-                  "assets/vinyl-record.png",
-                  width: width,
-                )
-            ),
-          ]
-        ),
+                          TextSpan(
+                              text: "Click here for testers",
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.pushNamed(context, 'inven');
+                                })
+                        ])),
+                  ],
+                ),
+              )),
+        ]),
       ),
     );
   }
