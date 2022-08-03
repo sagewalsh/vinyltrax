@@ -405,6 +405,7 @@ given an albumID, returns a list of album details:
 [3]: year
 [4]: [ [ track name, duration, [ feat. artist name, feat. artist id ] ] ]
 [5]: coverart
+[6]: albumid
 ##########################################################################
 */
   static Future<List<dynamic>> album(String albumid) async {
@@ -524,6 +525,7 @@ given an albumID, returns a list of album details:
       body["release_date"].toString().split("-")[0],
       tracks,
       image,
+      albumid,
     ];
 
     // details.forEach((element) {

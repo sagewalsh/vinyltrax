@@ -3,13 +3,12 @@ import '../inventory/database.dart';
 
 class AddAlbumPopUp extends StatefulWidget {
   Future<List<dynamic>> input;
-  String albumID;
   //const AddAlbumPopUp({Key? key}) : super(key: key);
 
-  AddAlbumPopUp(this.input, this.albumID);
+  AddAlbumPopUp(this.input);
 
   @override
-  State<AddAlbumPopUp> createState() => _AddAlbumPopUpState(albumID);
+  State<AddAlbumPopUp> createState() => _AddAlbumPopUpState();
 }
 
 class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
@@ -17,9 +16,8 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
   String format = 'Vinyl';
   bool visible = true;
   late double height;
-  String albumID;
 
-  _AddAlbumPopUpState(this.albumID);
+  _AddAlbumPopUpState();
 
   @override
   Widget build(BuildContext context) {
@@ -31,21 +29,28 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
           builder:
               (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
             var data = snapshot.data!;
+            String albumID = data[6];
             return AlertDialog(
               title: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  style: TextStyle(fontSize: 18),
-                  children: [
-                    TextSpan(text: "Add\n", style: TextStyle(color: Colors.black, fontSize: 16)),
-                    TextSpan(text: "${data[1].toString()}\n", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-                    TextSpan(text: "by\n", style: TextStyle(color: Colors.black, fontSize: 16)),
-                    TextSpan(text: "${data[0][0][0].toString()}", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-                  ]
-                )
-              ),
+                  textAlign: TextAlign.center,
+                  text: TextSpan(style: TextStyle(fontSize: 18), children: [
+                    TextSpan(
+                        text: "Add\n",
+                        style: TextStyle(color: Colors.black, fontSize: 16)),
+                    TextSpan(
+                        text: "${data[1].toString()}\n",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.black)),
+                    TextSpan(
+                        text: "by\n",
+                        style: TextStyle(color: Colors.black, fontSize: 16)),
+                    TextSpan(
+                        text: "${data[0][0][0].toString()}",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.black)),
+                  ])),
               //title: Text(
-               //   "Add ${data[1].toString()} by ${data[0][0][0].toString()}"),
+              //   "Add ${data[1].toString()} by ${data[0][0][0].toString()}"),
               content: SizedBox(
                 height: height,
                 child: Column(
@@ -136,8 +141,7 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
                       //lets us go back to the album page
                       Navigator.of(context).pop();
                     },
-                    child: Text("Cancel")
-                ),
+                    child: Text("Cancel")),
               ],
             );
           });

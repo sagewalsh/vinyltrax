@@ -21,14 +21,15 @@ class SpotDetails extends StatelessWidget {
     Future<List<dynamic>> _results;
     String name = "";
     Widget title;
-    if(inputType == "barcode"){
-     title = Text("Barcode Results",
-        style:
-            TextStyle(color: settings.darkTheme ? Colors.white : Colors.black));}
-    else {
-     title = Text("Cover Scan Results",
-        style:
-            TextStyle(color: settings.darkTheme ? Colors.white : Colors.black));}
+    if (inputType == "barcode") {
+      title = Text("Barcode Results",
+          style: TextStyle(
+              color: settings.darkTheme ? Colors.white : Colors.black));
+    } else {
+      title = Text("Cover Scan Results",
+          style: TextStyle(
+              color: settings.darkTheme ? Colors.white : Colors.black));
+    }
 
     if (inputType == "text") {
       _results = Spotify.album(input[0]);
@@ -54,13 +55,12 @@ class SpotDetails extends StatelessWidget {
           ),
         );
       }
-    } else if(inputType == "barcode") {
+    } else if (inputType == "barcode") {
       if (input.isEmpty)
         _results = Spotify.empty();
       else
         _results = Spotify.barcode(input[0], input[1]);
-    }
-    else{
+    } else {
       _results = Spotify.coverScan(input[0]);
     }
 
@@ -95,7 +95,7 @@ class SpotDetails extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return AddAlbumPopUp(_results, input[0]);
+                      return AddAlbumPopUp(_results);
                     },
                   );
                   // addToButton(context);
@@ -190,28 +190,36 @@ class SpotDetails extends StatelessWidget {
                                     return AlertDialog(
                                       title: Text("Save Image?"),
                                       content: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           TextButton(
                                               onPressed: () async {
                                                 Navigator.pop(context);
-                                                var response = await http.get(Uri.parse(data[5].toString()));
-                                                Directory documentDirectory = await getApplicationDocumentsDirectory();
-                                                File file = new File(join(documentDirectory.path, '${data[0][0][0].toString()}$name.png'));
-                                                file.writeAsBytesSync(response.bodyBytes);
-                                                await GallerySaver.saveImage(file.path, albumName: "Vinyl Trax");
+                                                var response = await http.get(
+                                                    Uri.parse(
+                                                        data[5].toString()));
+                                                Directory documentDirectory =
+                                                    await getApplicationDocumentsDirectory();
+                                                File file = new File(join(
+                                                    documentDirectory.path,
+                                                    '${data[0][0][0].toString()}$name.png'));
+                                                file.writeAsBytesSync(
+                                                    response.bodyBytes);
+                                                await GallerySaver.saveImage(
+                                                    file.path,
+                                                    albumName: "Vinyl Trax");
                                               },
-                                              child: Text("Yes")
-                                          ),
+                                              child: Text("Yes")),
                                           TextButton(
-                                              onPressed: () {Navigator.pop(context);},
-                                              child: Text("No")
-                                          )
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text("No"))
                                         ],
                                       ),
                                     );
-                                  }
-                              );
+                                  });
                             },
                             child: Image(
                               image: NetworkImage(data[5].toString()),
