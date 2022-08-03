@@ -157,7 +157,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
                   style: TextStyle(color: Colors.red)),
             SizedBox(height: 10),
             ElevatedButton(
-                onPressed: equalPass ? createAccount : null,
+                onPressed: equalPass && username != "" ? createAccount : null,
                 child: Text("Sign up"))
           ],
         ),
