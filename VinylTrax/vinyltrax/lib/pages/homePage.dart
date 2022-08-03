@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vinyltrax/main.dart';
 import 'package:vinyltrax/pages/newAccountPage.dart';
+import 'package:vinyltrax/pages/staxpage.dart';
 import '../auth.dart';
 
 class HomePage extends StatefulWidget {
@@ -100,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                                 : Colors.black,
                           ),
                         ),
-                        onSubmitted: (String value) {
+                        onChanged: (String value) {
                           username = value;
                         },
                       ),
@@ -134,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                                 : Colors.black,
                           ),
                         ),
-                        onSubmitted: (String value) {
+                        onChanged: (String value) {
                           password = value;
                         },
                       ),
@@ -143,7 +145,10 @@ class _HomePageState extends State<HomePage> {
                     ElevatedButton(
                       onPressed: () {
                         //Sign in code here
-                        Authentication.signIn(username, password);
+                        Authentication.signIn(username, password)
+                            .then((success) {
+                          if (success) Navigator.pushNamed(context, 'inven');
+                        });
                       },
                       child: Text("Sign In"),
                       style:

@@ -12,12 +12,17 @@ String password = "";
 String rePassword = "";
 String username = "";
 bool equalPass = false;
-class _NewAccountPageState extends State<NewAccountPage> {
 
+class _NewAccountPageState extends State<NewAccountPage> {
   void createAccount() {
-    //Here is where you set up the account
+    Authentication.createAccount(username, password).then((success) {
+      if (success) Navigator.pushNamed(context, 'inven');
+    });
   }
 
+  String password = "";
+  String username = "";
+  bool equalPass = false;
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -119,11 +124,10 @@ class _NewAccountPageState extends State<NewAccountPage> {
                     color: Color(0xFFFF5A5A),
                   ),
                   enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 1,
-                          color: equalPass ? Colors.green : Colors.black
-                      ),
-                      borderRadius: BorderRadius.circular(15)
-                  ),
+                      borderSide: BorderSide(
+                          width: 1,
+                          color: equalPass ? Colors.green : Colors.black),
+                      borderRadius: BorderRadius.circular(15)),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
@@ -149,7 +153,8 @@ class _NewAccountPageState extends State<NewAccountPage> {
               ),
             ),
             if (!equalPass && rePassword.length > 0)
-              Text("Passwords do not match", style: TextStyle(color: Colors.red)),
+              Text("Passwords do not match",
+                  style: TextStyle(color: Colors.red)),
             SizedBox(height: 10),
             ElevatedButton(
                 onPressed: equalPass ? createAccount : null,

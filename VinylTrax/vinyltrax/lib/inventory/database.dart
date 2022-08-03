@@ -7,10 +7,26 @@ import 'package:diacritic/diacritic.dart';
 class Database {
   static final fb = FirebaseDatabase.instance;
   static final ref = fb.ref();
+  static var userRef = ref;
   // static final uuid = Uuid();
 
   static void clear() async {
     await ref.remove();
+  }
+
+  static Future<bool> createUser(String userid) async {
+    await ref.update({
+      "$userid": {
+        "Albums": "",
+        "Artists": "",
+        "Wishlist": "",
+      }
+    });
+    return true;
+  }
+
+  static void logIn(String userid) async {
+    userRef = ref.child(userid);
   }
 
   /*
@@ -26,9 +42,9 @@ class Database {
   */
   static Future<List<List<dynamic>>> displayByName() async {
     // Get a snapshot from the album database
-    final snapshot = await ref.child("Albums").get();
+    final snapshot = await userRef.child("Albums").get();
 
-    if (snapshot.exists) {
+    if (snapshot.exists && snapshot.value != "") {
       // Map{ AlbumID: {Album data} }
       var values = snapshot.value as Map<Object?, Object?>;
       // List[ Map{ "Artist": name, "Name": album name, ... }, Map {...}, ]
@@ -77,9 +93,9 @@ class Database {
   static Future<List<List<dynamic>>> displayByGenre(
       String genre, String format) async {
     // Get a snapshot from the album database
-    final snapshot = await ref.child("Albums").get();
+    final snapshot = await userRef.child("Albums").get();
 
-    if (snapshot.exists) {
+    if (snapshot.exists && snapshot.value != "") {
       // List of album data that are of the given genre
       List<MapEntry<Object?, Object?>> list = [];
       // Map{ AlbumID: {Album data} }
@@ -184,11 +200,11 @@ Data is returned as a list of text widgets
 */
   static Future<List<dynamic>> artists(String format) async {
     // Get a snapshot from the artist database
-    final snapshot = await ref.child("Artists").get();
+    final snapshot = await userRef.child("Artists").get();
     // List of artists to return
     List<dynamic> results = [];
 
-    if (snapshot.exists) {
+    if (snapshot.exists && snapshot.value != "") {
       // Map{ ArtistID: {Artist Data} }
       var values = snapshot.value as Map<Object?, Object?>;
       // List[ Map{ "Name": Artist name, "Albums": [], ... }, Map{...} ]
@@ -256,9 +272,9 @@ Data is returned as a list of text widgets:
   static Future<List<List<dynamic>>> albumsBy(
       {required String artistid, String format = "All"}) async {
     // Get a snapshot from the ARTIST database
-    final snapArtist = await ref.child("Artists").get();
+    final snapArtist = await userRef.child("Artists").get();
     // Get a snapshot from the ALBUM database
-    final snapAlbum = await ref.child("Albums").get();
+    final snapAlbum = await userRef.child("Albums").get();
 
     // Map{ AlbumID: {Album data} }
     var albumValues = snapAlbum.value as Map<Object?, Object?>;
@@ -318,7 +334,7 @@ Data is returned as a list of strings
 */
   static Future<List<dynamic>> albumDetails(String albumid) async {
     // Get a snapshot from the database
-    final snapshot = await ref.child("Albums").get();
+    final snapshot = await userRef.child("Albums").get();
 
     // print("albumDetails id: " + albumid);
 
@@ -384,9 +400,9 @@ Search the user's inventory for given text
   static Future<List<List<dynamic>>> search(String input) async {
     List<List<dynamic>> results = [];
     // Get a snapshot of the Artists database
-    final snapArtist = await ref.child("Artists").get();
+    final snapArtist = await userRef.child("Artists").get();
     // Get a snapshot of the Albums database
-    final snapAlbums = await ref.child("Albums").get();
+    final snapAlbums = await userRef.child("Albums").get();
 
     if (snapArtist.exists && snapAlbums.exists) {
       // Map{ ArtistID: {Artist data} }
@@ -461,7 +477,7 @@ remove album from inventory
 */
   static void removeAlbum(String albumID) async {
     // Get album data
-    var snapshot = await ref.child("Albums/$albumID").get();
+    var snapshot = await userRef.child("Albums/$albumID").get();
     if (snapshot.exists) {
       var values = snapshot.value as Map<Object?, Object?>;
 
@@ -473,11 +489,11 @@ remove album from inventory
       });
 
       // Delete the album from album database
-      await ref.child("Albums/$albumID").remove();
+      await userRef.child("Albums/$albumID").remove();
 
       // Delete the album under each artist
       artistIDs.forEach((element) async {
-        var artsnap = await ref.child("Artists/$element").get();
+        var artsnap = await userRef.child("Artists/$element").get();
         if (artsnap.exists) {
           var data = artsnap.value as Map<Object?, Object?>;
           Map<Object?, Object?> albums = {};
@@ -486,11 +502,11 @@ remove album from inventory
 
           // If the artist has no more albums: delete the artist
           if (albums.isEmpty) {
-            await ref.child("Artists/$element").remove();
+            await userRef.child("Artists/$element").remove();
           }
           // Otherwise: update the artist's albums list
           else {
-            await ref.update({
+            await userRef.update({
               "Artists/$element/Albums": albums,
             });
           }
@@ -517,9 +533,9 @@ Given Album Data from Discogs in the form:
 */
   static Future<String> addDisToInv(List<dynamic> albumdata) async {
     // If album was in wishlist: delete it
-    var wishshot = await ref.child("Wishlist/${albumdata[0]}").get();
+    var wishshot = await userRef.child("Wishlist/${albumdata[0]}").get();
     if (wishshot.exists) {
-      await ref.child("Wishlist/${albumdata[0]}").remove();
+      await userRef.child("Wishlist/${albumdata[0]}").remove();
     }
 
     // var id = uuid.v4();
@@ -530,10 +546,10 @@ Given Album Data from Discogs in the form:
       albumdata[0] += "1";
     else if (albumdata[1] == "CD") albumdata[0] += "2";
 
-    var snapshot = await ref.child("Albums/${albumdata[0]}").get();
+    var snapshot = await userRef.child("Albums/${albumdata[0]}").get();
     if (!snapshot.exists) {
       // Add album data to database
-      await ref.update({
+      await userRef.update({
         "Albums/${albumdata[0]}": {
           "UniqueID": albumdata[0],
           "Name": albumdata[3],
@@ -548,10 +564,10 @@ Given Album Data from Discogs in the form:
       });
       // Add album to each artist's data
       (albumdata[2] as List<dynamic>).forEach((element) async {
-        var snapshot = await ref.child("Artists/${element[1]}").get();
+        var snapshot = await userRef.child("Artists/${element[1]}").get();
         // If the artist exitst
         if (snapshot.exists) {
-          var snapalbum = await ref.child("Artists/${element[1]}/Albums");
+          var snapalbum = await userRef.child("Artists/${element[1]}/Albums");
           var newAlbum = snapalbum.push();
           newAlbum.set(albumdata[0]);
         }
@@ -566,14 +582,14 @@ Given Album Data from Discogs in the form:
             }
 
             // Create new artist
-            await ref.update({
+            await userRef.update({
               "Artists/${element[1]}": {
                 "UniqueID": element[1],
                 "Name": element[0],
                 "Image": image,
               }
             });
-            var snapalbum = await ref.child("Artists/${element[1]}/Albums");
+            var snapalbum = await userRef.child("Artists/${element[1]}/Albums");
             var newAlbum = snapalbum.push();
             newAlbum.set(albumdata[0]);
             ;
@@ -604,9 +620,9 @@ Given Album Data from Discogs in the form:
 #############################################################################
 */
   static void addToWish(List<dynamic> albumdata) async {
-    var snapshot = await ref.child("Wishlist/${albumdata[0]}").get();
+    var snapshot = await userRef.child("Wishlist/${albumdata[0]}").get();
     if (!snapshot.exists) {
-      await ref.update({
+      await userRef.update({
         "Wishlist/${albumdata[0]}": {
           "UniqueID": albumdata[0],
           "Name": albumdata[2],
@@ -635,9 +651,9 @@ Given Album Data from Discogs in the form:
   */
   static void addSpotToInv(List<dynamic> albumdata) async {
     // If album was in wishlist: delete it
-    var wishshot = await ref.child("Wishlist/${albumdata[0]}").get();
+    var wishshot = await userRef.child("Wishlist/${albumdata[0]}").get();
     if (wishshot.exists) {
-      await ref.child("Wishlist/${albumdata[0]}").remove();
+      await userRef.child("Wishlist/${albumdata[0]}").remove();
     }
 
     // var id = uuid.v4();
@@ -645,13 +661,13 @@ Given Album Data from Discogs in the form:
     // Add album to each artist's data
     var genre = [];
     (albumdata[2] as List<dynamic>).forEach((element) async {
-      var snapshot = await ref.child("Artists/${element[1]}").get();
+      var snapshot = await userRef.child("Artists/${element[1]}").get();
       // If the artist exists
       if (snapshot.exists) {
-        var snapalbum = await ref.child("Artists/${element[1]}/Albums");
+        var snapalbum = await userRef.child("Artists/${element[1]}/Albums");
         var newAlbum = snapalbum.push();
         newAlbum.set(albumdata[0]);
-        var snap = await ref.child("Artists/${element[1]}/Genres").get();
+        var snap = await userRef.child("Artists/${element[1]}/Genres").get();
         genre = snap.value as List<dynamic>;
       }
 
@@ -667,7 +683,7 @@ Given Album Data from Discogs in the form:
           genre = value[1];
 
           // Create new artist
-          await ref.update({
+          await userRef.update({
             "Artists/${element[1]}": {
               "UniqueID": element[1],
               "Name": element[0],
@@ -676,7 +692,7 @@ Given Album Data from Discogs in the form:
             }
           });
 
-          var snapAlbum = await ref.child("Artists/${element[1]}/Albums");
+          var snapAlbum = await userRef.child("Artists/${element[1]}/Albums");
           var newAlbum = snapAlbum.push();
           newAlbum.set(albumdata[0]);
         });
@@ -689,10 +705,10 @@ Given Album Data from Discogs in the form:
       albumdata[0] += "1";
     else if (albumdata[1] == "CD") albumdata[0] += "2";
 
-    var snapshot = await ref.child("Albums/${albumdata[0]}").get();
+    var snapshot = await userRef.child("Albums/${albumdata[0]}").get();
     if (!snapshot.exists) {
       // Add album data to database
-      await ref.update({
+      await userRef.update({
         "Albums/${albumdata[0]}": {
           "UniqueID": albumdata[0],
           "Name": albumdata[3],
@@ -732,11 +748,12 @@ Return data to view wishlist items
 */
   static Future<List<List<dynamic>>> displayWish(String order) async {
     // Get a snapshot from the album database
-    final snapshot = await ref.child("Wishlist").get();
+    final snapshot = await userRef.child("Wishlist").get();
 
-    if (snapshot.exists) {
+    if (snapshot.exists && snapshot.value != "") {
       // Map{ AlbumID: {Album data} }
       var values = snapshot.value as Map<Object?, Object?>;
+
       // List[ Map{ "Artist": name, "Name": album name, ... }, Map {...}, ]
       var list = values.entries.toList();
 
@@ -804,9 +821,9 @@ Add pressing data to an album
     required String year,
     required String manufacturer,
   }) async {
-    var snapshot = await ref.child("Albums/$albumID").get();
+    var snapshot = await userRef.child("Albums/$albumID").get();
     if (snapshot.exists) {
-      await ref.update({
+      await userRef.update({
         "Albums/$albumID/Pressing": {
           "numLP": numLP,
           "colorLP": colorLP,
@@ -834,7 +851,7 @@ Get pressing data to an album
 */
   static Future<List<String>> getPressData(String albumID) async {
     List<String> data = [];
-    var snapshot = await ref.child("Albums/$albumID/Pressing").get();
+    var snapshot = await userRef.child("Albums/$albumID/Pressing").get();
     if (snapshot.exists) {
       data = [
         (snapshot.value as Map<Object?, Object?>)["numLP"].toString(),
@@ -858,9 +875,9 @@ text, updating it and sending it back.
 #############################################################################
 */
   static void addNotes({required String albumID, required String note}) async {
-    var snapshot = await ref.child("Albums/$albumID").get();
+    var snapshot = await userRef.child("Albums/$albumID").get();
     if (snapshot.exists) {
-      await ref.update({
+      await userRef.update({
         "Albums/$albumID/Notes": note,
       });
     }
@@ -875,7 +892,7 @@ Get notes to an album
 */
   static Future<String> getNotes(String albumID) async {
     String note = "";
-    var snapshot = await ref.child("Albums/$albumID/Notes").get();
+    var snapshot = await userRef.child("Albums/$albumID/Notes").get();
     if (snapshot.exists) {
       note = snapshot.value as String;
     }
@@ -890,7 +907,7 @@ Deletes the notes on a given album
 #############################################################################
 */
   static void deleteNotes(String albumID) async {
-    var snapref = await ref.child("Albums/$albumID/Notes");
+    var snapref = await userRef.child("Albums/$albumID/Notes");
     snapref.remove();
   }
 

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'inventory/database.dart';
 
 class Authentication {
   static final auth = FirebaseAuth.instance;
@@ -13,15 +14,17 @@ class Authentication {
     });
   }
 
-  static void createAccount(String email, String password) async {
+  static Future<bool> createAccount(String email, String password) async {
     print(email + ": " + password);
     try {
       final credential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      print("HERE");
-      print(credential);
+      print(credential.user!.uid);
+      Database.createUser(credential.user!.uid).then((success) =>
+          success ? Database.logIn(credential.user!.uid) : print("try again"));
+      return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -31,10 +34,10 @@ class Authentication {
     } catch (e) {
       print(e);
     }
-    await auth.currentUser?.sendEmailVerification();
+    return false;
   }
 
-  static void signIn(String email, String password) async {
+  static Future<bool> signIn(String email, String password) async {
     print(email + ": " + password);
     try {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -42,6 +45,8 @@ class Authentication {
         password: password,
       );
       print(credential.user!.uid);
+      Database.logIn(credential.user!.uid);
+      return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
@@ -49,6 +54,7 @@ class Authentication {
         print('Wrong password provided for that user.');
       }
     }
+    return false;
   }
 
   void signOut() async {
