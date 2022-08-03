@@ -1,3 +1,4 @@
+import '../auth.dart';
 import 'package:flutter/material.dart';
 
 class NewAccountPage extends StatefulWidget {
@@ -32,7 +33,8 @@ class _NewAccountPageState extends State<NewAccountPage> {
                 textAlignVertical: TextAlignVertical.center,
                 decoration: InputDecoration(
                   isCollapsed: true,
-                  contentPadding: EdgeInsets.only(left: 15, top: 15, bottom: 15),
+                  contentPadding:
+                      EdgeInsets.only(left: 15, top: 15, bottom: 15),
                   labelText: "Enter your Email",
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                   hintText: "Email",
@@ -52,8 +54,8 @@ class _NewAccountPageState extends State<NewAccountPage> {
                     ),
                   ),
                 ),
-                onChanged: (String value) {
-                  setState ((){
+                onSubmitted: (String value) {
+                  setState(() {
                     username = value;
                   });
                 },
@@ -67,7 +69,8 @@ class _NewAccountPageState extends State<NewAccountPage> {
                 textAlignVertical: TextAlignVertical.center,
                 decoration: InputDecoration(
                   isCollapsed: true,
-                  contentPadding: EdgeInsets.only(left: 15, top: 15, bottom: 15),
+                  contentPadding:
+                      EdgeInsets.only(left: 15, top: 15, bottom: 15),
                   labelText: "Enter your Password",
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                   hintText: "Password",
@@ -87,8 +90,8 @@ class _NewAccountPageState extends State<NewAccountPage> {
                     ),
                   ),
                 ),
-                onChanged: (String value) {
-                  setState ((){
+                onSubmitted: (String value) {
+                  setState(() {
                     password = value;
                   });
                 },
@@ -102,7 +105,8 @@ class _NewAccountPageState extends State<NewAccountPage> {
                 textAlignVertical: TextAlignVertical.center,
                 decoration: InputDecoration(
                   isCollapsed: true,
-                  contentPadding: EdgeInsets.only(left: 15, top: 15, bottom: 15),
+                  contentPadding:
+                      EdgeInsets.only(left: 15, top: 15, bottom: 15),
                   labelText: "Re-Enter your Password",
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                   hintText: "Password",
@@ -122,13 +126,12 @@ class _NewAccountPageState extends State<NewAccountPage> {
                     ),
                   ),
                 ),
-                onChanged: (String value) {
+                onSubmitted: (String value) {
                   if (value == password) {
                     setState(() {
                       equalPass = true;
                     });
-                  }
-                  else {
+                  } else {
                     setState(() {
                       equalPass = false;
                     });
@@ -140,9 +143,13 @@ class _NewAccountPageState extends State<NewAccountPage> {
             ElevatedButton(
                 onPressed: () {
                   //This is where you create a user and save the ID
+
+                  // print(equalPass);
+
+                  print(username + ": " + password);
+                  // Authentication.createAccount(username, password);
                 },
-                child: Text("Sign up")
-            )
+                child: Text("Sign up"))
           ],
         ),
       ),

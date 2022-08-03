@@ -13,12 +13,15 @@ class Authentication {
     });
   }
 
-  void createAccount(String email, String password) async {
+  static void createAccount(String email, String password) async {
+    print(email + ": " + password);
     try {
       final credential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      print("HERE");
+      print(credential);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -31,12 +34,14 @@ class Authentication {
     await auth.currentUser?.sendEmailVerification();
   }
 
-  void signIn(String email, String password) async {
+  static void signIn(String email, String password) async {
+    print(email + ": " + password);
     try {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      print(credential.user!.uid);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
