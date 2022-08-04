@@ -268,13 +268,13 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future scanBarcode() async {
-    String scanResult = '666561002718';
-    // try {
-    //   scanResult = await FlutterBarcodeScanner.scanBarcode(
-    //       "#E52638", "Cancel", true, ScanMode.BARCODE);
-    // } on PlatformException {
-    //   scanResult = 'Failed to get platform version';
-    // }
+    String scanResult;
+    try {
+      scanResult = await FlutterBarcodeScanner.scanBarcode(
+          "#E52638", "Cancel", true, ScanMode.BARCODE);
+    } on PlatformException {
+      scanResult = 'Failed to get platform version';
+    }
     if (!mounted) return;
     setState(() {
       this.scanResult = scanResult;
