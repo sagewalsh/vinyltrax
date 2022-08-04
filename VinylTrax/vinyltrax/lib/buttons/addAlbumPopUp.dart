@@ -28,7 +28,7 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
           future: widget.input,
           builder:
               (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-            var data = snapshot.data!;
+            var data = snapshot.data ?? ["E", "E", "E", "E", "E", "E", "E"];
             String albumID = data[6];
             return AlertDialog(
               title: RichText(
