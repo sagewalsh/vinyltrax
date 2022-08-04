@@ -20,6 +20,7 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
   // String year = 'Pick a year';
   // DateTime current = DateTime.now();
   // String manufacturer = "Enter a Manufacturer";
+  TextEditingController _controller = TextEditingController();
   String numLP = "";
   String colorLP = "";
   String rpmSize = "";
@@ -50,6 +51,8 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
         physics: AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
+
+            //Number of LPs
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -67,6 +70,8 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
                     }),
               ],
             ),
+
+            // Color picker
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -114,6 +119,8 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
                     }),
               ],
             ),
+
+            //RPM Size
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -131,6 +138,8 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
                     }),
               ],
             ),
+
+            // Year picker
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -157,9 +166,20 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
                     child: Text(year)),
               ],
             ),
+
+            // Manufacturer
             TextField(
+              controller: _controller..text = manufacturer,
               decoration: InputDecoration(
                 hintText: "Enter a Manufacturer",
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      manufacturer = _controller.text;
+                    });
+                  },
+                  icon: Icon(Icons.check),
+                )
               ),
               onSubmitted: (String text) {
                 setState(() {
@@ -167,6 +187,8 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
                 });
               },
             ),
+
+            //Final Submission
             TextButton(
                 onPressed: () {
                   if (year == "Pick a year") year = "";
