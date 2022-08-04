@@ -25,7 +25,22 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
   String rpmSize = "";
   String year = "Pick a year";
   String manufacturer = "";
+
   DateTime current = DateTime.now();
+
+  @override
+  void initState() {
+    Database.getPressData(widget.albumid).then((result) {
+      setState (() {
+        numLP = result[0];
+        colorLP = result[1];
+        rpmSize = result[2];
+        year = result[3];
+        manufacturer = result[4];
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

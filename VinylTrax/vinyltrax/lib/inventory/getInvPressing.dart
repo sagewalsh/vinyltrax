@@ -62,7 +62,9 @@ class _InvPress extends State<GetInvPressing> {
 
             String title = "";
 
-            Color color = Colors.black;
+            Color color = settings.darkTheme
+                ? Colors.white
+                : Colors.black;
             // Color of LPs
             if (data[1] != "") {
               title += "Color";
@@ -110,7 +112,9 @@ class _InvPress extends State<GetInvPressing> {
               }
               row.add(Column(
                 children: [
-                  Text(title),
+                  Text(title, style: TextStyle(color: settings.darkTheme
+                      ? Colors.white
+                      : Colors.black)),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
@@ -181,7 +185,9 @@ class _InvPress extends State<GetInvPressing> {
               }
               row.add(Column(
                 children: [
-                  Text("Year"),
+                  Text("Year", style: TextStyle(color: settings.darkTheme
+                      ? Colors.white
+                      : Colors.black)),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
@@ -206,6 +212,9 @@ class _InvPress extends State<GetInvPressing> {
                               style: TextStyle(
                                 fontSize: 50,
                                 fontWeight: FontWeight.bold,
+                                color: settings.darkTheme
+                                    ? Colors.white
+                                    : Colors.black
                               ),
                             ),
                           ],
@@ -242,7 +251,9 @@ class _InvPress extends State<GetInvPressing> {
               else if (data[2] == "78")
                 colors = [Colors.black, color, Colors.black];
 
-              children.add(Text("Size"));
+              children.add(Text("Size", style: TextStyle(color: settings.darkTheme
+                  ? Colors.white
+                  : Colors.black)));
               children.add(Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
