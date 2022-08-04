@@ -364,7 +364,7 @@ class SpotDetails extends StatelessWidget {
                             leading: Container(
                               padding: EdgeInsets.all(10),
                               child: Text(
-                                i.toString(),
+                                  (i + 1).toString(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: settings.darkTheme

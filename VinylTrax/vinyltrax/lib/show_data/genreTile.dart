@@ -14,13 +14,16 @@ class GenreTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      tileColor: Color(0xFFFFFEF9),
+      tileColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
       // Genre Icon
       leading: Container(
         padding: EdgeInsets.all(10),
         child: Image.asset(
           icon,
           width: 25,
+          color: settings.darkTheme
+              ? Colors.white
+              : Colors.black,
           // color: Color.fromARGB(86, 255, 90, 90),
         ),
       ),
@@ -31,6 +34,9 @@ class GenreTile extends StatelessWidget {
           genreName,
           style: TextStyle(
             fontSize: 15,
+            color: settings.darkTheme
+                ? Colors.white
+                : Colors.black,
           ),
         ),
       ),

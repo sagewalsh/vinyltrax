@@ -319,7 +319,7 @@ class _InvDetails extends State<InvDetails> {
                             padding: EdgeInsets.all(10),
                             child: Text(
                               // "\t" + i.toString() + "\t",
-                              i.toString(),
+                                (i + 1).toString(),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: settings.darkTheme ? Colors.white : Colors.black,
