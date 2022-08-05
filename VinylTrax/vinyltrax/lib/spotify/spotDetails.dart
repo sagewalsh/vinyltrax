@@ -148,7 +148,7 @@ class SpotDetails extends StatelessWidget {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               // color: Colors.grey[700],
-                              color: Colors.black,
+                              color: settings.darkTheme ? Colors.white : Colors.black,
                               fontSize: 20,
                             ),
                           ),
@@ -253,7 +253,7 @@ class SpotDetails extends StatelessWidget {
                               }),
                             style: TextStyle(
                               color: settings.darkTheme
-                                  ? Colors.white
+                                  ? Color(0xFFBB86FC)
                                   : Color(0xFFFF5A5A),
                               // decoration: TextDecoration.underline,
                               fontSize: 18,
@@ -266,7 +266,7 @@ class SpotDetails extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 18,
                               color: settings.darkTheme
-                                  ? Colors.white
+                                  ? Color(0xFFBB86FC)
                                   : Color(0xFFFF5A5A),
                             ),
                           ));
