@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color(0xFFFFFDF6),
         body: Stack(alignment: AlignmentDirectional.centerStart, children: [
           AnimatedPositioned(
-            left: width * .25,
+            left: width * .26,
             top: move ? height * .25 : height * .45,
             duration: Duration(seconds: 1),
             child: AnimatedOpacity(

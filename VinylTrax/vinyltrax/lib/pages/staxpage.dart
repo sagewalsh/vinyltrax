@@ -21,7 +21,7 @@ class _StaxPageState extends State<StaxPage> {
   final TextEditingController textController = TextEditingController();
   FocusNode focus = FocusNode();
   _Order _selectedOrder = _Order.artist;
-  Type _selectedType = Type.vinyl;
+  Type _selectedType = Type.all;
   bool isGenreButton = false;
 
   @override
