@@ -38,6 +38,7 @@ class GetInvPressing extends StatefulWidget {
 }
 
 class _InvPress extends State<GetInvPressing> {
+  Color backgroundColor = settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6);
   @override
   Widget build(BuildContext context) {
     Future<List<String>> _results = Database.getPressData(widget.input[0]);
@@ -77,6 +78,8 @@ class _InvPress extends State<GetInvPressing> {
               //   color = Colors.red;
               // else if (data[1] == "Yellow") color = Colors.yellow;
               color = colorOptions[data[1]]!;
+              if (color == Colors.black && settings.darkTheme)
+                backgroundColor = Color(0xFFBB86FC);
             }
 
             // Number of LPs
@@ -118,6 +121,7 @@ class _InvPress extends State<GetInvPressing> {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
+                      color: backgroundColor,
                       border: Border.all(
                         width: 4,
                         color: settings.darkTheme
@@ -243,13 +247,15 @@ class _InvPress extends State<GetInvPressing> {
               if (color == Colors.black)
                 color =
                     settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A);
-              List<Color> colors = [Colors.black, Colors.black, Colors.black];
+              List<Color> colors = [settings.darkTheme ? Colors.white : Colors.black,
+                settings.darkTheme ? Colors.white : Colors.black,
+                settings.darkTheme ? Colors.white : Colors.black];
               if (data[2] == "33")
-                colors = [color, Colors.black, Colors.black];
+                colors[0] = color;
               else if (data[2] == "45")
-                colors = [Colors.black, Colors.black, color];
+                colors[2] = color;
               else if (data[2] == "78")
-                colors = [Colors.black, color, Colors.black];
+                colors[1] = color;
 
               children.add(Text("Size", style: TextStyle(color: settings.darkTheme
                   ? Colors.white
@@ -309,7 +315,9 @@ class _InvPress extends State<GetInvPressing> {
                   SizedBox(height: MediaQuery.of(context).size.width * .10));
             }
             if (data[4] != "") {
-              children.add(Text("Manufacturer"));
+              children.add(Text("Manufacturer", style: TextStyle(color: settings.darkTheme
+                  ? Colors.white
+                  : Colors.black)));
               children.add(Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
@@ -334,6 +342,7 @@ class _InvPress extends State<GetInvPressing> {
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
+                              color: settings.darkTheme ? Colors.white : Colors.black
                           ),
                         ),
                       ],

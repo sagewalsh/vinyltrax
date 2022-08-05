@@ -1,11 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/show_data/genreList.dart';
 import 'package:vinyltrax/inventory/getAlbums.dart';
 import '../inventory/getInvArtist.dart';
 import '../inventory/invResults.dart';
 import 'settingspage.dart' as settings;
-import '../spotify/spotifyResults.dart';
 
 enum _Order { artist, albums, genre, category }
 
@@ -130,19 +128,40 @@ class _StaxPageState extends State<StaxPage> {
               ),
               Row(
                 children: [
-                  DropdownButton(
-                    value: _selectedOrder,
-                    items: const [
-                      DropdownMenuItem(child: Text("Artists"), value: _Order.artist),
-                      DropdownMenuItem(child: Text("Albums"), value: _Order.albums),
-                      DropdownMenuItem(child: Text("Genres"), value: _Order.genre),
-                      DropdownMenuItem(child: Text("Categories"), value: _Order.category),
-                    ],
-                    onChanged: (type) {
-                      setState(() {
-                        _selectedOrder = type as _Order;
-                      });
-                    }
+                  Container(
+                    padding: EdgeInsets.only(left: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Color(0xFFFF5A5A),
+                    ),
+                    child: DropdownButton(
+                      borderRadius: BorderRadius.circular(20),
+                      dropdownColor: Colors.white,
+                      value: _selectedOrder,
+                      items: [
+                        DropdownMenuItem(child: Text("Artists",
+                            style: TextStyle(color: (_selectedOrder == _Order.artist) ? Colors.white :
+                            settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A))),
+                            value: _Order.artist),
+                        DropdownMenuItem(child: Text("Albums",
+                            style: TextStyle(color: (_selectedOrder == _Order.albums) ? Colors.white :
+                            settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A))),
+                            value: _Order.albums),
+                        DropdownMenuItem(child: Text("Genres",
+                            style: TextStyle(color: (_selectedOrder == _Order.genre) ? Colors.white :
+                            settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A))),
+                            value: _Order.genre),
+                        DropdownMenuItem(child: Text("Categories",
+                            style: TextStyle(color: (_selectedOrder == _Order.category) ? Colors.white :
+                            settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A))),
+                            value: _Order.category),
+                      ],
+                      onChanged: (type) {
+                        setState(() {
+                          _selectedOrder = type as _Order;
+                        });
+                      }
+                    ),
                   ),
                   DropdownButton(
                       value: _selectedType,
