@@ -11,6 +11,12 @@ class Test {
   }
 
   static void spotify() {
+    // Database.createAlbum(
+    //     artist: ["Halsey", "26VFTg2z8YR0cCuwLzESi2"],
+    //     album: "Bob's album",
+    //     format: "Vinyl",
+    //     year: "2019");
+
     // Spotify.authenticate();
     // Spotify.search("closer");
     // Spotify.albumsBy("26VFTg2z8YR0cCuwLzESi2");

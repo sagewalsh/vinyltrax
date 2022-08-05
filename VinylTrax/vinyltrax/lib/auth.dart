@@ -5,13 +5,19 @@ class Authentication {
   static final auth = FirebaseAuth.instance;
   Authentication() {}
 
-  void userSignedIn() {
-    auth.authStateChanges().listen((User? user) {
-      if (user == null)
-        print("User is currently signed out");
-      else
-        print("User is signed in");
-    });
+  static bool userSignedIn() {
+    // auth.authStateChanges().listen((User? user) {
+    //   if (user == null)
+    //     // print("User is currently signed out");
+    //     return false;
+    //   else
+    //     // print("User is signed in");
+    //     return true;
+    // });
+    if (auth.currentUser == null) {
+      return false;
+    }
+    return true;
   }
 
   static Future<bool> createAccount(String email, String password) async {
@@ -57,32 +63,32 @@ class Authentication {
     return false;
   }
 
-  void signOut() async {
+  static void signOut() async {
     await auth.signOut();
   }
 
-  String getUser() {
+  static String getUser() {
     if (auth.currentUser != null) {
       return auth.currentUser!.uid;
     }
     return "";
   }
 
-  void updateEmail(String email) async {
+  static void updateEmail(String email) async {
     await auth.currentUser
         ?.updateEmail(email)
         .then((value) async => await auth.currentUser?.sendEmailVerification());
   }
 
-  void updatePassword(String newPassword) async {
+  static void updatePassword(String newPassword) async {
     await auth.currentUser?.updatePassword(newPassword);
   }
 
-  void resetPassword(String email) async {
+  static void resetPassword(String email) async {
     await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
 
-  void deleteUser() async {
+  static void deleteUser() async {
     await auth.currentUser?.delete();
   }
 }

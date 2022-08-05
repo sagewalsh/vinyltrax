@@ -2,13 +2,13 @@ import 'package:firebase_database/firebase_database.dart';
 import '../discogs/discogs.dart';
 import '../spotify/spotify.dart';
 import 'package:diacritic/diacritic.dart';
-// import 'package:uuid/uuid.dart';
+import 'package:uuid/uuid.dart';
 
 class Database {
   static final fb = FirebaseDatabase.instance;
   static final ref = fb.ref();
   static var userRef = ref;
-  // static final uuid = Uuid();
+  static final uuid = Uuid();
 
   static void clear() async {
     await ref.remove();
@@ -25,8 +25,52 @@ class Database {
     return true;
   }
 
-  static void logIn(String userid) async {
+  static void logIn(String userid) {
     userRef = ref.child(userid);
+  }
+
+  /*
+  createAlbum
+
+  Creating your own album with the bare minimum data to 
+  act as a placeholder for unrecognized albums.
+
+  artist: [ artist name, artist id ]
+  album: "album name"
+  format: "Vinyl" / "CD"
+  year: "year"
+  */
+  static void createAlbum({
+    required List<dynamic> artist,
+    required String album,
+    required String format,
+    required String year,
+  }) {
+    var id = "CREATED" + uuid.v4().toString();
+    if (format == "Vinyl")
+      id += "1";
+    else if (format == "CD") id += "2";
+
+    // print(id);
+
+    String image =
+        "https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg";
+    Spotify.artist(artist[1].toString()).then((value) async {
+      if (value[0] != null) {
+        image = value[0];
+      }
+      var creation = [
+        id,
+        format,
+        [artist],
+        album,
+        [],
+        year,
+        [],
+        image,
+      ];
+      addSpotToInv(creation);
+    });
   }
 
   /*
@@ -911,375 +955,5 @@ Deletes the notes on a given album
   static void deleteNotes(String albumID) async {
     var snapref = await userRef.child("Albums/$albumID/Notes");
     snapref.remove();
-  }
-
-  static Future<bool> fill(String id, String format) async {
-    Collection.album(id).then((result) {
-      var album = [];
-      album.add(id);
-      album.add(format);
-      album.addAll(result);
-      Database.addDisToInv(album);
-    });
-    return true;
-  }
-
-  /*
-  Fills the firebase realtime database with dummy data
-  */
-  static void startingDiscogs() {
-    // Arular
-    fill("424354", "CD");
-
-    // Folklore
-    fill("461651", "Vinyl");
-
-    //Stiff Upper Lip
-    fill("487630", "Vinyl");
-
-    // Let's Do It For Johnny!!
-    fill("512610", "Vinyl");
-
-    // Drunk Enough to Dance
-    fill("512612", "Vinyl");
-
-    // Mama Said
-    fill("609305", "Vinyl");
-
-    // Love.Angel.Music.Baby
-    fill("676489", "Vinyl");
-
-    // Loose
-    fill("726173", "Vinyl");
-
-    // Circus
-    fill("796353", "Vinyl");
-
-    // The Open Door
-    fill("802389", "Vinyl");
-
-    // Under the Iron Sea
-    fill("803017", "Vinyl");
-
-    // The Razors Edge
-    fill("813717", "Vinyl");
-
-    // Fly On the Wall
-    fill("864310", "Vinyl");
-
-    // Dirty Deedds Done Dirt Cheap
-    fill("864991", "Vinyl");
-
-    // Mirage
-    fill("873439", "Vinyl");
-
-    // Lap of Luxury
-    fill("877057", "Vinyl");
-
-    // Blow Up You Video
-    fill("1001639", "Vinyl");
-
-    // X & Y
-    fill("1044164", "Vinyl");
-
-    // Our Love to Admire
-    fill("1055329", "Vinyl");
-
-    // The Album
-    fill("1116735", "Vinyl");
-
-    // Bare Trees
-    fill("1118530", "Vinyl");
-
-    // Powerage
-    fill("1152320", "Vinyl");
-
-    // It Is Time For a Love Revolution
-    fill("1236130", "Vinyl");
-
-    // Kala
-    fill("1278408", "Vinyl");
-
-    // Viva La Vida Or Death And All His Friends
-    fill("1373719", "Vinyl");
-
-    // Viva La Vida
-    fill("1406749", "Vinyl");
-
-    // Viva La Cobra
-    fill("1436737", "Vinyl");
-
-    // Evening Out With Your Girlfriend
-    fill("1462121", "Vinyl");
-
-    // Black Ice
-    fill("1596665", "Vinyl");
-
-    // In Color
-    fill("1603248", "Vinyl");
-
-    // Infinity on High
-    fill("1740745", "Vinyl");
-
-    // All Shook Up
-    fill("1760271", "Vinyl");
-
-    // One on One
-    fill("1760282", "Vinyl");
-
-    // Buddha
-    fill("1800929", "Vinyl");
-
-    // Don't Believe The Truth
-    fill("1865972", "Vinyl");
-
-    // Mi Plan
-    fill("1937233", "Vinyl");
-
-    // Wild Young Hearts
-    fill("1941286", "Vinyl");
-
-    // Back In Black
-    fill("1949857", "Vinyl");
-
-    // Sorry for Partyin
-    fill("1997838", "Vinyl");
-
-    // Let There Be Rock
-    fill("2078177", "Vinyl");
-
-    // Dream Police
-    fill("2107112", "Vinyl");
-
-    // Next Position Please
-    fill("2140555", "Vinyl");
-
-    // Night Train
-    fill("2267965", "Vinyl");
-
-    // The ArchAndroid
-    fill("2358638", "Vinyl");
-
-    // Cheap Trick
-    fill("2372199", "Vinyl");
-
-    // Penguin
-    fill("2415058", "Vinyl");
-
-    // Interpol
-    fill("2435602", "Vinyl");
-
-    // Sketches For My Sweethear the Drunk
-    fill("2513116", "Vinyl");
-
-    // Highway to Hell
-    fill("2520300", "Vinyl");
-
-    // High Voltage
-    fill("2588535", "Vinyl");
-
-    // A Hangover You Don't Deserve
-    fill("2612166", "Vinyl");
-
-    // Folie À Deux
-    fill("2621572", "Vinyl");
-
-    // While the City Sleeps, We Rule the Streets
-    fill("2728452", "Vinyl");
-
-    // Lungs
-    fill("2804664", "Vinyl");
-
-    // For Those About to Rock
-    fill("2817619", "Vinyl");
-
-    // Grace
-    fill("2825029", "Vinyl");
-
-    // Rumours
-    fill("2832092", "Vinyl");
-
-    // James Blake
-    fill("2832463", "Vinyl");
-
-    // Rock On Honorable Ones
-    fill("2921774", "Vinyl");
-
-    // Busted
-    fill("3050774", "Vinyl");
-
-    // Black and White America
-    fill("3069737", "Vinyl");
-
-    // Night Shades
-    fill("3078209", "Vinyl");
-
-    // Parachutes
-    fill("3092119", "Vinyl");
-
-    // Arrival
-    fill("3104211", "Vinyl");
-
-    // ABBA
-    fill("3105226", "Vinyl");
-
-    // Waterloo
-    fill("3105284", "Vinyl");
-
-    // Voulez-Vous
-    fill("3105488", "Vinyl");
-
-    // Petergreen's Fleetwood Mac
-    fill("3107317", "Vinyl");
-
-    // Mylo Xyloto
-    fill("3174863", "Vinyl");
-
-    // Ceremonials
-    fill("3210249", "Vinyl");
-
-    // Antics
-    fill("3415175", "Vinyl");
-
-    // Blue Side Park
-    fill("3492331", "Vinyl");
-
-    // Boys and Girls
-    fill("20240365", "Vinyl");
-
-    // Fleetwood Mac
-    fill("3586233", "Vinyl");
-
-    // Strangeland
-    fill("3592552", "Vinyl");
-
-    // Fishin for Woos
-    fill("3630396", "Vinyl");
-
-    // The Doctor
-    fill("3984662", "Vinyl");
-
-    // Whats the time Mr Wolf
-    fill("4248516", "Vinyl");
-
-    // If You Leave
-    fill("4389520", "Vinyl");
-
-    // Overgrown
-    fill("4445420", "Vinyl");
-
-    // Save Rock and Roll
-    fill("4488806", "Vinyl");
-
-    // Flick of the Switch
-    fill("4689119", "Vinyl");
-
-    // Mr Wonderful
-    fill("4727885", "Vinyl");
-
-    // Ring Ring
-    fill("4998939", "Vinyl");
-
-    // Matangi
-    fill("5126620", "Vinyl");
-
-    // Pax-AM Days
-    fill("5148207", "Vinyl");
-
-    // Blink-182
-    fill("5224539", "Vinyl");
-
-    // Metropolis: The Chase Suite
-    fill("5303025", "Vinyl");
-
-    // The Great Burrito Extortion Case
-    fill("5381927", "Vinyl");
-
-    // Lunch Drunk Love
-    fill("5387555", "Vinyl");
-
-    // Ballbreaker
-    fill("5587613", "Vinyl");
-
-    // Definitely Maybe
-    fill("5697791", "Vinyl");
-
-    // Ghost Stories
-    fill("5699282", "Vinyl");
-
-    // Dude Ranch
-    fill("5757545", "Vinyl");
-
-    // Cheshire Cat
-    fill("5868594", "Vinyl");
-
-    // Infinity on High
-    fill("5869463", "Vinyl");
-
-    // Electric Lady
-    fill("5970762", "Vinyl");
-
-    // El Pintor
-    fill("6058798", "Vinyl");
-
-    // The Vistors
-    fill("6111979", "Vinyl");
-
-    // Whats the Story Morning Glory?
-    fill("6127871", "Vinyl");
-
-    // Hozier
-    fill("6160782", "Vinyl");
-
-    // Rock or Bust
-    fill("6343565", "Vinyl");
-
-    // Songs People Actually Liked, Volume 1: The First Ten Years 1994-2003
-    fill("6621374", "Vinyl");
-
-    // Tell me when to whoa!
-    fill("6621531", "Vinyl");
-
-    // Sound and Color
-    fill("10021212", "Vinyl");
-
-    // Turn on the Bright Lights
-    fill("6799508", "Vinyl");
-
-    // Then Play On
-    fill("6941523", "Vinyl");
-
-    //
-    fill("6974841", "Vinyl");
-
-    // American Beauty / American Psycho
-    fill("3104211", "Vinyl");
-
-    // How Big how blue how beautiful
-    fill("7064888", "Vinyl");
-
-    // A Rush of blood to the head
-    fill("7266689", "Vinyl");
-
-    // Dig out your soul
-    fill("7315964", "Vinyl");
-
-    // A head full of dreams
-    fill("7810100", "Vinyl");
-
-    // Not to disappear
-    fill("7975258", "Vinyl");
-
-    // You and i
-    fill("8235792", "Vinyl");
-
-    // Play
-    fill("8465720", "Vinyl");
-
-    // Merry Flippin' Christmas Volumes 1 And 2
-    fill("8568544", "Vinyl");
-
-    // This is what the truth feels like
-    fill("8576403", "Vinyl");
   }
 }
