@@ -1,5 +1,6 @@
 library my_prj.globals;
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -103,6 +104,26 @@ class _SettingsPageState extends State<SettingsPage> {
   GestureDetector accountOptions(BuildContext context, String title) {
     return GestureDetector(
       onTap: () {
+        FirebaseAuth.instance
+            .authStateChanges()
+            .listen((User? user) {
+          if (user == null) {
+            print('User is currently signed out!');
+          } else {
+            print('User is signed in!');
+          }
+        });
+        FirebaseAuth.instance.signOut();
+        FirebaseAuth.instance
+            .authStateChanges()
+            .listen((User? user) {
+          if (user == null) {
+            print('User is currently signed out!');
+          } else {
+            print('User is signed in!');
+          }
+        });
+        Navigator.pushNamed(context, 'home');
         //print("works");
       },
       child: Padding(
