@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vinyltrax/show_data/genreList.dart';
 import 'package:vinyltrax/inventory/getAlbums.dart';
 import '../inventory/getInvArtist.dart';
+import '../inventory/getInvCategories.dart';
 import '../inventory/invResults.dart';
 import 'settingspage.dart' as settings;
 
@@ -33,7 +34,7 @@ class _StaxPageState extends State<StaxPage> {
           automaticallyImplyLeading: false,
           titleSpacing: 10,
           // toolbarHeight: MediaQuery.of(context).size.height * 0.24, //180
-          toolbarHeight: MediaQuery.of(context).size.height * 0.28, //180
+          toolbarHeight: MediaQuery.of(context).size.height * 0.23, //180
           title: Column(
             children: [
               Container(
@@ -127,12 +128,13 @@ class _StaxPageState extends State<StaxPage> {
                 height: MediaQuery.of(context).size.height * 0.085,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(left: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: Color(0xFFFF5A5A),
+                      color: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
                     ),
                     child: DropdownButton(
                       borderRadius: BorderRadius.circular(20),
@@ -163,18 +165,35 @@ class _StaxPageState extends State<StaxPage> {
                       }
                     ),
                   ),
-                  DropdownButton(
-                      value: _selectedType,
-                      items: const [
-                        DropdownMenuItem(child: Text("All"), value: Type.all),
-                        DropdownMenuItem(child: Text("Vinyl"), value: Type.vinyl),
-                        DropdownMenuItem(child: Text("CD"), value: Type.cd),
-                      ],
-                      onChanged: (type) {
-                        setState(() {
-                          _selectedType = type as Type;
-                        });
-                      }
+                  SizedBox(width: 40),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+                    ),
+                    child: DropdownButton(
+                        value: _selectedType,
+                        items: [
+                          DropdownMenuItem(child: Text("All",
+                              style: TextStyle(color: (_selectedType == Type.all) ? Colors.white :
+                              settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A))),
+                              value: Type.all),
+                          DropdownMenuItem(child: Text("Vinyl",
+                              style: TextStyle(color: (_selectedType == Type.vinyl) ? Colors.white :
+                              settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A))),
+                              value: Type.vinyl),
+                          DropdownMenuItem(child: Text("CD",
+                              style: TextStyle(color: (_selectedType == Type.cd) ? Colors.white :
+                              settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A))),
+                              value: Type.cd),
+                        ],
+                        onChanged: (type) {
+                          setState(() {
+                            _selectedType = type as Type;
+                          });
+                        }
+                    ),
                   ),
                 ],
               ),
@@ -192,8 +211,10 @@ class _StaxPageState extends State<StaxPage> {
                 GenreList(_selectedType)
               else if (_selectedOrder == _Order.artist)
                 GetInvArtist(_selectedType)
-              else
+              else if (_selectedOrder == _Order.albums)
                 GetInvAlbum(_selectedType)
+              else
+                GetInvCategories(_selectedType)
             ],
           ),
         ),

@@ -172,14 +172,6 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
               controller: _controller..text = manufacturer,
               decoration: InputDecoration(
                 hintText: "Enter a Manufacturer",
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      manufacturer = _controller.text;
-                    });
-                  },
-                  icon: Icon(Icons.check),
-                )
               ),
               onSubmitted: (String text) {
                 setState(() {
@@ -191,6 +183,9 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
             //Final Submission
             TextButton(
                 onPressed: () {
+                  setState((){
+                    manufacturer = _controller.text;
+                  });
                   if (year == "Pick a year") year = "";
                   Database.updatePressData(
                     albumID: widget.albumid,
