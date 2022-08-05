@@ -7,7 +7,7 @@ import '../inventory/invResults.dart';
 import 'settingspage.dart' as settings;
 import '../spotify/spotifyResults.dart';
 
-enum _Order { artist, albums, genre }
+enum _Order { artist, albums, genre, category }
 
 enum Type { vinyl, cd, all }
 
@@ -128,97 +128,36 @@ class _StaxPageState extends State<StaxPage> {
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.085,
               ),
-              Container(
-                // Artist / Albums / Genre Buttons
-                color:
-                    settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
-                child: CupertinoSegmentedControl(
-                  padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 6.0),
-                  selectedColor: settings.darkTheme
-                      ? Color(0xFFBB86FC)
-                      : Color(0xFFFF5A5A),
-                  borderColor: settings.darkTheme
-                      ? Color(0xFFBB86FC)
-                      : Color(0xFFFF5A5A),
-                  pressedColor: settings.darkTheme
-                      ? Color(0x64BB86FC)
-                      : Color(0x64FF5A5A),
-                  children: {
-                    _Order.artist: Container(
-                      height: MediaQuery.of(context).size.height * 0.037, //30
-                      width: MediaQuery.of(context).size.width * 0.4897, //140
-                      child: const Center(
-                        child: Text("Artist", style: TextStyle(fontSize: 14)),
-                      ),
-                    ),
-                    _Order.albums: Container(
-                      height: MediaQuery.of(context).size.height * 0.037, //30
-                      width: MediaQuery.of(context).size.width * 0.4897, //140
-                      child: const Center(
-                        child: Text("Albums", style: TextStyle(fontSize: 14)),
-                      ),
-                    ),
-                    _Order.genre: Container(
-                      height: MediaQuery.of(context).size.height * 0.037, //30
-                      width: MediaQuery.of(context).size.width * 0.4897, //140
-                      child: const Center(
-                        child: Text("Genre", style: TextStyle(fontSize: 14)),
-                      ),
-                    ),
-                  },
-                  onValueChanged: (value) {
-                    setState(() {
-                      _selectedOrder = value as _Order;
-                    });
-                  },
-                  groupValue: _selectedOrder,
-                ),
-              ),
-              Container(
-                // Vinyl / CD / All Buttons
-                color:
-                    settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
-                child: CupertinoSegmentedControl(
-                  padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-                  selectedColor: settings.darkTheme
-                      ? Color(0xFFBB86FC)
-                      : Color(0xFFFF5A5A),
-                  borderColor: settings.darkTheme
-                      ? Color(0xFFBB86FC)
-                      : Color(0xFFFF5A5A),
-                  pressedColor: settings.darkTheme
-                      ? Color(0x64BB86FC)
-                      : Color(0x64FF5A5A),
-                  children: {
-                    Type.vinyl: Container(
-                      height: MediaQuery.of(context).size.height * 0.037, //30
-                      width: MediaQuery.of(context).size.width * 0.4897, //140
-                      child: const Center(
-                        child: Text("Vinyl", style: TextStyle(fontSize: 14)),
-                      ),
-                    ),
-                    Type.cd: Container(
-                      height: MediaQuery.of(context).size.height * 0.037, //30
-                      width: MediaQuery.of(context).size.width * 0.4897, //140
-                      child: const Center(
-                        child: Text("CD", style: TextStyle(fontSize: 14)),
-                      ),
-                    ),
-                    Type.all: Container(
-                      height: MediaQuery.of(context).size.height * 0.037, //30
-                      width: MediaQuery.of(context).size.width * 0.4897, //140
-                      child: const Center(
-                        child: Text("All", style: TextStyle(fontSize: 14)),
-                      ),
-                    ),
-                  },
-                  onValueChanged: (value) {
-                    setState(() {
-                      _selectedType = value as Type;
-                    });
-                  },
-                  groupValue: _selectedType,
-                ),
+              Row(
+                children: [
+                  DropdownButton(
+                    value: _selectedOrder,
+                    items: const [
+                      DropdownMenuItem(child: Text("Artists"), value: _Order.artist),
+                      DropdownMenuItem(child: Text("Albums"), value: _Order.albums),
+                      DropdownMenuItem(child: Text("Genres"), value: _Order.genre),
+                      DropdownMenuItem(child: Text("Categories"), value: _Order.category),
+                    ],
+                    onChanged: (type) {
+                      setState(() {
+                        _selectedOrder = type as _Order;
+                      });
+                    }
+                  ),
+                  DropdownButton(
+                      value: _selectedType,
+                      items: const [
+                        DropdownMenuItem(child: Text("All"), value: Type.all),
+                        DropdownMenuItem(child: Text("Vinyl"), value: Type.vinyl),
+                        DropdownMenuItem(child: Text("CD"), value: Type.cd),
+                      ],
+                      onChanged: (type) {
+                        setState(() {
+                          _selectedType = type as Type;
+                        });
+                      }
+                  ),
+                ],
               ),
             ],
           ),

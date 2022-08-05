@@ -1219,3 +1219,96 @@ DATABASE.DART
 //     ),
 //   ),
 // ),
+
+// Container(
+//   // Artist / Albums / Genre Buttons
+//   color:
+//       settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+//   child: CupertinoSegmentedControl(
+//     padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 6.0),
+//     selectedColor: settings.darkTheme
+//         ? Color(0xFFBB86FC)
+//         : Color(0xFFFF5A5A),
+//     borderColor: settings.darkTheme
+//         ? Color(0xFFBB86FC)
+//         : Color(0xFFFF5A5A),
+//     pressedColor: settings.darkTheme
+//         ? Color(0x64BB86FC)
+//         : Color(0x64FF5A5A),
+//     children: {
+//       _Order.artist: Container(
+//         height: MediaQuery.of(context).size.height * 0.037, //30
+//         width: MediaQuery.of(context).size.width * 0.4897, //140
+//         child: const Center(
+//           child: Text("Artist", style: TextStyle(fontSize: 14)),
+//         ),
+//       ),
+//       _Order.albums: Container(
+//         height: MediaQuery.of(context).size.height * 0.037, //30
+//         width: MediaQuery.of(context).size.width * 0.4897, //140
+//         child: const Center(
+//           child: Text("Albums", style: TextStyle(fontSize: 14)),
+//         ),
+//       ),
+//       _Order.genre: Container(
+//         height: MediaQuery.of(context).size.height * 0.037, //30
+//         width: MediaQuery.of(context).size.width * 0.4897, //140
+//         child: const Center(
+//           child: Text("Genre", style: TextStyle(fontSize: 14)),
+//         ),
+//       ),
+//     },
+//     onValueChanged: (value) {
+//       setState(() {
+//         _selectedOrder = value as _Order;
+//       });
+//     },
+//     groupValue: _selectedOrder,
+//   ),
+// ),
+// Container(
+//   // Vinyl / CD / All Buttons
+//   color:
+//       settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+//   child: CupertinoSegmentedControl(
+//     padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+//     selectedColor: settings.darkTheme
+//         ? Color(0xFFBB86FC)
+//         : Color(0xFFFF5A5A),
+//     borderColor: settings.darkTheme
+//         ? Color(0xFFBB86FC)
+//         : Color(0xFFFF5A5A),
+//     pressedColor: settings.darkTheme
+//         ? Color(0x64BB86FC)
+//         : Color(0x64FF5A5A),
+//     children: {
+//       Type.vinyl: Container(
+//         height: MediaQuery.of(context).size.height * 0.037, //30
+//         width: MediaQuery.of(context).size.width * 0.4897, //140
+//         child: const Center(
+//           child: Text("Vinyl", style: TextStyle(fontSize: 14)),
+//         ),
+//       ),
+//       Type.cd: Container(
+//         height: MediaQuery.of(context).size.height * 0.037, //30
+//         width: MediaQuery.of(context).size.width * 0.4897, //140
+//         child: const Center(
+//           child: Text("CD", style: TextStyle(fontSize: 14)),
+//         ),
+//       ),
+//       Type.all: Container(
+//         height: MediaQuery.of(context).size.height * 0.037, //30
+//         width: MediaQuery.of(context).size.width * 0.4897, //140
+//         child: const Center(
+//           child: Text("All", style: TextStyle(fontSize: 14)),
+//         ),
+//       ),
+//     },
+//     onValueChanged: (value) {
+//       setState(() {
+//         _selectedType = value as Type;
+//       });
+//     },
+//     groupValue: _selectedType,
+//   ),
+// ),
