@@ -28,6 +28,10 @@ class Test {
     //   });
     // });
 
+    // Database.addCategory("3sq0hRtlT2SYeYajr5Cx221", "Test");
+    // Database.removeCatTag("1hlapolkCnQLMgKcKNVCuc1", "Test");
+    // Database.removeCatTag("3sq0hRtlT2SYeYajr5Cx221", "Test");
+
     // Spotify.authenticate();
     // Spotify.search("closer");
     // Spotify.albumsBy("26VFTg2z8YR0cCuwLzESi2");

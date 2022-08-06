@@ -1041,4 +1041,15 @@ Deletes the notes on a given album
     var newCat = snapshot.push();
     newCat.set(category);
   }
+
+  static void removeCatTag(String albumID, String category) async {
+    var snapshot = await userRef.child("Albums/$albumID/Category").get();
+    if (snapshot.exists) {
+      var categories = snapshot.value as Map<Object?, Object?>;
+      categories.removeWhere((key, value) => value == category);
+      await userRef.update({
+        "Albums/$albumID/Category": categories,
+      });
+    }
+  }
 }
