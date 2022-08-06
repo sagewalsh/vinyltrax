@@ -1036,10 +1036,27 @@ Deletes the notes on a given album
     snapref.remove();
   }
 
-  static void addCategory(String albumID, String category) async {
-    var snapshot = await userRef.child("Albums/$albumID/Category");
+  static void createCategory(String category) async {
+    var snapshot = await userRef.child("Categories");
     var newCat = snapshot.push();
     newCat.set(category);
+  }
+
+  static void deleteCategory(String category) async {
+    var snapshot = await userRef.child("Categories").get();
+    if (snapshot.exists) {
+      var categories = snapshot.value as Map<Object?, Object?>;
+      categories.removeWhere((key, value) => value == category);
+      await userRef.update({
+        "Categories": categories,
+      });
+    }
+  }
+
+  static void addCatTag(String albumID, String category) async {
+    var snapshot = await userRef.child("Albums/$albumID/Category");
+    var catTag = snapshot.push();
+    catTag.set(category);
   }
 
   static void removeCatTag(String albumID, String category) async {
