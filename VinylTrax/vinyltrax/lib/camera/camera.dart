@@ -21,11 +21,16 @@ class Camera extends StatefulWidget {
 class _CameraState extends State<Camera> {
   late CameraController _controller;
   XFile? pictureFile;
+  IconData flashIcon = Icons.flash_auto;
+
 
   @override
   void initState() {
     super.initState();
+    imageCache.clear();
+    imageCache.clearLiveImages();
     _controller = CameraController(widget.camera, ResolutionPreset.max);
+    _controller.setFlashMode(FlashMode.auto);
     _controller.initialize().then((_) {
       if (!mounted) {return;}
       setState((){});
@@ -65,77 +70,123 @@ class _CameraState extends State<Camera> {
   Widget build(BuildContext context) {
     if (!_controller.value.isInitialized) {
       return Scaffold(
-        backgroundColor: Color(0xFFFFFEF9),
+        backgroundColor: Colors.black,
         appBar: AppBar(
-          title: const Text('Take a picture', style: TextStyle(color: Colors.black)),
-          backgroundColor: Color(0xFFFFFEF9),
-          leading: BackButton(color: Colors.black),
+          automaticallyImplyLeading: false,
+          title: Center(child: Text('Take a picture', style: TextStyle(color: Colors.white))),
+          backgroundColor: Colors.black,
         ),
         body: const SizedBox(
           child: Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(color: Colors.white),
           ),
         ),
       );
     }
 
     return Scaffold(
-      backgroundColor: Color(0xFFFFFEF9),
+      backgroundColor: Colors.black,
       appBar: AppBar(
-          title: const Text('Take a picture', style: TextStyle(color: Colors.black)),
-          backgroundColor: Color(0xFFFFFEF9),
-          leading: BackButton(color: Colors.black),
+          automaticallyImplyLeading: false,
+          title: Center(child: Text('Take a picture', style: TextStyle(color: Colors.white))),
+          backgroundColor: Colors.black,
       ),
       // You must wait until the controller is initialized before displaying the
       // camera preview. Use a FutureBuilder to display a loading spinner until the
       // controller has finished initializing.
       body: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: Center(
+            Center(
               child: SizedBox(
-                height: 400,
-                width: 400,
+                height: MediaQuery.of(context).size.height * .70,
+                width: MediaQuery.of(context).size.width,
                 child: CameraPreview(_controller),
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: ElevatedButton(
-              onPressed: () async {
-                pictureFile = await _controller.takePicture();
-                Uint8List byteData = Uint8List.fromList([10, 1]); //placeholder
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, 'search');
+                  },
+                  child: Text("Cancel", style: TextStyle(color: Colors.white))
+              ),
+              IconButton(
+                constraints: BoxConstraints(
+                  minHeight: 100,
+                  minWidth: 100
+                ),
+                  padding: EdgeInsets.zero,
+                  onPressed: () async {
+                    pictureFile = await _controller.takePicture();
+                    Uint8List byteData = Uint8List.fromList([10, 1]); //placeholder
 
-                await pictureFile!.readAsBytes().then((value) {
-                  setState((){
-                    byteData = value;
-                  });
-                });
-                String base64Image = await base64Encode(byteData);
-                Future<String> test = CoverScan.getOptions(base64Image);
+                    await pictureFile!.readAsBytes().then((value) {
+                      setState((){
+                        byteData = value;
+                      });
+                    });
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: Text("Scanning Photo..."),
+                          );
+                        }
+                    );
 
-                await test.then((value){
-                  setState((){
-                    results = value;
-                    for (int i = 0; i < censoredWords.length; i++) {
-                      results = results.replaceAll(censoredWords[i], "");
+                    String base64Image = await base64Encode(byteData);
+                    Future<String> test = CoverScan.getOptions(base64Image);
+
+                    await test.then((value){
+                      setState((){
+                        results = value;
+                        for (int i = 0; i < censoredWords.length; i++) {
+                          results = results.replaceAll(censoredWords[i], "");
+                        }
+                      });
+                    });
+                    var route = new MaterialPageRoute(builder: (BuildContext context) {
+                      return new CameraResults(results);
+                    });
+                    Navigator.of(context).push(route);
+                  },
+                  icon: Icon(Icons.camera, size: MediaQuery.of(context).size.width * .2 , color: Colors.white)
+                ),
+              IconButton(
+                padding: EdgeInsets.zero,
+                  onPressed: () {
+                    if (flashIcon == Icons.flash_off) {
+                      _controller.setFlashMode(FlashMode.auto);
+                      setState((){
+                        flashIcon = Icons.flash_auto;
+                      });
                     }
-                  });
-                });
-                var route = new MaterialPageRoute(builder: (BuildContext context) {
-                  return new CameraResults(results);
-                });
-                Navigator.of(context).push(route);
-              },
-              child: Text("Take Picture"),
-            ),
+                    else if (flashIcon == Icons.flash_auto){
+                      _controller.setFlashMode(FlashMode.always);
+                      setState((){
+                        flashIcon = Icons.flash_on;
+                      });
+                    }
+                    else {
+                      _controller.setFlashMode(FlashMode.off);
+                      setState((){
+                        flashIcon = Icons.flash_off;
+                      });
+                    }
+                  },
+                  icon: Icon(flashIcon,
+                      size: MediaQuery.of(context).size.width * .1,
+                      color: Colors.white,
+                  )
+              ),
+            ],
           ),
           //Underneath I have it so the pictureFile!.path will give the correct file path
         ],
       ),
-
     );
   }
 }

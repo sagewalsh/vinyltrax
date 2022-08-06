@@ -87,6 +87,14 @@ class SpotDetails extends StatelessWidget {
               settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
           leading: BackButton(
             color: settings.darkTheme ? Colors.white : Colors.black,
+            onPressed: () {
+              if (inputType == 'scan') {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, 'camera');
+              }
+              else
+                Navigator.pop(context);
+            },
           ),
           title: title,
           actions: [
