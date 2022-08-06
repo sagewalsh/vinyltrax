@@ -16,6 +16,17 @@ class Test {
     //     album: "Bob's album",
     //     format: "Vinyl",
     //     year: "2019");
+    // Database.addCategory("3sq0hRtlT2SYeYajr5Cx221", "Badass");
+    // Database.displayByCategory("Badass", "Vinyl").then((value) {
+    //   (value).forEach((element) {
+    //     print(element[1].toString() + " BY " + element[2][0][0].toString());
+    //   });
+    // });
+    // Database.displayByGenre("Pop", "Vinyl").then((value) {
+    //   value.forEach((element) {
+    //     print(element[1].toString() + " BY " + element[2][0][0].toString());
+    //   });
+    // });
 
     // Spotify.authenticate();
     // Spotify.search("closer");

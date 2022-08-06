@@ -31,6 +31,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         move = true;
         visible = 1;
+        loggedIn = Authentication.userSignedIn();
       });
     });
   }
@@ -69,7 +70,7 @@ class _HomePageState extends State<HomePage> {
       ),
     ];
 
-    if (Authentication.userSignedIn()) {
+    if (loggedIn) {
       children.add(
         AnimatedPositioned(
           duration: Duration(seconds: 3),
@@ -86,9 +87,9 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       );
-      Future.delayed(Duration(seconds: 6), () {
+      Future.delayed(Duration(seconds: 4), () {
         Database.logIn(Authentication.getUser());
-        Navigator.pushNamed(context, 'inven');
+        Navigator.of(context).popAndPushNamed('inven');
       });
     } else {
       children.add(

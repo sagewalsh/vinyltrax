@@ -194,6 +194,82 @@ class Database {
   }
 
   /*
+  Returns only the display information from Album JSON of
+  a given genre.
+
+  Data returned as a list of text widgets
+  [
+    [0]: albumID
+    [1]: albumName
+    [2]: [ [ artistName, artistID ], ... ]
+    [3]: coverArt
+    [4]: format
+    [5]: year
+  ,
+  ...
+  ]
+  */
+  static Future<List<List<dynamic>>> displayByCategory(
+      String category, String format) async {
+    // Get a snapshot from the album database
+    final snapshot = await userRef.child("Albums").get();
+
+    if (snapshot.exists && snapshot.value != "") {
+      // List of album data that are of the given genre
+      List<MapEntry<Object?, Object?>> list = [];
+      // Map{ AlbumID: {Album data} }
+      var values = snapshot.value as Map<Object?, Object?>;
+
+      // For every album in the database: check if it is the correct genre
+      values.forEach((key, value) {
+        var album = value as Map<Object?, Object?>;
+        if (album["Category"] != null &&
+            (album["Category"] as Map<Object?, Object?>)
+                .containsValue(category) &&
+            (album["Format"] == format || format == "All")) {
+          // Add the album to the list
+          list += {key: value}.entries.toList();
+        }
+      });
+
+      // Convert list of maps into list of widgets
+      var ordered = _displayAlbum(list);
+      ordered.sort(
+        (a, b) {
+          // Order by album name:
+          // return a[1].toString().compareTo(b[1].toString());
+
+          // Order by Artist name:
+          String aart = "";
+          var data = a[2] as List<dynamic>;
+          for (int i = 0; i < data.length; i++) {
+            aart += data[i][0].toString().toLowerCase();
+            if (i + 1 < data.length) {
+              aart += " & ";
+            }
+          }
+
+          String bart = "";
+          data = b[2] as List<dynamic>;
+          for (int j = 0; j < data.length; j++) {
+            bart += data[j][0].toString().toLowerCase();
+            if (j + 1 < data.length) {
+              bart += " & ";
+            }
+          }
+
+          aart = removeDiacritics(aart);
+          bart = removeDiacritics(bart);
+          return aart.compareTo(bart);
+        },
+      );
+      return ordered;
+    } else {
+      return [];
+    }
+  }
+
+  /*
   _albumDisplay
   Helper Function  
   Given a list of map entries containing album data:
@@ -229,6 +305,7 @@ class Database {
       ];
       results.add(temp);
       // print(albumdata["UniqueID"]);
+      // print(albumdata["Category"]);
     });
     return results;
   }
@@ -426,6 +503,7 @@ Data is returned as a list of strings
       results.add(albumdata["Contributors"]);
       results.add(albumdata["Cover"]);
       results.add(albumdata["Format"]);
+      print(albumdata["Category"]);
     });
     return results;
   }
@@ -708,6 +786,7 @@ Given Album Data from Discogs in the form:
     var genre = [];
     (albumdata[2] as List<dynamic>).forEach((element) async {
       var snapshot = await userRef.child("Artists/${element[1]}").get();
+
       // If the artist exists
       if (snapshot.exists) {
         var snapalbum = await userRef.child("Artists/${element[1]}/Albums");
@@ -955,5 +1034,11 @@ Deletes the notes on a given album
   static void deleteNotes(String albumID) async {
     var snapref = await userRef.child("Albums/$albumID/Notes");
     snapref.remove();
+  }
+
+  static void addCategory(String albumID, String category) async {
+    var snapshot = await userRef.child("Albums/$albumID/Category");
+    var newCat = snapshot.push();
+    newCat.set(category);
   }
 }
