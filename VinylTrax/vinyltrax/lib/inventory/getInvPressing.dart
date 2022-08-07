@@ -38,7 +38,7 @@ class GetInvPressing extends StatefulWidget {
 }
 
 class _InvPress extends State<GetInvPressing> {
-  Color backgroundColor = settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6);
+  Color backgroundColor = settings.darkTheme ? Colors.black : Colors.white;
   @override
   Widget build(BuildContext context) {
     Future<List<String>> _results = Database.getPressData(widget.input[0]);

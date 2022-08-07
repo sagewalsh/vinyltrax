@@ -137,7 +137,7 @@ class _StaxPageState extends State<StaxPage> {
                       color: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
                     ),
                     child: DropdownButton(
-                      underline: SizedBox(),
+                      underline: SizedBox.shrink(),
                       borderRadius: BorderRadius.circular(20),
                       dropdownColor: Colors.white,
                       value: _selectedOrder,
@@ -174,7 +174,7 @@ class _StaxPageState extends State<StaxPage> {
                       color: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
                     ),
                     child: DropdownButton(
-                      underline: SizedBox(),
+                      underline: SizedBox.shrink(),
                         borderRadius: BorderRadius.circular(20),
                         value: _selectedType,
                         items: [
