@@ -27,8 +27,8 @@ class Authentication {
         email: email,
         password: password,
       );
-      print(credential.user!.uid);
-      Database.createUser(credential.user!.uid).then((success) =>
+      // print(credential.user!.uid);
+      Database.createUser(credential.user!.uid, email).then((success) =>
           success ? Database.logIn(credential.user!.uid) : print("try again"));
       return true;
     } on FirebaseAuthException catch (e) {

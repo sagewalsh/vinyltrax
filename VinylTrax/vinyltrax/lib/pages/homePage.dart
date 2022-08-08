@@ -6,6 +6,7 @@ import 'package:vinyltrax/pages/newAccountPage.dart';
 import 'package:vinyltrax/pages/staxpage.dart';
 import '../auth.dart';
 import 'package:vinyltrax/inventory/database.dart';
+import '../const.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -204,7 +205,13 @@ class _HomePageState extends State<HomePage> {
                             text: "Click here for testers",
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Navigator.pushNamed(context, 'inven');
+                                Authentication.signIn(
+                                  Const.TESTER_EMAIL,
+                                  Const.TESTER_PASSWORD,
+                                ).then((success) {
+                                  if (success)
+                                    Navigator.pushNamed(context, 'inven');
+                                });
                               })
                       ])),
                 ],

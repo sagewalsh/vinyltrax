@@ -1,32 +1,45 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:googleapis/androidpublisher/v3.dart';
 import '../discogs/discogs.dart';
 import '../spotify/spotify.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:uuid/uuid.dart';
+import '../auth.dart';
 
 class Database {
   static final fb = FirebaseDatabase.instance;
-  static final ref = fb.ref();
-  static var userRef = ref;
+  // static final ref = fb.ref();
+  static var userRef; // = ref;
   static final uuid = Uuid();
 
   static void clear() async {
-    await ref.remove();
+    await fb.ref().remove();
   }
 
-  static Future<bool> createUser(String userid) async {
-    await ref.update({
+  static Future<bool> createUser(String userid, String email) async {
+    var timestamp = DateTime.now();
+    String date = (timestamp.month.toString() +
+        "-" +
+        timestamp.day.toString() +
+        "-" +
+        timestamp.year.toString());
+    await fb.ref().update({
       "$userid": {
         "Albums": "",
         "Artists": "",
         "Wishlist": "",
+        "User": {
+          "Email": email,
+          "Name": "Anonymous",
+          "Date": date,
+        }
       }
     });
     return true;
   }
 
   static void logIn(String userid) {
-    userRef = ref.child(userid);
+    userRef = fb.ref().child(userid);
   }
 
   /*
