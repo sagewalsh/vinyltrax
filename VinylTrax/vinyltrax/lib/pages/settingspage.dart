@@ -1,5 +1,6 @@
 library my_prj.globals;
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/auth.dart';
@@ -14,6 +15,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   bool valNotify3 = true;
 
   changeTheme(bool newVal) {

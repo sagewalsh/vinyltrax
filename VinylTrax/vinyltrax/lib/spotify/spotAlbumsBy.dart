@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:googleapis/dfareporting/v3_5.dart';
 import 'package:marquee/marquee.dart';
+import 'package:vinyltrax/buttons/addCustomAlbumPopUp.dart';
 import 'package:vinyltrax/show_data/iconList.dart';
 import '../show_data/icon.dart';
 import 'spotify.dart';
@@ -9,17 +11,26 @@ import 'spotScroll.dart';
 
 import 'dart:developer';
 
-class SpotAlbumsBy extends StatelessWidget {
+class SpotAlbumsBy extends StatefulWidget {
   final List<String> input;
   final String tab;
+
   SpotAlbumsBy(this.input, this.tab);
+
+  @override
+  State<SpotAlbumsBy> createState() => _SpotAlbumsByState();
+}
+
+class _SpotAlbumsByState extends State<SpotAlbumsBy> {
+  List<Widget> children = [];
 
   @override
   Widget build(BuildContext context) {
     // Future<Map<String, List<String>>> _results = Collection.albumsBy(input[0]);
-    Future<Map<String, List<dynamic>>> _results = Spotify.albumsBy(input[0]);
+    Future<Map<String, List<dynamic>>> _results =
+        Spotify.albumsBy(widget.input[0]);
     // late String name = "Artist not found";
-    String name = input[1];
+    String name = widget.input[1];
 
     Widget title = Text(
       name.replaceAll(RegExp(r'\([0-9]+\)'), ""),
@@ -170,7 +181,7 @@ class SpotAlbumsBy extends StatelessWidget {
                     children.add(SpotScroll(appears, "Appears On", snapshot));
                   if (children.length == 0)
                     children.add(Text(
-                      "No results for ${input[1]}",
+                      "No results for ${widget.input[1]}",
                       style: TextStyle(
                         fontSize: 20,
                       ),
@@ -180,12 +191,44 @@ class SpotAlbumsBy extends StatelessWidget {
                 // Output a specific section in list view
                 // #######################################################
                 else {
-                  if (tab == "one")
+                  if (widget.tab == "one")
                     children.add(ListEntryList(albums));
-                  else if (tab == "two")
+                  else if (widget.tab == "two")
                     children.add(ListEntryList(singles));
-                  else if (tab == "three") children.add(ListEntryList(appears));
+                  else if (widget.tab == "three")
+                    children.add(ListEntryList(appears));
                 }
+
+                // #######################################################
+                // Button on the bottom that allows users to add a custom button
+                // #######################################################
+                children.add(InkWell(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AddCustomAlbumPopUp(widget.input[0]);
+                          });
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * .8,
+                      height: MediaQuery.of(context).size.height * .05,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            color: settings.darkTheme
+                                ? Color(0xFFBB86FC)
+                                : Color(0xFFFF5A5A),
+                          ),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Center(
+                          child: Text(
+                        "Add Custom Album",
+                        style: TextStyle(
+                            color: settings.darkTheme
+                                ? Color(0xFFBB86FC)
+                                : Color(0xFFFF5A5A)),
+                      )),
+                    )));
 
                 children.add(SizedBox(
                   width: double.infinity,
@@ -205,12 +248,11 @@ class SpotAlbumsBy extends StatelessWidget {
                   )
                 ];
               }
-              return Column(
-                children: children,
-                // children: [
-                //   IconList(children),
-                // ],
-              );
+              return Column(children: children
+                  // children: [
+                  //   IconList(children),
+                  // ],
+                  );
             },
           )),
     );
