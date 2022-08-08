@@ -4,7 +4,6 @@ import '../show_data/icon.dart';
 import 'discogs.dart';
 import '../pages/settingspage.dart' as settings;
 import '../show_data/listEntry.dart';
-import '../show_data/listEntryList.dart';
 
 class GetDisAlbum extends StatelessWidget {
   final String input;

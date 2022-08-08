@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'database.dart';
 import '../show_data/listEntry.dart';
-import '../show_data/listEntryList.dart';
 import '../pages/staxpage.dart';
 
 class GetInvArtist extends StatelessWidget {

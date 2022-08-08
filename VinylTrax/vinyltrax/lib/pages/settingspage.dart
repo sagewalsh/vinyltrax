@@ -1,8 +1,9 @@
 library my_prj.globals;
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vinyltrax/auth.dart';
+import 'package:vinyltrax/pages/accountDetails.dart';
 
 bool listBool = false;
 bool darkTheme = false;
@@ -67,7 +68,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   color: darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
                 ),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.025),
-                Text("Account", style: TextStyle(fontSize: 22, color: darkTheme ? Colors.white : Colors.black))
+                Text("Account",
+                    style: TextStyle(
+                        fontSize: 22,
+                        color: darkTheme ? Colors.white : Colors.black))
               ]),
               Divider(
                   height: MediaQuery.of(context).size.height * 0.0124,
@@ -84,7 +88,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   color: darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
                 ),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.025), //10
-                Text("Others", style: TextStyle(fontSize: 22, color: darkTheme ? Colors.white : Colors.black))
+                Text("Others",
+                    style: TextStyle(
+                        fontSize: 22,
+                        color: darkTheme ? Colors.white : Colors.black))
               ]),
               Divider(
                   height: MediaQuery.of(context).size.height * 0.0124,
@@ -104,27 +111,15 @@ class _SettingsPageState extends State<SettingsPage> {
   GestureDetector accountOptions(BuildContext context, String title) {
     return GestureDetector(
       onTap: () {
-        FirebaseAuth.instance
-            .authStateChanges()
-            .listen((User? user) {
-          if (user == null) {
-            print('User is currently signed out!');
-          } else {
-            print('User is signed in!');
-          }
-        });
-        FirebaseAuth.instance.signOut();
-        FirebaseAuth.instance
-            .authStateChanges()
-            .listen((User? user) {
-          if (user == null) {
-            print('User is currently signed out!');
-          } else {
-            print('User is signed in!');
-          }
-        });
-        Navigator.pushNamed(context, 'home');
-        //print("works");
+        if (title == "Log Out") {
+          Authentication.signOut();
+          Navigator.pushNamed(context, 'home');
+        } else if (title == "Account Details") {
+          var route = new MaterialPageRoute(builder: (BuildContext context) {
+            return new AccountDetailsPage();
+          });
+          Navigator.of(context).push(route);
+        }
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),

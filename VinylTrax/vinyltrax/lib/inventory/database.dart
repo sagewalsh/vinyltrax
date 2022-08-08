@@ -9,7 +9,7 @@ import '../auth.dart';
 class Database {
   static final fb = FirebaseDatabase.instance;
   // static final ref = fb.ref();
-  static var userRef; // = ref;
+  static DatabaseReference userRef = fb.ref();
   static final uuid = Uuid();
 
   static void clear() async {
@@ -38,8 +38,34 @@ class Database {
     return true;
   }
 
+  static Future<List<String>> getUser() async {
+    List<String> user = [];
+    var snapshot = await userRef.child("User").get();
+    if (snapshot.exists) {
+      var value = snapshot.value as Map<dynamic, dynamic>;
+      user = [
+        value["Name"],
+        value["Email"],
+        value["Date"],
+      ];
+    }
+    return user;
+  }
+
   static void logIn(String userid) {
     userRef = fb.ref().child(userid);
+  }
+
+  static void updateName(String name) async {
+    await userRef.update({
+      "User/Name": name,
+    });
+  }
+
+  static void updateEmail(String email) async {
+    await userRef.update({
+      "User/Email": email,
+    });
   }
 
   /*

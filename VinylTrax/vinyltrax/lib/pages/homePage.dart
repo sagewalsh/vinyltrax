@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> {
         ),
       );
       Future.delayed(Duration(seconds: 4), () {
-        Database.logIn(Authentication.getUser());
+        Database.logIn(Authentication.getId());
         Navigator.of(context).popAndPushNamed('inven');
       });
     } else {

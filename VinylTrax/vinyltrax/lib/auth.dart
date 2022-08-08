@@ -8,11 +8,9 @@ class Authentication {
   static bool userSignedIn() {
     // auth.authStateChanges().listen((User? user) {
     //   if (user == null)
-    //     // print("User is currently signed out");
-    //     return false;
+    //     print("User is currently signed out");
     //   else
-    //     // print("User is signed in");
-    //     return true;
+    //     print("User is signed in");
     // });
     if (auth.currentUser == null) {
       return false;
@@ -50,7 +48,7 @@ class Authentication {
         email: email,
         password: password,
       );
-      print(credential.user!.uid);
+      // print(credential.user!.uid);
       Database.logIn(credential.user!.uid);
       return true;
     } on FirebaseAuthException catch (e) {
@@ -67,21 +65,65 @@ class Authentication {
     await auth.signOut();
   }
 
-  static String getUser() {
+  static String getId() {
     if (auth.currentUser != null) {
       return auth.currentUser!.uid;
     }
     return "";
   }
 
-  static void updateEmail(String email) async {
-    await auth.currentUser
-        ?.updateEmail(email)
-        .then((value) async => await auth.currentUser?.sendEmailVerification());
+  // static void updateEmail(String email) async {
+  //   await auth.currentUser
+  //       ?.updateEmail(email)
+  //       .then((value) async => await auth.currentUser?.sendEmailVerification());
+  // }
+
+  static Future<List<dynamic>> updateEmail(
+    String email,
+    String oldEmail,
+    String password,
+  ) async {
+    var id = auth.currentUser!.uid;
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+        email: oldEmail,
+        password: password,
+      )
+          .then((credential) async {
+        if (credential.user?.uid == id) {
+          await auth.currentUser?.updateEmail(email);
+        }
+      });
+    } catch (e) {
+      print("ERROR: " + e.toString());
+      return [false, e.toString()];
+    }
+    return [true, ""];
   }
 
-  static void updatePassword(String newPassword) async {
-    await auth.currentUser?.updatePassword(newPassword);
+  static Future<List<dynamic>> updatePassword(
+    String email,
+    String oldPassword,
+    String password,
+  ) async {
+    var id = auth.currentUser!.uid;
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+        email: email,
+        password: oldPassword,
+      )
+          .then((credential) async {
+        if (credential.user?.uid == id) {
+          await auth.currentUser?.updatePassword(password);
+        }
+      });
+    } catch (e) {
+      print("ERROR: " + e.toString());
+      return [false, e.toString()];
+    }
+    return [true, ""];
   }
 
   static void resetPassword(String email) async {
