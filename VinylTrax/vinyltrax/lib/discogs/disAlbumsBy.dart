@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
-import 'package:vinyltrax/show_data/iconList.dart';
 import '../show_data/icon.dart';
 import 'discogs.dart';
 import '../pages/settingspage.dart' as settings;
@@ -41,9 +40,11 @@ class DisAlbumsBy extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
+        backgroundColor:
+            settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
         appBar: AppBar(
-          backgroundColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+          backgroundColor:
+              settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
           leading: BackButton(
             color: settings.darkTheme ? Colors.white : Colors.black,
           ),

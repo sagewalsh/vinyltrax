@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vinyltrax/show_data/iconList.dart';
 import 'package:vinyltrax/show_data/listEntry.dart';
 import '../show_data/icon.dart';
 import 'dart:developer';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'database.dart';
 import '../show_data/icon.dart';
-import '../show_data/iconList.dart';
 
 class GetInvGenre extends StatelessWidget {
   final String genre;

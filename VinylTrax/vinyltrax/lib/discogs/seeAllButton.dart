@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vinyltrax/show_data/iconList.dart';
 import '../pages/settingspage.dart' as settings;
 import '../show_data/icon.dart';
 
@@ -57,8 +56,11 @@ class _SeeAllButtonState extends State<SeeAllButton> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("See more", style: TextStyle(color: settings.darkTheme ? Colors.white : Colors.black)),
-          backgroundColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+          title: Text("See more",
+              style: TextStyle(
+                  color: settings.darkTheme ? Colors.white : Colors.black)),
+          backgroundColor:
+              settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
           leading: BackButton(
             color: settings.darkTheme ? Colors.white : Colors.black,
             onPressed: () {

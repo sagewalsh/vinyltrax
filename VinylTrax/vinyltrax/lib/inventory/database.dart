@@ -1108,4 +1108,16 @@ Deletes the notes on a given album
       });
     }
   }
+
+  static Future<List<String>> getCategories() async {
+    List<String> categories = [];
+    var snapshot = await userRef.child("Categories").get();
+    if (snapshot.exists) {
+      var data = snapshot.value! as Map<dynamic, dynamic>;
+      data.forEach((key, value) {
+        categories.add(value.toString());
+      });
+    }
+    return categories;
+  }
 }

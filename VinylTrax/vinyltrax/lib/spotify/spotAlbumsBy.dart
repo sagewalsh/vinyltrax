@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:googleapis/dfareporting/v3_5.dart';
 import 'package:marquee/marquee.dart';
 import 'package:vinyltrax/buttons/addCustomAlbumPopUp.dart';
-import 'package:vinyltrax/show_data/iconList.dart';
 import '../show_data/icon.dart';
 import 'spotify.dart';
 import '../pages/settingspage.dart' as settings;

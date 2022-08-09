@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/show_data/genreList.dart';
 import 'package:vinyltrax/inventory/getAlbums.dart';
+import 'package:vinyltrax/show_data/categories.dart';
 import '../inventory/getInvArtist.dart';
-import '../inventory/getInvCategories.dart';
 import '../inventory/invResults.dart';
 import 'settingspage.dart' as settings;
 
@@ -134,69 +134,106 @@ class _StaxPageState extends State<StaxPage> {
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+                      color: settings.darkTheme
+                          ? Color(0xFFBB86FC)
+                          : Color(0xFFFF5A5A),
                     ),
                     child: DropdownButton(
-                      underline: SizedBox.shrink(),
-                      borderRadius: BorderRadius.circular(20),
-                      dropdownColor: Colors.white,
-                      value: _selectedOrder,
-                      items: [
-                        DropdownMenuItem(child: Text("Artists",
-                            style: TextStyle(color: (_selectedOrder == _Order.artist) ? Colors.white :
-                            settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A))),
-                            value: _Order.artist),
-                        DropdownMenuItem(child: Text("Albums",
-                            style: TextStyle(color: (_selectedOrder == _Order.albums) ? Colors.white :
-                            settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A))),
-                            value: _Order.albums),
-                        DropdownMenuItem(child: Text("Genres",
-                            style: TextStyle(color: (_selectedOrder == _Order.genre) ? Colors.white :
-                            settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A))),
-                            value: _Order.genre),
-                        DropdownMenuItem(child: Text("Categories",
-                            style: TextStyle(color: (_selectedOrder == _Order.category) ? Colors.white :
-                            settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A))),
-                            value: _Order.category),
-                      ],
-                      onChanged: (type) {
-                        setState(() {
-                          _selectedOrder = type as _Order;
-                        });
-                      }
-                    ),
+                        underline: SizedBox.shrink(),
+                        borderRadius: BorderRadius.circular(20),
+                        dropdownColor: Colors.white,
+                        value: _selectedOrder,
+                        items: [
+                          DropdownMenuItem(
+                              child: Text("Artists",
+                                  style: TextStyle(
+                                      color: (_selectedOrder == _Order.artist)
+                                          ? Colors.white
+                                          : settings.darkTheme
+                                              ? Color(0xFFBB86FC)
+                                              : Color(0xFFFF5A5A))),
+                              value: _Order.artist),
+                          DropdownMenuItem(
+                              child: Text("Albums",
+                                  style: TextStyle(
+                                      color: (_selectedOrder == _Order.albums)
+                                          ? Colors.white
+                                          : settings.darkTheme
+                                              ? Color(0xFFBB86FC)
+                                              : Color(0xFFFF5A5A))),
+                              value: _Order.albums),
+                          DropdownMenuItem(
+                              child: Text("Genres",
+                                  style: TextStyle(
+                                      color: (_selectedOrder == _Order.genre)
+                                          ? Colors.white
+                                          : settings.darkTheme
+                                              ? Color(0xFFBB86FC)
+                                              : Color(0xFFFF5A5A))),
+                              value: _Order.genre),
+                          DropdownMenuItem(
+                              child: Text("Categories",
+                                  style: TextStyle(
+                                      color: (_selectedOrder == _Order.category)
+                                          ? Colors.white
+                                          : settings.darkTheme
+                                              ? Color(0xFFBB86FC)
+                                              : Color(0xFFFF5A5A))),
+                              value: _Order.category),
+                        ],
+                        onChanged: (type) {
+                          setState(() {
+                            _selectedOrder = type as _Order;
+                          });
+                        }),
                   ),
                   SizedBox(width: 40),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+                      color: settings.darkTheme
+                          ? Color(0xFFBB86FC)
+                          : Color(0xFFFF5A5A),
                     ),
                     child: DropdownButton(
-                      underline: SizedBox.shrink(),
+                        underline: SizedBox.shrink(),
                         borderRadius: BorderRadius.circular(20),
                         value: _selectedType,
                         items: [
-                          DropdownMenuItem(child: Text("All",
-                              style: TextStyle(color: (_selectedType == Type.all) ? Colors.white :
-                              settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A))),
+                          DropdownMenuItem(
+                              child: Text("All",
+                                  style: TextStyle(
+                                      color: (_selectedType == Type.all)
+                                          ? Colors.white
+                                          : settings.darkTheme
+                                              ? Color(0xFFBB86FC)
+                                              : Color(0xFFFF5A5A))),
                               value: Type.all),
-                          DropdownMenuItem(child: Text("Vinyl",
-                              style: TextStyle(color: (_selectedType == Type.vinyl) ? Colors.white :
-                              settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A))),
+                          DropdownMenuItem(
+                              child: Text("Vinyl",
+                                  style: TextStyle(
+                                      color: (_selectedType == Type.vinyl)
+                                          ? Colors.white
+                                          : settings.darkTheme
+                                              ? Color(0xFFBB86FC)
+                                              : Color(0xFFFF5A5A))),
                               value: Type.vinyl),
-                          DropdownMenuItem(child: Text("CD",
-                              style: TextStyle(color: (_selectedType == Type.cd) ? Colors.white :
-                              settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A))),
+                          DropdownMenuItem(
+                              child: Text("CD",
+                                  style: TextStyle(
+                                      color: (_selectedType == Type.cd)
+                                          ? Colors.white
+                                          : settings.darkTheme
+                                              ? Color(0xFFBB86FC)
+                                              : Color(0xFFFF5A5A))),
                               value: Type.cd),
                         ],
                         onChanged: (type) {
                           setState(() {
                             _selectedType = type as Type;
                           });
-                        }
-                    ),
+                        }),
                   ),
                 ],
               ),
@@ -217,7 +254,7 @@ class _StaxPageState extends State<StaxPage> {
               else if (_selectedOrder == _Order.albums)
                 GetInvAlbum(_selectedType)
               else
-                GetInvCategories(_selectedType)
+                Categories(_selectedType)
             ],
           ),
         ),

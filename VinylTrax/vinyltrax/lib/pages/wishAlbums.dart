@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../show_data/icon.dart';
-import '../show_data/iconList.dart';
 import 'staxpage.dart';
 import '../inventory/database.dart';
 
