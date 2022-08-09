@@ -1683,3 +1683,43 @@ DATABASE.DART
 //     groupValue: _selectedType,
 //   ),
 // ),
+
+//                if(ic.isArtist){
+//                   return Container(
+//                     height: (MediaQuery.of(context).size.height * 0.18 +  MediaQuery.of(context).size.height * .0262  + 24),
+//                       decoration: BoxDecoration(
+//                           color: settings.darkTheme ? Color(0x20C9C9C9) : Color(0xFFFFFDF6),
+//                           borderRadius: BorderRadius.circular(20),
+//                       //     border: Border.all(
+//                       //       color: settings.darkTheme
+//                       // ? Color(0xFFBB86FC)
+//                       // : Color(0xFFFF5A5A),
+//                       // width: 1,
+//                       //     )
+//                           ),
+//                       child:
+//                           Column(
+//                             mainAxisAlignment: MainAxisAlignment.center,
+//                             children: [
+//                               Padding(
+//                                     padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
+//                                     child: widget.children[index]),
+//                             ],
+//                           ),
+//                       );
+//                 } else{
+//                     return Container(
+//                       height: (MediaQuery.of(context).size.height * 0.18 +  MediaQuery.of(context).size.height * .0262 +  MediaQuery.of(context).size.height * .0262 + 24),
+//                     decoration: BoxDecoration(
+//                         color: settings.darkTheme ? Color(0x20C9C9C9) : Color(0xFFFFFDF6),
+//                         borderRadius: BorderRadius.circular(20)),
+//                     child:Column(
+//                       mainAxisAlignment: MainAxisAlignment.center,
+//                       children: [
+//                         Padding(
+//                               padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
+//                               child: widget.children[index]),
+//                       ],
+//                     ),
+//                     );
+//                   }

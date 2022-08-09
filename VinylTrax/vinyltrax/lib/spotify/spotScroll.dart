@@ -61,46 +61,7 @@ class _SpotScrollState extends State<SpotScroll> {
               physics: ClampingScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
-                var ic = widget.children[index] as ShowIcon;
-                if(ic.isArtist){
-                  return Container(
-                    height: (MediaQuery.of(context).size.height * 0.18 +  MediaQuery.of(context).size.height * .0262  + 24),
-                      decoration: BoxDecoration(
-                          color: settings.darkTheme ? Color(0x20C9C9C9) : Color(0xFFFFFDF6),
-                          borderRadius: BorderRadius.circular(20),
-                      //     border: Border.all(
-                      //       color: settings.darkTheme
-                      // ? Color(0xFFBB86FC)
-                      // : Color(0xFFFF5A5A),
-                      // width: 1,
-                      //     )
-                          ),
-                      child:
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                    padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
-                                    child: widget.children[index]),
-                            ],
-                          ),
-                      );
-                } else{
-                    return Container(
-                      height: (MediaQuery.of(context).size.height * 0.18 +  MediaQuery.of(context).size.height * .0262 +  MediaQuery.of(context).size.height * .0262 + 24),
-                    decoration: BoxDecoration(
-                        color: settings.darkTheme ? Color(0x20C9C9C9) : Color(0xFFFFFDF6),
-                        borderRadius: BorderRadius.circular(20)),
-                    child:Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                              padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
-                              child: widget.children[index]),
-                      ],
-                    ),
-                    );
-                  }
+                return widget.children[index] as ShowIcon;
               },
               separatorBuilder: (BuildContext context, int index) {
                 return Row(
@@ -114,7 +75,7 @@ class _SpotScrollState extends State<SpotScroll> {
                     //       width: MediaQuery.of(context).size.width * 0.019),
                     // ),
                     SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.038),
+                        width: MediaQuery.of(context).size.width * 0.05),
                   ],
                 ); //15
               },
