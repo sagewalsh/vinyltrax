@@ -27,14 +27,20 @@ class _SpotScrollState extends State<SpotScroll> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Divider(color: Color(0x64FF5A5A),),
+          Divider(
+            color: Color(0x64FF5A5A),
+          ),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               FittedBox(
                   fit: BoxFit.fitWidth,
-                  child: Text(widget.title, style: TextStyle(fontSize: 18,
-                      color: settings.darkTheme ? Colors.white : Colors.black))),
+                  child: Text(widget.title,
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: settings.darkTheme
+                              ? Colors.white
+                              : Colors.black))),
               Spacer(),
               TextButton(
                   onPressed: () {
@@ -46,13 +52,21 @@ class _SpotScrollState extends State<SpotScroll> {
                             ));
                     Navigator.of(context).push(route);
                   },
-                  child: Text("See all", 
-                  style: TextStyle(color: Color(0xFFFF5A5A)),)),
+                  child: Text(
+                    "See all",
+                    style: TextStyle(
+                        color: settings.darkTheme
+                            ? Color(0xFFBB86FC)
+                            : Color(0xFFFF5A5A)),
+                  )),
             ],
           ),
           Container(
             // height: MediaQuery.of(context).size.height * 0.24, //190
-            height: (MediaQuery.of(context).size.height * 0.18 +  MediaQuery.of(context).size.height * .0262 +  MediaQuery.of(context).size.height * .0262 + 24),
+            height: (MediaQuery.of(context).size.height * 0.18 +
+                MediaQuery.of(context).size.height * .0262 +
+                MediaQuery.of(context).size.height * .0262 +
+                24),
             // height: 190,
             child: ListView.separated(
               key: ObjectKey(widget.children[0]),
@@ -74,8 +88,7 @@ class _SpotScrollState extends State<SpotScroll> {
                     //   child: SizedBox(
                     //       width: MediaQuery.of(context).size.width * 0.019),
                     // ),
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.05),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.05),
                   ],
                 ); //15
               },

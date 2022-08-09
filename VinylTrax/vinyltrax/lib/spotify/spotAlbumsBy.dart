@@ -187,7 +187,7 @@ class _SpotAlbumsByState extends State<SpotAlbumsBy> {
                     ));
                 }
                 // #######################################################
-                // Output a specific section in list view
+                // Output list view in sections
                 // #######################################################
                 else {
                   if (widget.tab == "one")
@@ -198,6 +198,10 @@ class _SpotAlbumsByState extends State<SpotAlbumsBy> {
                     children.add(ListEntryList(appears));
                 }
 
+                children.add(SizedBox(
+                  height: 20,
+                ));
+
                 // #######################################################
                 // Button on the bottom that allows users to add a custom button
                 // #######################################################
@@ -206,7 +210,7 @@ class _SpotAlbumsByState extends State<SpotAlbumsBy> {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return AddCustomAlbumPopUp(widget.input[0]);
+                            return AddCustomAlbumPopUp(widget.input);
                           });
                     },
                     child: Container(
@@ -247,11 +251,9 @@ class _SpotAlbumsByState extends State<SpotAlbumsBy> {
                   )
                 ];
               }
-              return Column(children: children
-                  // children: [
-                  //   IconList(children),
-                  // ],
-                  );
+              return Column(
+                children: children,
+              );
             },
           )),
     );

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import '../inventory/database.dart';
+import 'package:vinyltrax/pages/settingspage.dart' as settings;
 
 class AddCustomAlbumPopUp extends StatefulWidget {
-  String artistID;
-  AddCustomAlbumPopUp(this.artistID);
+  List<String> artist;
+  AddCustomAlbumPopUp(this.artist);
 
   @override
   State<AddCustomAlbumPopUp> createState() => _AddCustomAlbumPopUpState();
@@ -32,7 +33,7 @@ class _AddCustomAlbumPopUpState extends State<AddCustomAlbumPopUp> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text("Pressing Year: "),
+              Text("Year of Recording: "),
               TextButton(
                   onPressed: () {
                     showModalBottomSheet(
@@ -52,45 +53,14 @@ class _AddCustomAlbumPopUpState extends State<AddCustomAlbumPopUp> {
                           );
                         });
                   },
-                  child: Text(year)),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text("Genre: "),
-              DropdownButton(
-                  value: genre,
-                  items: [
-                    "",
-                    "Blues",
-                    "Brass and Military",
-                    "Children's",
-                    "Classical",
-                    "Electronic",
-                    "Folk and Country",
-                    "Funk / Soul",
-                    "Hip Hop",
-                    "Jazz",
-                    "Latin",
-                    "Pop",
-                    "Reggae",
-                    "Rock"
-                  ].map((String value) {
-                    return DropdownMenuItem(
-                        value: value,
-                        child: Text(
-                          value,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontStyle: FontStyle.italic),
-                        ));
-                  }).toList(),
-                  onChanged: (String? val) {
-                    setState(() {
-                      genre = val!;
-                    });
-                  }
-              ),
+                  child: Text(
+                    year,
+                    style: TextStyle(
+                      color: settings.darkTheme
+                          ? Color(0xFFBB86FC)
+                          : Color(0xFFFF5A5A),
+                    ),
+                  )),
             ],
           ),
           Row(
@@ -99,11 +69,7 @@ class _AddCustomAlbumPopUpState extends State<AddCustomAlbumPopUp> {
               Text("Format: "),
               DropdownButton(
                   value: format,
-                  items: [
-                    "",
-                    "Vinyl",
-                    "CD"
-                  ].map((String value) {
+                  items: ["", "Vinyl", "CD"].map((String value) {
                     return DropdownMenuItem(
                         value: value,
                         child: Text(
@@ -115,28 +81,47 @@ class _AddCustomAlbumPopUpState extends State<AddCustomAlbumPopUp> {
                     setState(() {
                       format = val!;
                     });
-                  }
-              ),
+                  }),
             ],
           )
         ],
       ),
       actions: [
         TextButton(
-            onPressed: () {
-              //_albumController.text will get album name
-              //add custom record here
-              //Database.createAlbum(artist: artist, album: album, format: format, year: year);
+          onPressed: () {
+            //_albumController.text will get album name
+            //add custom record here
+            if (_albumController.text != "" &&
+                format != "" &&
+                year != "Pick a Year") {
+              Database.createAlbum(
+                  artist: [widget.artist[1], widget.artist[0]],
+                  album: _albumController.text,
+                  format: format,
+                  year: year);
               Navigator.pop(context);
-            },
-            child: Text("Confirm")
+            } else {
+              null;
+            }
+          },
+          child: Text(
+            "Confirm",
+            style: TextStyle(
+              color: settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+            ),
+          ),
         ),
         TextButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Text("Cancel")
-        ),
+            child: Text(
+              "Cancel",
+              style: TextStyle(
+                color:
+                    settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+              ),
+            )),
       ],
     );
   }

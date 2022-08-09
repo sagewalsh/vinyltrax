@@ -92,18 +92,18 @@ class Database {
 
     // print(id);
 
+    var genre = [];
     String image =
         "https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg";
     Spotify.artist(artist[1].toString()).then((value) async {
-      if (value[0] != null) {
-        image = value[0];
-      }
+      if (value[0] != null) image = value[0];
+      if (value[1] != null) genre = value[1];
       var creation = [
         id,
         format,
         [artist],
         album,
-        [],
+        genre,
         year,
         [],
         image,
@@ -833,6 +833,7 @@ Given Album Data from Discogs in the form:
         newAlbum.set(albumdata[0]);
         var snap = await userRef.child("Artists/${element[1]}/Genres").get();
         genre = snap.value as List<dynamic>;
+        print(genre);
       }
 
       // If the artist doesn't exist
