@@ -129,6 +129,10 @@ class _SettingsPageState extends State<SettingsPage> {
           });
           Navigator.of(context).push(route);
         }
+        else if (title == "Delete Account") {
+          Authentication.deleteUser();
+          Navigator.pushNamed(context, 'home');
+        }
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),

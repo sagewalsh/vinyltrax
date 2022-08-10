@@ -25,18 +25,23 @@ class _InvDetails extends State<InvDetails> {
   late String locationValue;
   late String format;
   String albumName = "";
+  late Future<List<dynamic>> _results;
 
   @override
-  Widget build(BuildContext context) {
-    Future<List<dynamic>> _results = Database.albumDetails(widget.input[0]);
-    Widget title = SizedBox.shrink();
-    Widget extendedName = SizedBox.shrink();
-
+  void initState() {
+    _results = Database.albumDetails(widget.input[0]);
+    super.initState();
     _results.then((value) {
       setState((){
         albumName = value[1];
       });
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Widget title = SizedBox.shrink();
+    Widget extendedName = SizedBox.shrink();
 
     title = Text(
       albumName,
