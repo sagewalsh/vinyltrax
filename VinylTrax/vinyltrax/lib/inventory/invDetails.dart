@@ -24,12 +24,75 @@ class InvDetails extends StatefulWidget {
 class _InvDetails extends State<InvDetails> {
   late String locationValue;
   late String format;
+  String albumName = "";
 
   @override
   Widget build(BuildContext context) {
     Future<List<dynamic>> _results = Database.albumDetails(widget.input[0]);
     Widget title = SizedBox.shrink();
     Widget extendedName = SizedBox.shrink();
+
+    _results.then((value) {
+      setState((){
+        albumName = value[1];
+      });
+    });
+
+    title = Text(
+      albumName,
+      style: TextStyle(
+        color: settings.darkTheme ? Colors.white : Colors.black,
+      ),
+    );
+
+    if (albumName.length > 22) {
+      title = Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Marquee(
+          velocity: 20,
+          blankSpace: 30,
+          text: albumName,
+          style: TextStyle(
+            color: settings.darkTheme ? Colors.white : Colors.black,
+          ),
+        ),
+      );
+    }
+
+    extendedName = Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 30,
+        child: Text(
+          albumName,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: settings.darkTheme ? Colors.white : Colors.black,
+            fontSize: 20,
+          ),
+        ),
+      ),
+    );
+
+    if (albumName.length > 35) {
+      extendedName = Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 30,
+            child: Marquee(
+              startPadding: 20,
+              startAfter: Duration(seconds: 5),
+              velocity: 10,
+              blankSpace: 100,
+              text: albumName[1],
+              style: TextStyle(
+                color: settings.darkTheme ? Colors.white : Colors.black,
+              ),
+            ),
+          ));
+    }
+
 
     Widget addBlackLine() {
       return Padding(
@@ -100,61 +163,6 @@ class _InvDetails extends State<InvDetails> {
                   List<Widget> children;
                   if (snapshot.hasData) {
                     var data = snapshot.data!;
-
-                    title = Text(
-                      data[1],
-                      style: TextStyle(
-                        color: settings.darkTheme ? Colors.white : Colors.black,
-                      ),
-                    );
-
-                    if (data[1].length > 22) {
-                      title = Container(
-                        height: MediaQuery.of(context).size.height,
-                        width: MediaQuery.of(context).size.width,
-                        child: Marquee(
-                          velocity: 20,
-                          blankSpace: 30,
-                          text: data[1],
-                          style: TextStyle(
-                            color: settings.darkTheme ? Colors.white : Colors.black,
-                          ),
-                        ),
-                      );
-                    }
-
-                    extendedName = Center(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 30,
-                        child: Text(
-                          data[1],
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: settings.darkTheme ? Colors.white : Colors.black,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    );
-
-                    if (data[1].length > 35) {
-                      extendedName = Center(
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 30,
-                            child: Marquee(
-                              startPadding: 20,
-                              startAfter: Duration(seconds: 5),
-                              velocity: 10,
-                              blankSpace: 100,
-                              text: data[1],
-                              style: TextStyle(
-                                color: settings.darkTheme ? Colors.white : Colors.black,
-                              ),
-                            ),
-                          ));
-                    }
                     children = <Widget>[];
 
                     // COVER ART
@@ -178,7 +186,7 @@ class _InvDetails extends State<InvDetails> {
                                                 Navigator.pop(context);
                                                 var response = await http.get(Uri.parse(data[6].toString()));
                                                 Directory documentDirectory = await getApplicationDocumentsDirectory();
-                                                File file = new File(join(documentDirectory.path, '${data[0][0][0].toString()}$data[1].png'));
+                                                File file = new File(join(documentDirectory.path, '${data[0][0][0].toString()}${data[1]}.png'));
                                                 file.writeAsBytesSync(response.bodyBytes);
                                                 await GallerySaver.saveImage(file.path, albumName: "Vinyl Trax");
                                               },
