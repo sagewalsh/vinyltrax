@@ -21,15 +21,13 @@ Future<void> main() async {
 }
 
 class VinylTrax extends StatelessWidget {
-  late final camera;
+  final camera;
   final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
   VinylTrax(this.camera);
   //VinylTrax({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
-
     Test.fillDatabase();
     Test.database();
     Test.discogs();

@@ -95,9 +95,7 @@ class ShowIcon extends StatelessWidget {
 
     List<Widget> children = [];
     if (albumName == "")
-      children = [avatar, SizedBox(height: 5), outputArt];
-    else if (artistName == "")
-      children = [avatar, SizedBox(height: 5), outputAlb];
+      children = [avatar, outputArt];
     else
       children = [avatar, outputArt, outputAlb];
 
