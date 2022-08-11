@@ -203,7 +203,7 @@ class _SpotAlbumsByState extends State<SpotAlbumsBy> {
                 ));
 
                 // #######################################################
-                // Button on the bottom that allows users to add a custom button
+                // Button on the bottom that allows users to add a custom album
                 // #######################################################
                 children.add(InkWell(
                     onTap: () {

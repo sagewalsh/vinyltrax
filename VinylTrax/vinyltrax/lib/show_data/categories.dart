@@ -23,6 +23,8 @@ class Categories extends StatefulWidget {
 
 class _CategoriesState extends State<Categories> {
   Future<List<String>> _results = Database.getCategories();
+  List<Widget> children = [];
+  TextEditingController _controller = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -32,16 +34,64 @@ class _CategoriesState extends State<Categories> {
             future: _results,
             builder:
                 (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
-              List<Widget> children;
               if (snapshot.hasData) {
                 children = <Widget>[];
                 var data = snapshot.data!;
-
                 if (data.length != 0) {
                   data.forEach((category) {
                     children.add(CategoryTile(category, widget.format));
                   });
                 }
+                children.add(SizedBox(height: 15));
+                children.add(Center(
+                  child: InkWell(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: TextField(
+                                      controller: _controller,
+                                      decoration: InputDecoration(hintText: "Enter Category Name"),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Database.createCategory(_controller.text);
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text("Confirm")
+                                      ),
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text("Cancel")
+                                      )
+                                    ],
+                                  );
+                                });
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * .8,
+                            height: MediaQuery.of(context).size.height * .05,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: settings.darkTheme
+                                      ? Color(0xFFBB86FC)
+                                      : Color(0xFFFF5A5A),
+                                ),
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Center(
+                                child: Text(
+                                  "Add Category",
+                                  style: TextStyle(
+                                      color: settings.darkTheme
+                                          ? Color(0xFFBB86FC)
+                                          : Color(0xFFFF5A5A)),
+                                )),
+                          )),
+                ));
               } else if (snapshot.hasError) {
                 children = [
                   Icon(Icons.error),

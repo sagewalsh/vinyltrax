@@ -1,10 +1,9 @@
 library my_prj.globals;
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/auth.dart';
 import 'package:vinyltrax/pages/accountDetails.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 bool listBool = false;
 bool darkTheme = false;
@@ -15,20 +14,28 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   bool valNotify3 = true;
 
-  changeTheme(bool newVal) {
-    setState(() {
-      darkTheme = newVal;
-      Navigator.pop(context);
-      Navigator.pushNamed(context, 'setting');
+  changeTheme(bool newVal) async{
+    final SharedPreferences prefs = await _prefs;
+    final bool darkMode = !(prefs.getBool('theme') ?? newVal);
+    prefs.setBool('theme', darkMode).then((bool success) {
+      setState((){
+        darkTheme = darkMode;
+        Navigator.pop(context);
+        Navigator.pushNamed(context, 'setting');
+      });
     });
   }
 
-  listMode(bool newVal) {
-    setState(() {
-      listBool = newVal;
+  listMode(bool newVal) async {
+    final SharedPreferences prefs = await _prefs;
+    final bool list = !(prefs.getBool('list') ?? newVal);
+    prefs.setBool('list', list).then((bool success) {
+      setState((){
+        listBool = list;
+      });
     });
   }
 
@@ -121,6 +128,10 @@ class _SettingsPageState extends State<SettingsPage> {
             return new AccountDetailsPage();
           });
           Navigator.of(context).push(route);
+        }
+        else if (title == "Delete Account") {
+          Authentication.deleteUser();
+          Navigator.pushNamed(context, 'home');
         }
       },
       child: Padding(
