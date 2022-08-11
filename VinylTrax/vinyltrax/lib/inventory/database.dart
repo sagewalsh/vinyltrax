@@ -780,7 +780,7 @@ Given Album Data from Discogs in the form:
 [7]: CoverArt
 #############################################################################
 */
-  static void addToWish(List<dynamic> albumdata) async {
+  static Future<bool> addToWish(List<dynamic> albumdata) async {
     var snapshot = await userRef.child("Wishlist/${albumdata[0]}").get();
     if (!snapshot.exists) {
       await userRef.update({
@@ -796,7 +796,9 @@ Given Album Data from Discogs in the form:
           "Format": "Wishlist",
         }
       });
+      return true;
     }
+    return false;
   }
 
   /*

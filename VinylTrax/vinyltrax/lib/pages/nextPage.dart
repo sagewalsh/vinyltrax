@@ -133,9 +133,9 @@ Clicked an Album in Spotify
 ##########################################################################
 */
 class NextPageSpotAlb extends StatefulWidget {
-  final String id, name;
+  final String id, name, type;
 
-  NextPageSpotAlb(this.id, this.name);
+  NextPageSpotAlb(this.id, this.name, {String type = "text"}) : type = type;
   @override
   State<NextPageSpotAlb> createState() => _NextSpotAlbState();
 }
@@ -143,6 +143,6 @@ class NextPageSpotAlb extends StatefulWidget {
 class _NextSpotAlbState extends State<NextPageSpotAlb> {
   @override
   Widget build(BuildContext context) {
-    return SpotDetails(["${widget.id}", "${widget.name}"], "text");
+    return SpotDetails(["${widget.id}", "${widget.name}"], "${widget.type}");
   }
 }

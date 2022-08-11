@@ -76,7 +76,7 @@ class DisDetails extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return AddAlbumPopUp(_results);
+                      return AddAlbumPopUp(_results, "text");
                     },
                   );
                   // addToButton(context);

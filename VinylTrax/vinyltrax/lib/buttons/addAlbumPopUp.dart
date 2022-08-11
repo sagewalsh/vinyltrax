@@ -3,9 +3,10 @@ import '../inventory/database.dart';
 
 class AddAlbumPopUp extends StatefulWidget {
   Future<List<dynamic>> input;
+  final String type;
   //const AddAlbumPopUp({Key? key}) : super(key: key);
 
-  AddAlbumPopUp(this.input);
+  AddAlbumPopUp(this.input, this.type);
 
   @override
   State<AddAlbumPopUp> createState() => _AddAlbumPopUpState();
@@ -117,9 +118,8 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
                       else if (locationValue == "Wishlist") {
                         List<dynamic> album = [albumID];
                         album += snapshot.data!;
-                        Database.addToWish(
-                            album); //lets us go back to the album page
-                        Navigator.of(context).pop();
+                        Database.addToWish(album);
+                        //lets us go back to the album page
                         showDialog(
                             context: context,
                             builder: (context) {
@@ -194,8 +194,12 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
                           context: context,
                           builder: (context) {
                             Future.delayed(Duration(seconds: 1), () {
-                              Navigator.pop(context);
-                              Navigator.pop(context);
+                              if (widget.type == "wish") {
+                                Navigator.pushNamed(context, "wish");
+                              } else {
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              }
                             });
                             return AlertDialog(
                               title: Text('Album Added',
@@ -236,8 +240,12 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
             context: context,
             builder: (context) {
               Future.delayed(Duration(seconds: 1), () {
-                Navigator.pop(context);
-                Navigator.pop(context);
+                if (widget.type == "wish") {
+                  Navigator.pushNamed(context, "wish");
+                } else {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                }
               });
               return AlertDialog(
                 title: Text('Album Added', textAlign: TextAlign.center),

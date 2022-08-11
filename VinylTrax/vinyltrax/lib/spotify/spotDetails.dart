@@ -31,7 +31,7 @@ class SpotDetails extends StatelessWidget {
               color: settings.darkTheme ? Colors.white : Colors.black));
     }
 
-    if (inputType == "text") {
+    if (inputType == "text" || inputType == "wish") {
       _results = Spotify.album(input[0]);
       name = input[1];
       title = Text(
@@ -91,8 +91,7 @@ class SpotDetails extends StatelessWidget {
               if (inputType == 'scan') {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, 'camera');
-              }
-              else
+              } else
                 Navigator.pop(context);
             },
           ),
@@ -103,7 +102,7 @@ class SpotDetails extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return AddAlbumPopUp(_results);
+                      return AddAlbumPopUp(_results, inputType);
                     },
                   );
                   // addToButton(context);
@@ -157,7 +156,9 @@ class SpotDetails extends StatelessWidget {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               // color: Colors.grey[700],
-                              color: settings.darkTheme ? Colors.white : Colors.black,
+                              color: settings.darkTheme
+                                  ? Colors.white
+                                  : Colors.black,
                               fontSize: 20,
                             ),
                           ),
@@ -275,8 +276,8 @@ class SpotDetails extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 18,
                               color: settings.darkTheme
-                                  ? Color(0xFFBB86FC)
-                                  : Color(0xFFFF5A5A),
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
                           ));
                         }
@@ -373,7 +374,7 @@ class SpotDetails extends StatelessWidget {
                             leading: Container(
                               padding: EdgeInsets.all(10),
                               child: Text(
-                                  (i + 1).toString(),
+                                (i + 1).toString(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: settings.darkTheme
