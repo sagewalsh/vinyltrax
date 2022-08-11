@@ -34,7 +34,7 @@ class _StaxPageState extends State<StaxPage> {
           automaticallyImplyLeading: false,
           titleSpacing: 10,
           // toolbarHeight: MediaQuery.of(context).size.height * 0.24, //180
-          toolbarHeight: MediaQuery.of(context).size.height * 0.23, //180
+          toolbarHeight: MediaQuery.of(context).size.height * 0.24, //180
           title: Column(
             children: [
               Container(

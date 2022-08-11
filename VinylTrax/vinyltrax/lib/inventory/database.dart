@@ -800,6 +800,25 @@ Given Album Data from Discogs in the form:
   }
 
   /*
+  #############################################################################
+  check if album is already in inventory
+  #############################################################################
+  */
+  static Future<bool> checkInv(String albumid, String format) async {
+    bool found = false;
+    var snapshot = await userRef.child("Albums").get();
+    if (snapshot.exists) {
+      var data = snapshot.value! as Map<Object?, Object?>;
+      data.forEach((key, value) {
+        if (key.toString().contains(albumid) &&
+            ((key.toString().endsWith("1") && format == "Vinyl") ||
+                (key.toString().endsWith("2") && format == "CD"))) found = true;
+      });
+    }
+    return found;
+  }
+
+  /*
   addSpotToInv
   [0]: albumID
   [1]: format
@@ -812,70 +831,26 @@ Given Album Data from Discogs in the form:
   */
   static void addSpotToInv(List<dynamic> albumdata) async {
     // If album was in wishlist: delete it
-    print("barcode add");
-    print(albumdata[0]);
     var wishshot = await userRef.child("Wishlist/${albumdata[0]}").get();
     if (wishshot.exists) {
       await userRef.child("Wishlist/${albumdata[0]}").remove();
     }
 
-    // var id = uuid.v4();
-
-    // Add album to each artist's data
-    var genre = [];
-    (albumdata[2] as List<dynamic>).forEach((element) async {
-      var snapshot = await userRef.child("Artists/${element[1]}").get();
-
-      // If the artist exists
-      if (snapshot.exists) {
-        var snapalbum = await userRef.child("Artists/${element[1]}/Albums");
-        var newAlbum = snapalbum.push();
-        newAlbum.set(albumdata[0]);
-        var snap = await userRef.child("Artists/${element[1]}/Genres").get();
-        genre = snap.value as List<dynamic>;
-        print(genre);
-      }
-
-      // If the artist doesn't exist
-      else {
-        print("snapshot does not exist");
-        String image =
-            "https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg";
-        Spotify.artist(element[1].toString()).then((value) async {
-          if (value[0] != null) {
-            image = value[0];
-          }
-          genre = value[1];
-
-          // Create new artist
-          await userRef.update({
-            "Artists/${element[1]}": {
-              "UniqueID": element[1],
-              "Name": element[0],
-              "Image": image,
-              "Genres": genre,
-            }
-          });
-
-          var snapAlbum = await userRef.child("Artists/${element[1]}/Albums");
-          var newAlbum = snapAlbum.push();
-          newAlbum.set(albumdata[0]);
-        });
-      }
-    });
+    var id = albumdata[0];
 
     // Vinyl Copies of records get a 1 added to the end
     // CD copies of records get a 2 added to the end
     if (albumdata[1] == "Vinyl")
-      albumdata[0] += "1";
-    else if (albumdata[1] == "CD") albumdata[0] += "2";
+      id += "1";
+    else if (albumdata[1] == "CD") id += "2";
 
-    var snapshot = await userRef.child("Albums/${albumdata[0]}").get();
+    print(id);
+    var snapshot = await userRef.child("Albums/$id").get();
     if (!snapshot.exists) {
       // Add album data to database
       await userRef.update({
-        "Albums/${albumdata[0]}": {
-          "UniqueID": albumdata[0],
+        "Albums/$id": {
+          "UniqueID": id,
           "Name": albumdata[3],
           "Artist": albumdata[2],
           "Year": albumdata[5],
@@ -885,6 +860,50 @@ Given Album Data from Discogs in the form:
           "Format": albumdata[1],
         }
       });
+
+      // Add album to each artist's data
+      var genre = [];
+      (albumdata[2] as List<dynamic>).forEach((element) async {
+        var snapshot = await userRef.child("Artists/${element[1]}").get();
+
+        // If the artist exists
+        if (snapshot.exists) {
+          var snapalbum = await userRef.child("Artists/${element[1]}/Albums");
+          var newAlbum = snapalbum.push();
+          newAlbum.set(id);
+          var snap = await userRef.child("Artists/${element[1]}/Genres").get();
+          genre = snap.value as List<dynamic>;
+        }
+
+        // If the artist doesn't exist
+        else {
+          String image =
+              "https://images.pexels.com/photos/12397035/pexels-photo-12397035.jpeg?cs=srgb&dl=pexels-zero-pamungkas-12397035.jpg&fm=jpg";
+          Spotify.artist(element[1].toString()).then((value) async {
+            if (value[0] != null) {
+              image = value[0];
+            }
+            genre = value[1];
+
+            // Create new artist
+            await userRef.update({
+              "Artists/${element[1]}": {
+                "UniqueID": element[1],
+                "Name": element[0],
+                "Image": image,
+                "Genres": genre,
+              }
+            });
+
+            var snapAlbum = await userRef.child("Artists/${element[1]}/Albums");
+            var newAlbum = snapAlbum.push();
+            newAlbum.set(id);
+          });
+        }
+      });
+    } else {
+      albumdata[0] += "a";
+      addSpotToInv(albumdata);
     }
   }
 
@@ -1076,6 +1095,11 @@ Deletes the notes on a given album
     snapref.remove();
   }
 
+/*
+#############################################################################
+USER CREATED CATEGORIES
+#############################################################################
+*/
   static void createCategory(String category) async {
     var snapshot = await userRef.child("Categories");
     var newCat = snapshot.push();

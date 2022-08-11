@@ -110,18 +110,86 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
                       if (locationValue == "Inventory") {
                         List<dynamic> album = [albumID, format];
                         album += snapshot.data!;
-                        Database.addSpotToInv(album);
+                        addAlbum(album);
                       }
 
                       // Add album to wishlist
                       else if (locationValue == "Wishlist") {
                         List<dynamic> album = [albumID];
                         album += snapshot.data!;
-                        Database.addToWish(album);
+                        Database.addToWish(
+                            album); //lets us go back to the album page
+                        Navigator.of(context).pop();
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              Future.delayed(Duration(seconds: 1), () {
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              });
+                              return AlertDialog(
+                                title: Text('Album Added',
+                                    textAlign: TextAlign.center),
+                              );
+                            });
                       }
-
+                    },
+                    child: Text("Add")),
+                TextButton(
+                    onPressed: () {
                       //lets us go back to the album page
                       Navigator.of(context).pop();
+                    },
+                    child: Text("Cancel")),
+              ],
+            );
+          });
+    });
+  }
+
+  /*
+  ##############################################################################
+  Helper method to add album to inventory
+  ##############################################################################
+  */
+  void addAlbum(List<dynamic> album) {
+    Database.checkInv(album[0], album[1]).then((exists) {
+      /*
+      ###################################################
+      User Already has a Copy of this Album
+      ###################################################
+      */
+      if (exists) {
+        Navigator.of(context).pop();
+        /*
+        ###################################################
+        warning pop up
+        ###################################################
+        */
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(
+                "Warning! \nYou already have this album.\nContinue?",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Database.addSpotToInv(album);
+                      Navigator.of(context).pop();
+
+                      /*
+                      ###################################################
+                      success pop up
+                      ###################################################
+                      */
                       showDialog(
                           context: context,
                           builder: (context) {
@@ -135,16 +203,47 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
                             );
                           });
                     },
-                    child: Text("Add")),
-                TextButton(
+                    child: Text("Yes"),
+                  ),
+                  SizedBox(width: 20),
+                  ElevatedButton(
                     onPressed: () {
-                      //lets us go back to the album page
                       Navigator.of(context).pop();
                     },
-                    child: Text("Cancel")),
-              ],
+                    child: Text("Cancel"),
+                  ),
+                ],
+              ),
             );
-          });
+          },
+        );
+      }
+      /*
+      ###################################################
+      Add to User's Inventory
+      ###################################################
+      */
+      else {
+        Database.addSpotToInv(album);
+        Navigator.of(context).pop();
+
+        /*
+        ###################################################
+        success pop up
+        ###################################################
+        */
+        showDialog(
+            context: context,
+            builder: (context) {
+              Future.delayed(Duration(seconds: 1), () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              });
+              return AlertDialog(
+                title: Text('Album Added', textAlign: TextAlign.center),
+              );
+            });
+      }
     });
   }
 }
