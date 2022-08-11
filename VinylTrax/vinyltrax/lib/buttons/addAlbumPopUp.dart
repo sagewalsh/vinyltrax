@@ -22,7 +22,7 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
   @override
   Widget build(BuildContext context) {
     // height = MediaQuery.of(context).size.height * 0.186; //150
-    height = MediaQuery.of(context).size.height * 0.13;
+    //height = MediaQuery.of(context).size.height * 0.14;
     return StatefulBuilder(builder: (context, setState) {
       return FutureBuilder<List<dynamic>>(
           future: widget.input,
@@ -52,8 +52,8 @@ class _AddAlbumPopUpState extends State<AddAlbumPopUp> {
               //title: Text(
               //   "Add ${data[1].toString()} by ${data[0][0][0].toString()}"),
               content: SizedBox(
-                height: height,
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     DropdownButtonFormField(
                       value: locationValue,
