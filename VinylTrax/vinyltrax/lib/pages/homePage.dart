@@ -116,6 +116,7 @@ class _HomePageState extends State<HomePage> {
                     width: width * .63,
                     height: height * .063,
                     child: TextField(
+                      textAlignVertical: TextAlignVertical.center,
                       decoration: InputDecoration(
                         labelText: "Username",
                         floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -148,6 +149,7 @@ class _HomePageState extends State<HomePage> {
                     width: width * .63,
                     height: height * .063,
                     child: TextField(
+                      textAlignVertical: TextAlignVertical.center,
                       obscureText: true,
                       decoration: InputDecoration(
                         labelText: "Password",

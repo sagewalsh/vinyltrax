@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vinyltrax/show_data/genreList.dart';
 import 'package:vinyltrax/inventory/getAlbums.dart';
 import 'package:vinyltrax/show_data/categories.dart';
@@ -19,10 +20,35 @@ class StaxPage extends StatefulWidget {
 
 class _StaxPageState extends State<StaxPage> {
   final TextEditingController textController = TextEditingController();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   FocusNode focus = FocusNode();
   _Order _selectedOrder = _Order.artist;
   Type _selectedType = Type.all;
   bool isGenreButton = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _prefs.then((SharedPreferences prefs) {
+      setState ((){
+        if(prefs.getString('order') == "category")
+          _selectedOrder = _Order.category;
+        else if(prefs.getString('order') == "albums")
+          _selectedOrder = _Order.albums;
+        else if(prefs.getString('order') == "genre")
+          _selectedOrder = _Order.genre;
+        else
+          _selectedOrder = _Order.artist;
+
+        if(prefs.getString('type') == "vinyl")
+          _selectedType = Type.vinyl;
+        else if (prefs.getString('type') == "cd")
+          _selectedType = Type.cd;
+        else
+          _selectedType = Type.all;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -181,9 +207,12 @@ class _StaxPageState extends State<StaxPage> {
                                               : Color(0xFFFF5A5A))),
                               value: _Order.category),
                         ],
-                        onChanged: (type) {
-                          setState(() {
-                            _selectedOrder = type as _Order;
+                        onChanged: (type) async {
+                          final SharedPreferences prefs = await _prefs;
+                          prefs.setString('order', (type as _Order).name).then((bool success){
+                            setState(() {
+                              _selectedOrder = type;
+                            });
                           });
                         }),
                   ),
@@ -229,9 +258,12 @@ class _StaxPageState extends State<StaxPage> {
                                               : Color(0xFFFF5A5A))),
                               value: Type.cd),
                         ],
-                        onChanged: (type) {
-                          setState(() {
-                            _selectedType = type as Type;
+                        onChanged: (type) async {
+                          final SharedPreferences prefs = await _prefs;
+                          prefs.setString('type', (type as Type).name).then((bool success){
+                            setState(() {
+                              _selectedType = type;
+                            });
                           });
                         }),
                   ),

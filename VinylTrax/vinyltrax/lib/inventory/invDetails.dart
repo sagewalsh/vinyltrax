@@ -5,6 +5,7 @@ import 'package:marquee/marquee.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:vinyltrax/buttons/addToCustomCat.dart';
 import 'package:vinyltrax/pages/nextPage.dart';
 import 'database.dart';
 import 'getInvNotes.dart';
@@ -143,7 +144,7 @@ class _InvDetails extends State<InvDetails> {
               },
               child: Text("Remove",
                   style: TextStyle(
-                      color: settings.darkTheme ? Colors.white : Colors.black)),
+                      color: Colors.redAccent)),
             )
           ],
         ),
@@ -501,16 +502,62 @@ class _InvDetails extends State<InvDetails> {
                       children.add(GetInvPressing(widget.input));
                     }
 
-                    children.add(Divider(
-                      color: settings.darkTheme ? Colors.white : Colors.black,
-                      thickness: 1,
-                      height: 0,
-                    ));
+                    List<String> categories = [""];
+                    Database.getCategories().then((value) {
+                      categories += value;
+                    });
+
+                    children.add(
+                        Center(
+                          child: InkWell(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AddToCustomCat(widget.input[0], categories);
+                                    }
+                                );
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * .8,
+                                height: MediaQuery.of(context).size.height * .05,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: settings.darkTheme
+                                          ? Color(0xFFBB86FC)
+                                          : Color(0xFFFF5A5A),
+                                    ),
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Center(
+                                    child: Text(
+                                      "Add to Category",
+                                      style: TextStyle(
+                                          color: settings.darkTheme
+                                              ? Color(0xFFBB86FC)
+                                              : Color(0xFFFF5A5A)),
+                                    )),
+                              )),
+                        )
+                    );
+
                     children.add(SizedBox(
                       width: double.infinity,
                       height: 30,
                       child: const Text(""),
                     ));
+
+                    children.add(Divider(
+                      color: settings.darkTheme ? Colors.white : Colors.black,
+                      thickness: 1,
+                      height: 0,
+                    ));
+
+                    children.add(SizedBox(
+                      width: double.infinity,
+                      height: 30,
+                      child: const Text(""),
+                    ));
+
                   } else if (snapshot.hasError) {
                     children = <Widget>[
                       Icon(Icons.error),

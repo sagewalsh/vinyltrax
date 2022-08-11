@@ -140,6 +140,7 @@ class SpotDetails extends StatelessWidget {
                               "No results found",
                               style: TextStyle(
                                 fontSize: 20,
+                                color: settings.darkTheme ? Colors.white : Colors.black
                               ),
                             ),
                           ],

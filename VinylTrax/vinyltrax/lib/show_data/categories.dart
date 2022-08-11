@@ -133,15 +133,6 @@ class CategoryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       tileColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
-
-      /*
-      Stating Space
-      */
-      leading: Container(
-        width: 25,
-        child: Text(""),
-      ),
-
       /*
       Category Name
       */
