@@ -158,7 +158,12 @@ class IconList extends StatelessWidget {
               direction: Axis.horizontal,
               spacing: MediaQuery.of(context).size.width * 0.0765,
               runSpacing: MediaQuery.of(context).size.width * 0.051,
-              children: children),
+              children: children += [
+                SizedBox(
+                  height: 10,
+                  width: MediaQuery.of(context).size.width,
+                )
+              ]),
         ),
       ),
     );

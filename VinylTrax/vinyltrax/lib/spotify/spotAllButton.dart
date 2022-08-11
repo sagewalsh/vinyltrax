@@ -55,7 +55,7 @@ class _SpotAllButtonState extends State<SpotAllButton> {
         backgroundColor:
             settings.darkTheme ? Color(0xFF1C1C1C) : Color(0xFFFFFDF6),
         appBar: AppBar(
-          title: Text("See more",
+          title: Text("See All",
               style: TextStyle(
                   color: settings.darkTheme ? Colors.white : Colors.black)),
           backgroundColor:
