@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'database.dart';
 import '../show_data/icon.dart';
 import '../pages/staxpage.dart';
+import 'package:vinyltrax/pages/settingspage.dart';
 
 class GetInvAlbum extends StatelessWidget {
   // GetInvAlbum({Key? key}) : super(key: key);
@@ -103,7 +104,23 @@ class GetInvAlbum extends StatelessWidget {
                 )
               ];
             }
-            return IconList(children);
+            return Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(10.0),
+                  width: MediaQuery.of(context).size.width,
+                  color: darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+                  child: Center(
+                    child: Text(
+                      "Total Number of Albums in Collection: " +
+                          children.length.toString(),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                IconList(children),
+              ],
+            );
           }),
     );
   }

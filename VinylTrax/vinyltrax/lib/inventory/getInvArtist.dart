@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'database.dart';
 import '../show_data/listEntry.dart';
 import '../pages/staxpage.dart';
+import 'package:vinyltrax/pages/settingspage.dart';
 
 class GetInvArtist extends StatelessWidget {
   final Type genre;
@@ -37,6 +38,20 @@ class GetInvArtist extends StatelessWidget {
                 );
                 children.add(temp);
               }
+              children.insert(
+                  0,
+                  Container(
+                    padding: EdgeInsets.all(10.0),
+                    width: MediaQuery.of(context).size.width,
+                    color: darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+                    child: Center(
+                      child: Text(
+                        "Total Number of Artists in Collection: " +
+                            children.length.toString(),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ));
             } else if (snapshot.hasError) {
               children = <Widget>[
                 Icon(Icons.error),

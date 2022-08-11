@@ -237,6 +237,9 @@ class _StaxPageState extends State<StaxPage> {
                   ),
                 ],
               ),
+              SizedBox(
+                height: 10,
+              ),
             ],
           ),
           backgroundColor:
