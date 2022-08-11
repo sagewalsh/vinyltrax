@@ -28,7 +28,7 @@ class _SpotScrollState extends State<SpotScroll> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Divider(
-            color: Color(0x64FF5A5A),
+            color: settings.darkTheme ? Color(0x64BB86FC) : Color(0x64FF5A5A),
           ),
           Row(
             mainAxisSize: MainAxisSize.min,

@@ -1,9 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:vinyltrax/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vinyltrax/pages/newAccountPage.dart';
-import 'package:vinyltrax/pages/staxpage.dart';
+import 'package:vinyltrax/pages/settingspage.dart';
 import '../auth.dart';
 import 'package:vinyltrax/inventory/database.dart';
 import '../const.dart';
@@ -16,6 +16,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   double opacity = 0.0;
   bool move = false;
   double visible = 0;
@@ -33,6 +34,13 @@ class _HomePageState extends State<HomePage> {
         move = true;
         visible = 1;
         loggedIn = Authentication.userSignedIn();
+      });
+    });
+
+    _prefs.then((SharedPreferences prefs) {
+      setState ((){
+        darkTheme = prefs.getBool('theme') ?? false;
+        listBool = prefs.getBool('list') ?? false;
       });
     });
   }
