@@ -104,7 +104,11 @@ class ListEntry extends StatelessWidget {
         var route = new MaterialPageRoute(builder: (BuildContext context) {
           if (location == 'inv') {
             if (!isAlbum)
-              return new NextPageArtist(id: id, name: name);
+              return new NextPageArtist(
+                id: id,
+                name: name,
+                format: format,
+              );
             else
               return new NextPageAlbum(id, name);
           } else if (location == 'discogs') {
