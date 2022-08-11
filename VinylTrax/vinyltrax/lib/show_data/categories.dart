@@ -58,7 +58,7 @@ class _CategoriesState extends State<Categories> {
                                       TextButton(
                                           onPressed: () {
                                             Database.createCategory(_controller.text);
-                                            Navigator.pop(context);
+                                            Navigator.pushNamed(context, 'inven');
                                           },
                                           child: Text("Confirm")
                                       ),
