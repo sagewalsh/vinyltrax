@@ -130,8 +130,29 @@ class _SettingsPageState extends State<SettingsPage> {
           Navigator.of(context).push(route);
         }
         else if (title == "Delete Account") {
-          Authentication.deleteUser();
-          Navigator.pushNamed(context, 'home');
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content: Text("Are you sure you want to delete your account?"),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Authentication.deleteUser();
+                          Navigator.pushNamed(context, 'home');
+                        },
+                        child: Text("Yes")
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("No")
+                    )
+                  ],
+                );
+              }
+          );
         }
       },
       child: Padding(
