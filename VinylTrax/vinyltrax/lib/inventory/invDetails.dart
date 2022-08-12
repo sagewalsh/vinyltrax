@@ -536,6 +536,7 @@ class _InvDetails extends State<InvDetails> {
                                               // Remove album from inventory
                                               Database.removeAlbum(
                                                   widget.input[0]);
+                                              Navigator.of(context).pop();
                                               showDialog(
                                                   context: context,
                                                   builder: (context) {

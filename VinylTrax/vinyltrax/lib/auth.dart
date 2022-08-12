@@ -115,9 +115,8 @@ class Authentication {
         password: oldPassword,
       )
           .then((credential) async {
-        if (credential.user?.uid == id) {
+        if (credential.user?.uid == id)
           await auth.currentUser?.updatePassword(password);
-        }
       });
     } catch (e) {
       print("ERROR: " + e.toString());
@@ -130,7 +129,20 @@ class Authentication {
     await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
 
-  static void deleteUser() async {
-    await auth.currentUser?.delete();
+  static Future<List<dynamic>> deleteUser(String email, String password) async {
+    var id = auth.currentUser!.uid;
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then(
+        (credential) async {
+          if (credential.user?.uid == id) await auth.currentUser?.delete();
+        },
+      );
+    } catch (e) {
+      print("ERROR: " + e.toString());
+      return [false, e.toString()];
+    }
+    return [true, ""];
   }
 }

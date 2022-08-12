@@ -42,6 +42,8 @@ class _InvPress extends State<GetInvPressing> {
   @override
   Widget build(BuildContext context) {
     Future<List<String>> _results = Database.getPressData(widget.input[0]);
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
 
     return SafeArea(
         child: SizedBox(
@@ -63,26 +65,29 @@ class _InvPress extends State<GetInvPressing> {
 
             String title = "";
 
-            Color color = settings.darkTheme
-                ? Colors.white
-                : Colors.black;
-            // Color of LPs
+            children.add(SizedBox(
+              height: 20,
+              width: width,
+            ));
+
+            /*
+            #############################################
+            Set Vinyl Color
+            #############################################
+            */
+            Color color = settings.darkTheme ? Colors.white : Colors.black;
             if (data[1] != "") {
               title += "Color";
-              // // Set color based on input
-              // if (data[1] == "Other")
-              //   color = Colors.purple;
-              // else if (data[1] == "Blue")
-              //   color = Colors.blue;
-              // else if (data[1] == "Red")
-              //   color = Colors.red;
-              // else if (data[1] == "Yellow") color = Colors.yellow;
               color = colorOptions[data[1]]!;
               if (color == Colors.black && settings.darkTheme)
                 backgroundColor = Color(0xFFBB86FC);
             }
 
-            // Number of LPs
+            /*
+            #############################################
+            Set Number of LPs
+            #############################################
+            */
             if (data[0] != "") {
               if (title.isEmpty)
                 title = "Qty.";
@@ -96,9 +101,8 @@ class _InvPress extends State<GetInvPressing> {
                   number += [
                     Image.asset(
                       "assets/vinyl-box.png",
-                      width: MediaQuery.of(context).size.width *
-                          0.30 /
-                          int.parse(data[0]),
+                      // width: width * 0.30 / int.parse(data[0]),
+                      height: width * .15,
                       color: color,
                     )
                   ];
@@ -106,34 +110,34 @@ class _InvPress extends State<GetInvPressing> {
                   number += [
                     Image.asset(
                       "assets/vinyl-lp.png",
-                      width: MediaQuery.of(context).size.width *
-                          0.20 /
-                          int.parse(data[0]),
+                      height: width * .08,
                       color: color,
                     )
                   ];
               }
+
+              /*
+              #############################################
+              Add Vinyl Box
+              #############################################
+              */
               row.add(Column(
                 children: [
-                  Text(title, style: TextStyle(color: settings.darkTheme
-                      ? Colors.white
-                      : Colors.black)),
+                  Text(title,
+                      style: TextStyle(
+                          color: settings.darkTheme
+                              ? Colors.white
+                              : Colors.black)),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: backgroundColor,
-                      border: Border.all(
-                        width: 4,
-                        color: settings.darkTheme
-                            ? Color(0xFFBB86FC)
-                            : Color(0xFFFF5A5A),
-                      ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(4.0),
                       child: SizedBox(
-                        height: MediaQuery.of(context).size.width * 0.33,
-                        width: MediaQuery.of(context).size.width * 0.33,
+                        height: width * 0.2,
+                        width: width * 0.4,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -145,32 +149,26 @@ class _InvPress extends State<GetInvPressing> {
                 ],
               ));
             } else if (data[1] != "") {
-              // Add colored vinyl icon
               row.add(Column(
                 children: [
-                  Text(title),
+                  Text(title,
+                      style: TextStyle(
+                          color: settings.darkTheme
+                              ? Colors.white
+                              : Colors.black)),
                   Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        width: 4,
-                        color: settings.darkTheme
-                            ? Color(0xFFBB86FC)
-                            : Color(0xFFFF5A5A),
-                      ),
-                    ),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(4.0),
                       child: SizedBox(
-                        height: MediaQuery.of(context).size.width * 0.33,
-                        width: MediaQuery.of(context).size.width * 0.33,
+                        height: width * 0.2,
+                        width: width * 0.4,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(
                               "assets/vinyl-box.png",
-                              width: MediaQuery.of(context).size.width * 0.20,
+                              height: width * .15,
                               color: color,
                             ),
                           ],
@@ -182,31 +180,24 @@ class _InvPress extends State<GetInvPressing> {
               ));
             }
             if (data[3] != "") {
-              if (row.isNotEmpty) {
-                row.add(SizedBox(
-                  width: MediaQuery.of(context).size.width * .1,
-                ));
-              }
+              /*
+              #############################################
+              Add Year
+              #############################################
+              */
               row.add(Column(
                 children: [
-                  Text("Year", style: TextStyle(color: settings.darkTheme
-                      ? Colors.white
-                      : Colors.black)),
+                  Text("Year",
+                      style: TextStyle(
+                          color: settings.darkTheme
+                              ? Colors.white
+                              : Colors.black)),
                   Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        width: 4,
-                        color: settings.darkTheme
-                            ? Color(0xFFBB86FC)
-                            : Color(0xFFFF5A5A),
-                      ),
-                    ),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(4.0),
                       child: SizedBox(
-                        height: MediaQuery.of(context).size.width * 0.33,
-                        width: MediaQuery.of(context).size.width * 0.33,
+                        height: width * 0.2,
+                        width: width * 0.4,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -214,12 +205,11 @@ class _InvPress extends State<GetInvPressing> {
                             Text(
                               data[3],
                               style: TextStyle(
-                                fontSize: 50,
-                                fontWeight: FontWeight.bold,
-                                color: settings.darkTheme
-                                    ? Colors.white
-                                    : Colors.black
-                              ),
+                                  fontSize: 50,
+                                  fontWeight: FontWeight.bold,
+                                  color: settings.darkTheme
+                                      ? Colors.white
+                                      : Colors.black),
                             ),
                           ],
                         ),
@@ -237,44 +227,41 @@ class _InvPress extends State<GetInvPressing> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: row,
                 ),
-                SizedBox(height: MediaQuery.of(context).size.width * .10),
+                SizedBox(height: 10),
               ];
             }
 
-            // Size of LP
+            /*
+            #############################################
+            Add LP Size
+            #############################################
+            */
             if (data[2] != "") {
               // Color of highlighted LP size
-              if (color == Colors.black)
+              if (color == Colors.black || color == Colors.white)
                 color =
                     settings.darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A);
-              List<Color> colors = [settings.darkTheme ? Colors.white : Colors.black,
+              List<Color> colors = [
                 settings.darkTheme ? Colors.white : Colors.black,
-                settings.darkTheme ? Colors.white : Colors.black];
+                settings.darkTheme ? Colors.white : Colors.black,
+                settings.darkTheme ? Colors.white : Colors.black
+              ];
               if (data[2] == "33")
                 colors[0] = color;
               else if (data[2] == "45")
                 colors[2] = color;
-              else if (data[2] == "78")
-                colors[1] = color;
+              else if (data[2] == "78") colors[1] = color;
 
-              children.add(Text("Size", style: TextStyle(color: settings.darkTheme
-                  ? Colors.white
-                  : Colors.black)));
+              children.add(Text("Size",
+                  style: TextStyle(
+                      color:
+                          settings.darkTheme ? Colors.white : Colors.black)));
               children.add(Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    width: 4,
-                    color: settings.darkTheme
-                        ? Color(0xFFBB86FC)
-                        : Color(0xFFFF5A5A),
-                  ),
-                ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.width * 0.33,
-                    width: MediaQuery.of(context).size.width * .76 + 16,
+                    height: width * 0.33,
+                    width: width * .76 + 16,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -285,7 +272,7 @@ class _InvPress extends State<GetInvPressing> {
                           children: [
                             Image.asset(
                               "assets/vinyl-lp.png",
-                              width: MediaQuery.of(context).size.width * 0.25,
+                              width: width * 0.25,
                               color: colors[0],
                             ),
                             SizedBox(
@@ -293,7 +280,7 @@ class _InvPress extends State<GetInvPressing> {
                             ),
                             Image.asset(
                               "assets/vinyl-lp.png",
-                              width: MediaQuery.of(context).size.width * 0.20,
+                              width: width * 0.20,
                               color: colors[1],
                             ),
                             SizedBox(
@@ -301,7 +288,7 @@ class _InvPress extends State<GetInvPressing> {
                             ),
                             Image.asset(
                               "assets/vinyl-lp.png",
-                              width: MediaQuery.of(context).size.width * 0.15,
+                              width: width * 0.15,
                               color: colors[2],
                             ),
                           ],
@@ -311,28 +298,29 @@ class _InvPress extends State<GetInvPressing> {
                   ),
                 ),
               ));
-              children.add(
-                  SizedBox(height: MediaQuery.of(context).size.width * .10));
             }
+
+            /*
+            #############################################
+            Add Manufacturer
+            #############################################
+            */
             if (data[4] != "") {
-              children.add(Text("Manufacturer", style: TextStyle(color: settings.darkTheme
-                  ? Colors.white
-                  : Colors.black)));
+              if (children.length > 2)
+                children.add(SizedBox(
+                  height: 20,
+                  width: width,
+                ));
+              children.add(Text("Manufacturer",
+                  style: TextStyle(
+                      color:
+                          settings.darkTheme ? Colors.white : Colors.black)));
               children.add(Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    width: 4,
-                    color: settings.darkTheme
-                        ? Color(0xFFBB86FC)
-                        : Color(0xFFFF5A5A),
-                  ),
-                ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.width * 0.33,
-                    width: MediaQuery.of(context).size.width * 0.76 + 16,
+                    height: 40,
+                    width: width * 0.76 + 16,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -340,10 +328,11 @@ class _InvPress extends State<GetInvPressing> {
                         Text(
                           data[4],
                           style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                              color: settings.darkTheme ? Colors.white : Colors.black
-                          ),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: settings.darkTheme
+                                  ? Colors.white
+                                  : Colors.black),
                         ),
                       ],
                     ),
@@ -364,7 +353,7 @@ class _InvPress extends State<GetInvPressing> {
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return PressDataPopUp(widget.input[0]);
+                    return PressDataPopUp(widget.input);
                   });
             },
             child: Column(
@@ -375,13 +364,19 @@ class _InvPress extends State<GetInvPressing> {
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: settings.darkTheme ? Colors.black : Colors.white,
+                        color: settings.darkTheme
+                            ? Colors.black
+                            : Color(0xFFFFFDF6),
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          width: 1,
-                          color:
-                              settings.darkTheme ? Colors.white : Colors.black,
-                        )),
+                            width: 1,
+                            color: children.length > 2
+                                ? settings.darkTheme
+                                    ? Color(0xFFBB86FC)
+                                    : Color(0xFFFF5A5A)
+                                : settings.darkTheme
+                                    ? Colors.white
+                                    : Colors.black)),
                     child: Padding(
                       padding: EdgeInsets.all(10),
                       child: Column(
@@ -390,9 +385,13 @@ class _InvPress extends State<GetInvPressing> {
                           Text(
                             "Pressing Data",
                             style: TextStyle(
-                              color: settings.darkTheme
-                                  ? Colors.white
-                                  : Colors.black,
+                              color: children.length > 2
+                                  ? settings.darkTheme
+                                      ? Color(0xFFBB86FC)
+                                      : Color(0xFFFF5A5A)
+                                  : settings.darkTheme
+                                      ? Colors.white
+                                      : Colors.black,
                               fontStyle: FontStyle.italic,
                             ),
                           ),

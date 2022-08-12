@@ -3,23 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:vinyltrax/inventory/getInvPressing.dart';
 import '../inventory/database.dart';
 import '../inventory/invDetails.dart';
+import 'package:vinyltrax/pages/settingspage.dart';
 
 class PressDataPopUp extends StatefulWidget {
-  final String albumid;
+  final List<String> input;
   // const PressDataPopUp({Key? key}) : super(key: key);
-  PressDataPopUp(this.albumid);
+  PressDataPopUp(this.input);
 
   @override
   State<PressDataPopUp> createState() => _PressDataPopUpState();
 }
 
 class _PressDataPopUpState extends State<PressDataPopUp> {
-  // int numLP = 1;
-  // String colorLP = 'Black';
-  // int rpmSize = 30;
-  // String year = 'Pick a year';
-  // DateTime current = DateTime.now();
-  // String manufacturer = "Enter a Manufacturer";
   TextEditingController _controller = TextEditingController();
   String numLP = "";
   String colorLP = "";
@@ -31,8 +26,8 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
 
   @override
   void initState() {
-    Database.getPressData(widget.albumid).then((result) {
-      setState (() {
+    Database.getPressData(widget.input[0]).then((result) {
+      setState(() {
         numLP = result[0];
         colorLP = result[1];
         rpmSize = result[2];
@@ -51,7 +46,6 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
         physics: AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
-
             //Number of LPs
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -163,12 +157,19 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
                             );
                           });
                     },
-                    child: Text(year)),
+                    child: Text(
+                      year == "" ? "Pick a year" : year,
+                      style: TextStyle(
+                        color:
+                            darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+                      ),
+                    )),
               ],
             ),
 
             // Manufacturer
             TextField(
+              maxLength: 30,
               controller: _controller..text = manufacturer,
               decoration: InputDecoration(
                 hintText: "Enter a Manufacturer",
@@ -181,29 +182,79 @@ class _PressDataPopUpState extends State<PressDataPopUp> {
             ),
 
             //Final Submission
-            TextButton(
-                onPressed: () {
-                  setState((){
-                    manufacturer = _controller.text;
-                  });
-                  if (year == "Pick a year") year = "";
-                  Database.updatePressData(
-                    albumID: widget.albumid,
-                    numLP: numLP,
-                    colorLP: colorLP,
-                    rpmSize: rpmSize,
-                    year: year,
-                    manufacturer: manufacturer,
-                  );
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  var route =
-                      new MaterialPageRoute(builder: (BuildContext context) {
-                    return InvDetails([widget.albumid, ""]);
-                  });
-                  Navigator.of(context).push(route);
-                },
-                child: Text("Done"))
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                    onPressed: () {
+                      setState(() {
+                        manufacturer = _controller.text;
+                      });
+                      if (year == "Pick a year") year = "";
+                      Database.updatePressData(
+                        albumID: widget.input[0],
+                        numLP: numLP,
+                        colorLP: colorLP,
+                        rpmSize: rpmSize,
+                        year: year,
+                        manufacturer: manufacturer,
+                      );
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      var route = new MaterialPageRoute(
+                          builder: (BuildContext context) {
+                        return InvDetails([widget.input[0], widget.input[1]]);
+                      });
+                      Navigator.of(context).push(route);
+                    },
+                    child: Text(
+                      "Done",
+                      style: TextStyle(
+                        color:
+                            darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+                      ),
+                    )),
+                TextButton(
+                    onPressed: () {
+                      setState(() {
+                        manufacturer = _controller.text;
+                      });
+                      Database.updatePressData(
+                        albumID: widget.input[0],
+                        numLP: "",
+                        colorLP: "",
+                        rpmSize: "",
+                        year: "",
+                        manufacturer: "",
+                      );
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      var route = new MaterialPageRoute(
+                          builder: (BuildContext context) {
+                        return InvDetails([widget.input[0], widget.input[1]]);
+                      });
+                      Navigator.of(context).push(route);
+                    },
+                    child: Text(
+                      "Reset",
+                      style: TextStyle(
+                        color:
+                            darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+                      ),
+                    )),
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(
+                        color:
+                            darkTheme ? Color(0xFFBB86FC) : Color(0xFFFF5A5A),
+                      ),
+                    )),
+              ],
+            )
           ],
         ),
       ),

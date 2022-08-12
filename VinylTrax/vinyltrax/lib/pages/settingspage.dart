@@ -1,4 +1,5 @@
 library my_prj.globals;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vinyltrax/auth.dart';
@@ -17,11 +18,11 @@ class _SettingsPageState extends State<SettingsPage> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   bool valNotify3 = true;
 
-  changeTheme(bool newVal) async{
+  changeTheme(bool newVal) async {
     final SharedPreferences prefs = await _prefs;
     final bool darkMode = !(prefs.getBool('theme') ?? newVal);
     prefs.setBool('theme', darkMode).then((bool success) {
-      setState((){
+      setState(() {
         darkTheme = darkMode;
         Navigator.pop(context);
         Navigator.pushNamed(context, 'setting');
@@ -33,7 +34,7 @@ class _SettingsPageState extends State<SettingsPage> {
     final SharedPreferences prefs = await _prefs;
     final bool list = !(prefs.getBool('list') ?? newVal);
     prefs.setBool('list', list).then((bool success) {
-      setState((){
+      setState(() {
         listBool = list;
       });
     });
@@ -128,31 +129,8 @@ class _SettingsPageState extends State<SettingsPage> {
             return new AccountDetailsPage();
           });
           Navigator.of(context).push(route);
-        }
-        else if (title == "Delete Account") {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  content: Text("Are you sure you want to delete your account?"),
-                  actions: [
-                    TextButton(
-                        onPressed: () {
-                          Authentication.deleteUser();
-                          Navigator.pushNamed(context, 'home');
-                        },
-                        child: Text("Yes")
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text("No")
-                    )
-                  ],
-                );
-              }
-          );
+        } else if (title == "Delete Account") {
+          deleteAccount();
         }
       },
       child: Padding(
@@ -198,5 +176,201 @@ class _SettingsPageState extends State<SettingsPage> {
         ],
       ),
     );
+  }
+
+  /*
+  ##############################################################################
+  deleteAccount
+  
+  Helper method to delete account
+  ##############################################################################
+  */
+  Future deleteAccount() {
+    /*
+    ###################################################
+    First pop up
+    ###################################################
+    */
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Are you sure you want to delete your account?",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    /*
+                    ###################################################
+                    Second pop up
+                    ###################################################
+                    */
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          String email = "";
+                          String password = "";
+                          return AlertDialog(
+                            title: Text(
+                              "Sign In to Delete Account",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                /*
+                                #############################################
+                                Collect Email
+                                #############################################
+                                */
+                                Text(
+                                  "Email",
+                                  style: TextStyle(
+                                    color:
+                                        // darkTheme ? Colors.white : Colors.black,
+                                        Colors.black,
+                                  ),
+                                ),
+                                TextField(
+                                  maxLines: 1,
+                                  controller: TextEditingController(),
+                                  focusNode: FocusNode(),
+                                  cursorColor:
+                                      // darkTheme ? Colors.white : Colors.black,
+                                      Colors.black,
+                                  style: TextStyle(
+                                    color:
+                                        // darkTheme ? Colors.white : Colors.black,
+                                        Colors.black,
+                                  ),
+                                  onChanged: (String value) {
+                                    email = value;
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+
+                                /*
+                                  #############################################
+                                  Collect Old Password
+                                  #############################################
+                                  */
+                                Text(
+                                  "Password",
+                                  style: TextStyle(
+                                    color:
+                                        // darkTheme ? Colors.white : Colors.black,
+                                        Colors.black,
+                                  ),
+                                ),
+                                TextField(
+                                  maxLines: 1,
+                                  controller: TextEditingController(),
+                                  focusNode: FocusNode(),
+                                  cursorColor:
+                                      // darkTheme ? Colors.white : Colors.black,
+                                      Colors.black,
+                                  style: TextStyle(
+                                    color:
+                                        // darkTheme ? Colors.white : Colors.black,
+                                        Colors.black,
+                                  ),
+                                  onChanged: (String value) {
+                                    password = value;
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              InkWell(
+                                  onTap: () {
+                                    /*
+                                      update authentication
+                                      */
+                                    Authentication.deleteUser(
+                                      email,
+                                      password,
+                                    ).then((success) {
+                                      if (success[0]) {
+                                        Navigator.pushNamed(context, "home");
+                                      }
+                                    });
+                                  },
+                                  highlightColor:
+                                      Color.fromARGB(100, 255, 49, 49),
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * .25,
+                                    height: MediaQuery.of(context).size.height *
+                                        .05,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Color(0xFFFF3131)),
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: Center(
+                                        child: Text(
+                                      "Delete",
+                                      style:
+                                          TextStyle(color: Color(0xFFFF3131)),
+                                    )),
+                                  )),
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).pop();
+                                  },
+                                  highlightColor:
+                                      Color.fromARGB(100, 33, 150, 243),
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * .25,
+                                    height: MediaQuery.of(context).size.height *
+                                        .05,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.blue),
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: Center(
+                                        child: Text(
+                                      "Cancel",
+                                      style: TextStyle(color: Colors.blue),
+                                    )),
+                                  )),
+                            ],
+                          );
+                        });
+                  },
+                  child: Text("Yes"),
+                ),
+                SizedBox(width: 20),
+                ElevatedButton(
+                    /*
+                    Clicked Cancel
+                    */
+                    onPressed: () {
+                      Navigator.pop(context); //returns user back to page
+                    },
+                    child: Text("Cancel")),
+              ],
+            ),
+          );
+        });
   }
 }

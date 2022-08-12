@@ -395,6 +395,7 @@ class _AccountDetailsPage extends State<AccountDetailsPage> {
                                 ),
                               ),
                               content: Column(
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   /*
                                   #############################################
@@ -404,9 +405,7 @@ class _AccountDetailsPage extends State<AccountDetailsPage> {
                                   Text(
                                     "Outdated Email",
                                     style: TextStyle(
-                                      color: darkTheme
-                                          ? Colors.white
-                                          : Colors.black,
+                                      color: Colors.black,
                                     ),
                                   ),
                                   TextField(
@@ -414,19 +413,13 @@ class _AccountDetailsPage extends State<AccountDetailsPage> {
                                     controller: TextEditingController()
                                       ..text = email,
                                     focusNode: FocusNode(),
-                                    cursorColor:
-                                        darkTheme ? Colors.white : Colors.black,
+                                    cursorColor: Colors.black,
                                     style: TextStyle(
-                                      color: darkTheme
-                                          ? Colors.white
-                                          : Colors.black,
+                                      color: Colors.black,
                                     ),
                                     onChanged: (String value) {
                                       oldEmail = value;
                                     },
-                                  ),
-                                  SizedBox(
-                                    height: 10,
                                   ),
 
                                   /*
@@ -437,28 +430,20 @@ class _AccountDetailsPage extends State<AccountDetailsPage> {
                                   Text(
                                     "Password",
                                     style: TextStyle(
-                                      color: darkTheme
-                                          ? Colors.white
-                                          : Colors.black,
+                                      color: Colors.black,
                                     ),
                                   ),
                                   TextField(
                                     maxLines: 1,
                                     controller: TextEditingController(),
                                     focusNode: FocusNode(),
-                                    cursorColor:
-                                        darkTheme ? Colors.white : Colors.black,
+                                    cursorColor: Colors.black,
                                     style: TextStyle(
-                                      color: darkTheme
-                                          ? Colors.white
-                                          : Colors.black,
+                                      color: Colors.black,
                                     ),
                                     onChanged: (String value) {
                                       password = value;
                                     },
-                                  ),
-                                  SizedBox(
-                                    height: 10,
                                   ),
 
                                   /*
@@ -469,21 +454,16 @@ class _AccountDetailsPage extends State<AccountDetailsPage> {
                                   Text(
                                     "New Email",
                                     style: TextStyle(
-                                      color: darkTheme
-                                          ? Colors.white
-                                          : Colors.black,
+                                      color: Colors.black,
                                     ),
                                   ),
                                   TextField(
                                     maxLines: 1,
                                     controller: TextEditingController(),
                                     focusNode: FocusNode(),
-                                    cursorColor:
-                                        darkTheme ? Colors.white : Colors.black,
+                                    cursorColor: Colors.black,
                                     style: TextStyle(
-                                      color: darkTheme
-                                          ? Colors.white
-                                          : Colors.black,
+                                      color: Colors.black,
                                     ),
                                     onChanged: (String value) {
                                       newEmail = value;
@@ -591,6 +571,7 @@ class _AccountDetailsPage extends State<AccountDetailsPage> {
                                 ),
                               ),
                               content: Column(
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   /*
                                   #############################################
@@ -600,9 +581,7 @@ class _AccountDetailsPage extends State<AccountDetailsPage> {
                                   Text(
                                     "Email",
                                     style: TextStyle(
-                                      color: darkTheme
-                                          ? Colors.white
-                                          : Colors.black,
+                                      color: Colors.black,
                                     ),
                                   ),
                                   TextField(
@@ -610,12 +589,9 @@ class _AccountDetailsPage extends State<AccountDetailsPage> {
                                     controller: TextEditingController()
                                       ..text = given,
                                     focusNode: FocusNode(),
-                                    cursorColor:
-                                        darkTheme ? Colors.white : Colors.black,
+                                    cursorColor: Colors.black,
                                     style: TextStyle(
-                                      color: darkTheme
-                                          ? Colors.white
-                                          : Colors.black,
+                                      color: Colors.black,
                                     ),
                                     onChanged: (String value) {
                                       email = value;
@@ -633,21 +609,16 @@ class _AccountDetailsPage extends State<AccountDetailsPage> {
                                   Text(
                                     "Old Password",
                                     style: TextStyle(
-                                      color: darkTheme
-                                          ? Colors.white
-                                          : Colors.black,
+                                      color: Colors.black,
                                     ),
                                   ),
                                   TextField(
                                     maxLines: 1,
                                     controller: TextEditingController(),
                                     focusNode: FocusNode(),
-                                    cursorColor:
-                                        darkTheme ? Colors.white : Colors.black,
+                                    cursorColor: Colors.black,
                                     style: TextStyle(
-                                      color: darkTheme
-                                          ? Colors.white
-                                          : Colors.black,
+                                      color: Colors.black,
                                     ),
                                     onChanged: (String value) {
                                       oldPassword = value;
@@ -665,21 +636,16 @@ class _AccountDetailsPage extends State<AccountDetailsPage> {
                                   Text(
                                     "New Password",
                                     style: TextStyle(
-                                      color: darkTheme
-                                          ? Colors.white
-                                          : Colors.black,
+                                      color: Colors.black,
                                     ),
                                   ),
                                   TextField(
                                     maxLines: 1,
                                     controller: TextEditingController(),
                                     focusNode: FocusNode(),
-                                    cursorColor:
-                                        darkTheme ? Colors.white : Colors.black,
+                                    cursorColor: Colors.black,
                                     style: TextStyle(
-                                      color: darkTheme
-                                          ? Colors.white
-                                          : Colors.black,
+                                      color: Colors.black,
                                     ),
                                     onChanged: (String value) {
                                       newPassword = value;

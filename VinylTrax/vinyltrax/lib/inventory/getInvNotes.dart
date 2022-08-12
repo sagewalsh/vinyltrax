@@ -28,8 +28,7 @@ class _InvNotes extends State<GetInvNotes> {
               List<Widget> children;
               if (snapshot.hasData) {
                 children = <Widget>[];
-                if (snapshot.data != null)
-                  currentNotes = snapshot.data!;
+                if (snapshot.data != null) currentNotes = snapshot.data!;
                 // Note Box
                 children.add(GestureDetector(
                   onTap: () {
@@ -46,11 +45,16 @@ class _InvNotes extends State<GetInvNotes> {
                             ),
                             content: TextField(
                               maxLines: null,
-                              controller: TextEditingController()..text = currentNotes,
+                              controller: TextEditingController()
+                                ..text = currentNotes,
                               focusNode: FocusNode(),
-                              cursorColor: settings.darkTheme ? Colors.white : Colors.black,
+                              cursorColor: settings.darkTheme
+                                  ? Colors.white
+                                  : Colors.black,
                               style: TextStyle(
-                                color: settings.darkTheme ? Colors.white : Colors.black,
+                                color: settings.darkTheme
+                                    ? Colors.white
+                                    : Colors.black,
                               ),
                               onChanged: (String value) {
                                 textToUpload = value;
@@ -60,23 +64,36 @@ class _InvNotes extends State<GetInvNotes> {
                               TextButton(
                                   onPressed: () {
                                     Database.addNotes(
-                                        albumID: widget.input[0], note: textToUpload);
+                                        albumID: widget.input[0],
+                                        note: textToUpload);
                                     Navigator.pop(context);
                                     Navigator.pop(context);
                                     var route = new MaterialPageRoute(
                                         builder: (BuildContext context) {
-                                          return InvDetails(widget.input);
-                                        });
+                                      return InvDetails(widget.input);
+                                    });
                                     Navigator.of(context).push(route);
                                   },
-                                  child: Text("Save")
-                              ),
+                                  child: Text(
+                                    "Save",
+                                    style: TextStyle(
+                                      color: settings.darkTheme
+                                          ? Color(0xFFBB86FC)
+                                          : Color(0xFFFF5A5A),
+                                    ),
+                                  )),
                               TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
-                                  child: Text("Cancel")
-                              ),
+                                  child: Text(
+                                    "Cancel",
+                                    style: TextStyle(
+                                      color: settings.darkTheme
+                                          ? Color(0xFFBB86FC)
+                                          : Color(0xFFFF5A5A),
+                                    ),
+                                  )),
                             ],
                           );
                         });
@@ -92,7 +109,13 @@ class _InvNotes extends State<GetInvNotes> {
                               Text(
                                 "Notes",
                                 style: TextStyle(
-                                  color: settings.darkTheme ? Colors.white : Colors.black,
+                                  color: snapshot.data! == ""
+                                      ? settings.darkTheme
+                                          ? Colors.white
+                                          : Colors.black
+                                      : settings.darkTheme
+                                          ? Color(0xFFBB86FC)
+                                          : Color(0xFFFF5A5A),
                                   fontStyle: FontStyle.italic,
                                 ),
                               ),
@@ -104,16 +127,28 @@ class _InvNotes extends State<GetInvNotes> {
                               Text(
                                 snapshot.data!,
                                 style: TextStyle(
-                                  color: settings.darkTheme ? Colors.white : Colors.black,
+                                  color: settings.darkTheme
+                                      ? Colors.white
+                                      : Colors.black,
                                 ),
                               ),
                             ],
                           ),
                         ),
                         decoration: BoxDecoration(
-                          color: settings.darkTheme ? Colors.black : Colors.white,
+                          color:
+                              settings.darkTheme ? Colors.black : Colors.white,
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(width: 1, color: settings.darkTheme ? Colors.white : Colors.black),
+                          border: Border.all(
+                            width: 1,
+                            color: snapshot.data! == ""
+                                ? settings.darkTheme
+                                    ? Colors.white
+                                    : Colors.black
+                                : settings.darkTheme
+                                    ? Color(0xFFBB86FC)
+                                    : Color(0xFFFF5A5A),
+                          ),
                         ),
                       )),
                 ));
