@@ -108,45 +108,6 @@ class _InvDetails extends State<InvDetails> {
             color: settings.darkTheme ? Colors.white : Colors.black,
           ),
           title: title,
-          actions: [
-            TextButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text("Confirm Removal?",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 16)),
-                        content: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                                onPressed: () {
-                                  // Remove album from inventory
-                                  Database.removeAlbum(widget.input[0]);
-
-                                  //below will take you back two pages, to the album page
-                                  Navigator.pushNamed(context, 'inven');
-                                },
-                                child: Text("Yes")),
-                            SizedBox(width: 20),
-                            ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(
-                                      context); //returns user back to page
-                                },
-                                child: Text("No")),
-                          ],
-                        ),
-                      );
-                    });
-              },
-              child: Text("Remove",
-                  style: TextStyle(
-                      color: Colors.redAccent)),
-            )
-          ],
         ),
         body: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
@@ -507,38 +468,36 @@ class _InvDetails extends State<InvDetails> {
                       categories += value;
                     });
 
-                    children.add(
-                        Center(
-                          child: InkWell(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AddToCustomCat(widget.input[0], categories);
-                                    }
-                                );
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * .8,
-                                height: MediaQuery.of(context).size.height * .05,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: settings.darkTheme
-                                          ? Color(0xFFBB86FC)
-                                          : Color(0xFFFF5A5A),
-                                    ),
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Center(
-                                    child: Text(
-                                      "Add to Category",
-                                      style: TextStyle(
-                                          color: settings.darkTheme
-                                              ? Color(0xFFBB86FC)
-                                              : Color(0xFFFF5A5A)),
-                                    )),
-                              )),
-                        )
-                    );
+                    children.add(Center(
+                      child: InkWell(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AddToCustomCat(
+                                      widget.input[0], categories);
+                                });
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * .8,
+                            height: MediaQuery.of(context).size.height * .05,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: settings.darkTheme
+                                      ? Color(0xFFBB86FC)
+                                      : Color(0xFFFF5A5A),
+                                ),
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Center(
+                                child: Text(
+                              "Add to Category",
+                              style: TextStyle(
+                                  color: settings.darkTheme
+                                      ? Color(0xFFBB86FC)
+                                      : Color(0xFFFF5A5A)),
+                            )),
+                          )),
+                    ));
 
                     children.add(SizedBox(
                       width: double.infinity,
@@ -558,6 +517,62 @@ class _InvDetails extends State<InvDetails> {
                       child: const Text(""),
                     ));
 
+                    children.add(Center(
+                      child: InkWell(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("Confirm Removal?",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontSize: 16)),
+                                    content: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              // Remove album from inventory
+                                              Database.removeAlbum(
+                                                  widget.input[0]);
+
+                                              //below will take you back two pages, to the album page
+                                              Navigator.pushNamed(
+                                                  context, 'inven');
+                                            },
+                                            child: Text("Yes")),
+                                        SizedBox(width: 20),
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.pop(
+                                                  context); //returns user back to page
+                                            },
+                                            child: Text("No")),
+                                      ],
+                                    ),
+                                  );
+                                });
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * .8,
+                            height: MediaQuery.of(context).size.height * .05,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Color(0xFFFF3131)),
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Center(
+                                child: Text(
+                              "Delete from Inventory",
+                              style: TextStyle(color: Color(0xFFFF3131)),
+                            )),
+                          )),
+                    ));
+
+                    children.add(SizedBox(
+                      width: double.infinity,
+                      height: 30,
+                      child: const Text(""),
+                    ));
                   } else if (snapshot.hasError) {
                     children = <Widget>[
                       Icon(Icons.error),
