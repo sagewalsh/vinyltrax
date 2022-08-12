@@ -536,10 +536,22 @@ class _InvDetails extends State<InvDetails> {
                                               // Remove album from inventory
                                               Database.removeAlbum(
                                                   widget.input[0]);
-
-                                              //below will take you back two pages, to the album page
-                                              Navigator.pushNamed(
-                                                  context, 'inven');
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    Future.delayed(
+                                                        Duration(seconds: 1),
+                                                        () {
+                                                      Navigator.of(context)
+                                                          .pushNamed("inven");
+                                                    });
+                                                    return AlertDialog(
+                                                      title: Text(
+                                                          'Album Deleted',
+                                                          textAlign:
+                                                              TextAlign.center),
+                                                    );
+                                                  });
                                             },
                                             child: Text("Yes")),
                                         SizedBox(width: 20),
