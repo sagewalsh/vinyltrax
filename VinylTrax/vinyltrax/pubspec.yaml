@@ -69,7 +69,7 @@ flutter_icons:
   remove_alpha_ios: true
   image_path: "assets/logo/newLogo2.png"
   adaptive_icon_background: "#ffffff"
-  adaptive_icon_foreground: "assets/logo/newLogoWB.png"
+  adaptive_icon_foreground: "assets/logo/newLogo2WB.png"
   
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
