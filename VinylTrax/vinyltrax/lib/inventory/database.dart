@@ -910,9 +910,15 @@ Given Album Data from Discogs in the form:
   }
 
   /*
-  addSpotToWish
+  delete from wishlist
   */
-  static void addSpotToWish(List<dynamic> albumdata) async {}
+  static void deleteWish(String albumid) async {
+    // If album was in wishlist: delete it
+    var wishshot = await userRef.child("Wishlist/${albumid}").get();
+    if (wishshot.exists) {
+      await userRef.child("Wishlist/${albumid}").remove();
+    }
+  }
 
 /*
 #############################################################################

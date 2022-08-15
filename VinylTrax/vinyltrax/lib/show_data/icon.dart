@@ -141,8 +141,7 @@ class ShowIcon extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 16)),
                   content: Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
                           onPressed: () {
@@ -153,37 +152,26 @@ class ShowIcon extends StatelessWidget {
                               showDialog(
                                   context: context,
                                   builder: (context) {
-                                    Future.delayed(
-                                        Duration(seconds: 1),
-                                            () {
-                                          Navigator.of(context)
-                                              .pushNamed('inven');
-                                        });
+                                    Future.delayed(Duration(seconds: 1), () {
+                                      Navigator.of(context).pushNamed('inven');
+                                    });
                                     return AlertDialog(
-                                      title: Text(
-                                          'Album Deleted',
-                                          textAlign:
-                                          TextAlign.center),
+                                      title: Text('Album Deleted',
+                                          textAlign: TextAlign.center),
                                     );
                                   });
-                            }
-                            else if (location == 'wish') {
-                              //remove from wishlist code here
+                            } else if (location == 'wish') {
+                              Database.deleteWish(id);
                               Navigator.of(context).pop();
                               showDialog(
                                   context: context,
                                   builder: (context) {
-                                    Future.delayed(
-                                        Duration(seconds: 1),
-                                            () {
-                                          Navigator.of(context)
-                                              .pushNamed('wish');
-                                        });
+                                    Future.delayed(Duration(seconds: 1), () {
+                                      Navigator.of(context).pushNamed('wish');
+                                    });
                                     return AlertDialog(
-                                      title: Text(
-                                          'Removed from wishlist',
-                                          textAlign:
-                                          TextAlign.center),
+                                      title: Text('Removed from wishlist',
+                                          textAlign: TextAlign.center),
                                     );
                                   });
                             }
@@ -192,8 +180,7 @@ class ShowIcon extends StatelessWidget {
                       SizedBox(width: 20),
                       ElevatedButton(
                           onPressed: () {
-                            Navigator.pop(
-                                context); //returns user back to page
+                            Navigator.pop(context); //returns user back to page
                           },
                           child: Text("No")),
                     ],
