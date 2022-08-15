@@ -1151,6 +1151,11 @@ USER CREATED CATEGORIES
         categories.add(value.toString());
       });
     }
+    categories.sort((a, b) {
+      a = removeDiacritics(a);
+      b = removeDiacritics(b);
+      return a.toLowerCase().compareTo(b.toLowerCase());
+    });
     return categories;
   }
 }
