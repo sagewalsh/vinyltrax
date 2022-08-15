@@ -131,54 +131,102 @@ class CategoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      tileColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
-      /*
-      Category Name
-      */
-      title: Container(
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: 15,
-            color: settings.darkTheme ? Colors.white : Colors.black,
-          ),
-        ),
+    return Dismissible(
+      key: ValueKey(title),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        color: Colors.redAccent,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Icon(
+              Icons.delete_forever
+            ),
+            SizedBox(width: 20)
+          ],
+        )
       ),
-
-      /*
-      Underline
-      */
-      subtitle: Container(
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              width: 1,
-              color: settings.darkTheme ? Color(0x64BB86FC) : Color(0x64FF5A5A),
-              // color: Color.fromARGB(0, 255, 90, 90),
+      confirmDismiss: (DismissDirection direction) async {
+        return await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: Text("Are you sure you want to delete: $title?"),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        final Future<List<List<dynamic>>> _results =
+                          Database.displayByCategory(title, format);
+                        _results.then((snapshot){
+                          snapshot.forEach((element) {
+                             Database.removeCatTag(element[0].toString(), title);
+                          });
+                        });
+                        Database.deleteCategory(title);
+                        Navigator.of(context).pop(true);
+                      },
+                      child: Text("Yes")
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                      child: Text("No")
+                  )
+                ],
+              );
+            }
+        );
+      },
+      child: ListTile(
+        tileColor: settings.darkTheme ? Color(0xFF181818) : Color(0xFFFFFDF6),
+        /*
+        Category Name
+        */
+        title: Container(
+          child: Text(
+            title,
+            style: TextStyle(
+              fontSize: 15,
+              color: settings.darkTheme ? Colors.white : Colors.black,
             ),
           ),
         ),
-        child: Text(
-          " ",
-          style: TextStyle(fontSize: 5),
-        ),
-      ),
 
-      /*
-      Ending Space
-      */
-      trailing: Container(
-        width: 25,
-        child: Text(""),
+        /*
+        Underline
+        */
+        subtitle: Container(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                width: 1,
+                color: settings.darkTheme ? Color(0x64BB86FC) : Color(0x64FF5A5A),
+                // color: Color.fromARGB(0, 255, 90, 90),
+              ),
+            ),
+          ),
+          child: Text(
+            " ",
+            style: TextStyle(fontSize: 5),
+          ),
+        ),
+
+        /*
+        Ending Space
+        */
+        trailing: Container(
+          width: 25,
+          child: Text(""),
+        ),
+        visualDensity: VisualDensity(vertical: -3),
+        onTap: () {
+          var route = new MaterialPageRoute(
+              builder: (BuildContext context) => new NextPage(title, format));
+          Navigator.of(context).push(route);
+        },
       ),
-      visualDensity: VisualDensity(vertical: -3),
-      onTap: () {
-        var route = new MaterialPageRoute(
-            builder: (BuildContext context) => new NextPage(title, format));
-        Navigator.of(context).push(route);
-      },
     );
   }
 }
