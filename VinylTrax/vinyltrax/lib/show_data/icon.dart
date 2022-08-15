@@ -132,7 +132,7 @@ class ShowIcon extends StatelessWidget {
         Navigator.of(context).push(route);
       },
       onLongPress: () {
-        if (location == 'inv' && !isArtist) {
+        if ((location == 'inv' || location == 'wish') && !isArtist) {
           showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -146,25 +146,47 @@ class ShowIcon extends StatelessWidget {
                     children: [
                       ElevatedButton(
                           onPressed: () {
-                            // Remove album from inventory
-                            Database.removeAlbum(id);
-                            Navigator.of(context).pop();
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  Future.delayed(
-                                      Duration(seconds: 1),
-                                          () {
-                                        Navigator.of(context)
-                                            .pushNamed('inven');
-                                      });
-                                  return AlertDialog(
-                                    title: Text(
-                                        'Album Deleted',
-                                        textAlign:
-                                        TextAlign.center),
-                                  );
-                                });
+                            if (location == 'inv') {
+                              // Remove album from inventory
+                              Database.removeAlbum(id);
+                              Navigator.of(context).pop();
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    Future.delayed(
+                                        Duration(seconds: 1),
+                                            () {
+                                          Navigator.of(context)
+                                              .pushNamed('inven');
+                                        });
+                                    return AlertDialog(
+                                      title: Text(
+                                          'Album Deleted',
+                                          textAlign:
+                                          TextAlign.center),
+                                    );
+                                  });
+                            }
+                            else if (location == 'wish') {
+                              //remove from wishlist code here
+                              Navigator.of(context).pop();
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    Future.delayed(
+                                        Duration(seconds: 1),
+                                            () {
+                                          Navigator.of(context)
+                                              .pushNamed('wish');
+                                        });
+                                    return AlertDialog(
+                                      title: Text(
+                                          'Removed from wishlist',
+                                          textAlign:
+                                          TextAlign.center),
+                                    );
+                                  });
+                            }
                           },
                           child: Text("Yes")),
                       SizedBox(width: 20),
