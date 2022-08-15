@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../inventory/database.dart';
 import '../pages/nextPage.dart';
 import 'package:marquee/marquee.dart';
 import '../pages/settingspage.dart' as settings;
@@ -129,6 +130,55 @@ class ShowIcon extends StatelessWidget {
           }
         });
         Navigator.of(context).push(route);
+      },
+      onLongPress: () {
+        if (location == 'inv' && !isArtist) {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("Confirm Removal of:\n$albumName",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 16)),
+                  content: Row(
+                    mainAxisAlignment:
+                    MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                          onPressed: () {
+                            // Remove album from inventory
+                            Database.removeAlbum(id);
+                            Navigator.of(context).pop();
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  Future.delayed(
+                                      Duration(seconds: 1),
+                                          () {
+                                        Navigator.of(context)
+                                            .pushNamed('inven');
+                                      });
+                                  return AlertDialog(
+                                    title: Text(
+                                        'Album Deleted',
+                                        textAlign:
+                                        TextAlign.center),
+                                  );
+                                });
+                          },
+                          child: Text("Yes")),
+                      SizedBox(width: 20),
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(
+                                context); //returns user back to page
+                          },
+                          child: Text("No")),
+                    ],
+                  ),
+                );
+              });
+        }
       },
       child: Column(
         children: children,

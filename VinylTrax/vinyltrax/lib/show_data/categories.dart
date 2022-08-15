@@ -132,7 +132,7 @@ class CategoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: ValueKey(title),
+      key: UniqueKey(),
       direction: DismissDirection.endToStart,
       background: Container(
         color: Colors.redAccent,
